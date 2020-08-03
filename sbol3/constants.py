@@ -1,3 +1,5 @@
+import rdflib
+
 # ----------
 # Namespaces
 # ----------
@@ -10,12 +12,19 @@ CHEBI_NS = 'http://identifiers.org/chebi/CHEBI:'
 # Namespace for Sequence Ontology (SO) terms
 SO_NS = "http://identifiers.org/so/SO:"
 
+PROV_NS = rdflib.Namespace('https://www.w3.org/TR/prov-o/')
+
 # ----------
 # SBOL 3 terms
 # ----------
-SBOL_DISPLAY_ID = SBOL3_NS + "displayId"
+SBOL_DESCRIPTION = SBOL3_NS + 'description'
+SBOL_DISPLAY_ID = SBOL3_NS + 'displayId'
+SBOL_HAS_ATTACHMENT = SBOL3_NS + 'hasAttachment'
+SBOL_MODELS = SBOL3_NS + 'hasModel'
+SBOL_NAME = SBOL3_NS + 'name'
 SBOL_ROLE = SBOL3_NS + 'role'
-
+SBOL_SEQUENCES = SBOL3_NS + 'hasSequence'
+SBOL_TYPE = SBOL3_NS + 'type'
 
 # An SO term and possible value for Component.role attribute
 SO_PROMOTER = SO_NS + "0000167"
