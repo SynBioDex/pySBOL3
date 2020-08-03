@@ -14,7 +14,6 @@ class TestComponent(unittest.TestCase):
         # Make sure the underlying datatype did not get overwritten
         self.assertNotIsInstance(c.roles, list)
         self.assertIsInstance(c.roles, Container)
-        print(c.properties[sbol3.SBOL_ROLE])
         self.assertIn(sbol3.SO_PROMOTER, c.roles)
         self.assertEqual([sbol3.SO_PROMOTER], c.roles)
         self.assertTrue(c.roles == [sbol3.SO_PROMOTER])

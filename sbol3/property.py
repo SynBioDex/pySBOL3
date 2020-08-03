@@ -1,5 +1,6 @@
 import abc
-from typing import Any, Optional, List, Dict
+from collections import MutableSequence
+from typing import Any, Optional, List, Dict, Union
 
 
 class Property(abc.ABC):
@@ -7,8 +8,6 @@ class Property(abc.ABC):
     def __init__(self, property_owner: Any, property_uri: str,
                  lower_bound: int, upper_bound: int,
                  validation_rules: Optional[List] = None) -> None:
-        if not hasattr(property_owner, 'properties'):
-            raise TypeError('Property owner has no "properties" attribute')
         self.property_owner = property_owner
         self.property_uri = property_uri
         self.lower_bound = lower_bound
@@ -19,13 +18,21 @@ class Property(abc.ABC):
         # Initialize the storage for this property
         self._storage[self.property_uri] = []
 
+    @property
+    def _storage(self) -> Dict[str, list]:
+        return self.property_owner.properties
+
     @abc.abstractmethod
     def set(self, value: Any) -> None:
         pass
 
-    @property
-    def _storage(self) -> Dict[str, list]:
-        return self.property_owner.properties
+    @abc.abstractmethod
+    def to_user(self, value: Any) -> str:
+        pass
+
+    @abc.abstractmethod
+    def from_user(self, value: Any):
+        pass
 
 
 class SingletonProperty(Property, abc.ABC):
@@ -39,6 +46,59 @@ class SingletonProperty(Property, abc.ABC):
         # This is a marker for SBOLObject.__get_attribute__
         self._sbol_singleton = True
 
-    @abc.abstractmethod
+    def set(self, value: Any) -> None:
+        self._storage[self.property_uri] = [self.from_user(value)]
+
     def get(self) -> Any:
-        pass
+        try:
+            value = self._storage[self.property_uri][0]
+        except IndexError:
+            return None
+        return self.to_user(value)
+
+
+class ListProperty(Property, MutableSequence, abc.ABC):
+
+    def __delitem__(self, key: Union[int, slice]) -> None:
+        self._storage[self.property_uri].__delitem__(key)
+
+    def __setitem__(self, key: Union[int, slice], value: Any) -> None:
+        # TODO: handle string value
+        # TODO: handle list-like value for slices
+        # TODO: Call from_user to convert the value
+        self._storage[self.property_uri].__setitem__(key, value)
+
+    def __getitem__(self, key: Union[int, slice]) -> Any:
+        value = self._storage[self.property_uri].__getitem__(key)
+        if isinstance(value, str):
+            return self.to_user(value)
+        else:
+            return [self.to_user(v) for v in value]
+
+    def __len__(self) -> int:
+        return self._storage[self.property_uri].__len__()
+
+    def __contains__(self, item) -> bool:
+        item = self.from_user(item)
+        return self._storage[self.property_uri].__contains__(item)
+
+    def __eq__(self, other) -> bool:
+        storage = self._storage[self.property_uri]
+        value = [self.to_user(v) for v in storage]
+        return value.__eq__(other)
+
+    def __str__(self) -> str:
+        return self._storage[self.property_uri].__str__()
+
+    def __repr__(self) -> str:
+        return self._storage[self.property_uri].__repr__()
+
+    def insert(self, index: int, value: Any) -> None:
+        value = self.from_user(value)
+        self._storage[self.property_uri].insert(index, value)
+
+    def set(self, value: Any) -> None:
+        # TODO: validate here
+        # TODO: test for iterable or sequence types, then convert to list?
+        value = [self.from_user(v) for v in value]
+        self._storage[self.property_uri] = value
