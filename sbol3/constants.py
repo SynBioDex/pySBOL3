@@ -19,10 +19,13 @@ PROV_NS = rdflib.Namespace('https://www.w3.org/TR/prov-o/')
 # ----------
 SBOL_DESCRIPTION = SBOL3_NS + 'description'
 SBOL_DISPLAY_ID = SBOL3_NS + 'displayId'
+SBOL_FRAMEWORK = SBOL3_NS + 'framework'
 SBOL_HAS_ATTACHMENT = SBOL3_NS + 'hasAttachment'
+SBOL_LANGUAGE = SBOL3_NS + 'language'
 SBOL_MODELS = SBOL3_NS + 'hasModel'
 SBOL_NAME = SBOL3_NS + 'name'
 SBOL_ROLE = SBOL3_NS + 'role'
+SBOL_SOURCE = SBOL3_NS + 'source'
 SBOL_SEQUENCES = SBOL3_NS + 'hasSequence'
 SBOL_TYPE = SBOL3_NS + 'type'
 

@@ -6,3 +6,5 @@ from .uri_property import URIProperty
 from .identified import Identified
 from .toplevel import TopLevel
 from .component import Component
+from .model import Model
+from .document import Document
