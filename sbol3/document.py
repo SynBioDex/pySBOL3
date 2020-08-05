@@ -1,4 +1,7 @@
+import logging
 from typing import Dict, Callable
+
+import rdflib
 
 from . import *
 
@@ -11,10 +14,9 @@ class Document:
     }
 
     def __init__(self):
-        pass
+        self.logger = logging.getLogger(SBOL_LOGGER_NAME)
 
-    @staticmethod
-    def _parse_objects(graph):
+    def _parse_objects(self, graph):
         result = {}
         for s, p, o in graph.triples((None, rdflib.RDF.type, None)):
             str_o = str(o)
@@ -22,6 +24,7 @@ class Document:
             try:
                 builder = Document.uri_type_map[str_o]
             except KeyError:
+                self.logger.info(f'Creating generic object for type {str_o}')
                 builder = Identified
             obj = builder()
             obj.identity = str_s
@@ -52,6 +55,6 @@ class Document:
         graph.parse(data=contents, format=format)
         objects = self._parse_objects(graph)
         self._parse_attributes(objects, graph)
-        for obj in objects.values():
-            print(obj)
-        graph.serialize('model.xml', format='xml')
+        # Now what?
+        # We've got the objects, now we need to store them within the document.
+        # Also extract the namespaces from the graph.
