@@ -1,4 +1,5 @@
 from .constants import *
+from .error import *
 from .object import SBOLObject
 from .property import Property, SingletonProperty, ListProperty
 from .text_property import TextSingletonProperty, TextProperty

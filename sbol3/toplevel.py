@@ -4,6 +4,14 @@ from . import *
 
 
 class TopLevel(Identified):
+
     def __init__(self) -> None:
         super().__init__()
         self.attachments = URIProperty(self, SBOL_HAS_ATTACHMENT, 0, math.inf)
+
+    def validate_identity(self) -> None:
+        # TODO: See section 5.1 for rules about identity
+        super().validate_identity()
+
+    def validate(self) -> None:
+        super().validate()

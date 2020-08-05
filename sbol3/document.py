@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, Callable
+from typing import Dict, Callable, List, Optional
 
 import rdflib
 
@@ -15,6 +15,8 @@ class Document:
 
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)
+        self.objects: List[Identified] = []
+        self.namespaces: Dict[str, str] = {}
 
     def _parse_objects(self, graph):
         result = {}
@@ -47,8 +49,13 @@ class Document:
             else:
                 obj.properties[str_p].append(o)
 
+    def clear(self) -> None:
+        self.objects.clear()
+        self.namespaces.clear()
+
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, file_path, format='xml'):
+        # TODO: clear the document, this isn't append
         graph = rdflib.Graph()
         with open(file_path, 'r') as infile:
             contents = infile.read()
@@ -58,3 +65,31 @@ class Document:
         # Now what?
         # We've got the objects, now we need to store them within the document.
         # Also extract the namespaces from the graph.
+        for prefix, uri in graph.namespaces():
+            if not prefix:
+                continue
+            print(f'{prefix}: {uri}')
+        # TODO: validate all objects
+        for obj in objects.values():
+            obj.validate()
+        self.objects = [obj for uri, obj in objects.items()
+                        if isinstance(obj, TopLevel)]
+        self.namespaces = {prefix: uri for prefix, uri in graph.namespaces()
+                           if prefix}
+
+    def _find_in_objects(self, search_string: str) -> Optional[Identified]:
+        # TODO: implement recursive search
+        for obj in self.objects:
+            # TODO: needs an object.find(search_string) method on ... Identified?
+            pass
+        return None
+
+    def find(self, search_string: str) -> Optional[Identified]:
+        # Search string might be a URI or an id like display_id
+        # TODO: should we check `name` as well?
+        for obj in self.objects:
+            if obj.identity == search_string:
+                return obj
+            if obj.display_id and obj.display_id == search_string:
+                return obj
+        return self._find_in_objects(search_string)
