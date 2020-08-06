@@ -7,10 +7,12 @@ from . import *
 
 class URIPropertyMixin:
 
-    def to_user(self, value: Any) -> str:
+    @staticmethod
+    def to_user(value: Any) -> str:
         return str(value)
 
-    def from_user(self, value: Any) -> rdflib.URIRef:
+    @staticmethod
+    def from_user(value: Any) -> rdflib.URIRef:
         if not isinstance(value, str):
             raise TypeError(f'Expecting string, got {type(value)}')
         return rdflib.URIRef(value)
@@ -28,7 +30,7 @@ class URISingletonProperty(URIPropertyMixin, SingletonProperty):
             self.set(initial_value)
 
 
-class URIListProperty(URIPropertyMixin, ListProperty, Property):
+class URIListProperty(URIPropertyMixin, ListProperty):
 
     def __init__(self, property_owner: Any, property_uri: str,
                  lower_bound: int, upper_bound: int,

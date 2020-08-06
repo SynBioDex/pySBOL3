@@ -36,5 +36,6 @@ class Identified(SBOLObject):
                 self.display_id = parsed.path.split('/')[-1]
 
     def validate(self) -> None:
+        super().validate()
         self.validate_identity()
         self.validate_display_id()

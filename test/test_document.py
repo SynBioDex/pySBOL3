@@ -37,3 +37,9 @@ class TestDocument(unittest.TestCase):
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'interface', 'interface.rdfxml.sbol')
         doc = sbol3.Document()
         doc.read(test_path, format='xml')
+
+    def test_read_turtle_toggle_switch(self):
+        # Initial test of Document.read
+        test_path = os.path.join(SBOL3_LOCATION, 'toggle_switch', 'toggle_switch.turtle.sbol')
+        doc = sbol3.Document()
+        doc.read(test_path, format='turtle')
