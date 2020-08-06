@@ -26,8 +26,11 @@ class Document:
             try:
                 builder = Document.uri_type_map[str_o]
             except KeyError:
+                # If we don't know how to build the type, it must be an extension.
+                # Extensions do not have to comply with SBOL 3 type rules from
+                # Identified on down. So we create them as SBOLObject instances
                 self.logger.info(f'Creating generic object for type {str_o}')
-                builder = Identified
+                builder = SBOLObject
             obj = builder()
             obj.identity = str_s
             result[str_s] = obj
