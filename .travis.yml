@@ -1,0 +1,33 @@
+language: generic
+matrix:
+  include:
+  - os: linux
+    dist: bionic
+    language: python
+    python: 3.6
+  - os: linux
+    dist: focal
+    language: python
+    python: 3.8
+  - os: linux
+    dist: bionic
+    language: python
+    python: pypy3
+  - os: windows
+    language: shell
+    before_install:
+    - choco install python3 --version=3.8.5 --no-progress -y
+    install:
+    - C:\\Python38\\python -m pip install .
+    - C:\\Python38\\python -m pip install 'pycodestyle>=2.6.0'
+    script:
+    - C:\\Python38\\python -m unittest discover -s test
+install:
+  - python3 -m pip install .
+  - python3 -m pip install 'pycodestyle>=2.6.0'
+script:
+  - python3 -m unittest discover -s test
+env:
+  global:
+  - secure: jRx84QQzMJ/A/Vke0301kuNtiztnUpu2RbQk909eiOEIZZR/0asV1EQybzr/dD2fVCokiCwXjghGD5r8BEOWk1moPWVRGYpJmdSZsYFZQn3cDg7TjzvU40vmHBeCdr64kP1DmZ2WcaMUtB/GAti3rUXDfbVsCe2Qsb7LsrrtXBlbb/jLIGIgO4Q2Bg/bR6ixFaiiWwxDkSR90yIJwhN14cNxgKge9uYdseQeUo0MuvItcZaNLo4ed7qZNa9POGpooHgcWOzSQug+YmVgGEIJ+pAUU+YZl4Sq1EVA7vJh51R65hgmsdisziffFWtzYlrpRPL7MR+anDibBNlMI97BQpt0+RyTEBvkTEojOGKlwj9QRa15ihW3vCffpq1zE7uccugYgqvAgqCeD3IN9uEccbDbEi/zFO1D9mIlsi5xFo3pIT+hmS67JTngh9ZKOmueMCbLZV575fvXO5uMiIIZezZMfm0VO9HE841K8jtY6T6fHsmyxwC745+MM2wpeV0rz1rD1PqcYF1Lxr8bOYny0wXBB9Gk2uAm2Uw2WSh+fZ5sdGCvLgeqzrEdLqb0aPe0vEu7NYfEp/p5BqeYsWvLhAJYDvsRldod/CPyS/cFPANdrk4Wg2acShrNR4U+PY8FRnOS5WWpABFYWi9s1Db6YsGLmRFDkG7ZBrhWSuKzDJM=
+  - secure: K+OzVIJhDMpuaL11SqDkHx9BWJTIW5tZpKw3/0VSrduAeA701+LoZWYbaV/WNPtIEds+jAXyy2JKpLKvppnPOwE9QdjxL7Lh7N8ksL3i65Sc1iFgRFCb5kojaZ/TvUfGJuBt4Ap0Sjf1SuIqZbNE/3ThLz+VaXK+AngLMMC56vu17Qec1Q9paeIaU+YTinJXbLDylRF/amlz8iudCMSy1ZHXG2X0VruW95rcBGijg9Le60Io+WDiRIrxpWlCV+2N0lHt2jr3JosKJVHw2jaBCt5x6D0n80LJx2HYdaufLgX97X2Y5aVuGUKcoWZgNylwVnAAaN72n3pczdPV1O1H2W+Mhn0Lb7u0Af/RQ03uMCl2w/PUL11AWsnTGPHgWIBjapUntL2HnZQLZAJ+UgDMKwYLVo8vDIyX8iD1YbIz6UUfCSg4Lq2N/Hqq3SuPl1eBbTkrGQzNHEyU2qvkUec0j71CI1ecHrs7BCanbcquSz+lCQCeeE6jXXc/O2CjXuLfapomjVQsNH2ZYXl1RjfSHepFbuSm9hbSOzi/IJi1nOYjTQNAz1Aw8DazslmdGTKE4xXo/QyrC97lcsFNkEjVyci1ZRkoKZLp71qTVNP7q2lWPkC2uoDi3xSgqLVtuRP3ogR1J2nKFfz1Ue8NzOWoQi/+pACuMbs+UQoGysQbteM=
