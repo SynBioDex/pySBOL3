@@ -29,9 +29,8 @@ class TestDocument(unittest.TestCase):
         self.assertIsNotNone(doc.find('https://sbolstandard.org/examples/toggle_switch'))
         self.assertIsNotNone(doc.find('toggle_switch'))
         self.assertIsNotNone(doc.find('https://sbolstandard.org/examples/model1'))
-        # model1 does not have a display id at the moment,
-        # so it cannot be found by its display id.
-        self.assertIsNone(doc.find('model1'))
+        # We have inferred the displayId of model1
+        self.assertIsNotNone(doc.find('model1'))
 
     def test_read_xml_interface(self):
         # Initial test of Document.read
