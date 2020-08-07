@@ -1,3 +1,4 @@
+import logging
 import os
 import unittest
 
@@ -8,6 +9,10 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 
 
 class TestDocument(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        logging.basicConfig(level=logging.INFO)
 
     def test_read_ntriples(self):
         # Initial test of Document.read

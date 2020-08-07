@@ -26,6 +26,8 @@ PROV_NS = 'https://www.w3.org/TR/prov-o/'
 # ----------
 SBOL_DESCRIPTION = SBOL3_NS + 'description'
 SBOL_DISPLAY_ID = SBOL3_NS + 'displayId'
+SBOL_ELEMENTS = SBOL3_NS + 'elements'
+SBOL_ENCODING = SBOL3_NS + 'encoding'
 SBOL_FRAMEWORK = SBOL3_NS + 'framework'
 SBOL_HAS_ATTACHMENT = SBOL3_NS + 'hasAttachment'
 SBOL_LANGUAGE = SBOL3_NS + 'language'

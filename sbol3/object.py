@@ -10,6 +10,7 @@ class SBOLObject:
         # Could it be an attribute that gets composed on the fly? Keep it simple for
         # now, and change to a property in the future if needed.
         self.identity = None
+        self.document = None
 
     def __setattr__(self, name, value):
         try:
