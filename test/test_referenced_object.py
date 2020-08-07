@@ -24,21 +24,34 @@ class TestReferencedObject(unittest.TestCase):
         model = model_uri.lookup()
         self.assertIsNotNone(model)
 
-    @unittest.expectedFailure
     def test_uri_assignment(self):
         # Test assignment to a ReferencedObject attribute with a URI string
+        seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
         doc = sbol3.Document()
         component = sbol3.Component()
         sequence = sbol3.Sequence()
+        sequence.identity = seq_uri
         doc.add(component)
         doc.add(sequence)
         component.sequences.append(sequence.identity)
-        seq_uri = component.sequences[0]
-        self.assertEqual(sequence.identity, seq_uri)
-        seq = seq_uri.lookup()
+        seq2_uri = component.sequences[0]
+        self.assertEqual(sequence.identity, seq2_uri)
+        seq = seq2_uri.lookup()
         self.assertIsNotNone(seq)
         self.assertEqual(sequence, seq)
 
     @unittest.expectedFailure
     def test_instance_assignment(self):
-        self.fail('Not implemented yet')
+        # Test assignment to a ReferencedObject attribute with a URI string
+        seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
+        doc = sbol3.Document()
+        component = sbol3.Component()
+        sequence = sbol3.Sequence()
+        sequence.identity = seq_uri
+        doc.add(component)
+        component.sequences.append(sequence)
+        seq2_uri = component.sequences[0]
+        self.assertEqual(sequence.identity, seq2_uri)
+        seq = seq2_uri.lookup()
+        self.assertIsNotNone(seq)
+        self.assertEqual(sequence, seq)

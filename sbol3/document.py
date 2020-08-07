@@ -77,6 +77,16 @@ class Document:
         self.namespaces = {prefix: uri for prefix, uri in graph.namespaces()
                            if prefix}
 
+    def add(self, obj: TopLevel) -> None:
+        """Add objects to the document.
+        """
+        if isinstance(obj, TopLevel):
+            self.objects.append(obj)
+            obj.document = self
+        else:
+            message = f'Expected TopLevel instance, {type(obj).__name__} found'
+            raise TypeError(message)
+
     def _find_in_objects(self, search_string: str) -> Optional[Identified]:
         # TODO: implement recursive search
         for obj in self.objects:
