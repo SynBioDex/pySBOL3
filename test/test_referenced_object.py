@@ -40,9 +40,9 @@ class TestReferencedObject(unittest.TestCase):
         self.assertIsNotNone(seq)
         self.assertEqual(sequence, seq)
 
-    @unittest.expectedFailure
-    def test_instance_assignment(self):
-        # Test assignment to a ReferencedObject attribute with a URI string
+    def test_instance_append(self):
+        # Test assignment to a ReferencedObject attribute with an
+        # instance using append
         seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
         doc = sbol3.Document()
         component = sbol3.Component()
@@ -50,6 +50,22 @@ class TestReferencedObject(unittest.TestCase):
         sequence.identity = seq_uri
         doc.add(component)
         component.sequences.append(sequence)
+        seq2_uri = component.sequences[0]
+        self.assertEqual(sequence.identity, seq2_uri)
+        seq = seq2_uri.lookup()
+        self.assertIsNotNone(seq)
+        self.assertEqual(sequence, seq)
+
+    def test_instance_assignment(self):
+        # Test assignment to a ReferencedObject attribute with an
+        # instance using assignment
+        seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
+        doc = sbol3.Document()
+        component = sbol3.Component()
+        sequence = sbol3.Sequence()
+        sequence.identity = seq_uri
+        doc.add(component)
+        component.sequences = [sequence]
         seq2_uri = component.sequences[0]
         self.assertEqual(sequence.identity, seq2_uri)
         seq = seq2_uri.lookup()

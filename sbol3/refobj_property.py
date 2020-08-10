@@ -12,7 +12,6 @@ class ReferencedURI(str):
 
     def lookup(self):
         if hasattr(self, 'parent'):
-            print(f'Property owner = {self.parent}')
             return self.parent.document.find(str(self))
         else:
             # TODO: Should the lack of a parent raise an error?
@@ -30,9 +29,18 @@ class ReferencedObjectMixin:
 
     @staticmethod
     def from_user(value: Any) -> rdflib.URIRef:
+        if isinstance(value, SBOLObject):
+            value = value.identity
         if not isinstance(value, str):
             raise TypeError(f'Expecting string, got {type(value)}')
         return rdflib.URIRef(value)
+
+    def maybe_add_to_document(self, value: Any) -> None:
+        if not isinstance(value, TopLevel):
+            return
+        if hasattr(self, 'property_owner'):
+            if self.property_owner and self.property_owner.document:
+                self.property_owner.document.add(value)
 
 
 class ReferencedObjectSingleton(ReferencedObjectMixin, SingletonProperty):
@@ -57,6 +65,15 @@ class ReferencedObjectList(ReferencedObjectMixin, ListProperty):
                          lower_bound, upper_bound, validation_rules)
         if initial_value:
             self.set(initial_value)
+
+    def insert(self, index: int, value: Any) -> None:
+        super().insert(index, value)
+        self.maybe_add_to_document(value)
+
+    def set(self, value: Any) -> None:
+        super().set(value)
+        for item in value:
+            self.maybe_add_to_document(item)
 
 
 def ReferencedObject(property_owner: Any, property_uri: str,
