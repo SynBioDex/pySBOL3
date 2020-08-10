@@ -9,8 +9,9 @@ from . import *
 class Document:
 
     uri_type_map: Dict[str, Callable] = {
+        'http://sbols.org/v3#Component': Component,
         'http://sbols.org/v3#Model': Model,
-        'http://sbols.org/v3#Component': Component
+        'http://sbols.org/v3#Sequence': Sequence,
     }
 
     def __init__(self):
@@ -33,6 +34,7 @@ class Document:
                 builder = SBOLObject
             obj = builder()
             obj.identity = str_s
+            obj.document = self
             result[str_s] = obj
         return result
 
@@ -65,20 +67,25 @@ class Document:
         graph.parse(data=contents, format=format)
         objects = self._parse_objects(graph)
         self._parse_attributes(objects, graph)
-        # Now what?
-        # We've got the objects, now we need to store them within the document.
-        # Also extract the namespaces from the graph.
-        for prefix, uri in graph.namespaces():
-            if not prefix:
-                continue
-            print(f'{prefix}: {uri}')
-        # TODO: validate all objects
+        # Validate all the objects
         for obj in objects.values():
             obj.validate()
+        # Store the TopLevel objects in the Document
         self.objects = [obj for uri, obj in objects.items()
                         if isinstance(obj, TopLevel)]
+        # Store the namespaces in the Document for later use
         self.namespaces = {prefix: uri for prefix, uri in graph.namespaces()
                            if prefix}
+
+    def add(self, obj: TopLevel) -> None:
+        """Add objects to the document.
+        """
+        if isinstance(obj, TopLevel):
+            self.objects.append(obj)
+            obj.document = self
+        else:
+            message = f'Expected TopLevel instance, {type(obj).__name__} found'
+            raise TypeError(message)
 
     def _find_in_objects(self, search_string: str) -> Optional[Identified]:
         # TODO: implement recursive search

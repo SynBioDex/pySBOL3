@@ -6,6 +6,8 @@ from .text_property import TextSingletonProperty, TextProperty
 from .uri_property import URIProperty
 from .identified import Identified
 from .toplevel import TopLevel
+from .refobj_property import ReferencedObject
 from .component import Component
 from .model import Model
+from .sequence import Sequence
 from .document import Document

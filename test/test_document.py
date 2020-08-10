@@ -1,3 +1,4 @@
+import logging
 import os
 import unittest
 
@@ -8,6 +9,10 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 
 
 class TestDocument(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        logging.basicConfig(level=logging.INFO)
 
     def test_read_ntriples(self):
         # Initial test of Document.read
@@ -43,3 +48,15 @@ class TestDocument(unittest.TestCase):
         test_path = os.path.join(SBOL3_LOCATION, 'toggle_switch', 'toggle_switch.turtle.sbol')
         doc = sbol3.Document()
         doc.read(test_path, format='turtle')
+
+    def test_add(self):
+        doc = sbol3.Document()
+        obj1 = sbol3.SBOLObject()
+        with self.assertRaises(TypeError):
+            doc.add(obj1)
+        seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
+        seq = sbol3.Sequence()
+        seq.identity = seq_uri
+        doc.add(seq)
+        seq2 = doc.find(seq_uri)
+        self.assertEqual(seq.identity, seq2.identity)
