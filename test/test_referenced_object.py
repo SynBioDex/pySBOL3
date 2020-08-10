@@ -11,8 +11,8 @@ class SingleRefObj(sbol3.TopLevel):
 
     SEQUENCE_URI = 'https://github.com/synbiodex/sbol3#sequence'
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name: str):
+        super().__init__(name)
         self.sequence = sbol3.ReferencedObject(self, SingleRefObj.SEQUENCE_URI, 0, 1)
 
 
@@ -37,8 +37,8 @@ class TestReferencedObject(unittest.TestCase):
         # Test assignment to a ReferencedObject attribute with a URI string
         seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
         doc = sbol3.Document()
-        component = sbol3.Component()
-        sequence = sbol3.Sequence()
+        component = sbol3.Component('c1')
+        sequence = sbol3.Sequence('seq1')
         sequence.identity = seq_uri
         doc.add(component)
         doc.add(sequence)
@@ -54,8 +54,8 @@ class TestReferencedObject(unittest.TestCase):
         # instance using append
         seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
         doc = sbol3.Document()
-        component = sbol3.Component()
-        sequence = sbol3.Sequence()
+        component = sbol3.Component('c1')
+        sequence = sbol3.Sequence('seq1')
         sequence.identity = seq_uri
         doc.add(component)
         component.sequences.append(sequence)
@@ -70,8 +70,8 @@ class TestReferencedObject(unittest.TestCase):
         # instance using assignment
         seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
         doc = sbol3.Document()
-        component = sbol3.Component()
-        sequence = sbol3.Sequence()
+        component = sbol3.Component('c1')
+        sequence = sbol3.Sequence('seq1')
         sequence.identity = seq_uri
         doc.add(component)
         component.sequences = [sequence]
@@ -86,8 +86,8 @@ class TestReferencedObject(unittest.TestCase):
         # instance using assignment
         seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
         doc = sbol3.Document()
-        test_parent = SingleRefObj()
-        sequence = sbol3.Sequence()
+        test_parent = SingleRefObj('sro1')
+        sequence = sbol3.Sequence('seq1')
         sequence.identity = seq_uri
         doc.add(test_parent)
         test_parent.sequence = sequence

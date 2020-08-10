@@ -6,8 +6,8 @@ from . import *
 
 class Component(TopLevel):
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
         self.roles = URIProperty(self, SBOL_ROLE, 0, math.inf)
         self.types: Union[List, Property] = URIProperty(self, SBOL_TYPE, 1, math.inf)
         self.sequences = ReferencedObject(self, SBOL_SEQUENCES, 0, math.inf)

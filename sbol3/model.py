@@ -3,8 +3,8 @@ from . import *
 
 class Model(TopLevel):
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
         self.source = URIProperty(self, SBOL_SOURCE, 1, 1)
         self.language = URIProperty(self, SBOL_LANGUAGE, 1, 1)
         self.framework = URIProperty(self, SBOL_FRAMEWORK, 1, 1)

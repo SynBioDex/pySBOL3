@@ -37,11 +37,11 @@ class TestDocument(unittest.TestCase):
         # We have inferred the displayId of model1
         self.assertIsNotNone(doc.find('model1'))
 
-    def test_read_xml_interface(self):
+    def test_read_turtle_interface(self):
         # Initial test of Document.read
-        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'interface', 'interface.rdfxml.sbol')
+        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'interface', 'interface.turtle.sbol')
         doc = sbol3.Document()
-        doc.read(test_path, format='xml')
+        doc.read(test_path, format='turtle')
 
     def test_read_turtle_toggle_switch(self):
         # Initial test of Document.read
@@ -51,11 +51,11 @@ class TestDocument(unittest.TestCase):
 
     def test_add(self):
         doc = sbol3.Document()
-        obj1 = sbol3.SBOLObject()
+        obj1 = sbol3.SBOLObject('obj')
         with self.assertRaises(TypeError):
             doc.add(obj1)
         seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
-        seq = sbol3.Sequence()
+        seq = sbol3.Sequence('seq1')
         seq.identity = seq_uri
         doc.add(seq)
         seq2 = doc.find(seq_uri)

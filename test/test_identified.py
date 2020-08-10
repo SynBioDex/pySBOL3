@@ -8,7 +8,7 @@ import sbol3
 class TestIdentified(unittest.TestCase):
 
     def test_display_id(self):
-        c = sbol3.Component()
+        c = sbol3.Component('c1')
         self.assertEqual(None, c.display_id)
         display_id = 'my_component'
         c.display_id = display_id
