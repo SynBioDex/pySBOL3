@@ -54,6 +54,10 @@ class ReferencedObjectSingleton(ReferencedObjectMixin, SingletonProperty):
         if initial_value:
             self.set(initial_value)
 
+    def set(self, value: Any) -> None:
+        super().set(value)
+        self.maybe_add_to_document(value)
+
 
 class ReferencedObjectList(ReferencedObjectMixin, ListProperty):
 

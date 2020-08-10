@@ -7,6 +7,15 @@ MODULE_LOCATION = os.path.dirname(os.path.abspath(__file__))
 SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 
 
+class SingleRefObj(sbol3.TopLevel):
+
+    SEQUENCE_URI = 'https://github.com/synbiodex/sbol3#sequence'
+
+    def __init__(self):
+        super().__init__()
+        self.sequence = sbol3.ReferencedObject(self, SingleRefObj.SEQUENCE_URI, 0, 1)
+
+
 class TestReferencedObject(unittest.TestCase):
 
     def test_lookup(self):
@@ -67,6 +76,22 @@ class TestReferencedObject(unittest.TestCase):
         doc.add(component)
         component.sequences = [sequence]
         seq2_uri = component.sequences[0]
+        self.assertEqual(sequence.identity, seq2_uri)
+        seq = seq2_uri.lookup()
+        self.assertIsNotNone(seq)
+        self.assertEqual(sequence, seq)
+
+    def test_singleton_assignment(self):
+        # Test assignment to a ReferencedObject attribute with an
+        # instance using assignment
+        seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
+        doc = sbol3.Document()
+        test_parent = SingleRefObj()
+        sequence = sbol3.Sequence()
+        sequence.identity = seq_uri
+        doc.add(test_parent)
+        test_parent.sequence = sequence
+        seq2_uri = test_parent.sequence
         self.assertEqual(sequence.identity, seq2_uri)
         seq = seq2_uri.lookup()
         self.assertIsNotNone(seq)
