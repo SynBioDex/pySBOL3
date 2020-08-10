@@ -21,3 +21,7 @@ class TestIdentified(unittest.TestCase):
         # Under the covers
         self.assertIsInstance(c.properties[sbol3.SBOL_DISPLAY_ID][0],
                               rdflib.Literal)
+
+
+if __name__ == '__main__':
+    unittest.main()

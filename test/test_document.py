@@ -60,3 +60,7 @@ class TestDocument(unittest.TestCase):
         doc.add(seq)
         seq2 = doc.find(seq_uri)
         self.assertEqual(seq.identity, seq2.identity)
+
+
+if __name__ == '__main__':
+    unittest.main()

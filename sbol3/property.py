@@ -1,5 +1,5 @@
 import abc
-from collections import MutableSequence
+from collections import MutableSequence, Iterable
 from typing import Any, Optional, List, Dict, Union
 
 
@@ -63,9 +63,15 @@ class ListProperty(Property, MutableSequence, abc.ABC):
         self._storage[self.property_uri].__delitem__(key)
 
     def __setitem__(self, key: Union[int, slice], value: Any) -> None:
-        # TODO: handle string value
-        # TODO: handle list-like value for slices
-        # TODO: Call from_user to convert the value
+        # Do string separately because it, too, is iterable
+        if isinstance(value, str):
+            value = self.from_user(value)
+        elif isinstance(value, Iterable):
+            # string is iterable so it's broken out above
+            value = [self.from_user(item) for item in value]
+        else:
+            # Not string or iterable
+            value = self.from_user(value)
         self._storage[self.property_uri].__setitem__(key, value)
 
     def __getitem__(self, key: Union[int, slice]) -> Any:
@@ -88,10 +94,12 @@ class ListProperty(Property, MutableSequence, abc.ABC):
         return value.__eq__(other)
 
     def __str__(self) -> str:
-        return self._storage[self.property_uri].__str__()
+        return str([self.to_user(item)
+                    for item in self._storage[self.property_uri]])
 
     def __repr__(self) -> str:
-        return self._storage[self.property_uri].__repr__()
+        return repr([self.to_user(item)
+                     for item in self._storage[self.property_uri]])
 
     def insert(self, index: int, value: Any) -> None:
         value = self.from_user(value)

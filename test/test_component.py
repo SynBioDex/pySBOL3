@@ -25,3 +25,7 @@ class TestComponent(unittest.TestCase):
         c.roles[1:] = [sbol3.SO_RBS]
         self.assertEqual([sbol3.SO_PROMOTER, sbol3.SO_RBS], c.roles)
         self.assertEqual([sbol3.SO_RBS], c.roles[1:])
+
+
+if __name__ == '__main__':
+    unittest.main()

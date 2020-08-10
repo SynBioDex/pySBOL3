@@ -96,3 +96,7 @@ class TestReferencedObject(unittest.TestCase):
         seq = seq2_uri.lookup()
         self.assertIsNotNone(seq)
         self.assertEqual(sequence, seq)
+
+
+if __name__ == '__main__':
+    unittest.main()
