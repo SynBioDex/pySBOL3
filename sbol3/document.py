@@ -10,6 +10,7 @@ class Document:
 
     uri_type_map: Dict[str, Callable] = {
         'http://sbols.org/v3#Component': Component,
+        'http://sbols.org/v3#Constraint': Constraint,
         'http://sbols.org/v3#Model': Model,
         'http://sbols.org/v3#Sequence': Sequence,
     }
@@ -49,7 +50,7 @@ class Document:
             if str_p in obj.owned_objects:
                 other_identity = str(o)
                 other = objects[other_identity]
-                obj.owned_objects[str_p] = other
+                obj.owned_objects[str_p].append(other)
             else:
                 obj.properties[str_p].append(o)
 
