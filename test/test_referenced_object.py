@@ -11,12 +11,15 @@ class SingleRefObj(sbol3.TopLevel):
 
     SEQUENCE_URI = 'https://github.com/synbiodex/sbol3#sequence'
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name: str):
+        super().__init__(name)
         self.sequence = sbol3.ReferencedObject(self, SingleRefObj.SEQUENCE_URI, 0, 1)
 
 
 class TestReferencedObject(unittest.TestCase):
+
+    def setUp(self) -> None:
+        sbol3.set_defaults()
 
     def test_lookup(self):
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.turtle.sbol')
@@ -35,11 +38,9 @@ class TestReferencedObject(unittest.TestCase):
 
     def test_uri_assignment(self):
         # Test assignment to a ReferencedObject attribute with a URI string
-        seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
         doc = sbol3.Document()
-        component = sbol3.Component()
-        sequence = sbol3.Sequence()
-        sequence.identity = seq_uri
+        component = sbol3.Component('c1')
+        sequence = sbol3.Sequence('seq1')
         doc.add(component)
         doc.add(sequence)
         component.sequences.append(sequence.identity)
@@ -52,11 +53,9 @@ class TestReferencedObject(unittest.TestCase):
     def test_instance_append(self):
         # Test assignment to a ReferencedObject attribute with an
         # instance using append
-        seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
         doc = sbol3.Document()
-        component = sbol3.Component()
-        sequence = sbol3.Sequence()
-        sequence.identity = seq_uri
+        component = sbol3.Component('c1')
+        sequence = sbol3.Sequence('seq1')
         doc.add(component)
         component.sequences.append(sequence)
         seq2_uri = component.sequences[0]
@@ -68,11 +67,9 @@ class TestReferencedObject(unittest.TestCase):
     def test_instance_assignment(self):
         # Test assignment to a ReferencedObject attribute with an
         # instance using assignment
-        seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
         doc = sbol3.Document()
-        component = sbol3.Component()
-        sequence = sbol3.Sequence()
-        sequence.identity = seq_uri
+        component = sbol3.Component('c1')
+        sequence = sbol3.Sequence('seq1')
         doc.add(component)
         component.sequences = [sequence]
         seq2_uri = component.sequences[0]
@@ -84,11 +81,9 @@ class TestReferencedObject(unittest.TestCase):
     def test_singleton_assignment(self):
         # Test assignment to a ReferencedObject attribute with an
         # instance using assignment
-        seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
         doc = sbol3.Document()
-        test_parent = SingleRefObj()
-        sequence = sbol3.Sequence()
-        sequence.identity = seq_uri
+        test_parent = SingleRefObj('sro1')
+        sequence = sbol3.Sequence('seq1')
         doc.add(test_parent)
         test_parent.sequence = sequence
         seq2_uri = test_parent.sequence

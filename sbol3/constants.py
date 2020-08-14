@@ -24,6 +24,7 @@ PROV_NS = 'https://www.w3.org/TR/prov-o/'
 # ----------
 # SBOL 3 terms
 # ----------
+SBOL_CONSTRAINTS = SBOL3_NS + 'hasConstraint'
 SBOL_DESCRIPTION = SBOL3_NS + 'description'
 SBOL_DISPLAY_ID = SBOL3_NS + 'displayId'
 SBOL_ELEMENTS = SBOL3_NS + 'elements'
@@ -33,9 +34,12 @@ SBOL_HAS_ATTACHMENT = SBOL3_NS + 'hasAttachment'
 SBOL_LANGUAGE = SBOL3_NS + 'language'
 SBOL_MODELS = SBOL3_NS + 'hasModel'
 SBOL_NAME = SBOL3_NS + 'name'
+SBOL_OBJECT = SBOL3_NS + 'object'
+SBOL_RESTRICTION = SBOL3_NS + 'restriction'
 SBOL_ROLE = SBOL3_NS + 'role'
 SBOL_SOURCE = SBOL3_NS + 'source'
 SBOL_SEQUENCES = SBOL3_NS + 'hasSequence'
+SBOL_SUBJECT = SBOL3_NS + 'subject'
 SBOL_TYPE = SBOL3_NS + 'type'
 
 

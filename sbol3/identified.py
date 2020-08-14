@@ -1,4 +1,5 @@
 import math
+from typing import Union
 from urllib.parse import urlparse
 
 from . import *
@@ -6,36 +7,58 @@ from . import *
 
 class Identified(SBOLObject):
 
-    def __init__(self) -> None:
-        super().__init__()
-        self.display_id = TextProperty(self, SBOL_DISPLAY_ID, 0, 1)
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
+        self._display_id = TextProperty(self, SBOL_DISPLAY_ID, 0, 1)
         self.name = TextProperty(self, SBOL_NAME, 0, 1)
         self.description = TextProperty(self, SBOL_DESCRIPTION, 0, 1)
         self.derived_from = URIProperty(self, PROV_DERIVED_FROM, 0, math.inf)
         self.generated_by = URIProperty(self, PROV_GENERATED_BY, 0, math.inf)
+        # Identity has been set by the SBOLObject constructor
+        self._display_id = Identified._extract_display_id(self.identity)
 
-    def validate_identity(self) -> None:
-        # TODO: identity must be a URI
-        # TODO: can identity be None?
-        pass
+    @staticmethod
+    def _is_valid_display_id(display_id: str) -> bool:
+        # A display id [...] value MUST be composed of only alphanumeric
+        # or underscore characters and MUST NOT begin with a digit.
+        # (Section 6.1)
+        #
+        # Make sure everything other than underscores are alphanumeric, and
+        # make sure the first character is not a digit.
+        #
+        # Note: This implies that '_' is not a valid displayId because `isalnum()`
+        # will return false if the string is empty, which it will be after we filter
+        # out the lone underscore.
+        return display_id.replace('_', '').isalnum() and not display_id[0].isdigit()
 
-    def validate_display_id(self) -> None:
-        # TODO: If there is a display id, the value MUST be composed of only
-        # TODO:     alphanumeric or underscore 14 characters and MUST NOT
-        # TODO:     begin with a digit. (Section 6.1)
+    @staticmethod
+    def _extract_display_id(identity: str) -> Union[None, str]:
+        parsed = urlparse(identity)
+        if not (parsed.scheme and parsed.netloc and parsed.path):
+            # if the identity is not a URL, we cannot extract a display id
+            # and display id is optional in this case
+            return None
+        display_id = parsed.path.split('/')[-1]
+        if Identified._is_valid_display_id(display_id):
+            return display_id
+        else:
+            msg = f'"{display_id}" is not a valid displayId.'
+            msg += '  A displayId MUST be composed of only alphanumeric'
+            msg += ' or underscore characters and MUST NOT begin with a digit.'
+            raise ValueError(msg)
 
-        parsed = urlparse(self.identity)
-        identity_is_url = bool(parsed.scheme and parsed.netloc and parsed.path)
-        if identity_is_url:
-            # If the identity is a URL, the displayId MUST be set
-            if not self.display_id:
-                # my_type = type(self).__name__
-                # msg = f'{my_type} {self.identity} does not have a display_id (Section 6.1)'
-                # raise ValidationError(msg)
-                # Infer the displayId
-                self.display_id = parsed.path.split('/')[-1]
+    def _validate_display_id(self) -> None:
+        # TODO: if identity is a URL, display_id is required
+        if (Identified._is_valid_display_id(self.display_id) and
+                self.identity.endswith(self.display_id)):
+            return
+        raise ValidationError(f'{self.display_id} is not a valid displayId')
+
+    @property
+    def display_id(self):
+        # display_id is a read only property
+        return self._display_id
 
     def validate(self) -> None:
         super().validate()
-        self.validate_identity()
-        self.validate_display_id()
+        self._validate_display_id()
