@@ -7,7 +7,9 @@ from . import *
 
 class TextPropertyMixin:
 
-    def from_user(self, value: Any) -> rdflib.Literal:
+    def from_user(self, value: Any) -> Union[None, rdflib.Literal]:
+        if value is None:
+            return None
         if not isinstance(value, str):
             raise TypeError(f'Expecting string, got {type(value)}')
         return rdflib.Literal(value)

@@ -46,7 +46,14 @@ class SingletonProperty(Property, abc.ABC):
         self._sbol_singleton = True
 
     def set(self, value: Any) -> None:
-        self._storage()[self.property_uri] = [self.from_user(value)]
+        value = self.from_user(value)
+        if value is None:
+            if self.lower_bound == 0:
+                self._storage()[self.property_uri] = []
+            else:
+                raise ValueError(f'Property {self.property_uri} cannot be unset')
+        else:
+            self._storage()[self.property_uri] = [value]
 
     def get(self) -> Any:
         try:

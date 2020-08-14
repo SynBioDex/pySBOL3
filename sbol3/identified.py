@@ -1,4 +1,5 @@
 import math
+from typing import Union
 from urllib.parse import urlparse
 
 from . import *
@@ -31,10 +32,12 @@ class Identified(SBOLObject):
         return display_id.replace('_', '').isalnum() and not display_id[0].isdigit()
 
     @staticmethod
-    def _extract_display_id(identity: str) -> str:
+    def _extract_display_id(identity: str) -> Union[None, str]:
         parsed = urlparse(identity)
         if not (parsed.scheme and parsed.netloc and parsed.path):
-            raise ValueError(f'Expected URL, found {identity}')
+            # if the identity is not a URL, we cannot extract a display id
+            # and display id is optional in this case
+            return None
         display_id = parsed.path.split('/')[-1]
         if Identified._is_valid_display_id(display_id):
             return display_id

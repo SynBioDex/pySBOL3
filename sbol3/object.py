@@ -1,4 +1,5 @@
 import posixpath
+import uuid
 from collections import defaultdict
 from urllib.parse import urlparse
 
@@ -54,12 +55,18 @@ class SBOLObject:
         name_is_url = bool(parsed.scheme and parsed.netloc and parsed.path)
         if name_is_url:
             return name.strip(posixpath.sep)
+        try:
+            # If it is a UUID, accept it as the identity
+            identity_uuid = uuid.UUID(name)
+            return str(identity_uuid)
+        except ValueError:
+            pass
+        # Not a URL or a UUID, so append to the homespace
+        base_uri = get_homespace()
+        if base_uri.endswith('#'):
+            return base_uri + name
         else:
-            base_uri = get_homespace()
-            if base_uri.endswith('#'):
-                return base_uri + name
-            else:
-                return posixpath.join(base_uri, name)
+            return posixpath.join(base_uri, name)
 
     def validate(self) -> None:
         self._validate_identity()

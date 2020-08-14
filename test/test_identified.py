@@ -1,5 +1,6 @@
 import posixpath
 import unittest
+import uuid
 
 import rdflib
 
@@ -42,6 +43,15 @@ class TestIdentified(unittest.TestCase):
         c2 = sbol3.Component(c2_identity)
         self.assertEqual(c2_display_id, c2.display_id)
         self.assertEqual(c2_identity, c2.identity)
+
+    def test_uuid(self):
+        # Verify that a UUID can be used as an identity and that
+        # the object does not have a display_id since the identity
+        # is not a URL
+        identity = str(uuid.uuid5(uuid.NAMESPACE_URL, sbol3.get_homespace()))
+        c = sbol3.Component(identity)
+        self.assertEqual(identity, c.identity)
+        self.assertIsNone(c.display_id)
 
 
 if __name__ == '__main__':
