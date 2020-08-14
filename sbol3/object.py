@@ -1,6 +1,8 @@
 from collections import defaultdict
 from urllib.parse import urlparse
 
+from . import *
+
 
 class SBOLObject:
 
@@ -55,4 +57,4 @@ class SBOLObject:
             # We need a place to hold the default URI and we need a better
             # way of appending to the path of that URI because it is user
             # settable.
-            return 'http://example.com/sbol3/' + name
+            return get_homespace() + name

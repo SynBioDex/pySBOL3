@@ -1,4 +1,5 @@
 from .constants import *
+from .config import set_defaults, get_homespace, set_homespace
 from .error import *
 from .object import SBOLObject
 from .property import Property, SingletonProperty, ListProperty
