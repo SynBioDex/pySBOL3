@@ -3,7 +3,7 @@ import unittest
 import sbol3
 
 
-class MyTestCase(unittest.TestCase):
+class TestConfig(unittest.TestCase):
 
     # I wanted to have this in a base class but I couldn't get the
     # imports right. I kept getting "attempted relative import with

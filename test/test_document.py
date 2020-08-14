@@ -54,11 +54,9 @@ class TestDocument(unittest.TestCase):
         obj1 = sbol3.SBOLObject('obj')
         with self.assertRaises(TypeError):
             doc.add(obj1)
-        seq_uri = 'https://github.com/synbiodex/pysbol3/seq1'
         seq = sbol3.Sequence('seq1')
-        seq.identity = seq_uri
         doc.add(seq)
-        seq2 = doc.find(seq_uri)
+        seq2 = doc.find(seq.identity)
         self.assertEqual(seq.identity, seq2.identity)
 
 
