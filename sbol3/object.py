@@ -40,6 +40,11 @@ class SBOLObject:
         pass
 
     @staticmethod
+    def _is_url(name: str) -> bool:
+        parsed = urlparse(name)
+        return bool(parsed.scheme and parsed.netloc and parsed.path)
+
+    @staticmethod
     def _make_identity(name: str) -> str:
         """Make an identity from the given name.
 
@@ -51,8 +56,7 @@ class SBOLObject:
 
         We do not support UUIDs, which are legal SBOL identifiers.
         """
-        parsed = urlparse(name)
-        name_is_url = bool(parsed.scheme and parsed.netloc and parsed.path)
+        name_is_url = SBOLObject._is_url(name)
         if name_is_url:
             return name.strip(posixpath.sep)
         try:
@@ -72,6 +76,9 @@ class SBOLObject:
         self._validate_identity()
 
     @property
-    def identity(self):
+    def identity(self) -> str:
         # identity is a read-only property
         return self._identity
+
+    def identity_is_url(self) -> bool:
+        return self._is_url(self.identity)

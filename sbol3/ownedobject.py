@@ -1,3 +1,4 @@
+import posixpath
 from typing import Union, Any, List, Optional, Dict
 
 import rdflib
@@ -8,12 +9,12 @@ from . import *
 class OwnedObjectPropertyMixin:
 
     def from_user(self, value: Any) -> rdflib.Literal:
-        if not isinstance(value, str):
-            raise TypeError(f'Expecting string, got {type(value)}')
-        return rdflib.Literal(value)
+        if not isinstance(value, SBOLObject):
+            raise TypeError(f'Expecting SBOLObject, got {type(value)}')
+        return value
 
     def to_user(self, value: Any) -> str:
-        return str(value)
+        return value
 
     def _storage(self) -> Dict[str, list]:
         return self.property_owner.owned_objects
@@ -41,6 +42,19 @@ class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
                          lower_bound, upper_bound, validation_rules)
         if initial_value:
             self.set(initial_value)
+
+    def item_added(self, item: Any) -> None:
+        if not self.property_owner.identity_is_url():
+            return
+        if not item.display_id:
+            raise ValueError(f'Item {item} does not have a display_id')
+        new_url = posixpath.join(self.property_owner.identity, item.display_id)
+        for sibling in self._storage()[self.property_uri]:
+            if sibling == item:
+                continue
+            if sibling.identity == new_url:
+                raise ValidationError(f'Duplicate URI: {new_url}')
+        item._identity = new_url
 
 
 def OwnedObject(property_owner: Any, property_uri: str,
