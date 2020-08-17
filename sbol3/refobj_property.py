@@ -70,14 +70,8 @@ class ReferencedObjectList(ReferencedObjectMixin, ListProperty):
         if initial_value:
             self.set(initial_value)
 
-    def insert(self, index: int, value: Any) -> None:
-        super().insert(index, value)
-        self.maybe_add_to_document(value)
-
-    def set(self, value: Any) -> None:
-        super().set(value)
-        for item in value:
-            self.maybe_add_to_document(item)
+    def item_added(self, item: Any) -> None:
+        self.maybe_add_to_document(item)
 
 
 def ReferencedObject(property_owner: Any, property_uri: str,
