@@ -71,14 +71,19 @@ class ListProperty(Property, MutableSequence, abc.ABC):
     def __setitem__(self, key: Union[int, slice], value: Any) -> None:
         # Do string separately because it, too, is iterable
         if isinstance(value, str):
+            values = [value]
             value = self.from_user(value)
         elif isinstance(value, Iterable):
             # string is iterable so it's broken out above
+            values = value
             value = [self.from_user(item) for item in value]
         else:
             # Not string or iterable
+            values = [value]
             value = self.from_user(value)
         self._storage()[self.property_uri].__setitem__(key, value)
+        for val in values:
+            self.item_added(val)
 
     def __getitem__(self, key: Union[int, slice]) -> Any:
         value = self._storage()[self.property_uri].__getitem__(key)
@@ -108,11 +113,21 @@ class ListProperty(Property, MutableSequence, abc.ABC):
                      for item in self._storage()[self.property_uri]])
 
     def insert(self, index: int, value: Any) -> None:
-        value = self.from_user(value)
-        self._storage()[self.property_uri].insert(index, value)
+        item = self.from_user(value)
+        self._storage()[self.property_uri].insert(index, item)
+        self.item_added(value)
 
     def set(self, value: Any) -> None:
         # TODO: validate here
         # TODO: test for iterable or sequence types, then convert to list?
-        value = [self.from_user(v) for v in value]
-        self._storage()[self.property_uri] = value
+        items = [self.from_user(v) for v in value]
+        self._storage()[self.property_uri] = items
+        for val in value:
+            self.item_added(val)
+
+    def item_added(self, item: Any) -> None:
+        """Stub method for child classes to override if they have to do
+        any additional processing on items after they are added. This method
+        will be called on each individual item that was added to the list.
+        """
+        pass
