@@ -19,6 +19,7 @@ class TestDocument(unittest.TestCase):
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.ntriples.sbol')
         doc = sbol3.Document()
         doc.read(test_path, format='n3')
+        doc.write('model.sbol', file_format='ntriples')
 
     def test_read_turtle(self):
         # Initial test of Document.read
@@ -51,13 +52,20 @@ class TestDocument(unittest.TestCase):
 
     def test_add(self):
         doc = sbol3.Document()
-        obj1 = sbol3.SBOLObject('obj')
+        type_uri = 'https://github.com/synbiodex/sbol3#TestObj'
+        obj1 = sbol3.SBOLObject('obj', type_uri)
         with self.assertRaises(TypeError):
             doc.add(obj1)
         seq = sbol3.Sequence('seq1')
         doc.add(seq)
         seq2 = doc.find(seq.identity)
         self.assertEqual(seq.identity, seq2.identity)
+
+    def test_write(self):
+        doc = sbol3.Document()
+        doc.add(sbol3.Component('c1'))
+        doc.write('test_output.ntriples', 'ntriples')
+        doc.write('test_output.xml')
 
 
 if __name__ == '__main__':

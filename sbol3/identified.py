@@ -2,13 +2,15 @@ import math
 from typing import Union
 from urllib.parse import urlparse
 
+import rdflib
+
 from . import *
 
 
 class Identified(SBOLObject):
 
-    def __init__(self, name: str) -> None:
-        super().__init__(name)
+    def __init__(self, name: str, type_uri: str) -> None:
+        super().__init__(name, type_uri)
         self._display_id = TextProperty(self, SBOL_DISPLAY_ID, 0, 1)
         self.name = TextProperty(self, SBOL_NAME, 0, 1)
         self.description = TextProperty(self, SBOL_DESCRIPTION, 0, 1)
@@ -62,3 +64,20 @@ class Identified(SBOLObject):
     def validate(self) -> None:
         super().validate()
         self._validate_display_id()
+
+    def serialize(self, graph: rdflib.Graph):
+        identity = rdflib.URIRef(self.identity)
+        graph.add((identity, rdflib.RDF.type, rdflib.URIRef(self.type_uri)))
+        for prop, items in self.properties.items():
+            if not items:
+                continue
+            rdf_prop = rdflib.URIRef(prop)
+            for item in items:
+                graph.add((identity, rdf_prop, item))
+        for prop, items in self.owned_objects.items():
+            if not items:
+                continue
+            rdf_prop = rdflib.URIRef(prop)
+            for item in items:
+                graph.add((identity, rdf_prop, item.identity))
+                item.serialize(graph)
