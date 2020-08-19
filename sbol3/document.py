@@ -7,7 +7,6 @@ from . import *
 
 
 class Document:
-
     uri_type_map: Dict[str, Callable] = {
         'http://sbols.org/v3#Component': Component,
         'http://sbols.org/v3#Constraint': Constraint,
@@ -33,7 +32,7 @@ class Document:
                 # Identified on down. So we create them as SBOLObject instances
                 self.logger.info(f'Creating generic object for type {str_o}')
                 builder = SBOLObject
-            obj = builder(str_s)
+            obj = builder(str_s, str_o)
             obj.document = self
             result[obj.identity] = obj
         return result
@@ -103,3 +102,9 @@ class Document:
             if obj.display_id and obj.display_id == search_string:
                 return obj
         return self._find_in_objects(search_string)
+
+    def write(self, path: str, file_format='xml') -> None:
+        graph = rdflib.Graph()
+        for obj in self.objects:
+            obj.serialize(graph)
+        graph.serialize(path, format=file_format)
