@@ -53,6 +53,15 @@ class TestIdentified(unittest.TestCase):
         self.assertEqual(identity, c.identity)
         self.assertIsNone(c.display_id)
 
+    def test_basic_serialization(self):
+        c = sbol3.Component('c1')
+        graph = rdflib.Graph()
+        c.serialize(graph)
+        # Is there a better way to get all the triples?
+        triples = list(graph.triples((None, None, None)))
+        # Expecting a triple for the type, and a triple for the displayId
+        self.assertEqual(2, len(triples))
+
 
 if __name__ == '__main__':
     unittest.main()
