@@ -32,7 +32,7 @@ class Document:
                 # Identified on down. So we create them as SBOLObject instances
                 self.logger.info(f'Creating generic object for type {str_o}')
                 builder = SBOLObject
-            obj = builder(str_s, str_o)
+            obj = builder(str_s, type_uri=str_o)
             obj.document = self
             result[obj.identity] = obj
         return result
