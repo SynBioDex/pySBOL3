@@ -38,5 +38,32 @@ class TestRange(unittest.TestCase):
         self.assertEqual(end, r.end)
 
 
+class TestCut(unittest.TestCase):
+
+    def test_creation(self):
+        at = 1
+        cut = sbol3.Cut('cut1', at)
+        self.assertIsNotNone(cut)
+        self.assertEqual(at, cut.at)
+        at = 0
+        cut = sbol3.Cut('cut1', at)
+        self.assertIsNotNone(cut)
+        self.assertEqual(at, cut.at)
+
+    def test_invalid_create(self):
+        # At must be >= 0
+        at = -1
+        with self.assertRaises(sbol3.ValidationError):
+            sbol3.Cut('cut1', at)
+
+
+class TestEntireSequence(unittest.TestCase):
+
+    def test_creation(self):
+        # EntireSequence has no properties, so there isn't much to test here
+        es = sbol3.EntireSequence('es1')
+        self.assertIsNotNone(es)
+
+
 if __name__ == '__main__':
     unittest.main()
