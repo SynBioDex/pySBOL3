@@ -14,6 +14,7 @@ from .component import Component
 from .constraint import Constraint
 from .model import Model
 from .sequence import Sequence
-from .location import Location, Range, Cut, EntireSequence
+from .location import Range, Cut, EntireSequence
 from .varcomp import VariableComponent
+from .subcomponent import SubComponent
 from .document import Document
