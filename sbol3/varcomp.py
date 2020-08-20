@@ -18,13 +18,13 @@ class VariableComponent(TopLevel):
         # Create properties
         self.cardinality = URIProperty(self, SBOL_CARDINALITY, 1, 1,
                                        initial_value=cardinality)
-        self.variable = URIProperty(self, SBOL_VARIABLE, 1, 1,
-                                    initial_value=variable)
-        self.variant = URIProperty(self, SBOL_VARIANT, 0, math.inf)
-        self.variant_collection = URIProperty(self, SBOL_VARIANT_COLLECTION,
-                                              0, math.inf)
-        self.variant_derivation = URIProperty(self, SBOL_VARIANT_DERIVATION,
-                                              0, math.inf)
+        self.variable = ReferencedObject(self, SBOL_VARIABLE, 1, 1,
+                                         initial_value=variable)
+        self.variant = ReferencedObject(self, SBOL_VARIANT, 0, math.inf)
+        self.variant_collection = ReferencedObject(self, SBOL_VARIANT_COLLECTION,
+                                                   0, math.inf)
+        self.variant_derivation = ReferencedObject(self, SBOL_VARIANT_DERIVATION,
+                                                   0, math.inf)
         # Validate
         self.validate()
 

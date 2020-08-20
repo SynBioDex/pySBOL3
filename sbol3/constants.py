@@ -35,7 +35,9 @@ SBOL_ENCODING = SBOL3_NS + 'encoding'
 SBOL_END = SBOL3_NS + 'end'
 SBOL_FRAMEWORK = SBOL3_NS + 'framework'
 SBOL_HAS_ATTACHMENT = SBOL3_NS + 'hasAttachment'
+SBOL_INSTANCE_OF = SBOL3_NS + 'instanceOf'
 SBOL_LANGUAGE = SBOL3_NS + 'language'
+SBOL_LOCATION = SBOL3_NS + 'hasLocation'
 SBOL_MODEL = SBOL3_NS + 'Model'
 SBOL_MODELS = SBOL3_NS + 'hasModel'
 SBOL_NAME = SBOL3_NS + 'name'
@@ -48,7 +50,9 @@ SBOL_ROLE = SBOL3_NS + 'role'
 SBOL_SEQUENCE = SBOL3_NS + 'Sequence'
 SBOL_SOURCE = SBOL3_NS + 'source'
 SBOL_SEQUENCES = SBOL3_NS + 'hasSequence'
+SBOL_SOURCE_LOCATION = SBOL3_NS + 'sourceLocation'
 SBOL_START = SBOL3_NS + 'start'
+SBOL_SUBCOMPONENT = SBOL3_NS + 'SubComponent'
 SBOL_SUBJECT = SBOL3_NS + 'subject'
 SBOL_TYPE = SBOL3_NS + 'type'
 SBOL_VARIABLE = SBOL3_NS + 'variable'
@@ -75,7 +79,7 @@ PROV_GENERATED_BY = PROV_NS + 'wasGeneratedBy'
 
 
 # ----------
-# Component roles
+# Component/Feature roles
 #
 # * These are common, others can be used as well.
 # * See the SBOL 3 spec, Section 6.4, Table 4
@@ -90,3 +94,11 @@ SO_ENGINEERED_GENE = SO_NS + "0000280"
 SO_MRNA = SO_NS + "0000234"
 CHEBI_EFFECTOR = CHEBI_NS + '35224'
 SO_TRANSCRIPTION_FACTOR = SO_NS + "0003700"
+
+# ----------
+# Feature orientations
+#
+# * See the SBOL 3 spec, Section 6.4.1, Table 5
+# ----------
+SBOL_INLINE = SBOL3_NS + 'inline'
+SBOL_REVERSE_COMPLEMENT = SBOL3_NS + 'reverseComplement'
