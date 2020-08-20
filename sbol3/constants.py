@@ -24,6 +24,7 @@ PROV_NS = 'https://www.w3.org/TR/prov-o/'
 # ----------
 # SBOL 3 terms
 # ----------
+SBOL_CARDINALITY = SBOL3_NS + 'cardinality'
 SBOL_COMPONENT = SBOL3_NS + 'Component'
 SBOL_CONSTRAINT = SBOL3_NS + 'Constraint'
 SBOL_CONSTRAINTS = SBOL3_NS + 'hasConstraint'
@@ -50,6 +51,20 @@ SBOL_SEQUENCES = SBOL3_NS + 'hasSequence'
 SBOL_START = SBOL3_NS + 'start'
 SBOL_SUBJECT = SBOL3_NS + 'subject'
 SBOL_TYPE = SBOL3_NS + 'type'
+SBOL_VARIABLE = SBOL3_NS + 'variable'
+SBOL_VARIABLE_COMPONENT = SBOL3_NS + 'VariableComponent'
+SBOL_VARIANT = SBOL3_NS + 'variant'
+SBOL_VARIANT_COLLECTION = SBOL3_NS + 'variantCollection'
+SBOL_VARIANT_DERIVATION = SBOL3_NS + 'variantDerivation'
+
+# Valid values for Variable Component cardinality
+# See SBOL3 Section 6.5 Table 13
+SBOL_ONE = SBOL3_NS + 'one'
+SBOL_ONE_OR_MORE = SBOL3_NS + 'oneOrMore'
+SBOL_ZERO_OR_MORE = SBOL3_NS + 'zeroOrMore'
+SBOL_ZERO_OR_ONE = SBOL3_NS + 'zeroOrOne'
+
+PYSBOL3_MISSING = 'https://github.com/synbiodex/pysbol3#missing'
 
 
 # ----------
