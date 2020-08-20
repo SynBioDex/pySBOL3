@@ -3,7 +3,7 @@ from . import *
 
 class Model(TopLevel):
 
-    def __init__(self, name: str, type_uri: str = SBOL_MODEL) -> None:
+    def __init__(self, name: str, *, type_uri: str = SBOL_MODEL) -> None:
         super().__init__(name, type_uri)
         self.source = URIProperty(self, SBOL_SOURCE, 1, 1)
         self.language = URIProperty(self, SBOL_LANGUAGE, 1, 1)
