@@ -44,6 +44,7 @@ class URIListProperty(URIPropertyMixin, ListProperty):
 
 def URIProperty(property_owner: Any, property_uri: str,
                 lower_bound: int, upper_bound: Union[int, float],
+                *,  # require keywords from here
                 validation_rules: Optional[List] = None,
                 initial_value: Optional[Union[str, List[str]]] = None) -> Property:
     if upper_bound == 1:
