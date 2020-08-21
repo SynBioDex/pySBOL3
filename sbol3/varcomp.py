@@ -3,7 +3,7 @@ import math
 from . import *
 
 
-class VariableComponent(TopLevel):
+class VariableComponent(Identified):
 
     def __init__(self, name: str, *,
                  cardinality: str = None,
