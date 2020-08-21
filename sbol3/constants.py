@@ -26,6 +26,7 @@ PROV_NS = 'https://www.w3.org/TR/prov-o/'
 # ----------
 SBOL_CARDINALITY = SBOL3_NS + 'cardinality'
 SBOL_COLLECTION = SBOL3_NS + 'Collection'
+SBOL_COMBINATORIAL_DERIVATION = SBOL3_NS + 'CombinatorialDerivation'
 SBOL_COMPONENT = SBOL3_NS + 'Component'
 SBOL_CONSTRAINT = SBOL3_NS + 'Constraint'
 SBOL_CONSTRAINTS = SBOL3_NS + 'hasConstraint'
@@ -58,14 +59,27 @@ SBOL_SOURCE = SBOL3_NS + 'source'
 SBOL_SEQUENCES = SBOL3_NS + 'hasSequence'
 SBOL_SOURCE_LOCATION = SBOL3_NS + 'sourceLocation'
 SBOL_START = SBOL3_NS + 'start'
+SBOL_STRATEGY = SBOL3_NS + 'strategy'
 SBOL_SUBCOMPONENT = SBOL3_NS + 'SubComponent'
 SBOL_SUBJECT = SBOL3_NS + 'subject'
+SBOL_TEMPLATE = SBOL3_NS + 'template'
 SBOL_TYPE = SBOL3_NS + 'type'
 SBOL_VARIABLE = SBOL3_NS + 'variable'
 SBOL_VARIABLE_COMPONENT = SBOL3_NS + 'VariableComponent'
+SBOL_VARIABLE_COMPONENTS = SBOL3_NS + 'hasVariableComponent'
 SBOL_VARIANT = SBOL3_NS + 'variant'
 SBOL_VARIANT_COLLECTION = SBOL3_NS + 'variantCollection'
 SBOL_VARIANT_DERIVATION = SBOL3_NS + 'variantDerivation'
+
+# Valid values for Feature orientation
+# See SBOL3 Section 6.4.1 Table 5
+SBOL_INLINE = SBOL3_NS + 'inline'
+SBOL_REVERSE_COMPLEMENT = SBOL3_NS + 'reverseComplement'
+
+# Valid values for Combinatorial Derivation strategy
+# See SBOL3 Section 6.5 Table 12
+SBOL_ENUMERATE = SBOL3_NS + 'enumerate'
+SBOL_SAMPLE = SBOL3_NS + 'sample'
 
 # Valid values for Variable Component cardinality
 # See SBOL3 Section 6.5 Table 13
@@ -102,11 +116,3 @@ SO_ENGINEERED_GENE = SO_NS + "0000280"
 SO_MRNA = SO_NS + "0000234"
 CHEBI_EFFECTOR = CHEBI_NS + '35224'
 SO_TRANSCRIPTION_FACTOR = SO_NS + "0003700"
-
-# ----------
-# Feature orientations
-#
-# * See the SBOL 3 spec, Section 6.4.1, Table 5
-# ----------
-SBOL_INLINE = SBOL3_NS + 'inline'
-SBOL_REVERSE_COMPLEMENT = SBOL3_NS + 'reverseComplement'
