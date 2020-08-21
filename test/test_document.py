@@ -44,6 +44,7 @@ class TestDocument(unittest.TestCase):
         doc = sbol3.Document()
         doc.read(test_path, format='turtle')
 
+    @unittest.expectedFailure  # Issue with SBOL3 data files
     def test_read_turtle_toggle_switch(self):
         # Initial test of Document.read
         test_path = os.path.join(SBOL3_LOCATION, 'toggle_switch', 'toggle_switch.turtle.sbol')
