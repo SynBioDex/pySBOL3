@@ -16,5 +16,5 @@ from .model import Model
 from .sequence import Sequence
 from .location import Range, Cut, EntireSequence
 from .varcomp import VariableComponent
-from .subcomponent import SubComponent
 from .document import Document
+from .subcomponent import SubComponent

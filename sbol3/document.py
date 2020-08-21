@@ -7,7 +7,17 @@ from . import *
 
 
 class Document:
-    uri_type_map: Dict[str, Callable] = {
+
+    @staticmethod
+    def register_builder(type_uri: str,
+                         builder: Callable[[str, str], SBOLObject]) -> None:
+        """A builder function will be called with an identity and a keyword argument type_uri.
+
+        builder(identity_uri: str, type_uri: str = None) -> SBOLObject
+        """
+        Document._uri_type_map[type_uri] = builder
+
+    _uri_type_map: Dict[str, Callable[[str, str], SBOLObject]] = {
         'http://sbols.org/v3#Component': Component,
         'http://sbols.org/v3#Constraint': Constraint,
         'http://sbols.org/v3#Model': Model,
@@ -25,7 +35,7 @@ class Document:
             str_o = str(o)
             str_s = str(s)
             try:
-                builder = Document.uri_type_map[str_o]
+                builder = Document._uri_type_map[str_o]
             except KeyError:
                 # If we don't know how to build the type, it must be an extension.
                 # Extensions do not have to comply with SBOL 3 type rules from
