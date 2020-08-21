@@ -60,6 +60,28 @@ class Document:
             else:
                 obj.properties[str_p].append(o)
 
+    @staticmethod
+    def _clean_up_singletons(objects: Dict[str, SBOLObject]):
+        """Clean up singleton properties after reading an SBOL file.
+
+        When an SBOL file is read, values are appended to the property
+        stores without knowledge of which stores are singletons and
+        which stores are lists. This method cleans up singleton properties
+        by ensuring that each has exactly one value.
+        """
+        # This is necessary due to defaulting of properties when using
+        # the builder. Some objects have required properties, which the
+        # builder sets. In the case of singleton values, that can result
+        # in multiple values in a singleton property. Only the first value
+        # is used, so the value read from file is ignored.
+        for _, obj in objects.items():
+            for name, attr in obj.__dict__.items():
+                if isinstance(attr, SingletonProperty):
+                    prop_uri = attr.property_uri
+                    store = attr._storage()
+                    if len(store[prop_uri]) > 1:
+                        store[prop_uri] = store[prop_uri][-1:]
+
     def clear(self) -> None:
         self.objects.clear()
         self.namespaces.clear()
@@ -73,6 +95,7 @@ class Document:
         graph.parse(data=contents, format=format)
         objects = self._parse_objects(graph)
         self._parse_attributes(objects, graph)
+        self._clean_up_singletons(objects)
         # Validate all the objects
         for obj in objects.values():
             obj.validate()
