@@ -17,12 +17,9 @@ class Document:
         """
         Document._uri_type_map[type_uri] = builder
 
-    _uri_type_map: Dict[str, Callable[[str, str], SBOLObject]] = {
-        'http://sbols.org/v3#Component': Component,
-        'http://sbols.org/v3#Constraint': Constraint,
-        'http://sbols.org/v3#Model': Model,
-        'http://sbols.org/v3#Sequence': Sequence,
-    }
+    # Map type URIs to a builder function to construct entities from
+    # RDF triples.
+    _uri_type_map: Dict[str, Callable[[str, str], SBOLObject]] = {}
 
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)

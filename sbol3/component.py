@@ -23,3 +23,6 @@ class Component(TopLevel):
     def validate(self) -> None:
         super().validate()
         self._validate_types()
+
+
+Document.register_builder(SBOL_COMPONENT, Component)

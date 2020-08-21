@@ -23,3 +23,6 @@ class Model(TopLevel):
         if not self.framework:
             msg = f'Model {self.identity} does not have a framework'
             raise ValidationError(msg)
+
+
+Document.register_builder(SBOL_MODEL, Model)

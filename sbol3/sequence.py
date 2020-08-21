@@ -10,3 +10,6 @@ class Sequence(TopLevel):
 
     def validate(self) -> None:
         super().validate()
+
+
+Document.register_builder(SBOL_SEQUENCE, Sequence)
