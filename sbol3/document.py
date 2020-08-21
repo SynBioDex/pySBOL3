@@ -87,12 +87,16 @@ class Document:
         self.namespaces.clear()
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
-    def read(self, file_path, format='xml'):
-        # TODO: clear the document, this isn't append
-        graph = rdflib.Graph()
+    def read(self, file_path, format='xml') -> None:
         with open(file_path, 'r') as infile:
             contents = infile.read()
-        graph.parse(data=contents, format=format)
+        return self.read_string(contents, format)
+
+    # Formats: 'n3', 'nt', 'turtle', 'xml'
+    def read_string(self, data: str, format: str = 'xml') -> None:
+        # TODO: clear the document, this isn't append
+        graph = rdflib.Graph()
+        graph.parse(data=data, format=format)
         objects = self._parse_objects(graph)
         self._parse_attributes(objects, graph)
         self._clean_up_singletons(objects)
