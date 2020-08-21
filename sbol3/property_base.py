@@ -1,4 +1,5 @@
 import abc
+import collections
 from collections import MutableSequence, Iterable
 from typing import Any, Optional, List, Dict, Union
 
@@ -89,8 +90,11 @@ class ListProperty(Property, MutableSequence, abc.ABC):
         value = self._storage()[self.property_uri].__getitem__(key)
         if isinstance(value, str):
             return self.to_user(value)
-        else:
+        elif isinstance(value, collections.Iterable):
             return [self.to_user(v) for v in value]
+        else:
+            # Not a string or an iterable, just convert
+            return self.to_user(value)
 
     def __len__(self) -> int:
         return self._storage()[self.property_uri].__len__()
