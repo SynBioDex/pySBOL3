@@ -4,7 +4,7 @@ import math
 from . import *
 
 
-class Feature(SBOLObject, abc.ABC):
+class Feature(Identified, abc.ABC):
     """Feature is an abstract base class."""
 
     def __init__(self, name: str, type_uri: str) -> None:

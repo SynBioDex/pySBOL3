@@ -10,11 +10,11 @@ from .ownedobject import OwnedObject
 from .identified import Identified
 from .toplevel import TopLevel
 from .refobj_property import ReferencedObject
-from .component import Component
+from .document import Document
 from .constraint import Constraint
-from .model import Model
 from .sequence import Sequence
 from .location import Range, Cut, EntireSequence
 from .varcomp import VariableComponent
+from .component import Component
+from .model import Model
 from .subcomponent import SubComponent
-from .document import Document

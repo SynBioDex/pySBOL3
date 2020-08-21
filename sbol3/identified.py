@@ -54,7 +54,8 @@ class Identified(SBOLObject):
         if (Identified._is_valid_display_id(self.display_id) and
                 self.identity.endswith(self.display_id)):
             return
-        raise ValidationError(f'{self.display_id} is not a valid displayId')
+        message = f'{self.display_id} is not a valid displayId for {self.identity}'
+        raise ValidationError(message)
 
     @property
     def display_id(self):

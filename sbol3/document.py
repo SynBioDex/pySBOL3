@@ -7,12 +7,19 @@ from . import *
 
 
 class Document:
-    uri_type_map: Dict[str, Callable] = {
-        'http://sbols.org/v3#Component': Component,
-        'http://sbols.org/v3#Constraint': Constraint,
-        'http://sbols.org/v3#Model': Model,
-        'http://sbols.org/v3#Sequence': Sequence,
-    }
+
+    @staticmethod
+    def register_builder(type_uri: str,
+                         builder: Callable[[str, str], SBOLObject]) -> None:
+        """A builder function will be called with an identity and a keyword argument type_uri.
+
+        builder(identity_uri: str, type_uri: str = None) -> SBOLObject
+        """
+        Document._uri_type_map[type_uri] = builder
+
+    # Map type URIs to a builder function to construct entities from
+    # RDF triples.
+    _uri_type_map: Dict[str, Callable[[str, str], SBOLObject]] = {}
 
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)
@@ -25,7 +32,7 @@ class Document:
             str_o = str(o)
             str_s = str(s)
             try:
-                builder = Document.uri_type_map[str_o]
+                builder = Document._uri_type_map[str_o]
             except KeyError:
                 # If we don't know how to build the type, it must be an extension.
                 # Extensions do not have to comply with SBOL 3 type rules from
@@ -53,6 +60,28 @@ class Document:
             else:
                 obj.properties[str_p].append(o)
 
+    @staticmethod
+    def _clean_up_singletons(objects: Dict[str, SBOLObject]):
+        """Clean up singleton properties after reading an SBOL file.
+
+        When an SBOL file is read, values are appended to the property
+        stores without knowledge of which stores are singletons and
+        which stores are lists. This method cleans up singleton properties
+        by ensuring that each has exactly one value.
+        """
+        # This is necessary due to defaulting of properties when using
+        # the builder. Some objects have required properties, which the
+        # builder sets. In the case of singleton values, that can result
+        # in multiple values in a singleton property. Only the first value
+        # is used, so the value read from file is ignored.
+        for _, obj in objects.items():
+            for name, attr in obj.__dict__.items():
+                if isinstance(attr, SingletonProperty):
+                    prop_uri = attr.property_uri
+                    store = attr._storage()
+                    if len(store[prop_uri]) > 1:
+                        store[prop_uri] = store[prop_uri][-1:]
+
     def clear(self) -> None:
         self.objects.clear()
         self.namespaces.clear()
@@ -66,6 +95,7 @@ class Document:
         graph.parse(data=contents, format=format)
         objects = self._parse_objects(graph)
         self._parse_attributes(objects, graph)
+        self._clean_up_singletons(objects)
         # Validate all the objects
         for obj in objects.values():
             obj.validate()
