@@ -25,6 +25,7 @@ PROV_NS = 'https://www.w3.org/TR/prov-o/'
 # SBOL 3 terms
 # ----------
 SBOL_CARDINALITY = SBOL3_NS + 'cardinality'
+SBOL_COLLECTION = SBOL3_NS + 'Collection'
 SBOL_COMPONENT = SBOL3_NS + 'Component'
 SBOL_CONSTRAINT = SBOL3_NS + 'Constraint'
 SBOL_CONSTRAINTS = SBOL3_NS + 'hasConstraint'
@@ -35,6 +36,7 @@ SBOL_ELEMENTS = SBOL3_NS + 'elements'
 SBOL_ENCODING = SBOL3_NS + 'encoding'
 SBOL_END = SBOL3_NS + 'end'
 SBOL_ENTIRE_SEQUENCE = SBOL3_NS + 'EntireSequence'
+SBOL_EXPERIMENT = SBOL3_NS + 'Experiment'
 SBOL_FEATURES = SBOL3_NS + 'hasFeature'
 SBOL_FRAMEWORK = SBOL3_NS + 'framework'
 SBOL_HAS_ATTACHMENT = SBOL3_NS + 'hasAttachment'
@@ -44,6 +46,7 @@ SBOL_LOCATION = SBOL3_NS + 'hasLocation'
 SBOL_MODEL = SBOL3_NS + 'Model'
 SBOL_MODELS = SBOL3_NS + 'hasModel'
 SBOL_NAME = SBOL3_NS + 'name'
+SBOL_NAMESPACE = SBOL3_NS + 'Namespace'
 SBOL_OBJECT = SBOL3_NS + 'object'
 SBOL_ORDER = SBOL3_NS + 'order'
 SBOL_ORIENTATION = SBOL3_NS + 'orientation'
@@ -71,7 +74,9 @@ SBOL_ONE_OR_MORE = SBOL3_NS + 'oneOrMore'
 SBOL_ZERO_OR_MORE = SBOL3_NS + 'zeroOrMore'
 SBOL_ZERO_OR_ONE = SBOL3_NS + 'zeroOrOne'
 
-PYSBOL3_MISSING = 'https://github.com/synbiodex/pysbol3#missing'
+# A namespace for internal URIs and for testing
+PYSBOL3_NS = 'https://github.com/synbiodex/pysbol3#'
+PYSBOL3_MISSING = PYSBOL3_NS + 'missing'
 
 
 # ----------

@@ -18,3 +18,4 @@ from .varcomp import VariableComponent
 from .component import Component
 from .model import Model
 from .subcomponent import SubComponent
+from .collection import Collection, Namespace, Experiment
