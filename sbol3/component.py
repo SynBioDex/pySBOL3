@@ -11,6 +11,7 @@ class Component(TopLevel):
         self.roles = URIProperty(self, SBOL_ROLE, 0, math.inf)
         self.types: Union[List, Property] = URIProperty(self, SBOL_TYPE, 1, math.inf)
         self.sequences = ReferencedObject(self, SBOL_SEQUENCES, 0, math.inf)
+        self.features = OwnedObject(self, SBOL_FEATURES, 0, math.inf)
         self.models = ReferencedObject(self, SBOL_MODELS, 0, math.inf)
         self.constraints = OwnedObject(self, SBOL_CONSTRAINTS, 0, math.inf)
 
