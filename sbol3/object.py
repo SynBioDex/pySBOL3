@@ -1,6 +1,7 @@
 import posixpath
 import uuid
 from collections import defaultdict
+from typing import Optional
 from urllib.parse import urlparse
 
 from . import *
@@ -84,3 +85,15 @@ class SBOLObject:
 
     def identity_is_url(self) -> bool:
         return self._is_url(self.identity)
+
+    def find(self, name: str) -> Optional['SBOLObject']:
+        if self.identity == name:
+            return self
+        if hasattr(self, 'display_id') and self.display_id == name:
+            return self
+        for obj_list in self.owned_objects.values():
+            for obj in obj_list:
+                result = obj.find(name)
+                if result is not None:
+                    return result
+        return None

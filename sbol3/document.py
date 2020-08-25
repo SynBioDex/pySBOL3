@@ -124,7 +124,9 @@ class Document:
         # TODO: implement recursive search
         for obj in self.objects:
             # TODO: needs an object.find(search_string) method on ... Identified?
-            pass
+            result = obj.find(search_string)
+            if result is not None:
+                return result
         return None
 
     def find(self, search_string: str) -> Optional[Identified]:
