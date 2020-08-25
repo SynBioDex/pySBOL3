@@ -86,14 +86,14 @@ class SBOLObject:
     def identity_is_url(self) -> bool:
         return self._is_url(self.identity)
 
-    def find(self, name: str) -> Optional['SBOLObject']:
-        if self.identity == name:
+    def find(self, search_string: str) -> Optional['SBOLObject']:
+        if self.identity == search_string:
             return self
-        if hasattr(self, 'display_id') and self.display_id == name:
+        if hasattr(self, 'display_id') and self.display_id == search_string:
             return self
         for obj_list in self.owned_objects.values():
             for obj in obj_list:
-                result = obj.find(name)
+                result = obj.find(search_string)
                 if result is not None:
                     return result
         return None
