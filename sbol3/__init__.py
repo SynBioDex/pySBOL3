@@ -22,3 +22,4 @@ from .collection import Collection, Namespace, Experiment
 from .combderiv import CombinatorialDerivation
 from .interaction import Interaction
 from .participation import Participation
+from .compref import ComponentReference
