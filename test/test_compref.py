@@ -23,8 +23,8 @@ class TestComponentReference(unittest.TestCase):
                                  'toggle_switch.ntriples.sbol')
         doc = sbol3.Document()
         doc.read(test_file, 'ntriples')
-        search_uri = 'https://sbolstandard.org/examples/toggle_switch/componentreference_1'
-        comp_ref = doc.find(search_uri)
+        uri = 'https://sbolstandard.org/examples/toggle_switch/componentreference_1'
+        comp_ref = doc.find(uri)
         self.assertIsNotNone(comp_ref)
         self.assertIsInstance(comp_ref, sbol3.ComponentReference)
         in_child_of = 'https://sbolstandard.org/examples/toggle_switch/LacI_producer'

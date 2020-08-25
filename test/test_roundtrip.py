@@ -14,8 +14,8 @@ class TestRoundTrip(unittest.TestCase):
                                  'BBa_F2620_PoPSReceiver.turtle.sbol')
         doc = sbol3.Document()
         doc.read(sbol_path, 'turtle')
-        range_uri = 'https://synbiohub.org/public/igem/BBa_F2620/subcomponent_3/location_1'
-        range1 = doc.find(range_uri)
+        uri = 'https://synbiohub.org/public/igem/BBa_F2620/subcomponent_3/location_1'
+        range1 = doc.find(uri)
         self.assertIsNotNone(range1)
         self.assertEqual(55, range1.start)
         self.assertEqual(108, range1.end)
