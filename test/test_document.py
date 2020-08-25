@@ -16,20 +16,23 @@ class TestDocument(unittest.TestCase):
 
     def test_read_ntriples(self):
         # Initial test of Document.read
-        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.ntriples.sbol')
+        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
+                                 'model.ntriples.sbol')
         doc = sbol3.Document()
         doc.read(test_path, format='n3')
         doc.write('model.sbol', file_format='ntriples')
 
     def test_read_turtle(self):
         # Initial test of Document.read
-        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.turtle.sbol')
+        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
+                                 'model.turtle.sbol')
         doc = sbol3.Document()
         doc.read(test_path, format='turtle')
 
     def test_read_xml_model(self):
         # Initial test of Document.read
-        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.rdfxml.sbol')
+        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
+                                 'model.rdfxml.sbol')
         doc = sbol3.Document()
         doc.read(test_path, format='xml')
         self.assertIsNotNone(doc.find('https://sbolstandard.org/examples/toggle_switch'))
@@ -40,13 +43,15 @@ class TestDocument(unittest.TestCase):
 
     def test_read_turtle_interface(self):
         # Initial test of Document.read
-        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'interface', 'interface.turtle.sbol')
+        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'interface',
+                                 'interface.turtle.sbol')
         doc = sbol3.Document()
         doc.read(test_path, format='turtle')
 
     def test_read_turtle_toggle_switch(self):
         # Initial test of Document.read
-        test_path = os.path.join(SBOL3_LOCATION, 'toggle_switch', 'toggle_switch.turtle.sbol')
+        test_path = os.path.join(SBOL3_LOCATION, 'toggle_switch',
+                                 'toggle_switch.turtle.sbol')
         doc = sbol3.Document()
         doc.read(test_path, format='turtle')
 
