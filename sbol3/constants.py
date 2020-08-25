@@ -1,6 +1,7 @@
 # --------------------------------------------------
 # Constants to support SBOL 3
-# See https://sbolstandard.org/wp-content/uploads/2020/04/SBOL3.0specification.pdf
+#
+# See https://sbolstandard.org/data-model-specification/ for the latest version.
 # --------------------------------------------------
 
 SBOL_LOGGER_NAME = 'sbol3'
@@ -13,16 +14,17 @@ SBOL3_NS = 'http://sbols.org/v3#'
 SBOL2_NS = 'http://sbols.org/v2#'
 SBOL1_NS = 'http://sbols.org/v1#'
 
-CHEBI_NS = 'http://identifiers.org/chebi/CHEBI:'
-
 # Provenance
 PROV_NS = 'https://www.w3.org/TR/prov-o/'
 
+# Namespace for Chemical Entities of Biological Interest (ChEBI) terms
+CHEBI_NS = 'https://identifiers.org/CHEBI:'
+
 # Namespace for Sequence Ontology (SO) terms
-SO_NS = "http://identifiers.org/so/SO:"
+SO_NS = "https://identifiers.org/SO:"
 
 # Namespace for Systems Biology Ontology (SBO) terms
-SBO_NS = 'http://identifiers.org/biomodels.sbo/SBO:'
+SBO_NS = 'https://identifiers.org/SBO:'
 
 # ----------
 # SBOL 3 terms
@@ -126,8 +128,18 @@ SO_TRANSCRIPTION_FACTOR = SO_NS + "0003700"
 # Component types
 # See the SBOL 3 spec, Section 6.4, Table 2
 SBO_DNA = SBO_NS + '0000251'
-
+SBO_RNA = SBO_NS + '0000250'
+SBO_PROTEIN = SBO_NS + '0000252'
+SBO_SIMPLE_CHEMICAL = SBO_NS + '0000247'
+SBO_NON_COVALENT_COMPLEX = SBO_NS + '0000253'
+SBO_FUNCTIONAL_ENTITY = SBO_NS + '0000241'
 
 # Interaction types
 # See the SBOL 3 spec, Section 6.4, Table 10
 SBO_INHIBITION = SBO_NS + '0000169'
+SBO_STIMULATION = SBO_NS + '0000170'
+SBO_BIOCHEMICAL_REACTION = SBO_NS + '0000176'
+SBO_NON_COVALENT_BINDING = SBO_NS + '0000177'
+SBO_DEGRADATION = SBO_NS + '0000179'
+SBO_GENETIC_PRODUCTION = SBO_NS + '0000589'
+SBO_CONTROL = SBO_NS + '0000168'
