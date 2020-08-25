@@ -42,6 +42,61 @@ class TestRoundTrip(unittest.TestCase):
         self.assertEqual(55, range1.start)
         self.assertEqual(108, range1.end)
 
+    def find_all_files(self, dirname: str):
+        for item in os.listdir(dirname):
+            item_path = os.path.join(dirname, item)
+            if os.path.isdir(item_path):
+                for f in self.find_all_files(item_path):
+                    yield f
+            elif os.path.isfile(item_path):
+                yield item_path
+            else:
+                print(f'{item} is neither file nor directory')
+
+    @staticmethod
+    def rdf_type(filename: str):
+        filename = os.path.basename(filename)
+        if filename.endswith('.sbol'):
+            filename = os.path.splitext(filename)[0]
+        ext = os.path.splitext(filename)[1]
+        # drop the leading dot
+        ext = ext[1:]
+        # TODO: 7 of 8 RDF/XML files have default namespace problems
+        #       See https://github.com/SynBioDex/SBOLTestSuite/issues/19
+        # ext_map = {'ntriples': 'nt', 'rdfxml': 'xml', 'turtle': 'ttl'}
+        ext_map = {'ntriples': 'nt', 'turtle': 'ttl'}
+        if ext in ext_map:
+            return ext_map[ext]
+        else:
+            return None
+
+    def test_read_all(self):
+        # In lieu of round tripping the files, just make sure we can
+        # read them all.
+        # This is intended as a temporary test until the library is
+        # more complete.
+        skip_files = ['BBa_F2620_PoPSReceiver.rdfxml.sbol',
+                      'interface.rdfxml.sbol',
+                      'collection.rdfxml.sbol',
+                      'implementation.rdfxml.sbol',
+                      # 'multicellular.turtle.sbol',
+                      'multicellular.rdfxml.sbol',
+                      # 'multicellular.ntriples.sbol',
+                      'toggle_switch.rdfxml.sbol',
+                      'multicellular_simple.rdfxml.sbol']
+        for f in self.find_all_files(SBOL3_LOCATION):
+            if os.path.basename(f) in skip_files:
+                # print(f'Skipping {f}')
+                continue
+            rdf_type = self.rdf_type(f)
+            if rdf_type is None:
+                # Skip file types we don't know
+                # print(f'Skipping {f} of type {rdf_type}')
+                continue
+            # print(f'Reading {f}')
+            doc = sbol3.Document()
+            doc.read(f, format=rdf_type)
+
 
 if __name__ == '__main__':
     unittest.main()
