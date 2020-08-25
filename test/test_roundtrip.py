@@ -70,6 +70,8 @@ class TestRoundTrip(unittest.TestCase):
         else:
             return None
 
+    # This is waiting on https://github.com/SynBioDex/SBOLTestSuite/pull/20
+    @unittest.expectedFailure
     def test_read_all(self):
         # In lieu of round tripping the files, just make sure we can
         # read them all.
@@ -79,9 +81,7 @@ class TestRoundTrip(unittest.TestCase):
                       'interface.rdfxml.sbol',
                       'collection.rdfxml.sbol',
                       'implementation.rdfxml.sbol',
-                      # 'multicellular.turtle.sbol',
                       'multicellular.rdfxml.sbol',
-                      # 'multicellular.ntriples.sbol',
                       'toggle_switch.rdfxml.sbol',
                       'multicellular_simple.rdfxml.sbol']
         for f in self.find_all_files(SBOL3_LOCATION):
