@@ -8,7 +8,7 @@ import sbol3
 class TestProperty(unittest.TestCase):
 
     def test_slice_assignment(self):
-        c = sbol3.Component('c1')
+        c = sbol3.Component('c1', sbol3.SBO_DNA)
         self.assertEqual([], c.roles)
         c.roles.append(sbol3.SO_PROMOTER)
         self.assertEqual([sbol3.SO_PROMOTER], c.roles)

@@ -15,7 +15,7 @@ class TestIdentified(unittest.TestCase):
     def test_display_id(self):
         # self.assertEqual(None, sbol3.get_homespace())
         c1_display_id = 'c1'
-        c = sbol3.Component(c1_display_id)
+        c = sbol3.Component(c1_display_id, sbol3.SBO_DNA)
         self.assertEqual(c1_display_id, c.display_id)
         self.assertIsInstance(c.display_id, str)
         display_id = 'my_component'
@@ -34,13 +34,13 @@ class TestIdentified(unittest.TestCase):
         #   * Test by having display_id deduced from identity
         c1_display_id = 'c1'
         c1_identity = posixpath.join(sbol3.get_homespace(), c1_display_id)
-        c1 = sbol3.Component(c1_display_id)
+        c1 = sbol3.Component(c1_display_id, sbol3.SBO_DNA)
         self.assertEqual(c1_display_id, c1.display_id)
         self.assertEqual(c1_identity, c1.identity)
         # Now test identity and display_id from a URL-type URI
         c2_display_id = 'c2'
         c2_identity = posixpath.join(sbol3.get_homespace(), c2_display_id)
-        c2 = sbol3.Component(c2_identity)
+        c2 = sbol3.Component(c2_identity, sbol3.SBO_DNA)
         self.assertEqual(c2_display_id, c2.display_id)
         self.assertEqual(c2_identity, c2.identity)
 
@@ -49,18 +49,19 @@ class TestIdentified(unittest.TestCase):
         # the object does not have a display_id since the identity
         # is not a URL
         identity = str(uuid.uuid5(uuid.NAMESPACE_URL, sbol3.get_homespace()))
-        c = sbol3.Component(identity)
+        c = sbol3.Component(identity, sbol3.SBO_DNA)
         self.assertEqual(identity, c.identity)
         self.assertIsNone(c.display_id)
 
     def test_basic_serialization(self):
-        c = sbol3.Component('c1')
+        c = sbol3.Component('c1', sbol3.SBO_DNA)
         graph = rdflib.Graph()
         c.serialize(graph)
         # Is there a better way to get all the triples?
         triples = list(graph.triples((None, None, None)))
-        # Expecting a triple for the type, and a triple for the displayId
-        self.assertEqual(2, len(triples))
+        # Expecting a triple for the type, a triple for the displayId,
+        # and a triple for the component type
+        self.assertEqual(3, len(triples))
 
 
 if __name__ == '__main__':

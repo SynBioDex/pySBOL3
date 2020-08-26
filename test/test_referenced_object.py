@@ -40,7 +40,7 @@ class TestReferencedObject(unittest.TestCase):
     def test_uri_assignment(self):
         # Test assignment to a ReferencedObject attribute with a URI string
         doc = sbol3.Document()
-        component = sbol3.Component('c1')
+        component = sbol3.Component('c1', sbol3.SBO_DNA)
         sequence = sbol3.Sequence('seq1')
         doc.add(component)
         doc.add(sequence)
@@ -55,7 +55,7 @@ class TestReferencedObject(unittest.TestCase):
         # Test assignment to a ReferencedObject attribute with an
         # instance using append
         doc = sbol3.Document()
-        component = sbol3.Component('c1')
+        component = sbol3.Component('c1', sbol3.SBO_DNA)
         sequence = sbol3.Sequence('seq1')
         doc.add(component)
         component.sequences.append(sequence)
@@ -69,7 +69,7 @@ class TestReferencedObject(unittest.TestCase):
         # Test assignment to a ReferencedObject attribute with an
         # instance using assignment
         doc = sbol3.Document()
-        component = sbol3.Component('c1')
+        component = sbol3.Component('c1', sbol3.SBO_DNA)
         sequence = sbol3.Sequence('seq1')
         doc.add(component)
         component.sequences = [sequence]

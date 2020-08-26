@@ -7,7 +7,7 @@ import sbol3
 class TestOwnedObject(unittest.TestCase):
 
     def test_identity_append(self):
-        comp = sbol3.Component('c1')
+        comp = sbol3.Component('c1', sbol3.SBO_DNA)
         con1_id = 'con1'
         con1 = sbol3.Constraint(con1_id)
         expected = posixpath.join(sbol3.get_homespace(), con1_id)
@@ -19,7 +19,7 @@ class TestOwnedObject(unittest.TestCase):
         self.assertEqual(expected2, con1.identity)
 
     def test_identity_set(self):
-        comp = sbol3.Component('c1')
+        comp = sbol3.Component('c1', sbol3.SBO_DNA)
         con1_id = 'con1'
         con1 = sbol3.Constraint(con1_id)
         expected = posixpath.join(sbol3.get_homespace(), con1_id)
@@ -33,7 +33,7 @@ class TestOwnedObject(unittest.TestCase):
     def test_identity_conflict(self):
         # Test that the same display id will cause a validation
         # error when an item with the same display id is appended
-        comp = sbol3.Component('c1')
+        comp = sbol3.Component('c1', sbol3.SBO_DNA)
         con1_id = 'con1'
         comp.constraints.append(sbol3.Constraint(con1_id))
         with self.assertRaises(sbol3.ValidationError):
@@ -42,7 +42,7 @@ class TestOwnedObject(unittest.TestCase):
     def test_identity_conflict2(self):
         # Test that the same display id will cause a validation
         # error when an item with the same display id is appended
-        comp = sbol3.Component('c1')
+        comp = sbol3.Component('c1', sbol3.SBO_DNA)
         con1_id = 'con1'
         constraints = [sbol3.Constraint(con1_id), sbol3.Constraint(con1_id)]
         with self.assertRaises(sbol3.ValidationError):

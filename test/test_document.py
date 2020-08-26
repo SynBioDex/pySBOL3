@@ -68,7 +68,7 @@ class TestDocument(unittest.TestCase):
 
     def test_write(self):
         doc = sbol3.Document()
-        doc.add(sbol3.Component('c1'))
+        doc.add(sbol3.Component('c1', sbol3.SBO_DNA))
         doc.write('test_output.ntriples', 'ntriples')
         doc.write('test_output.xml')
 
