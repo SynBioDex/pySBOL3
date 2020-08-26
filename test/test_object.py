@@ -14,7 +14,7 @@ class TestObject(unittest.TestCase):
         sbol3.set_homespace('http://example.org/sbol3')
         slash_identity = posixpath.join(sbol3.get_homespace(), 'c1', '')
         self.assertTrue(slash_identity.endswith(posixpath.sep))
-        c = sbol3.Component(slash_identity)
+        c = sbol3.Component(slash_identity, sbol3.SBO_DNA)
         identity = slash_identity.strip(posixpath.sep)
         self.assertEqual(identity, c.identity)
 

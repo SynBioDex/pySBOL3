@@ -21,6 +21,8 @@ class Identified(SBOLObject):
 
     @staticmethod
     def _is_valid_display_id(display_id: str) -> bool:
+        if display_id is None:
+            return True
         # A display id [...] value MUST be composed of only alphanumeric
         # or underscore characters and MUST NOT begin with a digit.
         # (Section 6.1)
@@ -50,10 +52,14 @@ class Identified(SBOLObject):
             raise ValueError(msg)
 
     def _validate_display_id(self) -> None:
-        # TODO: if identity is a URL, display_id is required
-        if (Identified._is_valid_display_id(self.display_id) and
-                self.identity.endswith(self.display_id)):
-            return
+        if self.identity_is_url():
+            if (self.display_id is not None and
+                    Identified._is_valid_display_id(self.display_id) and
+                    self.identity.endswith(self.display_id)):
+                return
+        else:
+            if Identified._is_valid_display_id(self.display_id):
+                return
         message = f'{self.display_id} is not a valid displayId for {self.identity}'
         raise ValidationError(message)
 

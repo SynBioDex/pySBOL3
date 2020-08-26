@@ -6,9 +6,13 @@ from . import *
 
 class Component(TopLevel):
 
-    def __init__(self, name: str, *, type_uri: str = SBOL_COMPONENT) -> None:
+    def __init__(self, name: str, component_type: Union[List[str], str],
+                 *, type_uri: str = SBOL_COMPONENT):
         super().__init__(name, type_uri)
-        self.types: Union[List, Property] = URIProperty(self, SBOL_TYPE, 1, math.inf)
+        if isinstance(component_type, str):
+            component_type = [component_type]
+        self.types: Union[List, Property] = URIProperty(self, SBOL_TYPE, 1, math.inf,
+                                                        initial_value=component_type)
         self.roles = URIProperty(self, SBOL_ROLE, 0, math.inf)
         self.sequences = ReferencedObject(self, SBOL_SEQUENCES, 0, math.inf)
         self.features = OwnedObject(self, SBOL_FEATURES, 0, math.inf)
@@ -16,6 +20,7 @@ class Component(TopLevel):
         self.constraints = OwnedObject(self, SBOL_CONSTRAINTS, 0, math.inf)
         self.interfaces = OwnedObject(self, SBOL_INTERFACES, 0, 1)
         self.models = ReferencedObject(self, SBOL_MODELS, 0, math.inf)
+        self.validate()
 
     def _validate_types(self) -> None:
         # A Component is REQUIRED to have one or more type properties (Section 6.4)
@@ -28,4 +33,12 @@ class Component(TopLevel):
         self._validate_types()
 
 
-Document.register_builder(SBOL_COMPONENT, Component)
+def build_component(name: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:
+    missing = PYSBOL3_MISSING
+    obj = Component(name, [missing], type_uri=type_uri)
+    # Remove the dummy values
+    obj.properties[SBOL_TYPE] = []
+    return obj
+
+
+Document.register_builder(SBOL_COMPONENT, build_component)

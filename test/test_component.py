@@ -7,7 +7,7 @@ import sbol3
 class TestComponent(unittest.TestCase):
 
     def test_roles(self):
-        c = sbol3.Component('c1')
+        c = sbol3.Component('c1', sbol3.SBO_DNA)
         self.assertListEqual([], list(c.roles))
         self.assertEqual([], c.roles)
         c.roles = [sbol3.SO_PROMOTER]
