@@ -22,7 +22,7 @@ class TestComponentReference(unittest.TestCase):
         test_file = os.path.join(SBOL3_LOCATION, 'toggle_switch',
                                  'toggle_switch.ntriples.sbol')
         doc = sbol3.Document()
-        doc.read(test_file, 'ntriples')
+        doc.read(test_file, sbol3.NTRIPLES)
         uri = 'https://sbolstandard.org/examples/toggle_switch/componentreference_1'
         comp_ref = doc.find(uri)
         self.assertIsNotNone(comp_ref)
