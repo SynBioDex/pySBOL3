@@ -48,8 +48,6 @@ class TestRoundTrip(unittest.TestCase):
         else:
             return None
 
-    # This is waiting on https://github.com/SynBioDex/SBOLTestSuite/pull/20
-    @unittest.expectedFailure
     def test_read_all(self):
         # In lieu of round tripping the files, just make sure we can
         # read them all.
