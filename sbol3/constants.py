@@ -145,6 +145,46 @@ SBO_SIMPLE_CHEMICAL = SBO_NS + '0000247'
 SBO_NON_COVALENT_COMPLEX = SBO_NS + '0000253'
 SBO_FUNCTIONAL_ENTITY = SBO_NS + '0000241'
 
+# Component types
+# See the SBOL 3 spec, Section 6.4, Table 3
+SO_LINEAR = SO_NS + "0000987"
+SO_CIRCULAR = SO_NS + "0000988"
+SO_SINGLE_STRANDED = SO_NS + "0000984"
+SO_DOUBLE_STRANDED = SO_NS + "0000985"
+
+# RECOMMENDED URIs for expressing identity and orientation with
+# the restriction property.
+# See the SBOL 3 spec, Section 6.4, Table 7
+SBOL_VERIFY_IDENTICAL = SBOL3_NS + 'verifyIdentical'
+SBOL_DIFFERENT_FROM = SBOL3_NS + 'differentFrom'
+SBOL_REPLACES = SBOL3_NS + 'replaces'
+SBOL_SAME_ORIENTATION_AS = SBOL3_NS + 'sameOrientationAs'
+SBOL_OPPOSITE_ORIENTATION_AS = SBOL3_NS + 'oppositeOrientationAs'
+
+# RECOMMENDED URIs for expressing topological relations with
+# the restriction property.
+# See the SBOL 3 spec, Section 6.4, Table 8
+SBOL_IS_DISJOINT_FROM = SBOL3_NS + 'isDisjointFrom'
+SBOL_STRICTLY_CONTAINS = SBOL3_NS + 'strictlyContains'
+SBOL_CONTAINS = SBOL3_NS + 'contains'
+SBOL_EQUALS = SBOL3_NS + 'equals'
+SBOL_MEETS = SBOL3_NS + 'meets'
+SBOL_COVERS = SBOL3_NS + 'covers'
+SBOL_OVERLAPS = SBOL3_NS + 'overlaps'
+
+# RECOMMENDED URIs for expressing sequential relations with the
+# restriction property
+# See the SBOL 3 spec, Section 6.4, Table 9
+SBOL_PRECEDES = SBOL3_NS + 'precedes'
+SBOL_STRICTLY_PRECEDES = SBOL3_NS + 'strictlyPrecedes'
+# SBOL_MEETS = SBOL3_NS + 'meets'
+# SBOL_OVERLAPS = SBOL3_NS + 'overlaps'
+# SBOL_CONTAINS = SBOL3_NS + 'contains'
+# SBOL_STRICTLY_CONTAINS = SBOL3_NS + 'strictlyContains'
+# SBOL_EQUALS = SBOL3_NS + 'equals'
+SBOL_FINISHES = SBOL3_NS + 'finishes'
+SBOL_STARTS = SBOL3_NS + 'starts'
+
 # Interaction types
 # See the SBOL 3 spec, Section 6.4, Table 10
 SBO_INHIBITION = SBO_NS + '0000169'

@@ -86,5 +86,5 @@ class Identified(SBOLObject):
                 continue
             rdf_prop = rdflib.URIRef(prop)
             for item in items:
-                graph.add((identity, rdf_prop, item.identity))
+                graph.add((identity, rdf_prop, rdflib.URIRef(item.identity)))
                 item.serialize(graph)
