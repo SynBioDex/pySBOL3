@@ -29,6 +29,7 @@ SBO_NS = 'https://identifiers.org/SBO:'
 # ----------
 # SBOL 3 terms
 # ----------
+SBOL_BUILT = SBOL3_NS + 'built'
 SBOL_CARDINALITY = SBOL3_NS + 'cardinality'
 SBOL_COLLECTION = SBOL3_NS + 'Collection'
 SBOL_COMBINATORIAL_DERIVATION = SBOL3_NS + 'CombinatorialDerivation'
@@ -47,6 +48,7 @@ SBOL_EXPERIMENT = SBOL3_NS + 'Experiment'
 SBOL_FEATURES = SBOL3_NS + 'hasFeature'
 SBOL_FRAMEWORK = SBOL3_NS + 'framework'
 SBOL_HAS_ATTACHMENT = SBOL3_NS + 'hasAttachment'
+SBOL_IMPLEMENTATION = SBOL3_NS + 'Implementation'
 SBOL_IN_CHILD_OF = SBOL3_NS + 'inChildOf'
 SBOL_INPUT = SBOL3_NS + 'input'
 SBOL_INSTANCE_OF = SBOL3_NS + 'instanceOf'
