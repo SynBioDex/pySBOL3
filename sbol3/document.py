@@ -88,16 +88,18 @@ class Document:
         self.namespaces.clear()
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
-    def read(self, file_path, format='xml') -> None:
+    def read(self, file_path: str, file_format: str) -> None:
         with open(file_path, 'r') as infile:
             contents = infile.read()
-        return self.read_string(contents, format)
+        return self.read_string(contents, file_format)
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
-    def read_string(self, data: str, format: str = 'xml') -> None:
+    def read_string(self, data: str, file_format: str) -> None:
         # TODO: clear the document, this isn't append
+        if file_format == SORTED_NTRIPLES:
+            file_format = NTRIPLES
         graph = rdflib.Graph()
-        graph.parse(data=data, format=format)
+        graph.parse(data=data, format=file_format)
         objects = self._parse_objects(graph)
         self._parse_attributes(objects, graph)
         self._clean_up_singletons(objects)
@@ -140,8 +142,20 @@ class Document:
                 return obj
         return self._find_in_objects(search_string)
 
-    def write(self, path: str, file_format='xml') -> None:
+    def write(self, path: str, file_format: str) -> None:
         graph = rdflib.Graph()
         for obj in self.objects:
             obj.serialize(graph)
-        graph.serialize(path, format=file_format)
+        if file_format == SORTED_NTRIPLES:
+            # have RDFlib give us the ntriples as a string
+            nt_text = graph.serialize(format='nt')
+            # split it into lines
+            lines = nt_text.splitlines(keepends=True)
+            # sort those lines
+            lines.sort()
+            # write out the lines
+            # RDFlib gives us bytes, so open file in binary mode
+            with open(path, 'wb') as outfile:
+                outfile.writelines(lines)
+        else:
+            graph.serialize(path, format=file_format)

@@ -13,7 +13,7 @@ class TestRoundTrip(unittest.TestCase):
         sbol_path = os.path.join(SBOL3_LOCATION, 'BBa_F2620_PoPSReceiver',
                                  'BBa_F2620_PoPSReceiver.turtle.sbol')
         doc = sbol3.Document()
-        doc.read(sbol_path, 'turtle')
+        doc.read(sbol_path, sbol3.TURTLE)
         uri = 'https://synbiohub.org/public/igem/BBa_F2620/subcomponent_3/location_1'
         range1 = doc.find(uri)
         self.assertIsNotNone(range1)
@@ -42,7 +42,7 @@ class TestRoundTrip(unittest.TestCase):
         # TODO: 7 of 8 RDF/XML files have default namespace problems
         #       See https://github.com/SynBioDex/SBOLTestSuite/issues/19
         # ext_map = {'ntriples': 'nt', 'rdfxml': 'xml', 'turtle': 'ttl'}
-        ext_map = {'ntriples': 'nt', 'turtle': 'ttl'}
+        ext_map = {'ntriples': sbol3.NTRIPLES, 'turtle': sbol3.TURTLE}
         if ext in ext_map:
             return ext_map[ext]
         else:
@@ -71,7 +71,7 @@ class TestRoundTrip(unittest.TestCase):
                 continue
             # print(f'Reading {f}')
             doc = sbol3.Document()
-            doc.read(f, format=rdf_type)
+            doc.read(f, rdf_type)
 
 
 if __name__ == '__main__':

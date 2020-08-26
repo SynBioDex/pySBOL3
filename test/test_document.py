@@ -19,22 +19,22 @@ class TestDocument(unittest.TestCase):
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
                                  'model.ntriples.sbol')
         doc = sbol3.Document()
-        doc.read(test_path, format='n3')
-        doc.write('model.sbol', file_format='ntriples')
+        doc.read(test_path, sbol3.NTRIPLES)
+        doc.write('model.sbol', sbol3.NTRIPLES)
 
     def test_read_turtle(self):
         # Initial test of Document.read
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
                                  'model.turtle.sbol')
         doc = sbol3.Document()
-        doc.read(test_path, format='turtle')
+        doc.read(test_path, sbol3.TURTLE)
 
     def test_read_xml_model(self):
         # Initial test of Document.read
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
                                  'model.rdfxml.sbol')
         doc = sbol3.Document()
-        doc.read(test_path, format='xml')
+        doc.read(test_path, sbol3.RDF_XML)
         self.assertIsNotNone(doc.find('https://sbolstandard.org/examples/toggle_switch'))
         self.assertIsNotNone(doc.find('toggle_switch'))
         self.assertIsNotNone(doc.find('https://sbolstandard.org/examples/model1'))
@@ -46,14 +46,14 @@ class TestDocument(unittest.TestCase):
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'interface',
                                  'interface.turtle.sbol')
         doc = sbol3.Document()
-        doc.read(test_path, format='turtle')
+        doc.read(test_path, sbol3.TURTLE)
 
     def test_read_turtle_toggle_switch(self):
         # Initial test of Document.read
         test_path = os.path.join(SBOL3_LOCATION, 'toggle_switch',
                                  'toggle_switch.turtle.sbol')
         doc = sbol3.Document()
-        doc.read(test_path, format='turtle')
+        doc.read(test_path, sbol3.TURTLE)
 
     def test_add(self):
         doc = sbol3.Document()
@@ -69,8 +69,8 @@ class TestDocument(unittest.TestCase):
     def test_write(self):
         doc = sbol3.Document()
         doc.add(sbol3.Component('c1', sbol3.SBO_DNA))
-        doc.write('test_output.ntriples', 'ntriples')
-        doc.write('test_output.xml')
+        doc.write('test_output.ntriples', sbol3.NTRIPLES)
+        doc.write('test_output.xml', sbol3.RDF_XML)
 
 
 if __name__ == '__main__':

@@ -18,7 +18,7 @@ class TestImplementation(unittest.TestCase):
         test_file = os.path.join(SBOL3_LOCATION, 'entity', 'implementation',
                                  'implementation.ntriples.sbol')
         doc = sbol3.Document()
-        doc.read(test_file, 'ntriples')
+        doc.read(test_file, sbol3.NTRIPLES)
         search_uri = 'https://sbolstandard.org/examples/impl1'
         implementation = doc.find(search_uri)
         self.assertIsNotNone(implementation)

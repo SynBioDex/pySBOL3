@@ -24,7 +24,7 @@ class TestReferencedObject(unittest.TestCase):
 
     def test_lookup(self):
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.turtle.sbol')
-        test_format = 'turtle'
+        test_format = sbol3.TURTLE
 
         doc = sbol3.Document()
         doc.read(test_path, test_format)
