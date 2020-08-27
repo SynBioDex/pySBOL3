@@ -23,7 +23,7 @@ class TestReferencedObject(unittest.TestCase):
         sbol3.set_defaults()
 
     def test_lookup(self):
-        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.turtle.sbol')
+        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.ttl')
         test_format = sbol3.TURTLE
 
         doc = sbol3.Document()

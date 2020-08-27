@@ -17,7 +17,7 @@ class TestDocument(unittest.TestCase):
     def test_read_ntriples(self):
         # Initial test of Document.read
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
-                                 'model.ntriples.sbol')
+                                 'model.nt')
         doc = sbol3.Document()
         doc.read(test_path, sbol3.NTRIPLES)
         doc.write('model.sbol', sbol3.NTRIPLES)
@@ -25,14 +25,14 @@ class TestDocument(unittest.TestCase):
     def test_read_turtle(self):
         # Initial test of Document.read
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
-                                 'model.turtle.sbol')
+                                 'model.ttl')
         doc = sbol3.Document()
         doc.read(test_path, sbol3.TURTLE)
 
     def test_read_xml_model(self):
         # Initial test of Document.read
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
-                                 'model.rdfxml.sbol')
+                                 'model.rdf')
         doc = sbol3.Document()
         doc.read(test_path, sbol3.RDF_XML)
         self.assertIsNotNone(doc.find('https://sbolstandard.org/examples/toggle_switch'))
@@ -44,14 +44,14 @@ class TestDocument(unittest.TestCase):
     def test_read_turtle_interface(self):
         # Initial test of Document.read
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'interface',
-                                 'interface.turtle.sbol')
+                                 'interface.ttl')
         doc = sbol3.Document()
         doc.read(test_path, sbol3.TURTLE)
 
     def test_read_turtle_toggle_switch(self):
         # Initial test of Document.read
         test_path = os.path.join(SBOL3_LOCATION, 'toggle_switch',
-                                 'toggle_switch.turtle.sbol')
+                                 'toggle_switch.ttl')
         doc = sbol3.Document()
         doc.read(test_path, sbol3.TURTLE)
 

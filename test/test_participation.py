@@ -19,7 +19,7 @@ class TestParticipation(unittest.TestCase):
 
     def test_read_from_file(self):
         test_file = os.path.join(SBOL3_LOCATION, 'toggle_switch',
-                                 'toggle_switch.ntriples.sbol')
+                                 'toggle_switch.nt')
         doc = sbol3.Document()
         doc.read(test_file, sbol3.NTRIPLES)
         search_uri = 'https://sbolstandard.org/examples/LacI_producer/interaction_2/participation_1'
