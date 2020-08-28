@@ -23,8 +23,7 @@ utr1.description = 'Your Description Here'
 
 # Create the GFP coding sequence
 gfp = sbol3.Component('GFP', sbol3.SBO_DNA)
-# TODO: enhancement: gfp.addRole(sbol3.SO_CDS)
-gfp.roles = [sbol3.SO_CDS]
+gfp.roles.append(sbol3.SO_CDS)
 gfp.name = 'GFP'
 gfp.description = 'GFP Coding Sequence'
 
@@ -34,7 +33,11 @@ ptet_sc = sbol3.SubComponent('ptet', ptet)
 op1_sc = sbol3.SubComponent('op1', op1)
 utr1_sc = sbol3.SubComponent('UTR1', utr1)
 gfp_sc = sbol3.SubComponent('GFP', gfp)
-circuit.features = [ptet_sc, op1_sc, utr1_sc, gfp_sc]
+
+# circuit.features can be set and appended to like any Python list
+circuit.features = [ptet_sc, op1_sc]
+circuit.features += [utr1_sc]
+circuit.features.append(gfp_sc)
 
 
 def make_constraint(name, subj, restriction, obj):
