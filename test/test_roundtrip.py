@@ -11,7 +11,7 @@ class TestRoundTrip(unittest.TestCase):
 
     def test_BBa_F2620_PoPSReceiver(self):
         sbol_path = os.path.join(SBOL3_LOCATION, 'BBa_F2620_PoPSReceiver',
-                                 'BBa_F2620_PoPSReceiver.turtle.sbol')
+                                 'BBa_F2620_PoPSReceiver.ttl')
         doc = sbol3.Document()
         doc.read(sbol_path, sbol3.TURTLE)
         uri = 'https://synbiohub.org/public/igem/BBa_F2620/subcomponent_3/location_1'
@@ -42,7 +42,8 @@ class TestRoundTrip(unittest.TestCase):
         # TODO: 7 of 8 RDF/XML files have default namespace problems
         #       See https://github.com/SynBioDex/SBOLTestSuite/issues/19
         # ext_map = {'ntriples': 'nt', 'rdfxml': 'xml', 'turtle': 'ttl'}
-        ext_map = {'ntriples': sbol3.NTRIPLES, 'turtle': sbol3.TURTLE}
+        ext_map = {'nt': sbol3.NTRIPLES, 'ttl': sbol3.TURTLE,
+                   'rdf': sbol3.RDF_XML}
         if ext in ext_map:
             return ext_map[ext]
         else:
@@ -53,13 +54,9 @@ class TestRoundTrip(unittest.TestCase):
         # read them all.
         # This is intended as a temporary test until the library is
         # more complete.
-        skip_files = ['BBa_F2620_PoPSReceiver.rdfxml.sbol',
-                      'interface.rdfxml.sbol',
-                      'collection.rdfxml.sbol',
-                      'implementation.rdfxml.sbol',
-                      'multicellular.rdfxml.sbol',
-                      'toggle_switch.rdfxml.sbol',
-                      'multicellular_simple.rdfxml.sbol']
+        skip_files = ['annotation.nt',
+                      'annotation.ttl',
+                      'annotation.rdf']
         for f in self.find_all_files(SBOL3_LOCATION):
             if os.path.basename(f) in skip_files:
                 # print(f'Skipping {f}')
@@ -69,7 +66,7 @@ class TestRoundTrip(unittest.TestCase):
                 # Skip file types we don't know
                 # print(f'Skipping {f} of type {rdf_type}')
                 continue
-            # print(f'Reading {f}')
+            print(f'Reading {f}')
             doc = sbol3.Document()
             doc.read(f, rdf_type)
 
