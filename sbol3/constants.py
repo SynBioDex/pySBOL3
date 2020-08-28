@@ -15,7 +15,7 @@ SBOL2_NS = 'http://sbols.org/v2#'
 SBOL1_NS = 'http://sbols.org/v1#'
 
 # Provenance
-PROV_NS = 'https://www.w3.org/TR/prov-o/'
+PROV_NS = 'https://www.w3.org/ns/prov#'
 
 # Namespace for Chemical Entities of Biological Interest (ChEBI) terms
 CHEBI_NS = 'https://identifiers.org/CHEBI:'
