@@ -7,10 +7,10 @@ from .text_property import TextSingletonProperty, TextProperty
 from .int_property import IntProperty
 from .uri_property import URIProperty
 from .ownedobject import OwnedObject
+from .refobj_property import ReferencedObject
 from .identified import Identified
 from .toplevel import TopLevel
 from .custom import CustomIdentified, CustomTopLevel
-from .refobj_property import ReferencedObject
 from .document import Document
 from .constraint import Constraint
 from .sequence import Sequence
@@ -26,3 +26,4 @@ from .participation import Participation
 from .compref import ComponentReference
 from .interface import Interface
 from .implementation import Implementation
+from .attachment import Attachment

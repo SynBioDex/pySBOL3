@@ -36,11 +36,15 @@ class ReferencedObjectMixin:
         return rdflib.URIRef(value)
 
     def maybe_add_to_document(self, value: Any) -> None:
-        if not isinstance(value, TopLevel):
-            return
+        # if not isinstance(value, TopLevel):
+        #     return
         if hasattr(self, 'property_owner'):
             if self.property_owner and self.property_owner.document:
-                self.property_owner.document.add(value)
+                try:
+                    self.property_owner.document.add(value)
+                except TypeError:
+                    # Not an appropriate type to be added, ignore
+                    pass
 
 
 class ReferencedObjectSingleton(ReferencedObjectMixin, SingletonProperty):
