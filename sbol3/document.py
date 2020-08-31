@@ -1,3 +1,4 @@
+import collections
 import logging
 from typing import Dict, Callable, List, Optional
 
@@ -27,20 +28,58 @@ class Document:
         self.objects: List[Identified] = []
         self.namespaces: Dict[str, str] = {}
 
-    def _parse_objects(self, graph):
-        result = {}
+    @staticmethod
+    def _make_custom_object(identity: str, types: List[str]) -> Identified:
+        if SBOL_IDENTIFIED in types:
+            types.remove(SBOL_IDENTIFIED)
+            try:
+                other_type = types[0]
+            except IndexError:
+                raise ValidationError('Expected one other type')
+            if other_type.startswith(SBOL3_NS):
+                raise ValidationError('Secondary type may not be in SBOL3 namespace')
+            return CustomIdentified(name=identity, custom_type=other_type)
+        elif SBOL_TOP_LEVEL in types:
+            types.remove(SBOL_TOP_LEVEL)
+            try:
+                other_type = types[0]
+            except IndexError:
+                raise ValidationError('Expected one other type')
+            if other_type.startswith(SBOL3_NS):
+                raise ValidationError('Secondary type may not be in SBOL3 namespace')
+            return CustomTopLevel(name=identity, custom_type=other_type)
+        else:
+            message = 'Custom types must contain either Identified or TopLevel'
+            raise ValidationError(message)
+
+    def _parse_objects(self, graph: rdflib.Graph) -> Dict[str, SBOLObject]:
+        # First extract the identities and their types. Each identity
+        # can have either one or two rdf:type properties. If one,
+        # create the entity. If two, it is a custom type (see section
+        # 6.11 of the spec) and we instantiate it specially.
+        #
+        # This will have to change in the future when we enable
+        # user-defined custom types somehow.
+        identity_types: Dict[str, List[str]] = collections.defaultdict(list)
         for s, p, o in graph.triples((None, rdflib.RDF.type, None)):
             str_o = str(o)
             str_s = str(s)
-            try:
-                builder = Document._uri_type_map[str_o]
-            except KeyError:
-                # If we don't know how to build the type, it must be an extension.
-                # Extensions do not have to comply with SBOL 3 type rules from
-                # Identified on down. So we create them as SBOLObject instances
-                self.logger.info(f'Creating generic object for type {str_o}')
-                builder = SBOLObject
-            obj = builder(str_s, type_uri=str_o)
+            identity_types[str_s].append(str_o)
+        # Now iterate over the identity->type dict creating the objects.
+        result = {}
+        for identity, types in identity_types.items():
+            if len(types) == 1:
+                type_uri = types[0]
+                try:
+                    builder = Document._uri_type_map[type_uri]
+                except KeyError:
+                    builder = SBOLObject
+                obj = builder(identity, type_uri=type_uri)
+            elif len(types) == 2:
+                obj = self._make_custom_object(identity, types)
+            else:
+                message = f'Expected either 1 or 2 types for {identity}'
+                raise ValidationError(message)
             obj.document = self
             result[obj.identity] = obj
         return result
