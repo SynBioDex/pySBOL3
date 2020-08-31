@@ -9,6 +9,7 @@ from .uri_property import URIProperty
 from .ownedobject import OwnedObject
 from .identified import Identified
 from .toplevel import TopLevel
+from .custom import CustomIdentified, CustomTopLevel
 from .refobj_property import ReferencedObject
 from .document import Document
 from .constraint import Constraint
