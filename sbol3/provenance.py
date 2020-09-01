@@ -1,4 +1,6 @@
 import math
+import warnings
+from typing import Union
 
 from . import *
 
@@ -9,7 +11,7 @@ class Usage(Identified):
         super().__init__(name, type_uri)
         self.entity = URIProperty(self, PROV_ENTITY, 1, 1,
                                   initial_value=entity)
-        self.roles = URIProperty(self, PROV_ENTITY, 0, math.inf)
+        self.roles = URIProperty(self, PROV_ROLES, 0, math.inf)
         self.validate()
 
 
@@ -46,7 +48,8 @@ Document.register_builder(PROV_PLAN, Plan)
 
 class Association(Identified):
 
-    def __init__(self, name: str, agent: str, *, type_uri: str = PROV_ASSOCIATION) -> None:
+    def __init__(self, name: str, agent: Union[str, Identified],
+                 *, type_uri: str = PROV_ASSOCIATION) -> None:
         super().__init__(name, type_uri)
         self.roles = URIProperty(self, PROV_ROLES, 0, math.inf)
         self.plan = ReferencedObject(self, PROV_PLANS, 0, 1)
@@ -70,7 +73,8 @@ class Activity(TopLevel):
 
     def __init__(self, name: str, *, type_uri: str = PROV_ACTIVITY) -> None:
         super().__init__(name, type_uri)
-        self.type = URIProperty(self, SBOL_TYPE, 0, math.inf)
+        self.types = URIProperty(self, SBOL_TYPE, 0, math.inf)
+        warnings.warn('Activity needs DateTimeProperty')
         self.start_time = TextProperty(self, PROV_STARTED_AT_TIME, 0, 1)
         self.end_time = TextProperty(self, PROV_ENDED_AT_TIME, 0, 1)
         self.usage = OwnedObject(self, PROV_QUALIFIED_USAGE, 0, math.inf)

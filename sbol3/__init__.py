@@ -27,4 +27,4 @@ from .compref import ComponentReference
 from .interface import Interface
 from .implementation import Implementation
 from .attachment import Attachment
-from .provenance import Agent, Plan
+from .provenance import Activity, Agent, Association, Plan, Usage
