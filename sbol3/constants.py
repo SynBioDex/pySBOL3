@@ -15,7 +15,7 @@ SBOL2_NS = 'http://sbols.org/v2#'
 SBOL1_NS = 'http://sbols.org/v1#'
 
 # Provenance
-PROV_NS = 'https://www.w3.org/ns/prov#'
+PROV_NS = 'http://www.w3.org/ns/prov#'
 
 # Namespace for Chemical Entities of Biological Interest (ChEBI) terms
 CHEBI_NS = 'https://identifiers.org/CHEBI:'
@@ -122,8 +122,21 @@ PYSBOL3_MISSING = PYSBOL3_NS + 'missing'
 # ----------
 # Provenance terms
 # ----------
+PROV_ACTIVITY = PROV_NS + 'Activity'
+PROV_AGENT = PROV_NS + 'Agent'
+PROV_AGENTS = PROV_NS + 'agent'
+PROV_ASSOCIATION = PROV_NS + 'Association'
 PROV_DERIVED_FROM = PROV_NS + 'wasDerivedFrom'
+PROV_ENTITY = PROV_NS + 'entity'
 PROV_GENERATED_BY = PROV_NS + 'wasGeneratedBy'
+PROV_PLAN = PROV_NS + 'Plan'
+PROV_PLANS = PROV_NS + 'hadPlan'
+PROV_QUALIFIED_ASSOCIATION = PROV_NS + 'qualifiedAssociation'
+PROV_QUALIFIED_USAGE = PROV_NS + 'qualifiedUsage'
+PROV_ROLES = PROV_NS + 'hadRole'
+PROV_STARTED_AT_TIME = PROV_NS + 'startedAtTime'
+PROV_ENDED_AT_TIME = PROV_NS + 'endedAtTime'
+PROV_USAGE = PROV_NS + 'Usage'
 
 
 # ----------
