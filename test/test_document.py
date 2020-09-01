@@ -1,5 +1,6 @@
 import logging
 import os
+import tempfile
 import unittest
 
 import sbol3
@@ -20,7 +21,9 @@ class TestDocument(unittest.TestCase):
                                  'model.nt')
         doc = sbol3.Document()
         doc.read(test_path, sbol3.NTRIPLES)
-        doc.write('model.sbol', sbol3.NTRIPLES)
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            test_file = os.path.join(tmpdirname, 'model.nt')
+            doc.write(test_file, sbol3.NTRIPLES)
 
     def test_read_turtle(self):
         # Initial test of Document.read
@@ -69,8 +72,11 @@ class TestDocument(unittest.TestCase):
     def test_write(self):
         doc = sbol3.Document()
         doc.add(sbol3.Component('c1', sbol3.SBO_DNA))
-        doc.write('test_output.ntriples', sbol3.NTRIPLES)
-        doc.write('test_output.xml', sbol3.RDF_XML)
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            nt_file = os.path.join(tmpdirname, 'test_output.nt')
+            doc.write(nt_file, sbol3.NTRIPLES)
+            xml_file = os.path.join(tmpdirname, 'test_output.xml')
+            doc.write(xml_file, sbol3.RDF_XML)
 
 
 if __name__ == '__main__':
