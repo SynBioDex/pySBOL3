@@ -4,19 +4,6 @@ from typing import Union
 
 from . import *
 
-OM_NS = 'http://www.ontology-of-units-of-measure.org/resource/om-2/'
-
-OM_SYMBOL = OM_NS + 'symbol'
-OM_ALTERNATIVE_SYMBOLS = OM_NS + 'alternativeSymbols'
-OM_LABEL = OM_NS + 'label'
-OM_ALTERNATIVE_LABELS = OM_NS + 'alternativeLabels'
-OM_COMMENT = OM_NS + 'comment'
-OM_LONG_COMMENT = OM_NS + 'longComment'
-OM_PREFIXED_UNIT = OM_NS + 'PrefixedUnit'
-OM_HAS_UNIT = OM_NS + 'hasUnit'
-OM_HAS_PREFIX = OM_NS + 'hasPrefix'
-OM_HAS_FACTOR = OM_NS + 'hasFactor'
-
 
 class Unit(TopLevel, abc.ABC):
     """om:Unit is an abstract base class.
@@ -60,6 +47,53 @@ class Prefix(TopLevel, abc.ABC):
         self.long_comment = TextProperty(self, OM_LONG_COMMENT, 0, 1)
         self.factor = FloatProperty(self, OM_HAS_FACTOR, 1, 1,
                                     initial_value=factor)
+
+
+class Measure(Identified):
+
+    def __init__(self, name: str, value: float, unit: str,
+                 *, type_uri: str = OM_MEASURE) -> None:
+        super().__init__(name, type_uri)
+        self.value = FloatProperty(self, OM_HAS_NUMERICAL_VALUE, 1, 1,
+                                   initial_value=value)
+        self.types = URIProperty(self, SBOL_TYPE, 0, math.inf)
+        self.unit = URIProperty(self, OM_HAS_UNIT, 1, 1,
+                                initial_value=unit)
+        self.validate()
+
+
+def build_measure(name: str, *, type_uri: str = OM_MEASURE) -> SBOLObject:
+    missing = PYSBOL3_MISSING
+    obj = Measure(name, 1.0, missing, type_uri=type_uri)
+    # Remove the dummy values
+    obj.properties[OM_HAS_NUMERICAL_VALUE] = []
+    obj.properties[OM_HAS_UNIT] = []
+    return obj
+
+
+Document.register_builder(OM_MEASURE, build_measure)
+
+
+class SingularUnit(Unit):
+
+    def __init__(self, name: str, symbol: str, label: str,
+                 *, type_uri: str = OM_SINGULAR_UNIT) -> None:
+        super().__init__(name, symbol, label, type_uri)
+        self.unit = ReferencedObject(self, OM_HAS_UNIT, 0, 1)
+        self.factor = FloatProperty(self, OM_HAS_FACTOR, 0, 1)
+        self.validate()
+
+
+def build_singular_unit(name: str, *, type_uri: str = OM_SINGULAR_UNIT) -> SBOLObject:
+    missing = PYSBOL3_MISSING
+    obj = SingularUnit(name, missing, missing, type_uri=type_uri)
+    # Remove the dummy values
+    obj.properties[OM_SYMBOL] = []
+    obj.properties[OM_LABEL] = []
+    return obj
+
+
+Document.register_builder(OM_SINGULAR_UNIT, build_singular_unit)
 
 
 class PrefixedUnit(Unit):

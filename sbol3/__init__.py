@@ -30,4 +30,5 @@ from .interface import Interface
 from .implementation import Implementation
 from .attachment import Attachment
 from .provenance import Activity, Agent, Association, Plan, Usage
-from .measurement import PrefixedUnit
+from .measurement import Measure, PrefixedUnit, SingularUnit
+from .compound_unit import UnitMultiplication
