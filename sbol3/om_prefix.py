@@ -15,11 +15,11 @@ class Prefix(TopLevel, abc.ABC):
         super().__init__(name, type_uri)
         self.symbol = TextProperty(self, OM_SYMBOL, 1, 1,
                                    initial_value=symbol)
-        self.alternative_symbols = TextProperty(self, OM_ALTERNATIVE_SYMBOLS,
+        self.alternative_symbols = TextProperty(self, OM_ALTERNATIVE_SYMBOL,
                                                 0, math.inf)
         self.label = TextProperty(self, OM_LABEL, 1, 1,
                                   initial_value=label)
-        self.alternative_labels = TextProperty(self, OM_ALTERNATIVE_LABELS,
+        self.alternative_labels = TextProperty(self, OM_ALTERNATIVE_LABEL,
                                                0, math.inf)
         self.comment = TextProperty(self, OM_COMMENT, 0, 1)
         self.long_comment = TextProperty(self, OM_LONG_COMMENT, 0, 1)
