@@ -5,6 +5,7 @@ from .object import SBOLObject
 from .property_base import Property, SingletonProperty, ListProperty
 from .text_property import TextSingletonProperty, TextProperty
 from .int_property import IntProperty
+from .float_property import FloatProperty
 from .datetime_property import DateTimeProperty
 from .uri_property import URIProperty
 from .ownedobject import OwnedObject
@@ -29,3 +30,4 @@ from .interface import Interface
 from .implementation import Implementation
 from .attachment import Attachment
 from .provenance import Activity, Agent, Association, Plan, Usage
+from .measurement import PrefixedUnit
