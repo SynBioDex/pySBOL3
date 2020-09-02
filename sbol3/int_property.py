@@ -23,7 +23,7 @@ class IntSingletonProperty(IntPropertyMixin, SingletonProperty):
     def __init__(self, property_owner: Any, property_uri: str,
                  lower_bound: int, upper_bound: int,
                  validation_rules: Optional[List] = None,
-                 initial_value: Optional[str] = None):
+                 initial_value: Optional[int] = None):
         super().__init__(property_owner, property_uri,
                          lower_bound, upper_bound, validation_rules)
         if initial_value is not None:
