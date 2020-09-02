@@ -3,7 +3,7 @@ from typing import Union
 
 from . import *
 
-from .measurement import Unit
+from .om_unit import Unit
 
 
 class CompoundUnit(Unit, abc.ABC):

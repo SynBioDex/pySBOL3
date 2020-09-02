@@ -30,6 +30,6 @@ from .interface import Interface
 from .implementation import Implementation
 from .attachment import Attachment
 from .provenance import Activity, Agent, Association, Plan, Usage
-from .om_prefix import SIPrefix
-from .measurement import Measure, PrefixedUnit, SingularUnit
-from .compound_unit import UnitMultiplication
+from .om_prefix import BinaryPrefix, SIPrefix
+from .om_unit import Measure, PrefixedUnit, SingularUnit
+from .om_compound import UnitDivision, UnitExponentiation, UnitMultiplication
