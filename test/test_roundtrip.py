@@ -126,7 +126,7 @@ class TestRoundTrip(unittest.TestCase):
                 self.logger.debug('Only in original: %r', stmt)
             for stmt in rdf_diff[2]:
                 self.logger.debug('Only in loaded: %r', stmt)
-            # self.fail('Differences in RDF detected')
+            self.fail('Differences in RDF detected')
 
     def test_sbol3_files(self):
         test_dir = SBOL3_LOCATION
