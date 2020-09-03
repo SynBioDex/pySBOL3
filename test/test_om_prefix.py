@@ -42,5 +42,24 @@ class TestSIPrefix(unittest.TestCase):
         self.assertIsNotNone(si_prefix.comment)
 
 
+class TestBinaryPrefix(unittest.TestCase):
+
+    def test_create(self):
+        display_id = 'binary_prefix'
+        symbol = 'kilo'
+        label = 'Kilo'
+        factor = 1000
+        prefix = sbol3.BinaryPrefix(display_id, symbol, label, factor)
+        self.assertIsNotNone(prefix)
+        self.assertEqual(symbol, prefix.symbol)
+        self.assertEqual(label, prefix.label)
+        self.assertAlmostEqual(float(factor), prefix.factor, 10)
+        self.assertIsInstance(prefix.factor, float)
+
+    def test_read_from_file(self):
+        # BinaryPrefix does not appear in any test files
+        pass
+
+
 if __name__ == '__main__':
     unittest.main()
