@@ -26,7 +26,7 @@ def build_attachment(name: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject
     missing = PYSBOL3_MISSING
     obj = Attachment(name, missing, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[SBOL_SOURCE] = []
+    obj._properties[SBOL_SOURCE] = []
     return obj
 
 

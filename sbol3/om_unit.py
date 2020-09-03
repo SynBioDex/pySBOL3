@@ -44,8 +44,8 @@ def build_measure(name: str, *, type_uri: str = OM_MEASURE) -> SBOLObject:
     missing = PYSBOL3_MISSING
     obj = Measure(name, 1.0, missing, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[OM_HAS_NUMERICAL_VALUE] = []
-    obj.properties[OM_HAS_UNIT] = []
+    obj._properties[OM_HAS_NUMERICAL_VALUE] = []
+    obj._properties[OM_HAS_UNIT] = []
     return obj
 
 
@@ -66,8 +66,8 @@ def build_singular_unit(name: str, *, type_uri: str = OM_SINGULAR_UNIT) -> SBOLO
     missing = PYSBOL3_MISSING
     obj = SingularUnit(name, missing, missing, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[OM_SYMBOL] = []
-    obj.properties[OM_LABEL] = []
+    obj._properties[OM_SYMBOL] = []
+    obj._properties[OM_LABEL] = []
     return obj
 
 
@@ -92,10 +92,10 @@ def build_prefixed_unit(name: str, *, type_uri: str = OM_PREFIXED_UNIT) -> SBOLO
     missing = PYSBOL3_MISSING
     obj = PrefixedUnit(name, missing, missing, missing, missing, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[OM_SYMBOL] = []
-    obj.properties[OM_LABEL] = []
-    obj.properties[OM_HAS_UNIT] = []
-    obj.properties[OM_HAS_PREFIX] = []
+    obj._properties[OM_SYMBOL] = []
+    obj._properties[OM_LABEL] = []
+    obj._properties[OM_HAS_UNIT] = []
+    obj._properties[OM_HAS_PREFIX] = []
     return obj
 
 

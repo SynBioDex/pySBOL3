@@ -37,7 +37,7 @@ def build_component(name: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:
     missing = PYSBOL3_MISSING
     obj = Component(name, [missing], type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[SBOL_TYPE] = []
+    obj._properties[SBOL_TYPE] = []
     return obj
 
 

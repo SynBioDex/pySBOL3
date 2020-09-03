@@ -31,10 +31,10 @@ def build_unit_multiplication(name: str,
     missing = PYSBOL3_MISSING
     obj = UnitMultiplication(name, missing, missing, missing, missing, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[OM_SYMBOL] = []
-    obj.properties[OM_LABEL] = []
-    obj.properties[OM_HAS_TERM1] = []
-    obj.properties[OM_HAS_TERM2] = []
+    obj._properties[OM_SYMBOL] = []
+    obj._properties[OM_LABEL] = []
+    obj._properties[OM_HAS_TERM1] = []
+    obj._properties[OM_HAS_TERM2] = []
     return obj
 
 
@@ -58,10 +58,10 @@ def build_unit_division(name: str, *, type_uri: str = OM_UNIT_DIVISION) -> SBOLO
     missing = PYSBOL3_MISSING
     obj = UnitDivision(name, missing, missing, missing, missing, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[OM_SYMBOL] = []
-    obj.properties[OM_LABEL] = []
-    obj.properties[OM_HAS_NUMERATOR] = []
-    obj.properties[OM_HAS_DENOMINATOR] = []
+    obj._properties[OM_SYMBOL] = []
+    obj._properties[OM_LABEL] = []
+    obj._properties[OM_HAS_NUMERATOR] = []
+    obj._properties[OM_HAS_DENOMINATOR] = []
     return obj
 
 
@@ -86,10 +86,10 @@ def build_unit_exponentiation(name: str,
     missing = PYSBOL3_MISSING
     obj = UnitExponentiation(name, missing, missing, missing, 1, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[OM_SYMBOL] = []
-    obj.properties[OM_LABEL] = []
-    obj.properties[OM_HAS_BASE] = []
-    obj.properties[OM_HAS_EXPONENT] = []
+    obj._properties[OM_SYMBOL] = []
+    obj._properties[OM_LABEL] = []
+    obj._properties[OM_HAS_BASE] = []
+    obj._properties[OM_HAS_EXPONENT] = []
     return obj
 
 

@@ -25,7 +25,7 @@ class TestIdentified(unittest.TestCase):
         # Should still have the old value
         self.assertEqual(c1_display_id, c.display_id)
         # Under the covers
-        self.assertIsInstance(c.properties[sbol3.SBOL_DISPLAY_ID][0],
+        self.assertIsInstance(c._properties[sbol3.SBOL_DISPLAY_ID][0],
                               rdflib.Literal)
 
     def test_identity_display_id(self):

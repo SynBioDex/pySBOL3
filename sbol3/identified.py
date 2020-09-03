@@ -76,13 +76,13 @@ class Identified(SBOLObject):
     def serialize(self, graph: rdflib.Graph):
         identity = rdflib.URIRef(self.identity)
         graph.add((identity, rdflib.RDF.type, rdflib.URIRef(self.type_uri)))
-        for prop, items in self.properties.items():
+        for prop, items in self._properties.items():
             if not items:
                 continue
             rdf_prop = rdflib.URIRef(prop)
             for item in items:
                 graph.add((identity, rdf_prop, item))
-        for prop, items in self.owned_objects.items():
+        for prop, items in self._owned_objects.items():
             if not items:
                 continue
             rdf_prop = rdflib.URIRef(prop)

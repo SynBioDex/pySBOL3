@@ -17,7 +17,7 @@ class OwnedObjectPropertyMixin:
         return value
 
     def _storage(self) -> Dict[str, list]:
-        return self.property_owner.owned_objects
+        return self.property_owner._owned_objects
 
 
 class OwnedObjectSingletonProperty(OwnedObjectPropertyMixin, SingletonProperty):

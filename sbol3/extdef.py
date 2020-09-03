@@ -35,8 +35,8 @@ def build_externally_defined(name: str,
     missing = PYSBOL3_MISSING
     obj = ExternallyDefined(name, [missing], missing, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[SBOL_TYPE] = []
-    obj.properties[SBOL_DEFINITION] = []
+    obj._properties[SBOL_TYPE] = []
+    obj._properties[SBOL_DEFINITION] = []
     return obj
 
 

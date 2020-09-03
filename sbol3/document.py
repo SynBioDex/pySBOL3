@@ -94,12 +94,12 @@ class Document:
             str_s = str(s)
             str_p = str(p)
             obj = objects[str_s]
-            if str_p in obj.owned_objects:
+            if str_p in obj._owned_objects:
                 other_identity = str(o)
                 other = objects[other_identity]
-                obj.owned_objects[str_p].append(other)
+                obj._owned_objects[str_p].append(other)
             else:
-                obj.properties[str_p].append(o)
+                obj._properties[str_p].append(o)
 
     @staticmethod
     def _clean_up_singletons(objects: Dict[str, SBOLObject]):
