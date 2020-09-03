@@ -37,7 +37,8 @@ class TestMeasure(unittest.TestCase):
         self.assertCountEqual(['https://identifiers.org/SBO:0000196',
                                'https://identifiers.org/SBO:0000197'],
                               measure.types)
-        self.assertEqual('https://sbolstandard.org/examples/millimolePerLitre', measure.unit)
+        self.assertEqual('https://sbolstandard.org/examples/millimolePerLitre',
+                         measure.unit)
         self.assertEqual('measure1', measure.display_id)
 
 

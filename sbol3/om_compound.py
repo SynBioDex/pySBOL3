@@ -26,7 +26,8 @@ class UnitMultiplication(CompoundUnit):
         self.validate()
 
 
-def build_unit_multiplication(name: str, *, type_uri: str = OM_UNIT_MULTIPLICATION) -> SBOLObject:
+def build_unit_multiplication(name: str,
+                              *, type_uri: str = OM_UNIT_MULTIPLICATION) -> SBOLObject:
     missing = PYSBOL3_MISSING
     obj = UnitMultiplication(name, missing, missing, missing, missing, type_uri=type_uri)
     # Remove the dummy values

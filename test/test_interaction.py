@@ -18,10 +18,11 @@ class TestInteraction(unittest.TestCase):
     def test_read(self):
         component_id = 'https://github.com/synbiodex/pysbol3/component1'
         interaction_id = 'https://github.com/synbiodex/pysbol3/interaction1'
-        nt_data = f'<{component_id}> <{rdflib.RDF.type}> <{sbol3.SBOL_COMPONENT}> .\n'
+        rdf_type = rdflib.RDF.type
+        nt_data = f'<{component_id}> <{rdf_type}> <{sbol3.SBOL_COMPONENT}> .\n'
         nt_data += f'<{component_id}> <{sbol3.SBOL_TYPE}> <{sbol3.SBO_DNA}> .\n'
         nt_data += f'<{component_id}> <{sbol3.SBOL_INTERACTIONS}> <{interaction_id}> .\n'
-        nt_data += f'<{interaction_id}> <{rdflib.RDF.type}> <{sbol3.SBOL_INTERACTION}> .\n'
+        nt_data += f'<{interaction_id}> <{rdf_type}> <{sbol3.SBOL_INTERACTION}> .\n'
         nt_data += f'<{interaction_id}> <{sbol3.SBOL_TYPE}> <{sbol3.SBO_INHIBITION}> .\n'
         doc = sbol3.Document()
         doc.read_string(nt_data, 'ttl')

@@ -18,7 +18,7 @@ class Identified(SBOLObject):
         self.generated_by = URIProperty(self, PROV_GENERATED_BY, 0, math.inf)
         self.measures = OwnedObject(self, SBOL_HAS_MEASURE, 0, math.inf)
         # Identity has been set by the SBOLObject constructor
-        self._display_id = Identified._extract_display_id(self.identity)
+        self._display_id = self._extract_display_id(self.identity)
 
     @staticmethod
     def _is_valid_display_id(display_id: str) -> bool:

@@ -1,10 +1,10 @@
 import math
-from typing import List
 
 from . import *
 
 # Feature is not exported
 from .feature import Feature
+from .typing import *
 
 
 class ExternallyDefined(Feature):
@@ -16,13 +16,14 @@ class ExternallyDefined(Feature):
     def __init__(self, name: str, types: List[str], definition: str,
                  *, type_uri: str = SBOL_EXTERNALLY_DEFINED):
         super().__init__(name, type_uri)
-        self.types = URIProperty(self, SBOL_TYPE, 1, math.inf,
-                                 initial_value=types)
-        self.definition = URIProperty(self, SBOL_DEFINITION, 1, 1,
-                                      initial_value=definition)
+        self.types: uri_list = URIProperty(self, SBOL_TYPE, 1, math.inf,
+                                           initial_value=types)
+        self.definition: uri_singleton = URIProperty(self, SBOL_DEFINITION, 1, 1,
+                                                     initial_value=definition)
         self.validate()
 
     def validate(self):
+        super().validate()
         if len(self.types) < 1:
             raise ValidationError('ExternallyDefined must contain at least 1 type')
         if self.definition is None:

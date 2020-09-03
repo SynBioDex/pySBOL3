@@ -71,10 +71,10 @@ class Document:
             if len(types) == 1:
                 type_uri = types[0]
                 try:
-                    builder = Document._uri_type_map[type_uri]
+                    builder = self._uri_type_map[type_uri]
                 except KeyError:
                     logging.warning(f'No builder found for {type_uri}')
-                    builder = Identified
+                    raise ValidationError(f'Unknown type {type_uri}')
                 obj = builder(identity, type_uri=type_uri)
             elif len(types) == 2:
                 obj = self._make_custom_object(identity, types)
