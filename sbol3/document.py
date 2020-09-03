@@ -73,7 +73,8 @@ class Document:
                 try:
                     builder = Document._uri_type_map[type_uri]
                 except KeyError:
-                    builder = SBOLObject
+                    logging.warning(f'No builder found for {type_uri}')
+                    builder = Identified
                 obj = builder(identity, type_uri=type_uri)
             elif len(types) == 2:
                 obj = self._make_custom_object(identity, types)
