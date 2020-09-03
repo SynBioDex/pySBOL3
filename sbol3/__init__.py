@@ -26,6 +26,7 @@ from .combderiv import CombinatorialDerivation
 from .interaction import Interaction
 from .participation import Participation
 from .compref import ComponentReference
+from .extdef import ExternallyDefined
 from .interface import Interface
 from .implementation import Implementation
 from .attachment import Attachment

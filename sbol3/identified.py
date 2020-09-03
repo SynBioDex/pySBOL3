@@ -16,6 +16,7 @@ class Identified(SBOLObject):
         self.description = TextProperty(self, SBOL_DESCRIPTION, 0, 1)
         self.derived_from = URIProperty(self, PROV_DERIVED_FROM, 0, math.inf)
         self.generated_by = URIProperty(self, PROV_GENERATED_BY, 0, math.inf)
+        self.measures = OwnedObject(self, SBOL_HAS_MEASURE, 0, math.inf)
         # Identity has been set by the SBOLObject constructor
         self._display_id = Identified._extract_display_id(self.identity)
 
