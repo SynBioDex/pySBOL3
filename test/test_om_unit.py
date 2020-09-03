@@ -24,7 +24,6 @@ class TestMeasure(unittest.TestCase):
         self.assertEqual(unit, measure.unit)
         self.assertEqual(display_id, measure.display_id)
 
-    @unittest.expectedFailure  # Waiting for ExternallyDefined
     def test_read_from_file(self):
         test_file = os.path.join(SBOL3_LOCATION, 'measurement_entity',
                                  'measurement', 'measurement.nt')

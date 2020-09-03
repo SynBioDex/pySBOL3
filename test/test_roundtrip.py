@@ -130,13 +130,8 @@ class TestRoundTrip(unittest.TestCase):
 
     def test_sbol3_files(self):
         test_dir = SBOL3_LOCATION
-        # TODO: Make round trip work for these files
-        skip_list = ['annotation.nt', 'annotation.rdf', 'annotation.ttl',
-                     'measurement.nt', 'measurement.rdf', 'measurement.ttl',
-                     'measurement_using_units_From_OM.nt',
-                     'measurement_using_units_From_OM.rdf',
-                     'measurement_using_units_From_OM.ttl'
-                     ]
+        # TODO: Waiting for https://github.com/SynBioDex/SBOLTestSuite/issues/22
+        skip_list = ['annotation.nt', 'annotation.rdf', 'annotation.ttl']
         for test_file in self.find_all_files(test_dir):
             if os.path.basename(test_file) in skip_list:
                 self.logger.debug(f'Skipping {test_file}')
