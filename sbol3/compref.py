@@ -33,8 +33,8 @@ def build_component_reference(name: str, *,
     missing = PYSBOL3_MISSING
     obj = ComponentReference(name, missing, missing, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[SBOL_FEATURES] = []
-    obj.properties[SBOL_IN_CHILD_OF] = []
+    obj._properties[SBOL_FEATURES] = []
+    obj._properties[SBOL_IN_CHILD_OF] = []
     return obj
 
 

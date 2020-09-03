@@ -38,9 +38,9 @@ def build_si_prefix(name: str, *, type_uri: str = OM_SI_PREFIX) -> SBOLObject:
     missing = PYSBOL3_MISSING
     obj = SIPrefix(name, missing, missing, 1.0, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[OM_SYMBOL] = []
-    obj.properties[OM_LABEL] = []
-    obj.properties[OM_HAS_FACTOR] = []
+    obj._properties[OM_SYMBOL] = []
+    obj._properties[OM_LABEL] = []
+    obj._properties[OM_HAS_FACTOR] = []
     return obj
 
 
@@ -58,9 +58,9 @@ def build_binary_prefix(name: str, *, type_uri: str = OM_BINARY_PREFIX) -> SBOLO
     missing = PYSBOL3_MISSING
     obj = BinaryPrefix(name, missing, missing, 1.0, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[OM_SYMBOL] = []
-    obj.properties[OM_LABEL] = []
-    obj.properties[OM_HAS_FACTOR] = []
+    obj._properties[OM_SYMBOL] = []
+    obj._properties[OM_LABEL] = []
+    obj._properties[OM_HAS_FACTOR] = []
     return obj
 
 

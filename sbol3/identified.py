@@ -18,7 +18,7 @@ class Identified(SBOLObject):
         self.generated_by = URIProperty(self, PROV_GENERATED_BY, 0, math.inf)
         self.measures = OwnedObject(self, SBOL_HAS_MEASURE, 0, math.inf)
         # Identity has been set by the SBOLObject constructor
-        self._display_id = Identified._extract_display_id(self.identity)
+        self._display_id = self._extract_display_id(self.identity)
 
     @staticmethod
     def _is_valid_display_id(display_id: str) -> bool:
@@ -76,13 +76,13 @@ class Identified(SBOLObject):
     def serialize(self, graph: rdflib.Graph):
         identity = rdflib.URIRef(self.identity)
         graph.add((identity, rdflib.RDF.type, rdflib.URIRef(self.type_uri)))
-        for prop, items in self.properties.items():
+        for prop, items in self._properties.items():
             if not items:
                 continue
             rdf_prop = rdflib.URIRef(prop)
             for item in items:
                 graph.add((identity, rdf_prop, item))
-        for prop, items in self.owned_objects.items():
+        for prop, items in self._owned_objects.items():
             if not items:
                 continue
             rdf_prop = rdflib.URIRef(prop)

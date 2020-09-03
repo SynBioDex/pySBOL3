@@ -28,8 +28,8 @@ def build_participation(name: str, *, type_uri: str = SBOL_INTERACTION) -> SBOLO
     missing = PYSBOL3_MISSING
     obj = Participation(name, [missing], missing, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[SBOL_ROLE] = []
-    obj.properties[SBOL_PARTICIPANT] = []
+    obj._properties[SBOL_ROLE] = []
+    obj._properties[SBOL_PARTICIPANT] = []
     return obj
 
 

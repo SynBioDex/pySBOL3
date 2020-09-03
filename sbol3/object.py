@@ -10,8 +10,8 @@ from . import *
 class SBOLObject:
 
     def __init__(self, name: str, type_uri: str) -> None:
-        self.properties = defaultdict(list)
-        self.owned_objects = defaultdict(list)
+        self._properties = defaultdict(list)
+        self._owned_objects = defaultdict(list)
         # Does this need to be a property? It does not get serialized to the RDF file.
         # Could it be an attribute that gets composed on the fly? Keep it simple for
         # now, and change to a property in the future if needed.
@@ -91,7 +91,7 @@ class SBOLObject:
             return self
         if hasattr(self, 'display_id') and self.display_id == search_string:
             return self
-        for obj_list in self.owned_objects.values():
+        for obj_list in self._owned_objects.values():
             for obj in obj_list:
                 result = obj.find(search_string)
                 if result is not None:

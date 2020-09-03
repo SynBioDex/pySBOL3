@@ -18,7 +18,7 @@ def build_usage(name: str, *, type_uri: str = PROV_USAGE) -> SBOLObject:
     missing = PYSBOL3_MISSING
     obj = Usage(name, missing, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[PROV_ENTITY] = []
+    obj._properties[PROV_ENTITY] = []
     return obj
 
 
@@ -61,7 +61,7 @@ def build_association(name: str, *, type_uri: str = PROV_USAGE) -> SBOLObject:
     missing = PYSBOL3_MISSING
     obj = Association(name, missing, type_uri=type_uri)
     # Remove the dummy values
-    obj.properties[PROV_AGENTS] = []
+    obj._properties[PROV_AGENTS] = []
     return obj
 
 

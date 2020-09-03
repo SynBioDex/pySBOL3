@@ -71,10 +71,10 @@ class Document:
             if len(types) == 1:
                 type_uri = types[0]
                 try:
-                    builder = Document._uri_type_map[type_uri]
+                    builder = self._uri_type_map[type_uri]
                 except KeyError:
                     logging.warning(f'No builder found for {type_uri}')
-                    builder = Identified
+                    raise ValidationError(f'Unknown type {type_uri}')
                 obj = builder(identity, type_uri=type_uri)
             elif len(types) == 2:
                 obj = self._make_custom_object(identity, types)
@@ -94,12 +94,12 @@ class Document:
             str_s = str(s)
             str_p = str(p)
             obj = objects[str_s]
-            if str_p in obj.owned_objects:
+            if str_p in obj._owned_objects:
                 other_identity = str(o)
                 other = objects[other_identity]
-                obj.owned_objects[str_p].append(other)
+                obj._owned_objects[str_p].append(other)
             else:
-                obj.properties[str_p].append(o)
+                obj._properties[str_p].append(o)
 
     @staticmethod
     def _clean_up_singletons(objects: Dict[str, SBOLObject]):

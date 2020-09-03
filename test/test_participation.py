@@ -22,7 +22,8 @@ class TestParticipation(unittest.TestCase):
                                  'toggle_switch.nt')
         doc = sbol3.Document()
         doc.read(test_file, sbol3.NTRIPLES)
-        search_uri = 'https://sbolstandard.org/examples/LacI_producer/interaction_2/participation_1'
+        search_uri = ('https://sbolstandard.org/examples/'
+                      'LacI_producer/interaction_2/participation_1')
         participation = doc.find(search_uri)
         self.assertIsNotNone(participation)
         self.assertIsInstance(participation, sbol3.Participation)
