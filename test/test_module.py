@@ -14,7 +14,7 @@ class TestModule(unittest.TestCase):
         self.assertIsInstance(sbol3.ComponentReference, type)
         self.assertIsInstance(sbol3.LocalSubComponent, type)
         self.assertIsInstance(sbol3.ExternallyDefined, type)
-        # self.assertIsInstance(sbol3.SequenceFeature, type)
+        self.assertIsInstance(sbol3.SequenceFeature, type)
         self.assertIsInstance(sbol3.Range, type)
         self.assertIsInstance(sbol3.Cut, type)
         self.assertIsInstance(sbol3.EntireSequence, type)
@@ -31,12 +31,6 @@ class TestModule(unittest.TestCase):
         self.assertIsInstance(sbol3.Namespace, type)
         self.assertIsInstance(sbol3.Experiment, type)
         self.assertIsInstance(sbol3.Attachment, type)
-
-    def test_not_implemented(self):
-        # These classes in the data model are not yet implemented.
-        # When they do get implemented uncomment their test above
-        # and remove their test here.
-        self.assertFalse('SequenceFeature' in dir(sbol3))
 
 
 if __name__ == '__main__':
