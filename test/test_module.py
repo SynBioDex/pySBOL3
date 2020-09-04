@@ -25,7 +25,7 @@ class TestModule(unittest.TestCase):
         self.assertIsInstance(sbol3.CombinatorialDerivation, type)
         self.assertIsInstance(sbol3.VariableComponent, type)
         self.assertIsInstance(sbol3.Implementation, type)
-        # self.assertIsInstance(sbol3.ExperimentalData, type)
+        self.assertIsInstance(sbol3.ExperimentalData, type)
         self.assertIsInstance(sbol3.Model, type)
         self.assertIsInstance(sbol3.Collection, type)
         self.assertIsInstance(sbol3.Namespace, type)
@@ -38,7 +38,6 @@ class TestModule(unittest.TestCase):
         # and remove their test here.
         self.assertFalse('LocalSubComponent' in dir(sbol3))
         self.assertFalse('SequenceFeature' in dir(sbol3))
-        self.assertFalse('ExperimentalData' in dir(sbol3))
 
 
 if __name__ == '__main__':

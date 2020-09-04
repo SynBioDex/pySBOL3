@@ -30,6 +30,7 @@ from .extdef import ExternallyDefined
 from .interface import Interface
 from .implementation import Implementation
 from .attachment import Attachment
+from .expdata import ExperimentalData
 from .provenance import Activity, Agent, Association, Plan, Usage
 from .om_prefix import BinaryPrefix, SIPrefix
 from .om_unit import Measure, PrefixedUnit, SingularUnit
