@@ -12,7 +12,7 @@ class TestModule(unittest.TestCase):
         self.assertIsInstance(sbol3.Component, type)
         self.assertIsInstance(sbol3.SubComponent, type)
         self.assertIsInstance(sbol3.ComponentReference, type)
-        # self.assertIsInstance(sbol3.LocalSubComponent, type)
+        self.assertIsInstance(sbol3.LocalSubComponent, type)
         self.assertIsInstance(sbol3.ExternallyDefined, type)
         # self.assertIsInstance(sbol3.SequenceFeature, type)
         self.assertIsInstance(sbol3.Range, type)
@@ -36,7 +36,6 @@ class TestModule(unittest.TestCase):
         # These classes in the data model are not yet implemented.
         # When they do get implemented uncomment their test above
         # and remove their test here.
-        self.assertFalse('LocalSubComponent' in dir(sbol3))
         self.assertFalse('SequenceFeature' in dir(sbol3))
 
 

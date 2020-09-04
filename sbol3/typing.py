@@ -1,6 +1,6 @@
 from typing import Union, List
 
-from . import *
+from .property_base import Property
 
 # URIProperty typing
 uri_list = Union[List[str], Property]
