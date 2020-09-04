@@ -21,6 +21,8 @@ from .varcomp import VariableComponent
 from .component import Component
 from .model import Model
 from .subcomponent import SubComponent
+from .localsub import LocalSubComponent
+from .seqfeat import SequenceFeature
 from .collection import Collection, Namespace, Experiment
 from .combderiv import CombinatorialDerivation
 from .interaction import Interaction
@@ -30,6 +32,7 @@ from .extdef import ExternallyDefined
 from .interface import Interface
 from .implementation import Implementation
 from .attachment import Attachment
+from .expdata import ExperimentalData
 from .provenance import Activity, Agent, Association, Plan, Usage
 from .om_prefix import BinaryPrefix, SIPrefix
 from .om_unit import Measure, PrefixedUnit, SingularUnit
