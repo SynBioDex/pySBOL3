@@ -32,6 +32,23 @@ class TestModule(unittest.TestCase):
         self.assertIsInstance(sbol3.Experiment, type)
         self.assertIsInstance(sbol3.Attachment, type)
 
+    def test_provenance(self):
+        self.assertIsInstance(sbol3.Activity, type)
+        self.assertIsInstance(sbol3.Association, type)
+        self.assertIsInstance(sbol3.Plan, type)
+        self.assertIsInstance(sbol3.Agent, type)
+        self.assertIsInstance(sbol3.Usage, type)
+
+    def test_measurement(self):
+        self.assertIsInstance(sbol3.Measure, type)
+        self.assertIsInstance(sbol3.SingularUnit, type)
+        self.assertIsInstance(sbol3.UnitMultiplication, type)
+        self.assertIsInstance(sbol3.UnitDivision, type)
+        self.assertIsInstance(sbol3.UnitExponentiation, type)
+        self.assertIsInstance(sbol3.PrefixedUnit, type)
+        self.assertIsInstance(sbol3.SIPrefix, type)
+        self.assertIsInstance(sbol3.BinaryPrefix, type)
+
 
 if __name__ == '__main__':
     unittest.main()
