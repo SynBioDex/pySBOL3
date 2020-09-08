@@ -69,6 +69,16 @@ class TestDocument(unittest.TestCase):
         seq2 = doc.find(seq.identity)
         self.assertEqual(seq.identity, seq2.identity)
 
+    def test_add_multiple(self):
+        # Ensure that duplicate identities cannot be added to the document.
+        # See https://github.com/SynBioDex/pySBOL3/issues/39
+        document = sbol3.Document()
+        namespace1 = sbol3.Namespace(name=sbol3.SBOL3_NS)
+        document.add(namespace1)
+        namespace2 = sbol3.Namespace(name=sbol3.SBOL3_NS)
+        with self.assertRaises(ValueError):
+            document.add(namespace2)
+
     def test_write(self):
         doc = sbol3.Document()
         doc.add(sbol3.Component('c1', sbol3.SBO_DNA))
