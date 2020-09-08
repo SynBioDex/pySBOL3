@@ -25,3 +25,4 @@ from .participation import Participation
 from .compref import ComponentReference
 from .interface import Interface
 from .implementation import Implementation
+from .ontology import Ontology, SO, SBO
