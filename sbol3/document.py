@@ -156,12 +156,16 @@ class Document:
     def add(self, obj: TopLevel) -> None:
         """Add objects to the document.
         """
-        if isinstance(obj, TopLevel):
-            self.objects.append(obj)
-            obj.document = self
-        else:
+        if not isinstance(obj, TopLevel):
             message = f'Expected TopLevel instance, {type(obj).__name__} found'
             raise TypeError(message)
+        found_obj = self.find(obj.identity)
+        if found_obj is not None:
+            message = f'An entity with identity "{obj.identity}"'
+            message += ' already exists in document'
+            raise ValueError(message)
+        self.objects.append(obj)
+        obj.document = self
 
     def _find_in_objects(self, search_string: str) -> Optional[Identified]:
         # TODO: implement recursive search
