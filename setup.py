@@ -32,4 +32,8 @@ setup(name='sbol3',
       install_requires=[
             'rdflib>=5.0',
             'python-dateutil'
+      ],
+      test_suite='test',
+      tests_require=[
+            'pycodestyle>=2.6.0'
       ])
