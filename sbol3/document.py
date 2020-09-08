@@ -26,7 +26,7 @@ class Document:
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)
         self.objects: List[Identified] = []
-        self.namespaces: Dict[str, str] = {}
+        self._namespaces: Dict[str, str] = {}
 
     @staticmethod
     def _make_custom_object(identity: str, types: List[str]) -> Identified:
@@ -125,7 +125,7 @@ class Document:
 
     def clear(self) -> None:
         self.objects.clear()
-        self.namespaces.clear()
+        self._namespaces.clear()
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, file_path: str, file_format: str) -> None:
@@ -150,8 +150,8 @@ class Document:
         self.objects = [obj for uri, obj in objects.items()
                         if isinstance(obj, TopLevel)]
         # Store the namespaces in the Document for later use
-        self.namespaces = {prefix: uri for prefix, uri in graph.namespaces()
-                           if prefix}
+        self._namespaces = {prefix: uri for prefix, uri in graph.namespaces()
+                            if prefix}
 
     def add(self, obj: TopLevel) -> None:
         """Add objects to the document.
