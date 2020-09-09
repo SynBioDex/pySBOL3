@@ -2,15 +2,42 @@ import rdflib
 from SPARQLWrapper import SPARQLWrapper, JSON
 import urllib
 
-class Ontology:
+class Ontology():
 
     endpoint = SPARQLWrapper('http://sparql.hegroup.org/sparql/')
     endpoint.setReturnFormat(JSON)
 
     def __init__(self, path, ontology_uri):
         self.path = path
-        self.graph = None
+        self.graph = rdflib.Graph()
         self.uri = ontology_uri        
+
+    def _query(self, sparql, error_msg):
+        '''
+        This is a generalized back-end for querying ontologies. By default it performs
+        SPARQL queries through a network endpoint, because loading an ontology from a
+        local graph takes a while and uses up memory.  However, once a graph is loaded
+        locally, subsequent queries will be performed directly on the graph.
+        '''
+        if len(self.graph):
+            # If the ontology graph has been loaded locally, query that rather
+            # than querying over the network
+            response = self.graph.query(sparql)
+            response = Ontology._convert_rdflib_response(response)
+        else:
+            try:
+                # If no ontology graph is located, query the network endpoint
+                Ontology.endpoint.setQuery(sparql)
+                response = Ontology.endpoint.query()
+                response = Ontology._convert_ontobee_response(response)
+            except urllib.error.URLError:
+                # If the connection fails, load the ontology locally
+                self.graph.parse(self.path)
+                response = self.graph.query(sparql)
+                response = Ontology._convert_rdflib_response(response)
+        if not len(response):
+            raise LookupError(error_msg)
+        return response  
 
     def _convert_ontobee_response(response):
         '''
@@ -29,35 +56,9 @@ class Ontology:
         '''
         return [str(row[0]) for row in response]
 
-    def _query(self, sparql, error_msg):
-        '''
-        By default, performs SPARQL queries through a network endpoint.
-        (Loading an ontology graph locally takes a while and uses up memory.)
-        However, once a graph is loaded locally, subsequenct queries will be performed
-        directly on the graph.
-        '''
-        if self.graph:
-            # If the ontology graph has been loaded locally, query that rather
-            # than querying over the network
-            response = self.graph.query(sparql)
-            response = Ontology._convert_rdflib_response(response)
-        else:
-            try:
-                # If no ontology graph is located, query the network endpoint
-                Ontology.endpoint.setQuery(sparql)
-                response = Ontology.endpoint.query()
-                response = Ontology._convert_ontobee_response(response)
-            except urllib.error.URLError:
-                # If the connection fails, load the ontology locally
-                self.graph = rdflib.Graph()
-                self.graph.parse(self.path)
-                response = self.graph.query(sparql)
-                response = Ontology._convert_rdflib_response(response)
-        if not len(response):
-            raise LookupError(error_msg)
-        return response  
-
     def get_term_by_uri(self, uri):
+        '''
+        '''
         query = '''
             SELECT distinct ?label
             WHERE 
@@ -98,10 +99,11 @@ class Ontology:
         response = self._query(query, error_msg)
         return response[0]
 
-    def query_ontobee(self):
-        pass
+    def __getattr__(self, name):     
+        if name in self.__getattribute__('__dict__'):
+            return self.__getattribute__(name)
+        else:
+            return self.__getattribute__('get_uri_by_term')(name)
 
 SO = Ontology('ontologies/so.owl', 'http://purl.obolibrary.org/obo/so.owl')
 SBO = Ontology('ontologies/SBO_OWL.owl', 'http://biomodels.net/SBO/')
-# print(SO.get_ontology())
-# print(SBO.get_ontology())

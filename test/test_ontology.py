@@ -20,12 +20,16 @@ class TestOntology(unittest.TestCase):
         self.assertEqual(term, 'systems biology representation')
         uri_b = sbol3.SBO.get_uri_by_term(term)
         self.assertEqual(uri_a, uri_b)
-        # self.assertEqual(uri, 'http://purl.obolibrary.org/obo/SO_0000110')
 
-# term = sequence_ontology.get_term_by_uri('http://purl.obolibrary.org/obo/SO_0000014')
-# print(term)
-# print(uri)
-# sequence_ontology.get_term_by_uri('foo')
+    def test_dynamic_ontology_attributes(self):
+        # Tests that our override of the __getattr__ method is working.
+        # Tests dynamic generation of attributes for ontology terms; also verifies that
+        # the Ontology's other methods (e.g., get_uri_by_term) remain accessible
+        self.assertEqual(sbol3.SO.promoter, sbol3.SO.get_uri_by_term('promoter'))
+
+        # Raise an exception if an invalid term is specified
+        with self.assertRaises(LookupError):
+            not_a_term = sbol3.SO.not_a_term
 
 if __name__ == '__main__':
     unittest.main()
