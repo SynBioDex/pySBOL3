@@ -12,7 +12,7 @@ class Ontology():
     def __init__(self, path, ontology_uri):
         self.path = path
         self.graph = rdflib.Graph()
-        self.uri = ontology_uri    
+        self.uri = ontology_uri
 
     def _query(self, sparql, error_msg):
         '''
