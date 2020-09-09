@@ -38,6 +38,8 @@ class Identified(SBOLObject):
 
     @staticmethod
     def _extract_display_id(identity: str) -> Union[None, str]:
+        if not identity:
+            return None
         parsed = urlparse(identity)
         if not (parsed.scheme and parsed.netloc and parsed.path):
             # if the identity is not a URL, we cannot extract a display id
@@ -48,7 +50,7 @@ class Identified(SBOLObject):
             return display_id
         else:
             msg = f'"{display_id}" is not a valid displayId.'
-            msg += '  A displayId MUST be composed of only alphanumeric'
+            msg += ' A displayId MUST be composed of only alphanumeric'
             msg += ' or underscore characters and MUST NOT begin with a digit.'
             raise ValueError(msg)
 

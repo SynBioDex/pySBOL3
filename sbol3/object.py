@@ -59,6 +59,8 @@ class SBOLObject:
 
         We do not support UUIDs, which are legal SBOL identifiers.
         """
+        if name is None:
+            return None
         name_is_url = SBOLObject._is_url(name)
         if name_is_url:
             return name.strip(posixpath.sep)
@@ -73,7 +75,7 @@ class SBOLObject:
         if base_uri.endswith('#'):
             return base_uri + name
         else:
-            return posixpath.join(base_uri, name)
+            return posixpath.join(base_uri, name.lstrip(posixpath.sep))
 
     def validate(self) -> None:
         self._validate_identity()
