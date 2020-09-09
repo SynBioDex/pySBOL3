@@ -2,15 +2,17 @@ import rdflib
 from SPARQLWrapper import SPARQLWrapper, JSON
 import urllib
 
+
 class Ontology():
 
     endpoint = SPARQLWrapper('http://sparql.hegroup.org/sparql/')
+    # endpoint = SPARQLWrapper('https://ebi.identifiers.org/services/sparql')
     endpoint.setReturnFormat(JSON)
 
     def __init__(self, path, ontology_uri):
         self.path = path
         self.graph = rdflib.Graph()
-        self.uri = ontology_uri        
+        self.uri = ontology_uri    
 
     def _query(self, sparql, error_msg):
         '''
@@ -37,7 +39,7 @@ class Ontology():
                 response = Ontology._convert_rdflib_response(response)
         if not len(response):
             raise LookupError(error_msg)
-        return response  
+        return response
 
     def _convert_ontobee_response(response):
         '''
@@ -45,8 +47,9 @@ class Ontology():
         variables into a list
         '''
         response = response.convert()  # Convert http response to JSON
-        converted_response = []
-        for var, binding in zip(response['head']['vars'], response['results']['bindings']):
+        converted_response = []  # Next, flatten and convert to list
+        for var, binding in zip(response['head']['vars'],
+                                response['results']['bindings']):
             converted_response.append(binding[var]['value'])
         return converted_response
 
@@ -58,10 +61,13 @@ class Ontology():
 
     def get_term_by_uri(self, uri):
         '''
+        Get the ontology term (e.g., "promoter") corresponding to the given URI
+        :param uri: The URI for the term
+        :return: str
         '''
         query = '''
             SELECT distinct ?label
-            WHERE 
+            WHERE
             {{
                 <{uri}> rdf:type owl:Class .
                 <{uri}> rdfs:label ?label .
@@ -72,25 +78,34 @@ class Ontology():
         return response[0]
 
     def get_uri_by_term(self, term):
-        # queries to the sequence ontology require the xsd:string datatype
-        # whereas queries to the systems biology ontology do not
+        '''
+        Get the URI assigned to an ontology term (e.g., "promoter")
+        :param term: The ontology term
+        :return: str
+        '''
+        # Queries to the sequence ontology require the xsd:string datatype
+        # whereas queries to the systems biology ontology do not, hence the
+        # UNION in the query. Additionally, terms in SBO have spaces rather
+        # than underscores. This creates a problem when looking up terms by
+        # an attribute, e.g., SBO.systems_biology_representation
         query = '''
-            SELECT distinct ?uri 
-            WHERE 
+            SELECT distinct ?uri
+            WHERE
             {{
                 ?uri rdf:type owl:Class .
                 {{?uri rdfs:label "{term}"^^xsd:string}} UNION
-                {{?uri rdfs:label "{term}"}}
+                {{?uri rdfs:label "{term}"}} UNION
+                {{?uri rdfs:label "{sanitized_term}"}}
             }}
-            '''.format(term=term)
-        error_msg = '{} not found'.format(term)
+            '''.format(term=term, sanitized_term=term.replace('_', ' '))
+        error_msg = '{} not a valid ontology term'.format(term)
         response = self._query(query, error_msg)
         return response[0]
 
     def get_ontology(self):
         query = '''
-            SELECT distinct ?ontology_uri 
-            WHERE 
+            SELECT distinct ?ontology_uri
+            WHERE
               {
                 ?ontology_uri a owl:Ontology
               }
@@ -99,11 +114,12 @@ class Ontology():
         response = self._query(query, error_msg)
         return response[0]
 
-    def __getattr__(self, name):     
+    def __getattr__(self, name):
         if name in self.__getattribute__('__dict__'):
             return self.__getattribute__(name)
         else:
             return self.__getattribute__('get_uri_by_term')(name)
+
 
 SO = Ontology('ontologies/so.owl', 'http://purl.obolibrary.org/obo/so.owl')
 SBO = Ontology('ontologies/SBO_OWL.owl', 'http://biomodels.net/SBO/')

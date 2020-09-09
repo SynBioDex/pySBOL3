@@ -1,6 +1,7 @@
 import unittest
 import sbol3
 
+
 class TestOntology(unittest.TestCase):
 
     def test_SO(self):
@@ -27,9 +28,18 @@ class TestOntology(unittest.TestCase):
         # the Ontology's other methods (e.g., get_uri_by_term) remain accessible
         self.assertEqual(sbol3.SO.promoter, sbol3.SO.get_uri_by_term('promoter'))
 
+        # When an Ontology term has spaces, the attribute that is dynamically generated
+        # should replace these with underscores
+        self.assertEqual(sbol3.SBO.systems_biology_representation,
+                         sbol3.SBO.get_uri_by_term('systems biology representation'))
+
+        self.assertNotEqual(sbol3.SBO.systems_biology_representation,
+                            sbol3.SBO.reactant)
+
         # Raise an exception if an invalid term is specified
         with self.assertRaises(LookupError):
             not_a_term = sbol3.SO.not_a_term
+
 
 if __name__ == '__main__':
     unittest.main()
