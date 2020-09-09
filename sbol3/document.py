@@ -1,10 +1,18 @@
 import collections
 import logging
+import warnings
 from typing import Dict, Callable, List, Optional
 
 import rdflib
 
 from . import *
+
+default_bindings = {
+    'sbol': SBOL3_NS,
+    'prov': PROV_NS,
+    'om': OM_NS,
+    # Should others like SO, SBO, and CHEBI be added?
+}
 
 
 class Document:
@@ -26,7 +34,7 @@ class Document:
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)
         self.objects: List[Identified] = []
-        self._namespaces: Dict[str, str] = {}
+        self._namespaces: Dict[str, str] = default_bindings.copy()
 
     @staticmethod
     def _make_custom_object(identity: str, types: List[str]) -> Identified:
@@ -125,7 +133,7 @@ class Document:
 
     def clear(self) -> None:
         self.objects.clear()
-        self._namespaces.clear()
+        self._namespaces = default_bindings.copy()
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, file_path: str, file_format: str) -> None:
@@ -188,6 +196,8 @@ class Document:
 
     def write(self, path: str, file_format: str) -> None:
         graph = rdflib.Graph()
+        for prefix, uri in self._namespaces.items():
+            graph.bind(prefix, uri)
         for obj in self.objects:
             obj.serialize(graph)
         if file_format == SORTED_NTRIPLES:
@@ -203,3 +213,29 @@ class Document:
                 outfile.writelines(lines)
         else:
             graph.serialize(path, format=file_format)
+
+    def bind(self, prefix: str, uri: str) -> None:
+        """Bind a prefix to an RDF namespace in the written RDF document.
+
+        These prefixes make the written RDF easier for humans to read.
+        These prefixes do not change the semantic meaning of the RDF
+        document in any way.
+        """
+        # Remove any prefix referencing the given URI
+        if uri in self._namespaces.values():
+            for k, v in list(self._namespaces.items()):
+                if v == uri:
+                    del self._namespaces[k]
+        self._namespaces[prefix] = uri
+
+    def addNamespace(self, namespace: str, prefix: str) -> None:
+        """Document.addNamespace is deprecated. Replace with Document.bind.
+
+        Document.addNamespace existed in pySBOL2 and was commonly used.
+
+        Document.addNamespace(namespace, prefix) should now be
+        Document.bind(prefix, namespace). Note the change of argument
+        order.
+        """
+        warnings.warn('Use Document.bind() instead', DeprecationWarning)
+        self.bind(prefix, namespace)
