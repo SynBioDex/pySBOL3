@@ -88,6 +88,20 @@ class TestDocument(unittest.TestCase):
             xml_file = os.path.join(tmpdirname, 'test_output.xml')
             doc.write(xml_file, sbol3.RDF_XML)
 
+    def test_bind(self):
+        doc = sbol3.Document()
+        prefix = 'foo'
+        ns1 = 'http://example.com/foo'
+        doc.bind(prefix, ns1)
+        self.assertEqual(ns1, doc._namespaces[prefix])
+
+    def test_add_namespace(self):
+        doc = sbol3.Document()
+        prefix = 'foo'
+        ns1 = 'http://example.com/foo'
+        with self.assertWarns(DeprecationWarning):
+            doc.addNamespace(ns1, prefix)
+
 
 if __name__ == '__main__':
     unittest.main()
