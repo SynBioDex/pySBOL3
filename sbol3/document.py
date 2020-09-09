@@ -1,9 +1,18 @@
+import collections
 import logging
+import warnings
 from typing import Dict, Callable, List, Optional
 
 import rdflib
 
 from . import *
+
+default_bindings = {
+    'sbol': SBOL3_NS,
+    'prov': PROV_NS,
+    'om': OM_NS,
+    # Should others like SO, SBO, and CHEBI be added?
+}
 
 
 class Document:
@@ -25,22 +34,61 @@ class Document:
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)
         self.objects: List[Identified] = []
-        self.namespaces: Dict[str, str] = {}
+        self._namespaces: Dict[str, str] = default_bindings.copy()
 
-    def _parse_objects(self, graph):
-        result = {}
+    @staticmethod
+    def _make_custom_object(identity: str, types: List[str]) -> Identified:
+        if SBOL_IDENTIFIED in types:
+            types.remove(SBOL_IDENTIFIED)
+            try:
+                other_type = types[0]
+            except IndexError:
+                raise ValidationError('Expected one other type')
+            if other_type.startswith(SBOL3_NS):
+                raise ValidationError('Secondary type may not be in SBOL3 namespace')
+            return CustomIdentified(name=identity, custom_type=other_type)
+        elif SBOL_TOP_LEVEL in types:
+            types.remove(SBOL_TOP_LEVEL)
+            try:
+                other_type = types[0]
+            except IndexError:
+                raise ValidationError('Expected one other type')
+            if other_type.startswith(SBOL3_NS):
+                raise ValidationError('Secondary type may not be in SBOL3 namespace')
+            return CustomTopLevel(name=identity, custom_type=other_type)
+        else:
+            message = 'Custom types must contain either Identified or TopLevel'
+            raise ValidationError(message)
+
+    def _parse_objects(self, graph: rdflib.Graph) -> Dict[str, SBOLObject]:
+        # First extract the identities and their types. Each identity
+        # can have either one or two rdf:type properties. If one,
+        # create the entity. If two, it is a custom type (see section
+        # 6.11 of the spec) and we instantiate it specially.
+        #
+        # This will have to change in the future when we enable
+        # user-defined custom types somehow.
+        identity_types: Dict[str, List[str]] = collections.defaultdict(list)
         for s, p, o in graph.triples((None, rdflib.RDF.type, None)):
             str_o = str(o)
             str_s = str(s)
-            try:
-                builder = Document._uri_type_map[str_o]
-            except KeyError:
-                # If we don't know how to build the type, it must be an extension.
-                # Extensions do not have to comply with SBOL 3 type rules from
-                # Identified on down. So we create them as SBOLObject instances
-                self.logger.info(f'Creating generic object for type {str_o}')
-                builder = SBOLObject
-            obj = builder(str_s, type_uri=str_o)
+            identity_types[str_s].append(str_o)
+        # Now iterate over the identity->type dict creating the objects.
+        result = {}
+        for identity, types in identity_types.items():
+            if len(types) == 1:
+                type_uri = types[0]
+                try:
+                    builder = self._uri_type_map[type_uri]
+                except KeyError:
+                    logging.warning(f'No builder found for {type_uri}')
+                    raise ValidationError(f'Unknown type {type_uri}')
+                obj = builder(identity, type_uri=type_uri)
+            elif len(types) == 2:
+                obj = self._make_custom_object(identity, types)
+            else:
+                message = f'Expected either 1 or 2 types for {identity}'
+                raise ValidationError(message)
             obj.document = self
             result[obj.identity] = obj
         return result
@@ -54,12 +102,12 @@ class Document:
             str_s = str(s)
             str_p = str(p)
             obj = objects[str_s]
-            if str_p in obj.owned_objects:
+            if str_p in obj._owned_objects:
                 other_identity = str(o)
                 other = objects[other_identity]
-                obj.owned_objects[str_p].append(other)
+                obj._owned_objects[str_p].append(other)
             else:
-                obj.properties[str_p].append(o)
+                obj._properties[str_p].append(o)
 
     @staticmethod
     def _clean_up_singletons(objects: Dict[str, SBOLObject]):
@@ -85,7 +133,7 @@ class Document:
 
     def clear(self) -> None:
         self.objects.clear()
-        self.namespaces.clear()
+        self._namespaces = default_bindings.copy()
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, file_path: str, file_format: str) -> None:
@@ -110,18 +158,22 @@ class Document:
         self.objects = [obj for uri, obj in objects.items()
                         if isinstance(obj, TopLevel)]
         # Store the namespaces in the Document for later use
-        self.namespaces = {prefix: uri for prefix, uri in graph.namespaces()
-                           if prefix}
+        self._namespaces = {prefix: uri for prefix, uri in graph.namespaces()
+                            if prefix}
 
     def add(self, obj: TopLevel) -> None:
         """Add objects to the document.
         """
-        if isinstance(obj, TopLevel):
-            self.objects.append(obj)
-            obj.document = self
-        else:
+        if not isinstance(obj, TopLevel):
             message = f'Expected TopLevel instance, {type(obj).__name__} found'
             raise TypeError(message)
+        found_obj = self.find(obj.identity)
+        if found_obj is not None:
+            message = f'An entity with identity "{obj.identity}"'
+            message += ' already exists in document'
+            raise ValueError(message)
+        self.objects.append(obj)
+        obj.document = self
 
     def _find_in_objects(self, search_string: str) -> Optional[Identified]:
         # TODO: implement recursive search
@@ -144,6 +196,8 @@ class Document:
 
     def write(self, path: str, file_format: str) -> None:
         graph = rdflib.Graph()
+        for prefix, uri in self._namespaces.items():
+            graph.bind(prefix, uri)
         for obj in self.objects:
             obj.serialize(graph)
         if file_format == SORTED_NTRIPLES:
@@ -159,3 +213,29 @@ class Document:
                 outfile.writelines(lines)
         else:
             graph.serialize(path, format=file_format)
+
+    def bind(self, prefix: str, uri: str) -> None:
+        """Bind a prefix to an RDF namespace in the written RDF document.
+
+        These prefixes make the written RDF easier for humans to read.
+        These prefixes do not change the semantic meaning of the RDF
+        document in any way.
+        """
+        # Remove any prefix referencing the given URI
+        if uri in self._namespaces.values():
+            for k, v in list(self._namespaces.items()):
+                if v == uri:
+                    del self._namespaces[k]
+        self._namespaces[prefix] = uri
+
+    def addNamespace(self, namespace: str, prefix: str) -> None:
+        """Document.addNamespace is deprecated. Replace with Document.bind.
+
+        Document.addNamespace existed in pySBOL2 and was commonly used.
+
+        Document.addNamespace(namespace, prefix) should now be
+        Document.bind(prefix, namespace). Note the change of argument
+        order.
+        """
+        warnings.warn('Use Document.bind() instead', DeprecationWarning)
+        self.bind(prefix, namespace)

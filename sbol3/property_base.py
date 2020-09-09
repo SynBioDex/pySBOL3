@@ -20,7 +20,7 @@ class Property(abc.ABC):
         self._storage()[self.property_uri] = []
 
     def _storage(self) -> Dict[str, list]:
-        return self.property_owner.properties
+        return self.property_owner._properties
 
     @abc.abstractmethod
     def set(self, value: Any) -> None:

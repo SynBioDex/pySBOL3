@@ -16,7 +16,7 @@ class TestImplementation(unittest.TestCase):
 
     def test_read_from_file(self):
         test_file = os.path.join(SBOL3_LOCATION, 'entity', 'implementation',
-                                 'implementation.ntriples.sbol')
+                                 'implementation.nt')
         doc = sbol3.Document()
         doc.read(test_file, sbol3.NTRIPLES)
         search_uri = 'https://sbolstandard.org/examples/impl1'

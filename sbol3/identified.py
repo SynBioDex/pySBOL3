@@ -16,8 +16,9 @@ class Identified(SBOLObject):
         self.description = TextProperty(self, SBOL_DESCRIPTION, 0, 1)
         self.derived_from = URIProperty(self, PROV_DERIVED_FROM, 0, math.inf)
         self.generated_by = URIProperty(self, PROV_GENERATED_BY, 0, math.inf)
+        self.measures = OwnedObject(self, SBOL_HAS_MEASURE, 0, math.inf)
         # Identity has been set by the SBOLObject constructor
-        self._display_id = Identified._extract_display_id(self.identity)
+        self._display_id = self._extract_display_id(self.identity)
 
     @staticmethod
     def _is_valid_display_id(display_id: str) -> bool:
@@ -37,6 +38,8 @@ class Identified(SBOLObject):
 
     @staticmethod
     def _extract_display_id(identity: str) -> Union[None, str]:
+        if not identity:
+            return None
         parsed = urlparse(identity)
         if not (parsed.scheme and parsed.netloc and parsed.path):
             # if the identity is not a URL, we cannot extract a display id
@@ -47,7 +50,7 @@ class Identified(SBOLObject):
             return display_id
         else:
             msg = f'"{display_id}" is not a valid displayId.'
-            msg += '  A displayId MUST be composed of only alphanumeric'
+            msg += ' A displayId MUST be composed of only alphanumeric'
             msg += ' or underscore characters and MUST NOT begin with a digit.'
             raise ValueError(msg)
 
@@ -75,13 +78,13 @@ class Identified(SBOLObject):
     def serialize(self, graph: rdflib.Graph):
         identity = rdflib.URIRef(self.identity)
         graph.add((identity, rdflib.RDF.type, rdflib.URIRef(self.type_uri)))
-        for prop, items in self.properties.items():
+        for prop, items in self._properties.items():
             if not items:
                 continue
             rdf_prop = rdflib.URIRef(prop)
             for item in items:
                 graph.add((identity, rdf_prop, item))
-        for prop, items in self.owned_objects.items():
+        for prop, items in self._owned_objects.items():
             if not items:
                 continue
             rdf_prop = rdflib.URIRef(prop)

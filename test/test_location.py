@@ -1,10 +1,6 @@
-import os
 import unittest
 
 import sbol3
-
-MODULE_LOCATION = os.path.dirname(os.path.abspath(__file__))
-SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 
 
 class TestRange(unittest.TestCase):
