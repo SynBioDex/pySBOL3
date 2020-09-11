@@ -10,10 +10,9 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 class TestComponentReference(unittest.TestCase):
 
     def test_create(self):
-        identity = 'https://github.com/synbiodex/pysbol3/participation1'
         in_child_of = 'https://github.com/synbiodex/pysbol3/subcomponent'
         feature = 'https://github.com/synbiodex/pysbol3/other_feature'
-        comp_ref = sbol3.ComponentReference(identity, in_child_of, feature)
+        comp_ref = sbol3.ComponentReference(in_child_of, feature)
         self.assertIsNotNone(comp_ref)
         self.assertEqual(in_child_of, comp_ref.in_child_of)
         self.assertEqual(feature, comp_ref.feature)

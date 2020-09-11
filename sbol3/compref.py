@@ -7,9 +7,10 @@ from .feature import Feature
 
 class ComponentReference(Feature):
 
-    def __init__(self, name: str, in_child_of: Union[SBOLObject, str],
-                 feature: Union[SBOLObject, str],
-                 *, type_uri: str = SBOL_COMPONENT_REFERENCE) -> None:
+    def __init__(self, in_child_of: Union[SubComponent, str],
+                 feature: Union[Feature, str],
+                 *, name: str = None,
+                 type_uri: str = SBOL_COMPONENT_REFERENCE) -> None:
         super().__init__(name, type_uri)
         self.in_child_of = ReferencedObject(self, SBOL_IN_CHILD_OF, 1, 1,
                                             initial_value=in_child_of)
@@ -31,7 +32,7 @@ class ComponentReference(Feature):
 def build_component_reference(name: str, *,
                               type_uri: str = SBOL_COMPONENT_REFERENCE) -> SBOLObject:
     missing = PYSBOL3_MISSING
-    obj = ComponentReference(name, missing, missing, type_uri=type_uri)
+    obj = ComponentReference(missing, missing, name=name, type_uri=type_uri)
     # Remove the dummy values
     obj._properties[SBOL_FEATURES] = []
     obj._properties[SBOL_IN_CHILD_OF] = []
