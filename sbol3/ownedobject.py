@@ -77,7 +77,8 @@ class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
 def OwnedObject(property_owner: Any, property_uri: str,
                 lower_bound: int, upper_bound: Union[int, float],
                 validation_rules: Optional[List] = None,
-                initial_value: Optional[Union[str, List[str]]] = None) -> Property:
+                initial_value: Optional[Union['Identified', List['Identified']]] = None)\
+        -> Property:
     if upper_bound == 1:
         return OwnedObjectSingletonProperty(property_owner, property_uri,
                                             lower_bound, upper_bound,
