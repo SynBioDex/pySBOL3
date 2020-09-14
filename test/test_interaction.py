@@ -8,11 +8,9 @@ import sbol3
 class TestInteraction(unittest.TestCase):
 
     def test_create(self):
-        display_id = 'interaction1'
         types = [sbol3.SBO_INHIBITION]
-        interaction = sbol3.Interaction(display_id, types)
+        interaction = sbol3.Interaction(types)
         self.assertIsNotNone(interaction)
-        self.assertEqual(display_id, interaction.display_id)
         self.assertEqual(types, interaction.types)
 
     def test_read(self):

@@ -10,9 +10,8 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 class TestParticipation(unittest.TestCase):
 
     def test_create(self):
-        identity = 'https://github.com/synbiodex/pysbol3/participation1'
         participant = 'https://github.com/synbiodex/pysbol3/participant1'
-        p = sbol3.Participation(identity, [sbol3.SBO_INHIBITOR], participant)
+        p = sbol3.Participation([sbol3.SBO_INHIBITOR], participant)
         self.assertIsNotNone(p)
         self.assertEqual([sbol3.SBO_INHIBITOR], p.roles)
         self.assertEqual(participant, p.participant)

@@ -29,8 +29,9 @@ class Unit(TopLevel, abc.ABC):
 
 class Measure(Identified):
 
-    def __init__(self, name: str, value: float, unit: str,
-                 *, type_uri: str = OM_MEASURE) -> None:
+    def __init__(self, value: float, unit: str,
+                 *, name: str = None,
+                 type_uri: str = OM_MEASURE) -> None:
         super().__init__(name, type_uri)
         self.value = FloatProperty(self, OM_HAS_NUMERICAL_VALUE, 1, 1,
                                    initial_value=value)
@@ -42,7 +43,7 @@ class Measure(Identified):
 
 def build_measure(name: str, *, type_uri: str = OM_MEASURE) -> SBOLObject:
     missing = PYSBOL3_MISSING
-    obj = Measure(name, 1.0, missing, type_uri=type_uri)
+    obj = Measure(1.0, missing, name=name, type_uri=type_uri)
     # Remove the dummy values
     obj._properties[OM_HAS_NUMERICAL_VALUE] = []
     obj._properties[OM_HAS_UNIT] = []

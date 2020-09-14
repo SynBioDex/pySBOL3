@@ -10,7 +10,7 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 class TestInterface(unittest.TestCase):
 
     def test_create(self):
-        interface = sbol3.Interface('interface1')
+        interface = sbol3.Interface()
         self.assertIsNotNone(interface)
 
     def test_read_from_file(self):

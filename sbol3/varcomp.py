@@ -5,9 +5,10 @@ from . import *
 
 class VariableComponent(Identified):
 
-    def __init__(self, name: str, *,
+    def __init__(self, *,
                  cardinality: str = None,
                  variable: str = None,
+                 name: str = None,
                  type_uri: str = SBOL_VARIABLE_COMPONENT) -> None:
         super().__init__(name, type_uri)
         # Assign default values
