@@ -6,7 +6,7 @@ import sbol3
 class TestSequenceFeature(unittest.TestCase):
 
     def test_create(self):
-        es1 = sbol3.EntireSequence('es1')
+        es1 = sbol3.EntireSequence()
         locations = [es1]
         sf = sbol3.SequenceFeature(locations)
         self.assertEqual(locations, sf.locations)
