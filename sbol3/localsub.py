@@ -8,8 +8,9 @@ from .typing import *
 
 class LocalSubComponent(Feature):
 
-    def __init__(self, name: str, types: List[str],
-                 *, type_uri: str = SBOL_LOCAL_SUBCOMPONENT) -> None:
+    def __init__(self, types: List[str],
+                 *, name: str = None,
+                 type_uri: str = SBOL_LOCAL_SUBCOMPONENT) -> None:
         super().__init__(name, type_uri)
         self.types: uri_list = URIProperty(self, SBOL_TYPE, 1, math.inf,
                                            initial_value=types)
@@ -25,7 +26,7 @@ class LocalSubComponent(Feature):
 def build_local_subcomponent(name: str,
                              *, type_uri: str = SBOL_LOCAL_SUBCOMPONENT) -> SBOLObject:
     missing = PYSBOL3_MISSING
-    obj = LocalSubComponent(name, [missing], type_uri=type_uri)
+    obj = LocalSubComponent([missing], name=name, type_uri=type_uri)
     # Remove the dummy values
     obj._properties[SBOL_TYPE] = []
     return obj

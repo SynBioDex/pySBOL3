@@ -16,16 +16,8 @@ class Location(Identified, abc.ABC):
 
 class Range(Location):
 
-    @staticmethod
-    def _builder(identity_uri: str, type_uri: str = SBOL_RANGE):
-        """Used by Document to construct a SubComponent when reading an SBOL file.
-        """
-        start = 1
-        end = 1
-        return Range(identity_uri, start, end, type_uri=type_uri)
-
-    def __init__(self, name: str, start: int, end: int,
-                 *, type_uri: str = SBOL_RANGE, ) -> None:
+    def __init__(self, start: int, end: int,
+                 *, name: str = None, type_uri: str = SBOL_RANGE) -> None:
         super().__init__(name, type_uri)
         self.start: int_property = IntProperty(self, SBOL_START, 1, 1,
                                                initial_value=start)
@@ -43,20 +35,25 @@ class Range(Location):
             raise ValidationError('End must be >= start')
 
 
-Document.register_builder(SBOL_RANGE, Range._builder)
+def build_range(name: str, type_uri: str = SBOL_RANGE):
+    """Used by Document to construct a Range when reading an SBOL file.
+    """
+    start = 1
+    end = 1
+    obj = Range(start, end, name=name, type_uri=type_uri)
+    # Remove the dummy values
+    obj._properties[SBOL_START] = []
+    obj._properties[SBOL_END] = []
+    return obj
+
+
+Document.register_builder(SBOL_RANGE, build_range)
 
 
 class Cut(Location):
 
-    @staticmethod
-    def _builder(identity_uri: str, type_uri: str = SBOL_CUT):
-        """Used by Document to construct a SubComponent when reading an SBOL file.
-        """
-        at = 0
-        return Cut(identity_uri, at, type_uri=type_uri)
-
-    def __init__(self, name: str, at: int,
-                 *, type_uri: str = SBOL_CUT) -> None:
+    def __init__(self, at: int,
+                 *, name: str = None, type_uri: str = SBOL_CUT) -> None:
         super().__init__(name, type_uri)
         self.at: int_property = IntProperty(self, SBOL_START, 1, 1,
                                             initial_value=at)
@@ -68,15 +65,32 @@ class Cut(Location):
             raise ValidationError('At must be >= 0')
 
 
-Document.register_builder(SBOL_CUT, Cut._builder)
+def build_cut(name: str, type_uri: str = SBOL_CUT):
+    """Used by Document to construct a Cut when reading an SBOL file.
+    """
+    at = 0
+    obj = Cut(at, name=name, type_uri=type_uri)
+    # Remove the dummy values
+    obj._properties[SBOL_START] = []
+    return obj
+
+
+Document.register_builder(SBOL_CUT, build_cut)
 
 
 class EntireSequence(Location):
 
-    def __init__(self, name: str, *,
+    def __init__(self, *, name: str = None,
                  type_uri: str = SBOL_ENTIRE_SEQUENCE) -> None:
         super().__init__(name, type_uri)
         self.validate()
+
+
+def build_entire_sequence(name: str, type_uri: str = SBOL_ENTIRE_SEQUENCE):
+    """Used by Document to construct an EntireSequence when reading an SBOL file.
+    """
+    obj = EntireSequence(name=name, type_uri=type_uri)
+    return obj
 
 
 Document.register_builder(SBOL_ENTIRE_SEQUENCE, EntireSequence)

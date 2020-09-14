@@ -13,8 +13,9 @@ class ExternallyDefined(Feature):
     can be referenced.
     """
 
-    def __init__(self, name: str, types: List[str], definition: str,
-                 *, type_uri: str = SBOL_EXTERNALLY_DEFINED):
+    def __init__(self, types: List[str], definition: str,
+                 *, name: str = None,
+                 type_uri: str = SBOL_EXTERNALLY_DEFINED):
         super().__init__(name, type_uri)
         self.types: uri_list = URIProperty(self, SBOL_TYPE, 1, math.inf,
                                            initial_value=types)
@@ -33,7 +34,7 @@ class ExternallyDefined(Feature):
 def build_externally_defined(name: str,
                              *, type_uri: str = SBOL_EXTERNALLY_DEFINED) -> SBOLObject:
     missing = PYSBOL3_MISSING
-    obj = ExternallyDefined(name, [missing], missing, type_uri=type_uri)
+    obj = ExternallyDefined([missing], missing, name=name, type_uri=type_uri)
     # Remove the dummy values
     obj._properties[SBOL_TYPE] = []
     obj._properties[SBOL_DEFINITION] = []

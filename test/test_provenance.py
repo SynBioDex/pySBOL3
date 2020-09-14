@@ -34,10 +34,8 @@ class TestAssociation(unittest.TestCase):
 
     def test_create(self):
         agent = sbol3.Agent('agent')
-        display_id = 'association'
-        association = sbol3.Association(display_id, agent)
+        association = sbol3.Association(agent)
         self.assertIsNotNone(association)
-        self.assertEqual(display_id, association.display_id)
         self.assertEqual([], association.roles)
         self.assertEqual(None, association.plan)
         self.assertEqual(agent.identity, association.agent)
@@ -58,10 +56,8 @@ class TestUsage(unittest.TestCase):
 
     def test_create(self):
         agent = sbol3.Agent('agent')
-        display_id = 'usage'
-        usage = sbol3.Usage(display_id, agent.identity)
+        usage = sbol3.Usage(agent.identity)
         self.assertIsNotNone(usage)
-        self.assertEqual(display_id, usage.display_id)
         self.assertEqual(agent.identity, usage.entity)
         self.assertEqual([], usage.roles)
 

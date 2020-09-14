@@ -9,11 +9,13 @@ from .typing import *
 
 class SequenceFeature(Feature):
 
-    def __init__(self, name: str, locations: List[Location],
-                 *, type_uri: str = SBOL_SEQUENCE_FEATURE) -> None:
+    def __init__(self, locations: List[Location],
+                 *, name: str = None,
+                 type_uri: str = SBOL_SEQUENCE_FEATURE) -> None:
         super().__init__(name, type_uri)
-        self.locations = OwnedObject(self, SBOL_LOCATION, 1, math.inf,
-                                     initial_value=locations)
+        self.locations: oo_list = OwnedObject(self, SBOL_LOCATION,
+                                              1, math.inf,
+                                              initial_value=locations)
         self.validate()
 
     def validate(self):
@@ -24,8 +26,7 @@ class SequenceFeature(Feature):
 
 def build_sequence_feature(name: str,
                            *, type_uri: str = SBOL_SEQUENCE_FEATURE) -> SBOLObject:
-    missing = PYSBOL3_MISSING
-    obj = LocalSubComponent(name, [missing], type_uri=type_uri)
+    obj = SequenceFeature([EntireSequence()], name=name, type_uri=type_uri)
     # Remove the dummy values
     obj._properties[SBOL_LOCATION] = []
     return obj

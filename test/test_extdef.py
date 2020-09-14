@@ -10,13 +10,11 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 class TestExternallyDefined(unittest.TestCase):
 
     def test_create(self):
-        display_id = 'CaCl2'
         types = ['https://identifiers.org/SBO:0000247']
         definition = 'https://identifiers.org/CHEBI:3312'
-        ext_def = sbol3.ExternallyDefined(display_id, types, definition)
+        ext_def = sbol3.ExternallyDefined(types, definition)
         self.assertEqual(definition, ext_def.definition)
         self.assertCountEqual(types, ext_def.types)
-        self.assertEqual(display_id, ext_def.display_id)
 
     def test_read_from_file(self):
         test_file = os.path.join(SBOL3_LOCATION, 'measurement_entity',

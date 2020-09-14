@@ -5,7 +5,8 @@ from . import *
 
 class Interface(Identified):
 
-    def __init__(self, name: str, *, type_uri: str = SBOL_INTERFACE) -> None:
+    def __init__(self, *, name: str = None,
+                 type_uri: str = SBOL_INTERFACE) -> None:
         super().__init__(name, type_uri)
         self.input = ReferencedObject(self, SBOL_INPUT, 0, math.inf)
         self.output = ReferencedObject(self, SBOL_OUTPUT, 0, math.inf)
@@ -16,4 +17,8 @@ class Interface(Identified):
         super().validate()
 
 
-Document.register_builder(SBOL_INTERFACE, Interface)
+def build_interface(name: str, *, type_uri: str = SBOL_INTERFACE) -> SBOLObject:
+    return Interface(name=name, type_uri=type_uri)
+
+
+Document.register_builder(SBOL_INTERFACE, build_interface)

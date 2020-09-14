@@ -10,19 +10,17 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 class TestMeasure(unittest.TestCase):
 
     def test_create(self):
-        display_id = 'measure1'
         unit = 'https://sbolstandard.org/examples/millimolePerLitre'
         value = 0.1
         types = ['https://identifiers.org/SBO:0000196',
                  'https://identifiers.org/SBO:0000197']
-        measure = sbol3.Measure(display_id, value, unit)
+        measure = sbol3.Measure(value, unit)
         measure.types = types
         self.assertIsNotNone(measure)
         self.assertIsInstance(measure, sbol3.Measure)
         self.assertEqual(value, measure.value)
         self.assertCountEqual(types, measure.types)
         self.assertEqual(unit, measure.unit)
-        self.assertEqual(display_id, measure.display_id)
 
     def test_read_from_file(self):
         test_file = os.path.join(SBOL3_LOCATION, 'measurement_entity',
