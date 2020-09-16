@@ -1,9 +1,9 @@
 Installation
 ======================
 
-pySBOL2 is a pure `Python <https://www.python.org>`_ package and is
-available on any platform that supports Python.  pySBOL2 requires
-Python 3.6 or higher, and can be installusing using `pip
+pySBOL3 is a pure `Python <https://www.python.org>`_ package and is
+available on any platform that supports Python 3.  pySBOL3 requires
+Python 3.6 or higher, and can be installed using using `pip
 <https://pypi.org/project/pip/>`_
 
 .. note:: Python 2 is not supported.
@@ -12,32 +12,32 @@ Python 3.6 or higher, and can be installusing using `pip
 Install the current release
 ----------------------
 
-To install the latest release of pySBOL2 using `pip`, execute the
+To install the latest release of pySBOL3 using `pip`, execute the
 following line in a console or terminal:
 
 .. code::
 
-        pip install sbol2
+        pip install sbol3
 
-If you encounter permission errors, you may want to install pySBOL2 to
+If you encounter permission errors, you may want to install pySBOL3 to
 your user site-packages directory as follows:
 
 .. code::
 
-        pip install sbol2 --user
+        pip install --user sbol3
 
 Or alternatively, you may install as a super-user (on Unix-like
 platforms):
 
 .. code::
 
-        sudo pip install sbol2
+        sudo pip install sbol3
 
-To update pySBOL2 using pip, run:
+To update pySBOL3 using pip, run:
 
 .. code::
 
-        pip install -U sbol2
+        pip install -U sbol3
 
 
 Install the latest from GitHub
@@ -51,7 +51,7 @@ bugs.
 
 .. code::
 
-        python3 -m pip install git+https://github.com/synbiodex/pysbol2
+        python3 -m pip install git+https://github.com/synbiodex/pysbol3
 
 
 For developers
@@ -61,13 +61,13 @@ For developers
 
 .. code::
 
-        $ git clone --recurse-submodules https://github.com/SynBioDex/sbol2.git
+        $ git clone --recurse-submodules https://github.com/SynBioDex/sbol3.git
 
-2. Install pySBOL2 using the ``setup.py`` file:
+2. Install pySBOL3 using the ``setup.py`` file:
 
 .. code::
 
-        $ cd sbol2
+        $ cd sbol3
         $ python setup.py install
 
 3. Test the installation by importing it in a Python interpreter:
@@ -75,16 +75,12 @@ For developers
 .. code::
 
         $ python3
-        Python 3.8.0 (v3.8.0:fa919fdf25, Oct 14 2019, 10:23:27) 
-        [Clang 6.0 (clang-600.0.57)] on darwin
-        Type "help", "copyright", "credits" or "license" for more information.
-        >>> import sbol2
-        RDFLib Version: 5.0.0
-        >>> sbol2.__version__
-        '1.0'
+	Python 3.8.5 (v3.8.5:580fbb018f, Jul 20 2020, 12:11:27)
+	[Clang 6.0 (clang-600.0.57)] on darwin
+	Type "help", "copyright", "credits" or "license" for more information.
+	>>> import sbol3
+	RDFLib Version: 5.0.0
 
-.. note:: Your version number may be different than the version number
-          displayed above.
 
 4. Optionally run the unit test suite:
 
@@ -98,13 +94,11 @@ For developers
 Installing on macOS
 ----------------------
 
-.. See Issue #258
-
 Macs do not ship with Python 3 so it is necessary to download and
-install Python 3 before installing pySBOL2. You can download the
+install Python 3 before installing pySBOL3. You can download the
 latest Python 3 release from `python.org
 <https://www.python.org>`_. After Python 3 is installed please follow
-the instructions above to install pySBOL2.
+the instructions above to install pySBOL3.
 
 Using PyPy
 ----------------------
@@ -114,7 +108,7 @@ implementation of Python." PyPy uses a
 `just-in-time compiler <https://en.wikipedia.org/wiki/Just-in-time_compilation>`_
 (JIT), which can make certain programs faster.
 
-pySBOL2 uses `RDFlib <https://github.com/RDFLib/rdflib>`_ which can be
+pySBOL3 uses `RDFlib <https://github.com/RDFLib/rdflib>`_ which can be
 slow for reading and writing SBOL files when compared to a C
 implementation like `Raptor <http://librdf.org/raptor/>`_ .
 
@@ -127,6 +121,6 @@ single file is an example of a program that would probably *not*
 benefit from PyPy because the JIT complier doesn't have a chance to
 optimize the code.
 
-pySBOL2 is compatible with PyPy. The installation and use of PyPy is
+pySBOL3 is compatible with PyPy. The installation and use of PyPy is
 out of scope for this document. Please see the PyPy documentation if
-you want to try using PyPy with pySBOL2.
+you want to try using PyPy with pySBOL3.
