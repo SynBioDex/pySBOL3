@@ -185,8 +185,13 @@ class Document:
         return None
 
     def find(self, search_string: str) -> Optional[Identified]:
-        # Search string might be a URI or an id like display_id
-        # TODO: should we check `name` as well?
+        """Find an object by identity URI or by display_id.
+
+        :param search_string: Either an identity URI or a display_id
+        :type search_string: str
+        :returns: The named object or ``None`` if no object was found
+
+        """
         for obj in self.objects:
             if obj.identity == search_string:
                 return obj

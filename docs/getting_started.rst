@@ -1,15 +1,36 @@
-Getting Started with SBOL
+Getting Started with pySBOL3
 =============================
 
-This beginner’s guide introduces the basic principles of pySBOL2 for new users. Most of the examples discussed in this guide are excerpted from the example script. The objective of this documentation is to familiarize users with the basic patterns of the API. For more comprehensive documentation about the API, refer to documentation about specific classes and methods. 
+This beginner’s guide introduces the basic principles of pySBOL3 for
+new users. Most of the examples discussed in this guide are excerpted
+from the example script. The objective of this documentation is to
+familiarize users with the basic patterns of the API. For more
+comprehensive documentation about the API, refer to documentation
+about specific classes and methods.
 
-The class structure and data model for the API is based on the Synthetic Biology Open Language. For more detail about the SBOL standard, visit `sbolstandard.org <https://sbolstandard.org>`_ or refer to the `specification document <https://sbolstandard.org/wp-content/uploads/2016/06/SBOL2.3.0.pdf>`_. This document provides diagrams and description of all the standard classes and properties that comprise SBOL. 
+The class structure and data model for the API is based on the
+Synthetic Biology Open Language. For more detail about the SBOL
+standard, visit `sbolstandard.org <https://sbolstandard.org>`_ or
+refer to the `specification document
+<https://sbolstandard.org/wp-content/uploads/2016/06/SBOL2.3.0.pdf>`_. This
+document provides diagrams and description of all the standard classes
+and properties that comprise SBOL.
 
 -------------------------
 Creating an SBOL Document
 -------------------------
 
-In a previous era, engineers might sit at a drafting board and draft a design by hand. The engineer's drafting sheet in pySBOL2 is called a Document. The Document serves as a container, initially empty, for SBOL data objects which represent elements of a biological design. Usually the first step is to construct a Document in which to put your objects. All file I/O operations are performed on the Document. The Document `read <autoapi/sbol2/document/index.html#sbol2.document.Document.read>`_ and `write <autoapi/sbol2/document/index.html#sbol2.document.Document.write>`_ methods are used for reading and writing files in SBOL format.
+In a previous era, engineers might sit at a drafting board and draft a
+design by hand. The engineer's drafting sheet in pySBOL2 is called a
+Document. The Document serves as a container, initially empty, for
+SBOL data objects which represent elements of a biological
+design. Usually the first step is to construct a Document in which to
+put your objects. All file I/O operations are performed on the
+Document. The Document `read
+<autoapi/sbol2/document/index.html#sbol2.document.Document.read>`_ and
+`write
+<autoapi/sbol2/document/index.html#sbol2.document.Document.write>`_
+methods are used for reading and writing files in SBOL format.
 
 .. code:: python
 
@@ -19,9 +40,21 @@ In a previous era, engineers might sit at a drafting board and draft a design by
 
 .. end
 
-Reading a Document will wipe any existing contents clean before import. However, you can import objects from multiple files into a single Document object using `Document.append() <autoapi/sbol2/document/index.html#sbol2.document.Document.append>`_. This can be advantageous when you want to integrate multiple objects from different files into a single design. This kind of data integration is an important and useful feature of SBOL.
+Reading a Document will wipe any existing contents clean before
+import. However, you can import objects from multiple files into a
+single Document object using `Document.append()
+<autoapi/sbol2/document/index.html#sbol2.document.Document.append>`_. This
+can be advantageous when you want to integrate multiple objects from
+different files into a single design. This kind of data integration is
+an important and useful feature of SBOL.
 
-A Document may contain different types of SBOL objects, including ComponentDefinitions, ModuleDefinitions, Sequences, and Models. These objects are collectively referred to as TopLevel objects because they can be referenced directly from a Document. The total count of objects contained in a Document is determined using the ``len`` function. To view an inventory of objects contained in the Document, simply ``print`` it.
+A Document may contain different types of SBOL objects, including
+ComponentDefinitions, ModuleDefinitions, Sequences, and Models. These
+objects are collectively referred to as TopLevel objects because they
+can be referenced directly from a Document. The total count of objects
+contained in a Document is determined using the ``len`` function. To
+view an inventory of objects contained in the Document, simply
+``print`` it.
 
 .. code:: python
 
