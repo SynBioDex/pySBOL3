@@ -10,7 +10,7 @@ Python 3.6 or higher, and can be installed using using `pip
 
 
 Install the current release
-----------------------
+---------------------------
 
 To install the latest release of pySBOL3 using `pip`, execute the
 following line in a console or terminal:
@@ -41,7 +41,7 @@ To update pySBOL3 using pip, run:
 
 
 Install the latest from GitHub
-----------------------
+------------------------------
 
 You can also install the latest version from GitHub. This might be
 appropriate for you if you need a specific feature or bug fix that has
