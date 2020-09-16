@@ -41,6 +41,9 @@ autoapi_options = ['members', 'undoc-members', 'show-inheritance',
                    'show-module-summary', 'special-members']
 autoapi_python_class_content = 'both'
 autoapi_member_order = 'alphabetical'
+# If true, the current module name will be prepended to all description
+# unit titles (such as .. function::).
+add_module_names = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
