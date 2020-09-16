@@ -16,6 +16,10 @@ Use pip to install the library:
 pip install git+https://github.com/SynBioDex/pySBOL3
 ```
 
+## Documentation
+
+[Full documentation for pySBOL3 is available at read-the-docs](https://pysbol3.readthedocs.io).
+
 ## Development
 
 Please
