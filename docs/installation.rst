@@ -88,8 +88,6 @@ For developers
 
         $ python3 -m unittest discover -s test
 
-.. note:: The unit tests take several minutes to run. You may see some
-	  deprecation warnings which can be ignored.
 
 Installing on macOS
 ----------------------

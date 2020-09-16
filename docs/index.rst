@@ -12,7 +12,7 @@ and constructing genetic designs according to the standardized specifications of
    :maxdepth: 2
 
    introduction
-..   installation
+   installation
 ..   getting_started
 ..   repositories
 ..   sbol_examples
