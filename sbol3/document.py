@@ -7,7 +7,7 @@ import rdflib
 
 from . import *
 
-default_bindings = {
+_default_bindings = {
     'sbol': SBOL3_NS,
     'prov': PROV_NS,
     'om': OM_NS,
@@ -34,7 +34,7 @@ class Document:
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)
         self.objects: List[Identified] = []
-        self._namespaces: Dict[str, str] = default_bindings.copy()
+        self._namespaces: Dict[str, str] = _default_bindings.copy()
 
     @staticmethod
     def _make_custom_object(identity: str, types: List[str]) -> Identified:
@@ -133,7 +133,7 @@ class Document:
 
     def clear(self) -> None:
         self.objects.clear()
-        self._namespaces = default_bindings.copy()
+        self._namespaces = _default_bindings.copy()
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, file_path: str, file_format: str) -> None:
@@ -185,8 +185,13 @@ class Document:
         return None
 
     def find(self, search_string: str) -> Optional[Identified]:
-        # Search string might be a URI or an id like display_id
-        # TODO: should we check `name` as well?
+        """Find an object by identity URI or by display_id.
+
+        :param search_string: Either an identity URI or a display_id
+        :type search_string: str
+        :returns: The named object or ``None`` if no object was found
+
+        """
         for obj in self.objects:
             if obj.identity == search_string:
                 return obj
