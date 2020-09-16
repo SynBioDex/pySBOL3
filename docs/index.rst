@@ -12,11 +12,11 @@ and constructing genetic designs according to the standardized specifications of
    :maxdepth: 2
 
    introduction
-   installation
-   getting_started
-   repositories
-   sbol_examples
-   extensions
+..   installation
+..   getting_started
+..   repositories
+..   sbol_examples
+..   extensions
 
 
 Indices and tables
