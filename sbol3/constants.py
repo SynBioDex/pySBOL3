@@ -103,6 +103,12 @@ SBOL_VARIANT = SBOL3_NS + 'variant'
 SBOL_VARIANT_COLLECTION = SBOL3_NS + 'variantCollection'
 SBOL_VARIANT_DERIVATION = SBOL3_NS + 'variantDerivation'
 
+# Recommended values for Sequence encoding
+SBOL_IUPAC_DNA = SBOL3_NS + 'iupacNucleicAcid'
+SBOL_IUPAC_RNA = SBOL_IUPAC_DNA
+SBOL_IUPAC_PROTEIN = SBOL3_NS + 'iupacAminoAcid'
+SMILES_ENCODING = 'http://www.opensmiles.org/opensmiles.html'
+
 # Valid values for Feature orientation
 # See SBOL3 Section 6.4.1 Table 5
 SBOL_INLINE = SBOL3_NS + 'inline'
