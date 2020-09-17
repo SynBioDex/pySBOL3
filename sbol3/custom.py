@@ -5,7 +5,7 @@ from . import *
 
 class CustomIdentified(Identified):
 
-    def __init__(self, *, name: str = None, custom_type: str = None,
+    def __init__(self, custom_type: str = None, *, name: str = None,
                  type_uri: str = SBOL_IDENTIFIED) -> None:
         super().__init__(name, type_uri)
         self.rdf_type = URIProperty(self, rdflib.RDF.type, 1, 1,
