@@ -33,6 +33,7 @@ class TestRoundTrip(unittest.TestCase):
             shutil.rmtree(self.temp_out_dir)
             self.temp_out_dir = None
 
+    @unittest.expectedFailure  # Invalid file: Locations lack a sequence reference
     def test_BBa_F2620_PoPSReceiver(self):
         sbol_path = os.path.join(SBOL3_LOCATION, 'BBa_F2620_PoPSReceiver',
                                  'BBa_F2620_PoPSReceiver.ttl')
@@ -74,12 +75,15 @@ class TestRoundTrip(unittest.TestCase):
         # read them all.
         # This is intended as a temporary test until the library is
         # more complete.
-        skip_files = ['annotation.nt',
-                      'annotation.ttl',
-                      'annotation.rdf']
+        skip_files = [
+            # See https://github.com/SynBioDex/SBOLTestSuite/issues/22
+            'annotation',
+            # See https://github.com/SynBioDex/SBOLTestSuite/issues/24
+            'BBa_F2620_PoPSReceiver',
+        ]
         for f in self.find_all_files(SBOL3_LOCATION):
             basename = os.path.basename(f)
-            if basename in skip_files:
+            if os.path.splitext(basename)[0] in skip_files:
                 # print(f'Skipping {f}')
                 continue
             rdf_type = self.rdf_type(f)
@@ -87,7 +91,7 @@ class TestRoundTrip(unittest.TestCase):
                 # Skip file types we don't know
                 # print(f'Skipping {f} of type {rdf_type}')
                 continue
-            # print(f'Reading {f}')
+            print(f'Reading {f}')
             doc = sbol3.Document()
             doc.read(f, rdf_type)
 
@@ -130,10 +134,15 @@ class TestRoundTrip(unittest.TestCase):
 
     def test_sbol3_files(self):
         test_dir = SBOL3_LOCATION
-        # TODO: Waiting for https://github.com/SynBioDex/SBOLTestSuite/issues/22
-        skip_list = ['annotation.nt', 'annotation.rdf', 'annotation.ttl']
+        skip_list = [
+            # See https://github.com/SynBioDex/SBOLTestSuite/issues/22
+            'annotation',
+            # See https://github.com/SynBioDex/SBOLTestSuite/issues/24
+            'BBa_F2620_PoPSReceiver',
+        ]
         for test_file in self.find_all_files(test_dir):
-            if os.path.basename(test_file) in skip_list:
+            basename = os.path.basename(test_file)
+            if os.path.splitext(basename)[0] in skip_list:
                 self.logger.debug(f'Skipping {test_file}')
                 continue
             file_format = self.rdf_type(test_file)
