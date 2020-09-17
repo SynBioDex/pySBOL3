@@ -135,19 +135,7 @@ class Document:
         self.objects.clear()
         self._namespaces = _default_bindings.copy()
 
-    # Formats: 'n3', 'nt', 'turtle', 'xml'
-    def read(self, file_path: str, file_format: str) -> None:
-        with open(file_path, 'r') as infile:
-            contents = infile.read()
-        return self.read_string(contents, file_format)
-
-    # Formats: 'n3', 'nt', 'turtle', 'xml'
-    def read_string(self, data: str, file_format: str) -> None:
-        # TODO: clear the document, this isn't append
-        if file_format == SORTED_NTRIPLES:
-            file_format = NTRIPLES
-        graph = rdflib.Graph()
-        graph.parse(data=data, format=file_format)
+    def _parse_graph(self, graph) -> None:
         objects = self._parse_objects(graph)
         self._parse_attributes(objects, graph)
         self._clean_up_singletons(objects)
@@ -160,6 +148,23 @@ class Document:
         # Store the namespaces in the Document for later use
         self._namespaces = {prefix: uri for prefix, uri in graph.namespaces()
                             if prefix}
+
+    # Formats: 'n3', 'nt', 'turtle', 'xml'
+    def read(self, location: str, file_format: str) -> None:
+        if file_format == SORTED_NTRIPLES:
+            file_format = NTRIPLES
+        graph = rdflib.Graph()
+        graph.load(location, format=file_format)
+        return self._parse_graph(graph)
+
+    # Formats: 'n3', 'nt', 'turtle', 'xml'
+    def read_string(self, data: str, file_format: str) -> None:
+        # TODO: clear the document, this isn't append
+        if file_format == SORTED_NTRIPLES:
+            file_format = NTRIPLES
+        graph = rdflib.Graph()
+        graph.parse(data=data, format=file_format)
+        return self._parse_graph(graph)
 
     def add(self, obj: TopLevel) -> None:
         """Add objects to the document.
