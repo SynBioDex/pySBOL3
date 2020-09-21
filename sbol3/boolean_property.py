@@ -14,7 +14,7 @@ class BooleanPropertyMixin:
             raise TypeError(f'Expecting boolean, got {type(value)}')
         return rdflib.Literal(value)
 
-    def to_user(self, value: Any) -> int:
+    def to_user(self, value: Any) -> bool:
         return bool(value)
 
 
