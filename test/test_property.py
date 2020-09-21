@@ -41,7 +41,7 @@ class TestProperty(unittest.TestCase):
 
     def test_boolean_property(self):
         c = sbol3.Component('c1', sbol3.SBO_DNA)
-        c.boolean_attribute = sbol3.BooleanProperty(c, 'http://example.org/foo#',
+        c.boolean_attribute = sbol3.BooleanProperty(c, 'http://example.org#foo',
                                                     0, 1, [])
         c.boolean_attribute = True
         self.assertEqual(type(c.boolean_attribute), bool)
