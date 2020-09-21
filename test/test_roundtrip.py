@@ -91,7 +91,7 @@ class TestRoundTrip(unittest.TestCase):
                 # Skip file types we don't know
                 # print(f'Skipping {f} of type {rdf_type}')
                 continue
-            print(f'Reading {f}')
+            # print(f'Reading {f}')
             doc = sbol3.Document()
             doc.read(f, rdf_type)
 

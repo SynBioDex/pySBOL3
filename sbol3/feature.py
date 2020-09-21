@@ -9,7 +9,7 @@ class Feature(Identified, abc.ABC):
 
     def __init__(self, name: str, type_uri: str) -> None:
         super().__init__(name, type_uri)
-        self.role = URIProperty(self, SBOL_ROLE, 0, math.inf)
+        self.roles = URIProperty(self, SBOL_ROLE, 0, math.inf)
         self.orientation = URIProperty(self, SBOL_ORIENTATION, 0, 1)
 
     def validate(self) -> None:

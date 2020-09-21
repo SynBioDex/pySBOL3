@@ -43,16 +43,6 @@ class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
         if initial_value:
             self.set(initial_value)
 
-    def counter_value(self, type_name: str):
-        result = 0
-        for sibling in self._storage()[self.property_uri]:
-            if sibling.display_id and sibling.display_id.startswith(type_name):
-                counter_string = sibling.display_id[len(type_name):]
-                counter_int = int(counter_string)
-                if counter_int > result:
-                    result = counter_int
-        return result + 1
-
     def item_added(self, item: Any) -> None:
         if not self.property_owner.identity_is_url():
             return
@@ -62,7 +52,7 @@ class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
             # what do we do here?
             pass
         type_name = item.type_uri[len(SBOL3_NS):]
-        counter_value = self.counter_value(type_name)
+        counter_value = self.property_owner.counter_value(type_name)
         new_display_id = f'{type_name}{counter_value}'
         new_url = posixpath.join(self.property_owner.identity, new_display_id)
         for sibling in self._storage()[self.property_uri]:
@@ -70,8 +60,7 @@ class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
                 continue
             if sibling.identity == new_url:
                 raise ValidationError(f'Duplicate URI: {new_url}')
-        item._identity = new_url
-        item._display_id = new_display_id
+        item._update_identity(new_url, new_display_id)
 
 
 def OwnedObject(property_owner: Any, property_uri: str,

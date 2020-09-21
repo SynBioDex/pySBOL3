@@ -73,6 +73,19 @@ class TestOwnedObject(unittest.TestCase):
         expected2 = posixpath.join(comp.identity, 'Constraint2')
         self.assertEqual(expected2, comp.constraints[1].identity)
 
+    def test_cascade_identity(self):
+        # Test that updating identity of an owned object cascades
+        # to child owned objects
+        c1 = sbol3.Component('c1', sbol3.SBO_DNA)
+        seq = sbol3.Sequence('seq1')
+        loc = sbol3.EntireSequence(seq)
+        seq_feature = sbol3.SequenceFeature([loc])
+        c1.features.append(seq_feature)
+        self.assertIsNotNone(seq_feature.identity)
+        # identity should cascade down to the location after it
+        # is set on the sequence feature
+        self.assertIsNotNone(loc.identity)
+
     # TODO: Write tests for adding via a slice
     #       comp.constraints[0:1] = sbol3.Constraint('foo')
 

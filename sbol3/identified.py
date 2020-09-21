@@ -1,4 +1,5 @@
 import math
+import posixpath
 from typing import Union
 from urllib.parse import urlparse
 
@@ -65,6 +66,37 @@ class Identified(SBOLObject):
                 return
         message = f'{self.display_id} is not a valid displayId for {self.identity}'
         raise ValidationError(message)
+
+    def _update_identity(self, identity: str, display_id: str) -> None:
+        """Updates the identity of an Identified when it is added to a
+        parent object. SBOL compliant objects and URIs require updating
+        whenever an owned object is added to a new parent.
+        """
+        self._identity = identity
+        self._display_id = display_id
+        # Now cycle through any owned objects and update their identities
+        for _, objects in self._owned_objects.items():
+            for child in objects:
+                if child.display_id:
+                    new_display_id = child.display_id
+                else:
+                    # Generate a display id based on type and number
+                    type_name = child.type_uri[len(SBOL3_NS):]
+                    counter_value = self.counter_value(type_name)
+                    new_display_id = f'{type_name}{counter_value}'
+                new_identity = posixpath.join(self.identity, new_display_id)
+                child._update_identity(new_identity, new_display_id)
+
+    def counter_value(self, type_name: str):
+        result = 0
+        for _, objects in self._owned_objects.items():
+            for sibling in objects:
+                if sibling.display_id and sibling.display_id.startswith(type_name):
+                    counter_string = sibling.display_id[len(type_name):]
+                    counter_int = int(counter_string)
+                    if counter_int > result:
+                        result = counter_int
+        return result + 1
 
     @property
     def display_id(self):
