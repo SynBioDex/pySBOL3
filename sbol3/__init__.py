@@ -6,6 +6,7 @@ from .property_base import Property, SingletonProperty, ListProperty
 from .text_property import TextSingletonProperty, TextProperty
 from .int_property import IntProperty
 from .float_property import FloatProperty
+from .boolean_property import BooleanProperty
 from .datetime_property import DateTimeProperty
 from .uri_property import URIProperty
 from .ownedobject import OwnedObject
