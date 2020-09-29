@@ -1,5 +1,7 @@
 from .constants import *
-from .config import set_defaults, get_homespace, set_homespace
+from .config import set_defaults, get_namespace, set_namespace
+# get_homespace and set_homespace are deprecated and included for backward compatibility
+from .config import get_homespace, set_homespace
 from .error import *
 from .object import SBOLObject
 from .property_base import Property, SingletonProperty, ListProperty

@@ -52,10 +52,10 @@ class SBOLObject:
         """Make an identity from the given name.
 
         If the name is a URL, that can be the identity. Or perhaps it
-        needs to start with the default URI prefix (i.e. homespace).
+        needs to start with the default URI prefix (i.e. namespace).
 
         If the name is not a URL, prefix it with the default URI prefix
-        (homespace) and verify that the result is a valid URL.
+        (namespace) and verify that the result is a valid URL.
 
         We do not support UUIDs, which are legal SBOL identifiers.
         """
@@ -70,8 +70,8 @@ class SBOLObject:
             return str(identity_uuid)
         except ValueError:
             pass
-        # Not a URL or a UUID, so append to the homespace
-        base_uri = get_homespace()
+        # Not a URL or a UUID, so append to the namespace
+        base_uri = get_namespace()
         if base_uri.endswith('#'):
             return base_uri + name
         else:

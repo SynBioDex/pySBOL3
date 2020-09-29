@@ -11,10 +11,16 @@ class TestConfig(unittest.TestCase):
     def setUp(self) -> None:
         sbol3.set_defaults()
 
-    def test_homespace(self):
+    def test_namespace(self):
         base_uri = 'https://github.com/synbiodex/pysbol3'
-        sbol3.set_homespace(base_uri)
-        self.assertEqual(base_uri, sbol3.get_homespace())
+        sbol3.set_namespace(base_uri)
+        self.assertEqual(base_uri, sbol3.get_namespace())
+
+        # Example from SBOL 3.0 Section 5.1 (page 12)
+        # See issue #80
+        base_uri = 'https://synbiohub.org'
+        sbol3.set_namespace(base_uri)
+        self.assertEqual(base_uri, sbol3.get_namespace())
 
 
 if __name__ == '__main__':
