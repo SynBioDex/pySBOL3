@@ -6,13 +6,13 @@ from .typing import *
 
 class Participation(Identified):
 
-    def __init__(self, role: List[str],
+    def __init__(self, roles: List[str],
                  participant: Union[SBOLObject, str],
                  *, name: str = None,
                  type_uri: str = SBOL_PARTCIPATION) -> None:
         super().__init__(name, type_uri)
         self.roles: uri_list = URIProperty(self, SBOL_ROLE, 1, math.inf,
-                                           initial_value=role)
+                                           initial_value=roles)
         self.participant = ReferencedObject(self, SBOL_PARTICIPANT, 1, 1,
                                             initial_value=participant)
         self.validate()

@@ -6,12 +6,12 @@ from . import *
 
 class Interaction(Identified):
 
-    def __init__(self, interaction_type: List[str],
+    def __init__(self, interaction_types: List[str],
                  *, name: str = None,
                  type_uri: str = SBOL_INTERACTION) -> None:
         super().__init__(name, type_uri)
         self.types = URIProperty(self, SBOL_TYPE, 1, math.inf,
-                                 initial_value=interaction_type)
+                                 initial_value=interaction_types)
         self.participations = OwnedObject(self, SBOL_PARTICIPATIONS, 0, math.inf)
 
     def validate(self) -> None:
