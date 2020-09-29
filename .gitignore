@@ -1,4 +1,8 @@
 venv
 __pycache__
+# Build products
 sbol3.egg-info
+build/
+dist/
+# Emacs backup files
 *~
