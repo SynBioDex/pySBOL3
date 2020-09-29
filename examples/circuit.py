@@ -3,7 +3,7 @@ import sbol3
 # This example encodes a circuit depicted at
 # https://github.com/BuildACell/BioCRNPyler/blob/master/README.md
 
-sbol3.set_homespace('https://github.com/BuildACell/BioCRNPyler')
+sbol3.set_namespace('https://github.com/BuildACell/BioCRNPyler')
 
 # Ptet promoter
 ptet = sbol3.Component('pTetR', sbol3.SBO_DNA)
@@ -29,28 +29,19 @@ gfp.description = 'GFP Coding Sequence'
 
 # Wrap it together
 circuit = sbol3.Component('circuit', sbol3.SBO_DNA)
-ptet_sc = sbol3.SubComponent('ptet', ptet)
-op1_sc = sbol3.SubComponent('op1', op1)
-utr1_sc = sbol3.SubComponent('UTR1', utr1)
-gfp_sc = sbol3.SubComponent('GFP', gfp)
+ptet_sc = sbol3.SubComponent(ptet)
+op1_sc = sbol3.SubComponent(op1)
+utr1_sc = sbol3.SubComponent(utr1)
+gfp_sc = sbol3.SubComponent(gfp)
 
 # circuit.features can be set and appended to like any Python list
 circuit.features = [ptet_sc, op1_sc]
 circuit.features += [utr1_sc]
 circuit.features.append(gfp_sc)
 
-
-def make_constraint(name, subj, restriction, obj):
-    c = sbol3.Constraint(name)
-    c.subject = subj
-    c.restriction = restriction
-    c.object = obj
-    return c
-
-
-circuit.constraints = [make_constraint('c1', ptet_sc, sbol3.SBOL_PRECEDES, op1_sc),
-                       make_constraint('c2', op1_sc, sbol3.SBOL_PRECEDES, utr1_sc),
-                       make_constraint('c3', utr1_sc, sbol3.SBOL_PRECEDES, gfp_sc)]
+circuit.constraints = [sbol3.Constraint(sbol3.SBOL_PRECEDES, ptet_sc, op1_sc),
+                       sbol3.Constraint(sbol3.SBOL_PRECEDES, op1_sc, utr1_sc),
+                       sbol3.Constraint(sbol3.SBOL_PRECEDES, utr1_sc, gfp_sc)]
 
 doc = sbol3.Document()
 # TODO: Enhancement: doc.addAll([ptet, op1, utr1, ...])
