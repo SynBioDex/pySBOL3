@@ -17,7 +17,9 @@ class Property(abc.ABC):
             validation_rules = []
         self.validation_rules = validation_rules
         # Initialize the storage for this property
-        self._storage()[self.property_uri] = []
+        # Do not overwrite a value if already present (see issue #76)
+        if self.property_uri not in self._storage():
+            self._storage()[self.property_uri] = []
 
     def _storage(self) -> Dict[str, list]:
         return self.property_owner._properties
