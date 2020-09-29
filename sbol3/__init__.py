@@ -1,3 +1,5 @@
+__version__ = '1.0a1'
+
 from .constants import *
 from .config import set_defaults, get_namespace, set_namespace
 # get_homespace and set_homespace are deprecated and included for backward compatibility
