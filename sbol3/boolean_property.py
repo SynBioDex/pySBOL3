@@ -30,6 +30,18 @@ class BooleanSingletonProperty(BooleanPropertyMixin, SingletonProperty):
             self.set(initial_value)
 
 
+class BooleanListProperty(BooleanPropertyMixin, ListProperty):
+
+    def __init__(self, property_owner: Any, property_uri: str,
+                 lower_bound: int, upper_bound: int,
+                 validation_rules: Optional[List] = None,
+                 initial_value: Optional[List[bool]] = None):
+        super().__init__(property_owner, property_uri,
+                         lower_bound, upper_bound, validation_rules)
+        if initial_value:
+            self.set(initial_value)
+
+
 def BooleanProperty(property_owner: Any, property_uri: str,
                     lower_bound: int, upper_bound: Union[int, float],
                     validation_rules: Optional[List] = None,
@@ -38,4 +50,5 @@ def BooleanProperty(property_owner: Any, property_uri: str,
         return BooleanSingletonProperty(property_owner, property_uri,
                                         lower_bound, upper_bound,
                                         validation_rules, initial_value)
-    raise ValueError('Upper bound > 1 not handled yet')
+    return BooleanListProperty(property_owner, property_uri, lower_bound, upper_bound,
+                               validation_rules, initial_value)

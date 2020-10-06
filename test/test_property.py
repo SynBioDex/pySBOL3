@@ -1,8 +1,7 @@
 import unittest
-
 import rdflib
-
 import sbol3
+from math import inf
 
 
 class TestProperty(unittest.TestCase):
@@ -45,6 +44,19 @@ class TestProperty(unittest.TestCase):
                                                     0, 1, [])
         c.boolean_attribute = True
         self.assertEqual(type(c.boolean_attribute), bool)
+
+    def test_bounds(self):
+        c = sbol3.Component('c1', sbol3.SBO_DNA)
+        c.boolean_attribute = sbol3.BooleanProperty(c, 'http://example.org#foo',
+                                                    0, inf, [])
+        self.assertTrue(hasattr(c.boolean_attribute, '__iter__'))
+        with self.assertRaises(TypeError):
+            c.boolean_attribute = True
+        c.int_attribute = sbol3.IntProperty(c, 'http://example.org#foo',
+                                            0, inf, [])
+        self.assertTrue(hasattr(c.int_attribute, '__iter__'))
+        with self.assertRaises(TypeError):
+            c.int_attribute = 0
 
 
 if __name__ == '__main__':
