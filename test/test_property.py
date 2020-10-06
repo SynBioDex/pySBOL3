@@ -3,6 +3,7 @@ import rdflib
 import sbol3
 from math import inf
 
+
 class TestProperty(unittest.TestCase):
 
     def test_slice_assignment(self):
@@ -56,6 +57,7 @@ class TestProperty(unittest.TestCase):
         self.assertTrue(hasattr(c.int_attribute, '__iter__'))
         with self.assertRaises(TypeError):
             c.int_attribute = 0
+
 
 if __name__ == '__main__':
     unittest.main()

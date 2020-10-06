@@ -51,4 +51,4 @@ def BooleanProperty(property_owner: Any, property_uri: str,
                                         lower_bound, upper_bound,
                                         validation_rules, initial_value)
     return BooleanListProperty(property_owner, property_uri, lower_bound, upper_bound,
-                        validation_rules, initial_value)
+                               validation_rules, initial_value)
