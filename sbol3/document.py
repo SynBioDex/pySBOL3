@@ -36,8 +36,7 @@ class Document:
         self.objects: List[Identified] = []
         self._namespaces: Dict[str, str] = _default_bindings.copy()
 
-    @staticmethod
-    def _make_custom_object(identity: str, types: List[str]) -> Identified:
+    def _make_custom_object(self, identity: str, types: List[str]) -> Identified:
         if SBOL_IDENTIFIED in types:
             types.remove(SBOL_IDENTIFIED)
             try:
@@ -46,7 +45,12 @@ class Document:
                 raise ValidationError('Expected one other type')
             if other_type.startswith(SBOL3_NS):
                 raise ValidationError('Secondary type may not be in SBOL3 namespace')
-            return CustomIdentified(name=identity, custom_type=other_type)
+            try:
+                builder = self._uri_type_map[other_type]
+            except KeyError:
+                logging.warning(f'No builder found for {other_type}')
+                builder = CustomIdentified
+            return builder(name=identity, type_uri=other_type)
         elif SBOL_TOP_LEVEL in types:
             types.remove(SBOL_TOP_LEVEL)
             try:
@@ -55,7 +59,12 @@ class Document:
                 raise ValidationError('Expected one other type')
             if other_type.startswith(SBOL3_NS):
                 raise ValidationError('Secondary type may not be in SBOL3 namespace')
-            return CustomTopLevel(name=identity, custom_type=other_type)
+            try:
+                builder = self._uri_type_map[other_type]
+            except KeyError:
+                logging.warning(f'No builder found for {other_type}')
+                builder = CustomTopLevel
+            return builder(name=identity, type_uri=other_type)
         else:
             message = 'Custom types must contain either Identified or TopLevel'
             raise ValidationError(message)
@@ -83,7 +92,7 @@ class Document:
                 except KeyError:
                     logging.warning(f'No builder found for {type_uri}')
                     raise ValidationError(f'Unknown type {type_uri}')
-                obj = builder(identity, type_uri=type_uri)
+                obj = builder(name=identity, type_uri=type_uri)
             elif len(types) == 2:
                 obj = self._make_custom_object(identity, types)
             else:
