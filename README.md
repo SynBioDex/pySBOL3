@@ -13,7 +13,7 @@ missing features.
 Use pip to install the library:
 
 ```
-pip install git+https://github.com/SynBioDex/pySBOL3
+pip install sbol3
 ```
 
 ## Documentation
