@@ -155,8 +155,8 @@ class Document:
         self.objects = [obj for uri, obj in objects.items()
                         if isinstance(obj, TopLevel)]
         # Store the namespaces in the Document for later use
-        self._namespaces = {prefix: uri for prefix, uri in graph.namespaces()
-                            if prefix}
+        for prefix, uri in graph.namespaces():
+            self.bind(prefix, uri)
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, location: str, file_format: str) -> None:

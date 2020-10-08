@@ -33,7 +33,6 @@ class TestRoundTrip(unittest.TestCase):
             shutil.rmtree(self.temp_out_dir)
             self.temp_out_dir = None
 
-    @unittest.expectedFailure  # Invalid file: Locations lack a sequence reference
     def test_BBa_F2620_PoPSReceiver(self):
         sbol_path = os.path.join(SBOL3_LOCATION, 'BBa_F2620_PoPSReceiver',
                                  'BBa_F2620_PoPSReceiver.ttl')
@@ -78,8 +77,6 @@ class TestRoundTrip(unittest.TestCase):
         skip_files = [
             # See https://github.com/SynBioDex/SBOLTestSuite/issues/22
             'annotation',
-            # See https://github.com/SynBioDex/SBOLTestSuite/issues/24
-            'BBa_F2620_PoPSReceiver',
         ]
         for f in self.find_all_files(SBOL3_LOCATION):
             basename = os.path.basename(f)
@@ -137,8 +134,6 @@ class TestRoundTrip(unittest.TestCase):
         skip_list = [
             # See https://github.com/SynBioDex/SBOLTestSuite/issues/22
             'annotation',
-            # See https://github.com/SynBioDex/SBOLTestSuite/issues/24
-            'BBa_F2620_PoPSReceiver',
         ]
         for test_file in self.find_all_files(test_dir):
             basename = os.path.basename(test_file)
