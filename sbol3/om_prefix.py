@@ -26,6 +26,15 @@ class Prefix(TopLevel, abc.ABC):
         self.factor = FloatProperty(self, OM_HAS_FACTOR, 1, 1,
                                     initial_value=factor)
 
+    def validate(self) -> None:
+        super().validate()
+        if not self.symbol:
+            raise ValidationError('Prefix must contain a symbol')
+        if not self.label:
+            raise ValidationError('Prefix must contain a label')
+        if not self.factor:
+            raise ValidationError('Prefix must contain a factor')
+
 
 class SIPrefix(Prefix):
 
