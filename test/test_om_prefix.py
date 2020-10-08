@@ -30,9 +30,7 @@ class TestSIPrefix(unittest.TestCase):
         si_prefix = doc.find(uri)
         self.assertIsNotNone(si_prefix)
         self.assertIsInstance(si_prefix, sbol3.SIPrefix)
-        # TODO: The example is invalid because it has no 'symbol' property
-        #       This test will fail when the test file gets updated
-        self.assertIsNone(si_prefix.symbol)
+        self.assertEqual('m', si_prefix.symbol)
         self.assertEqual('milli', si_prefix.label)
         self.assertCountEqual(['m1', 'm2'], si_prefix.alternative_symbols)
         self.assertCountEqual(['milli1', 'milli2'], si_prefix.alternative_labels)
