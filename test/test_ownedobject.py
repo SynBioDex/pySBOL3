@@ -1,6 +1,5 @@
 import posixpath
 import unittest
-
 import sbol3
 
 
@@ -43,7 +42,7 @@ class TestOwnedObject(unittest.TestCase):
 
     def test_singleton_property_update_identity(self):
         tl = sbol3.CustomTopLevel('foo', 'http://synbio.bbn.com/opil#MeasurementValue')
-        tl.measure = sbol3.OwnedObject(tl, 'http://synbio.bbn.com/opil#measure', 0, 1, [])
+        tl.measure = sbol3.OwnedObject(tl, 'http://synbio.bbn.com/opil#measure', 0, 1)
         m = sbol3.Measure(10, 'liters')
         tl.measure = m
         expected = posixpath.join(tl.identity, 'Measure1')

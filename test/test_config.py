@@ -1,7 +1,6 @@
 import unittest
-
 import sbol3
-import sbol3.config
+
 
 class TestConfig(unittest.TestCase):
 
@@ -27,7 +26,7 @@ class TestConfig(unittest.TestCase):
         c = sbol3.Component('c', sbol3.SBO_DNA)
         class_name = sbol3.config.parse_class_name(c.type_uri)
         self.assertEqual(class_name, 'Component')
-        
+
         # Test parsing with # delimiter in type URI
         m = sbol3.Measure(0, 'dollars')
         class_name = sbol3.config.parse_class_name(m.type_uri)
