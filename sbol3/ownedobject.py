@@ -1,6 +1,6 @@
+import sbol3.config
 import posixpath
 from typing import Union, Any, List, Optional, Dict
-
 import rdflib
 
 from . import *
@@ -41,6 +41,7 @@ class OwnedObjectSingletonProperty(OwnedObjectPropertyMixin, SingletonProperty):
             # what do we do here?
             pass
         type_name = item.type_uri[len(SBOL3_NS):]
+        type_name = sbol3.config.parse_class_name(item.type_uri)
         counter_value = self.property_owner.counter_value(type_name)
         print(f'Updating {counter_value}')
 
