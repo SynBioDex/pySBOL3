@@ -19,6 +19,22 @@ class OwnedObjectPropertyMixin:
     def _storage(self) -> Dict[str, list]:
         return self.property_owner._owned_objects
 
+    def item_added(self, item: Any) -> None:
+        if not self.property_owner.identity_is_url():
+            return
+        # if not item.display_id:
+        #     raise ValueError(f'Item {item} does not have a display_id')
+        type_name = sbol3.config.parse_class_name(item.type_uri)
+        counter_value = self.property_owner.counter_value(type_name)
+        new_display_id = f'{type_name}{counter_value}'
+        new_url = posixpath.join(self.property_owner.identity, new_display_id)
+        for sibling in self._storage()[self.property_uri]:
+            if sibling == item:
+                continue
+            if sibling.identity == new_url:
+                raise ValidationError(f'Duplicate URI: {new_url}')
+        item._update_identity(new_url, new_display_id)
+
 
 class OwnedObjectSingletonProperty(OwnedObjectPropertyMixin, SingletonProperty):
 
@@ -31,29 +47,6 @@ class OwnedObjectSingletonProperty(OwnedObjectPropertyMixin, SingletonProperty):
         if initial_value:
             self.set(initial_value)
 
-    def item_added(self, item: Any) -> None:
-        print(f'Adding {item}')
-        if not self.property_owner.identity_is_url():
-            return
-        # if not item.display_id:
-        #     raise ValueError(f'Item {item} does not have a display_id')
-        if not item.type_uri.startswith(SBOL3_NS):
-            # what do we do here?
-            pass
-        type_name = item.type_uri[len(SBOL3_NS):]
-        type_name = sbol3.config.parse_class_name(item.type_uri)
-        counter_value = self.property_owner.counter_value(type_name)
-        print(f'Updating {counter_value}')
-
-        new_display_id = f'{type_name}{counter_value}'
-        new_url = posixpath.join(self.property_owner.identity, new_display_id)
-        for sibling in self._storage()[self.property_uri]:
-            if sibling == item:
-                continue
-            if sibling.identity == new_url:
-                raise ValidationError(f'Duplicate URI: {new_url}')
-        item._update_identity(new_url, new_display_id)
-
 
 class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
 
@@ -65,28 +58,6 @@ class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
                          lower_bound, upper_bound, validation_rules)
         if initial_value:
             self.set(initial_value)
-
-    def item_added(self, item: Any) -> None:
-        print(f'Adding {item}')
-        if not self.property_owner.identity_is_url():
-            return
-        # if not item.display_id:
-        #     raise ValueError(f'Item {item} does not have a display_id')
-        if not item.type_uri.startswith(SBOL3_NS):
-            # what do we do here?
-            pass
-        type_name = item.type_uri[len(SBOL3_NS):]
-        counter_value = self.property_owner.counter_value(type_name)
-        print(f'Updating {counter_value}')
-
-        new_display_id = f'{type_name}{counter_value}'
-        new_url = posixpath.join(self.property_owner.identity, new_display_id)
-        for sibling in self._storage()[self.property_uri]:
-            if sibling == item:
-                continue
-            if sibling.identity == new_url:
-                raise ValidationError(f'Duplicate URI: {new_url}')
-        item._update_identity(new_url, new_display_id)
 
 
 def OwnedObject(property_owner: Any, property_uri: str,
