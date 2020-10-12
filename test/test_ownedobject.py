@@ -25,7 +25,7 @@ class TestOwnedObject(unittest.TestCase):
         comp.constraints.append(con1)
         self.assertEqual(expected2, con1.identity)
 
-    def test_identity_set(self):
+    def test_list_property_update_identity(self):
         # This test uses assignment instead of appending
         comp = sbol3.Component('c1', sbol3.SBO_DNA)
         con1_id = 'con1'
@@ -40,6 +40,15 @@ class TestOwnedObject(unittest.TestCase):
         # Setting to list should cause the constraint's identity to change
         comp.constraints = [con1]
         self.assertEqual(expected2, con1.identity)
+
+    def test_singleton_property_update_identity(self):
+        tl = sbol3.CustomTopLevel('foo', 'http://synbio.bbn.com/opil#MeasurementValue')
+        tl.measure = sbol3.OwnedObject(tl, 'http://synbio.bbn.com/opil#measure', 0, 1, [])
+        m = sbol3.Measure(10, 'liters')
+        tl.measure = m
+        expected = posixpath.join(tl.identity, 'Measure1')
+        self.assertIsNotNone(tl.measure.identity)
+        self.assertEqual(tl.measure.identity, expected)
 
     def test_add_multiple_children(self):
         # Test that the the display_id and identity are overwritten
