@@ -36,6 +36,13 @@ class Property(abc.ABC):
     def from_user(self, value: Any):
         pass
 
+    def item_added(self, item: Any) -> None:
+        """Stub method for child classes to override if they have to do
+        any additional processing on items after they are added. This method
+        will be called on each individual item that was added to the list.
+        """
+        pass
+
 
 class SingletonProperty(Property, abc.ABC):
 
@@ -57,6 +64,7 @@ class SingletonProperty(Property, abc.ABC):
                 raise ValueError(f'Property {self.property_uri} cannot be unset')
         else:
             self._storage()[self.property_uri] = [value]
+            self.item_added(value)
 
     def get(self) -> Any:
         try:
@@ -130,10 +138,3 @@ class ListProperty(Property, MutableSequence, abc.ABC):
         self._storage()[self.property_uri] = items
         for val in value:
             self.item_added(val)
-
-    def item_added(self, item: Any) -> None:
-        """Stub method for child classes to override if they have to do
-        any additional processing on items after they are added. This method
-        will be called on each individual item that was added to the list.
-        """
-        pass
