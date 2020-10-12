@@ -37,3 +37,11 @@ def set_homespace(homespace: str) -> None:
 def get_homespace() -> str:
     warnings.warn('Use get_namespace instead', DeprecationWarning)
     return get_namespace()
+
+
+def parse_class_name(uri):
+    if '#' in uri:
+        return uri[uri.rindex('#')+1:]
+    elif '/' in uri:
+        return uri[uri.rindex('/')+1:]
+    raise ValueError(f'Cannot parse class name from {uri}. URI must use either / or # as a delimiter.')
