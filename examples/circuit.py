@@ -29,6 +29,7 @@ gfp.description = 'GFP Coding Sequence'
 
 # Wrap it together
 circuit = sbol3.Component('circuit', sbol3.SBO_DNA)
+circuit.roles.append(sbol3.SO_ENGINEERED_REGION)
 ptet_sc = sbol3.SubComponent(ptet)
 op1_sc = sbol3.SubComponent(op1)
 utr1_sc = sbol3.SubComponent(utr1)
