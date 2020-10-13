@@ -1,9 +1,10 @@
-import sbol3.config
 import posixpath
 from typing import Union, Any, List, Optional, Dict
+
 import rdflib
 
 from . import *
+from .utils import parse_class_name
 
 
 class OwnedObjectPropertyMixin:
@@ -24,7 +25,7 @@ class OwnedObjectPropertyMixin:
             return
         # if not item.display_id:
         #     raise ValueError(f'Item {item} does not have a display_id')
-        type_name = sbol3.config.parse_class_name(item.type_uri)
+        type_name = parse_class_name(item.type_uri)
         counter_value = self.property_owner.counter_value(type_name)
         new_display_id = f'{type_name}{counter_value}'
         new_url = posixpath.join(self.property_owner.identity, new_display_id)
