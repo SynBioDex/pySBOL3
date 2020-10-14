@@ -4,7 +4,7 @@ import math
 from . import *
 
 
-class Prefix(TopLevel, abc.ABC):
+class Prefix(CustomTopLevel, abc.ABC):
     """om:Prefix is an abstract base class.
 
     See Appendix A Section A.2 of the SBOL 3.0 specificiation.
@@ -41,6 +41,7 @@ class SIPrefix(Prefix):
     def __init__(self, name: str, symbol: str, label: str,
                  factor: float, *, type_uri: str = OM_SI_PREFIX) -> None:
         super().__init__(name, symbol, label, factor, type_uri)
+        self.validate()
 
 
 def build_si_prefix(name: str, *, type_uri: str = OM_SI_PREFIX) -> SBOLObject:
@@ -61,6 +62,7 @@ class BinaryPrefix(Prefix):
     def __init__(self, name: str, symbol: str, label: str,
                  factor: float, *, type_uri: str = OM_BINARY_PREFIX) -> None:
         super().__init__(name, symbol, label, factor, type_uri)
+        self.validate()
 
 
 def build_binary_prefix(name: str, *, type_uri: str = OM_BINARY_PREFIX) -> SBOLObject:

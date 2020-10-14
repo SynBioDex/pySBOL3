@@ -47,7 +47,7 @@ class TestOwnedObject(unittest.TestCase):
         tl.measure = m
         expected = posixpath.join(tl.identity, 'Measure1')
         self.assertIsNotNone(tl.measure.identity)
-        self.assertEqual(tl.measure.identity, expected)
+        self.assertEqual(expected, tl.measure.identity)
 
     def test_add_multiple_children(self):
         # Test that the the display_id and identity are overwritten
