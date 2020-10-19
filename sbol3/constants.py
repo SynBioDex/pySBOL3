@@ -245,7 +245,7 @@ SBO_TEMPLATE = SBO_NS + '0000645'
 NTRIPLES = 'nt'
 RDF_XML = 'xml'
 TURTLE = 'ttl'
-JSONLD = 'jsonld'
+JSONLD = 'json-ld'
 SORTED_NTRIPLES = 'sorted nt'
 
 # Ontology of Units of Measure

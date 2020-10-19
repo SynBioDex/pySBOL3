@@ -20,9 +20,9 @@ class TestDocument(unittest.TestCase):
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
                                  'model.nt')
         doc = sbol3.Document()
-        doc.read(test_path, sbol3.NTRIPLES)
+        doc.read(test_path)
         with tempfile.TemporaryDirectory() as tmpdirname:
-            test_file = os.path.join(tmpdirname, 'model.nt')
+            test_file = os.path.join(tmpdirname)
             doc.write(test_file, sbol3.NTRIPLES)
 
     def test_read_turtle(self):
@@ -87,6 +87,14 @@ class TestDocument(unittest.TestCase):
             doc.write(nt_file, sbol3.NTRIPLES)
             xml_file = os.path.join(tmpdirname, 'test_output.xml')
             doc.write(xml_file, sbol3.RDF_XML)
+            # No format specified for these, doc.write now figures
+            # that out on its own
+            out_path = os.path.join(tmpdirname, 'test_output.rdf')
+            doc.write(out_path)
+            out_path = os.path.join(tmpdirname, 'test_output.ttl')
+            doc.write(out_path)
+            out_path = os.path.join(tmpdirname, 'test_output.jsonld')
+            doc.write(out_path)
 
     def test_bind(self):
         doc = sbol3.Document()
@@ -101,6 +109,15 @@ class TestDocument(unittest.TestCase):
         ns1 = 'http://example.com/foo'
         with self.assertWarns(DeprecationWarning):
             doc.addNamespace(ns1, prefix)
+
+    def test_guess_format(self):
+        doc = sbol3.Document()
+        # Expect ValueError because '.foo' file extension is unknown
+        with self.assertRaises(ValueError):
+            doc.read('test.foo')
+        # Expect ValueError because '.foo' file extension is unknown
+        with self.assertRaises(ValueError):
+            doc.write('test.foo')
 
 
 if __name__ == '__main__':

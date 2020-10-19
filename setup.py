@@ -31,6 +31,7 @@ setup(name='sbol3',
       packages=['sbol3'],
       install_requires=[
             'rdflib>=5.0',
+            'rdflib-jsonld',
             'python-dateutil'
       ],
       test_suite='test',

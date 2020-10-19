@@ -4,7 +4,7 @@ import sbol3
 # by pySBOL3/examples/circuit.py
 
 doc = sbol3.Document()
-doc.read('circuit.nt', sbol3.NTRIPLES)
+doc.read('circuit.nt')
 # Find the circuit by display_id
 circuit = doc.find('circuit')
 # Print the circuit's full URI
