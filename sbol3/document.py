@@ -230,11 +230,7 @@ class Document:
             file_format = self._guess_format(fpath)
         if file_format is None:
             raise ValueError('Unable to determine file format')
-        graph = rdflib.Graph()
-        for prefix, uri in self._namespaces.items():
-            graph.bind(prefix, uri)
-        for obj in self.objects:
-            obj.serialize(graph)
+        graph = self.graph()
         if file_format == SORTED_NTRIPLES:
             # have RDFlib give us the ntriples as a string
             nt_text = graph.serialize(format='nt')
@@ -252,6 +248,19 @@ class Document:
             graph.serialize(fpath, format=file_format, context=context)
         else:
             graph.serialize(fpath, format=file_format)
+
+    def graph(self) -> rdflib.Graph:
+        """Convert document to an RDF Graph.
+
+        The returned graph is a snapshot of the document and will
+        not be updated by subsequent changes to the document.
+        """
+        graph = rdflib.Graph()
+        for prefix, uri in self._namespaces.items():
+            graph.bind(prefix, uri)
+        for obj in self.objects:
+            obj.serialize(graph)
+        return graph
 
     def bind(self, prefix: str, uri: str) -> None:
         """Bind a prefix to an RDF namespace in the written RDF document.
