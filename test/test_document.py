@@ -19,12 +19,13 @@ class TestDocument(unittest.TestCase):
 
     def test_read_ntriples(self):
         # Initial test of Document.read
+        filename = 'model.nt'
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
-                                 'model.nt')
+                                 filename)
         doc = sbol3.Document()
         doc.read(test_path)
         with tempfile.TemporaryDirectory() as tmpdirname:
-            test_file = os.path.join(tmpdirname)
+            test_file = os.path.join(tmpdirname, filename)
             doc.write(test_file, sbol3.NTRIPLES)
 
     def test_read_turtle(self):
@@ -146,6 +147,23 @@ class TestDocument(unittest.TestCase):
         predicates = [str(p) for p in predicates]
         self.assertIn(sbol3.SBOL_DISPLAY_ID, predicates)
         self.assertIn(sbol3.SBOL_TYPE, predicates)
+
+    def test_write_string(self):
+        # Make sure Document.write_string produces the same output
+        # as Document.write. Must use sorted NTriples for this test
+        # because other formats do not have a guaranteed order.
+        filename = 'model.nt'
+        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
+                                 filename)
+        doc = sbol3.Document()
+        doc.read(test_path)
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            test_file = os.path.join(tmpdirname, filename)
+            doc.write(test_file, sbol3.SORTED_NTRIPLES)
+            with open(test_file, 'rb') as infile:
+                expected = infile.read()
+        actual = doc.write_string(sbol3.SORTED_NTRIPLES)
+        self.assertEqual(expected, actual)
 
 
 if __name__ == '__main__':
