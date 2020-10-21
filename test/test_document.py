@@ -3,6 +3,8 @@ import os
 import tempfile
 import unittest
 
+import rdflib
+
 import sbol3
 
 MODULE_LOCATION = os.path.dirname(os.path.abspath(__file__))
@@ -118,6 +120,32 @@ class TestDocument(unittest.TestCase):
         # Expect ValueError because '.foo' file extension is unknown
         with self.assertRaises(ValueError):
             doc.write('test.foo')
+
+    def test_empty_graph(self):
+        # Ensure that an empty document generates an empty RDF graph
+        doc = sbol3.Document()
+        g = doc.graph()
+        self.assertEqual(0, len(g))
+
+    def test_graph(self):
+        doc = sbol3.Document()
+        doc.add(sbol3.Component('foo', sbol3.SBO_DNA))
+        graph = doc.graph()
+        self.assertEqual(3, len(graph))
+        subjects = set()
+        predicates = set()
+        for s, p, _ in graph:
+            subjects.add(s)
+            predicates.add(p)
+        # Expecting 1 subject, the component
+        self.assertEqual(1, len(subjects))
+        # Expecting 3 predicates
+        self.assertEqual(3, len(predicates))
+        self.assertIn(rdflib.RDF.type, predicates)
+        # Convert predicates to strings for the remaining assertions
+        predicates = [str(p) for p in predicates]
+        self.assertIn(sbol3.SBOL_DISPLAY_ID, predicates)
+        self.assertIn(sbol3.SBOL_TYPE, predicates)
 
 
 if __name__ == '__main__':
