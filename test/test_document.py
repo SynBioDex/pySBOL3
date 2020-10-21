@@ -19,12 +19,13 @@ class TestDocument(unittest.TestCase):
 
     def test_read_ntriples(self):
         # Initial test of Document.read
+        filename = 'model.nt'
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
-                                 'model.nt')
+                                 filename)
         doc = sbol3.Document()
         doc.read(test_path)
         with tempfile.TemporaryDirectory() as tmpdirname:
-            test_file = os.path.join(tmpdirname)
+            test_file = os.path.join(tmpdirname, filename)
             doc.write(test_file, sbol3.NTRIPLES)
 
     def test_read_turtle(self):

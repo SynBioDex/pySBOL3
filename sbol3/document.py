@@ -225,11 +225,7 @@ class Document:
                 return obj
         return self._find_in_objects(search_string)
 
-    def write(self, fpath: str, file_format: str = None) -> None:
-        if file_format is None:
-            file_format = self._guess_format(fpath)
-        if file_format is None:
-            raise ValueError('Unable to determine file format')
+    def write_string(self, file_format: str) -> bytes:
         graph = self.graph()
         if file_format == SORTED_NTRIPLES:
             # have RDFlib give us the ntriples as a string
@@ -240,14 +236,28 @@ class Document:
             lines.sort()
             # write out the lines
             # RDFlib gives us bytes, so open file in binary mode
-            with open(fpath, 'wb') as outfile:
-                outfile.writelines(lines)
+            result = b''.join(lines)
         elif file_format == JSONLD:
             context = {f'@{prefix}': uri for prefix, uri in self._namespaces.items()}
             context['@vocab'] = 'https://sbolstandard.org/examples/'
-            graph.serialize(fpath, format=file_format, context=context)
+            result = graph.serialize(format=file_format, context=context)
         else:
-            graph.serialize(fpath, format=file_format)
+            result = graph.serialize(format=file_format)
+        return result
+
+    def write(self, fpath: str, file_format: str = None) -> None:
+        """Write the document to file.
+
+        If file_format is None the desired format is guessed from the
+        extension of fpath. If file_format cannot be guessed a ValueError
+        is raised.
+        """
+        if file_format is None:
+            file_format = self._guess_format(fpath)
+        if file_format is None:
+            raise ValueError('Unable to determine file format')
+        with open(fpath, 'wb') as outfile:
+            outfile.write(self.write_string(file_format))
 
     def graph(self) -> rdflib.Graph:
         """Convert document to an RDF Graph.
