@@ -49,8 +49,9 @@ class TestCustomTopLevel(unittest.TestCase):
     def test_create(self):
         custom_type = 'https://github.com/synbiodex/pysbol3/CustomType'
         ctl = sbol3.CustomTopLevel('custom1', custom_type)
+        self.assertEqual(custom_type, ctl.type_uri)
         # Go behind the scenes to verify
-        self.assertEqual(rdflib.URIRef(custom_type),
+        self.assertEqual(rdflib.URIRef(sbol3.SBOL_TOP_LEVEL),
                          ctl._properties[rdflib.RDF.type][0])
 
     # TODO: We really want to verify the serialization of the custom top
@@ -99,8 +100,9 @@ class TestCustomIdentified(unittest.TestCase):
         custom_type = 'https://github.com/synbiodex/pysbol3/CustomType'
         ctl = sbol3.CustomIdentified(name='custom1',
                                      type_uri=custom_type)
+        self.assertEqual(custom_type, ctl.type_uri)
         # Go behind the scenes to verify
-        self.assertEqual(rdflib.URIRef(custom_type),
+        self.assertEqual(rdflib.URIRef(sbol3.SBOL_IDENTIFIED),
                          ctl._properties[rdflib.RDF.type][0])
 
     # TODO: We really want to verify the serialization of the custom
