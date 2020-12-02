@@ -1,3 +1,5 @@
+![gh-action badge](https://github.com/SynBioDex/pySBOL3/workflows/Python%20package/badge.svg)
+![readthedocs badge](https://readthedocs.org/projects/pysbol3/badge/)
 # pySBOL3
 
 This is a [Python](https://www.python.org/) implementation of the
