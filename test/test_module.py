@@ -2,6 +2,8 @@ import unittest
 
 import sbol3
 
+OM_KILOGRAM = 'http://www.ontology-of-units-of-measure.org/resource/om-2/kilogram'
+
 
 class TestModule(unittest.TestCase):
 
@@ -48,6 +50,52 @@ class TestModule(unittest.TestCase):
         self.assertIsInstance(sbol3.PrefixedUnit, type)
         self.assertIsInstance(sbol3.SIPrefix, type)
         self.assertIsInstance(sbol3.BinaryPrefix, type)
+
+    def test_identified_constructors(self):
+        # I don't remember why I wanted this test.
+        # Test all of the Identified constructors.
+        args_map = {
+            'Association': ['https://example.com/fake'],
+            'ComponentReference': ['https://example.com/fake',
+                                   'https://example.com/fake'],
+            'Constraint': ['https://example.com/restriction',
+                           'https://example.com/subject',
+                           'https://example.com/object'],
+            'CustomIdentified': ['https://example.com/fake'],
+            'Cut': ['https://example.com/fake',
+                    1],
+            'EntireSequence': ['https://example.com/fake'],
+            'ExternallyDefined': [['https://example.com/fake'],
+                                  'https://example.com/fake'],
+            'Interaction': [['https://example.com/fake']],
+            'LocalSubComponent': [['https://example.com/fake']],
+            'Measure': [1.0, OM_KILOGRAM],
+            'Participation': [sbol3.SBO_INHIBITOR,
+                              'https://example.com/fake'],
+            'Range': ['https://example.com/fake', 1, 2],
+            'SequenceFeature': [[sbol3.EntireSequence('https://example.com/fake')]],
+            'SubComponent': ['https://example.com/fake'],
+            'Usage': ['https://example.com/fake'],
+        }
+        for name in dir(sbol3):
+            item = getattr(sbol3, name)
+            if not isinstance(item, type):
+                continue
+            if issubclass(item, sbol3.TopLevel):
+                continue
+            if not issubclass(item, sbol3.Identified):
+                continue
+            if item == sbol3.Identified:
+                continue
+            arg_list = []
+            if name in args_map:
+                arg_list = args_map[name]
+            try:
+                item(*arg_list)
+            except TypeError as e:
+                self.fail('Unable to construct sbol3.%s: %s' % (name, e))
+            except sbol3.ValidationError as e:
+                self.fail('Constructed invalid sbol3.%s: %s' % (name, e))
 
 
 if __name__ == '__main__':
