@@ -77,6 +77,7 @@ class TestModule(unittest.TestCase):
             'SubComponent': ['https://example.com/fake'],
             'Usage': ['https://example.com/fake'],
         }
+        skip_list = [sbol3.Identified, sbol3.Feature]
         for name in dir(sbol3):
             item = getattr(sbol3, name)
             if not isinstance(item, type):
@@ -85,7 +86,7 @@ class TestModule(unittest.TestCase):
                 continue
             if not issubclass(item, sbol3.Identified):
                 continue
-            if item == sbol3.Identified:
+            if item in skip_list:
                 continue
             arg_list = []
             if name in args_map:

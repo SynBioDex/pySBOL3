@@ -21,6 +21,7 @@ from .custom import CustomIdentified, CustomTopLevel
 from .document import Document
 from .constraint import Constraint
 from .sequence import Sequence
+from .feature import Feature
 from .location import Range, Cut, EntireSequence
 from .varcomp import VariableComponent
 from .component import Component

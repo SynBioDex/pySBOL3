@@ -94,6 +94,12 @@ class TestOwnedObject(unittest.TestCase):
         # is set on the sequence feature
         self.assertIsNotNone(loc.identity)
 
+    def test_type_constraint(self):
+        c = sbol3.Component('foo', sbol3.SBO_DNA)
+        with self.assertRaises(TypeError):
+            c.features = [sbol3.Range('https://example.com/fake', 1, 2)]
+        self.assertEqual(c.features.type_constraint, sbol3.Feature)
+
     # TODO: Write tests for adding via a slice
     #       comp.constraints[0:1] = sbol3.Constraint('foo')
 

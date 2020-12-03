@@ -9,8 +9,15 @@ from .utils import parse_class_name
 
 class OwnedObjectPropertyMixin:
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.type_constraint = None
+
     def from_user(self, value: Any) -> rdflib.Literal:
-        if not isinstance(value, SBOLObject):
+        desired_type = SBOLObject
+        if self.type_constraint:
+            desired_type = self.type_constraint
+        if not isinstance(value, desired_type):
             raise TypeError(f'Expecting SBOLObject, got {type(value)}')
         return value
 
@@ -42,9 +49,17 @@ class OwnedObjectSingletonProperty(OwnedObjectPropertyMixin, SingletonProperty):
     def __init__(self, property_owner: Any, property_uri: str,
                  lower_bound: int, upper_bound: int,
                  validation_rules: Optional[List] = None,
-                 initial_value: Optional[str] = None):
-        super().__init__(property_owner, property_uri,
-                         lower_bound, upper_bound, validation_rules)
+                 initial_value: Optional[str] = None,
+                 type_constraint: Optional[Any] = None):
+        super().__init__(property_owner=property_owner,
+                         property_uri=property_uri,
+                         lower_bound=lower_bound,
+                         upper_bound=upper_bound,
+                         validation_rules=validation_rules)
+        # Better to pass this up to super, but the super().__init__
+        # methods are not set up properly for that. They would need
+        # to accept unknown keyword arguments.
+        self.type_constraint = type_constraint
         if initial_value:
             self.set(initial_value)
 
@@ -54,9 +69,17 @@ class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
     def __init__(self, property_owner: Any, property_uri: str,
                  lower_bound: int, upper_bound: int,
                  validation_rules: Optional[List] = None,
-                 initial_value: Optional[str] = None):
-        super().__init__(property_owner, property_uri,
-                         lower_bound, upper_bound, validation_rules)
+                 initial_value: Optional[str] = None,
+                 type_constraint: Optional[Any] = None):
+        super().__init__(property_owner=property_owner,
+                         property_uri=property_uri,
+                         lower_bound=lower_bound,
+                         upper_bound=upper_bound,
+                         validation_rules=validation_rules)
+        # Better to pass this up to super, but the super().__init__
+        # methods are not set up properly for that. They would need
+        # to accept unknown keyword arguments.
+        self.type_constraint = type_constraint
         if initial_value:
             self.set(initial_value)
 
@@ -64,12 +87,15 @@ class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
 def OwnedObject(property_owner: Any, property_uri: str,
                 lower_bound: int, upper_bound: Union[int, float],
                 validation_rules: Optional[List] = None,
-                initial_value: Optional[Union['Identified', List['Identified']]] = None)\
-        -> Property:
+                initial_value: Optional[Union['Identified', List['Identified']]] = None,
+                type_constraint: Optional[Any] = None
+                ) -> Property:
     if upper_bound == 1:
         return OwnedObjectSingletonProperty(property_owner, property_uri,
                                             lower_bound, upper_bound,
-                                            validation_rules, initial_value)
+                                            validation_rules, initial_value,
+                                            type_constraint=type_constraint)
     return OwnedObjectListProperty(property_owner, property_uri,
                                    lower_bound, upper_bound,
-                                   validation_rules, initial_value)
+                                   validation_rules, initial_value,
+                                   type_constraint=type_constraint)
