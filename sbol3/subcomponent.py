@@ -14,8 +14,10 @@ class SubComponent(Feature):
         self.role_integration = URIProperty(self, SBOL_ROLE, 0, 1)
         self.instance_of = ReferencedObject(self, SBOL_INSTANCE_OF, 1, 1,
                                             initial_value=instance_of)
-        self.source_locations = OwnedObject(self, SBOL_SOURCE_LOCATION, 0, math.inf)
-        self.locations = OwnedObject(self, SBOL_LOCATION, 0, math.inf)
+        self.source_locations = OwnedObject(self, SBOL_SOURCE_LOCATION, 0, math.inf,
+                                            type_constraint=Location)
+        self.locations = OwnedObject(self, SBOL_LOCATION, 0, math.inf,
+                                     type_constraint=Location)
         self.validate()
 
     def validate(self) -> None:

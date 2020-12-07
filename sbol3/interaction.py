@@ -12,7 +12,8 @@ class Interaction(Identified):
         super().__init__(name, type_uri)
         self.types = URIProperty(self, SBOL_TYPE, 1, math.inf,
                                  initial_value=interaction_types)
-        self.participations = OwnedObject(self, SBOL_PARTICIPATIONS, 0, math.inf)
+        self.participations = OwnedObject(self, SBOL_PARTICIPATIONS, 0, math.inf,
+                                          type_constraint=Participation)
 
     def validate(self) -> None:
         super().validate()

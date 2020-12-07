@@ -14,7 +14,8 @@ class LocalSubComponent(Feature):
         super().__init__(name, type_uri)
         self.types: uri_list = URIProperty(self, SBOL_TYPE, 1, math.inf,
                                            initial_value=types)
-        self.locations = OwnedObject(self, SBOL_LOCATION, 0, math.inf)
+        self.locations = OwnedObject(self, SBOL_LOCATION, 0, math.inf,
+                                     type_constraint=Location)
         self.validate()
 
     def validate(self):
