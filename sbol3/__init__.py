@@ -22,8 +22,11 @@ from .document import Document
 from .constraint import Constraint
 from .sequence import Sequence
 from .feature import Feature
-from .location import Range, Cut, EntireSequence
+from .location import Location, Range, Cut, EntireSequence
 from .varcomp import VariableComponent
+from .participation import Participation
+from .interaction import Interaction
+from .interface import Interface
 from .component import Component
 from .model import Model
 from .subcomponent import SubComponent
@@ -31,11 +34,8 @@ from .localsub import LocalSubComponent
 from .seqfeat import SequenceFeature
 from .collection import Collection, Namespace, Experiment
 from .combderiv import CombinatorialDerivation
-from .interaction import Interaction
-from .participation import Participation
 from .compref import ComponentReference
 from .extdef import ExternallyDefined
-from .interface import Interface
 from .implementation import Implementation
 from .attachment import Attachment
 from .expdata import ExperimentalData

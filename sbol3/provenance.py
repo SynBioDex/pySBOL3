@@ -77,8 +77,10 @@ class Activity(CustomTopLevel):
         self.types = URIProperty(self, SBOL_TYPE, 0, math.inf)
         self.start_time = DateTimeProperty(self, PROV_STARTED_AT_TIME, 0, 1)
         self.end_time = DateTimeProperty(self, PROV_ENDED_AT_TIME, 0, 1)
-        self.usage = OwnedObject(self, PROV_QUALIFIED_USAGE, 0, math.inf)
-        self.association = OwnedObject(self, PROV_QUALIFIED_ASSOCIATION, 0, math.inf)
+        self.usage = OwnedObject(self, PROV_QUALIFIED_USAGE, 0, math.inf,
+                                 type_constraint=Usage)
+        self.association = OwnedObject(self, PROV_QUALIFIED_ASSOCIATION, 0, math.inf,
+                                       type_constraint=Association)
         self.validate()
 
 

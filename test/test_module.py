@@ -77,7 +77,7 @@ class TestModule(unittest.TestCase):
             'SubComponent': ['https://example.com/fake'],
             'Usage': ['https://example.com/fake'],
         }
-        skip_list = [sbol3.Identified, sbol3.Feature]
+        skip_list = [sbol3.Identified, sbol3.Feature, sbol3.Location]
         for name in dir(sbol3):
             item = getattr(sbol3, name)
             if not isinstance(item, type):

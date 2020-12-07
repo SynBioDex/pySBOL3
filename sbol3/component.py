@@ -17,9 +17,12 @@ class Component(TopLevel):
         self.sequences = ReferencedObject(self, SBOL_SEQUENCES, 0, math.inf)
         self.features = OwnedObject(self, SBOL_FEATURES, 0, math.inf,
                                     type_constraint=Feature)
-        self.interactions = OwnedObject(self, SBOL_INTERACTIONS, 0, math.inf)
-        self.constraints = OwnedObject(self, SBOL_CONSTRAINTS, 0, math.inf)
-        self.interfaces = OwnedObject(self, SBOL_INTERFACES, 0, 1)
+        self.interactions = OwnedObject(self, SBOL_INTERACTIONS, 0, math.inf,
+                                        type_constraint=Interaction)
+        self.constraints = OwnedObject(self, SBOL_CONSTRAINTS, 0, math.inf,
+                                       type_constraint=Constraint)
+        self.interfaces = OwnedObject(self, SBOL_INTERFACES, 0, 1,
+                                      type_constraint=Interface)
         self.models = ReferencedObject(self, SBOL_MODELS, 0, math.inf)
         self.validate()
 

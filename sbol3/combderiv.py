@@ -13,7 +13,8 @@ class CombinatorialDerivation(TopLevel):
         self.template = ReferencedObject(self, SBOL_TEMPLATE, 1, 1,
                                          initial_value=template)
         self.variable_components = OwnedObject(self, SBOL_VARIABLE_COMPONENTS,
-                                               0, math.inf)
+                                               0, math.inf,
+                                               type_constraint=VariableComponent)
         self.validate()
 
     def validate(self) -> None:

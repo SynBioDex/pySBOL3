@@ -17,7 +17,12 @@ class Identified(SBOLObject):
         self.description = TextProperty(self, SBOL_DESCRIPTION, 0, 1)
         self.derived_from = URIProperty(self, PROV_DERIVED_FROM, 0, math.inf)
         self.generated_by = URIProperty(self, PROV_GENERATED_BY, 0, math.inf)
-        self.measures = OwnedObject(self, SBOL_HAS_MEASURE, 0, math.inf)
+        # The type_constraint for measures should really be Measure but
+        # that's a circular dependency. Instead we make the type constraint
+        # Identified to constrain it somewhat. Identified is the best we
+        # can do since every other SBOL class requires Identified to be defined.
+        self.measures = OwnedObject(self, SBOL_HAS_MEASURE, 0, math.inf,
+                                    type_constraint=Identified)
         # Identity has been set by the SBOLObject constructor
         self._display_id = self._extract_display_id(self.identity)
 
