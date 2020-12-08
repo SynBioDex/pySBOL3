@@ -2,7 +2,6 @@ import collections
 import logging
 import warnings
 from typing import Dict, Callable, List, Optional
-
 import rdflib
 
 # Get the rdflib-jsonld capability initialized
@@ -11,6 +10,7 @@ import rdflib
 from rdflib_jsonld import parser as jsonld_parser
 
 from . import *
+from .object import BUILDER_REGISTER
 
 _default_bindings = {
     'sbol': SBOL3_NS,
@@ -34,7 +34,7 @@ class Document:
 
     # Map type URIs to a builder function to construct entities from
     # RDF triples.
-    _uri_type_map: Dict[str, Callable[[str, str], SBOLObject]] = {}
+    _uri_type_map: Dict[str, Callable[[str, str], SBOLObject]] = BUILDER_REGISTER
 
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)

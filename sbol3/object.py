@@ -3,6 +3,7 @@ import uuid
 from collections import defaultdict
 from typing import Optional
 from urllib.parse import urlparse
+from typing import Dict, Callable
 from . import *
 
 
@@ -99,6 +100,7 @@ class SBOLObject:
                     return result
         return None
 
+
     def copy(self, target_doc=None, target_namespace=None):
 
         new_uri = self.identity
@@ -112,66 +114,21 @@ class SBOLObject:
                 old_uri = self.identity
                 new_uri = replace_namespace(old_uri, target_namespace, self.getTypeURI())
 
-        # new_obj = self.__class__(name=new_uri, type_uri=self.type_uri)
-        new_obj = sbol3.Document._uri_type_map[type_uri](name=new_uri, type_uri=self.type_uri)
+        new_obj = BUILDER_REGISTER[self.type_uri](name=new_uri, type_uri=self.type_uri)
 
         # Copy properties
         for property_uri, value_store in self._properties.items():
             new_obj._properties[property_uri] = value_store.copy()
 
-            # # Add a non-default namespace to the target document if not present
-            # # (This can happen when copying extension properties not in the
-            # # SBOL namespace, for example.)
-            # if self.doc and target_doc is not None:
-            #     property_namespace = URIRef(parseNamespace(property_uri))
-            #     if property_namespace in namespace_map.keys():
-            #         prefix = namespace_map[property_namespace]
-            #         target_doc.addNamespace(property_namespace, prefix)
-
-        # # If caller specified a target_namespace argument, then import objects into this
-        # # new namespace. This involves replacing the target_namespace in ReferenceObject
-        # # URIs with the current Homespace. Don't overwrite namespaces for the
-        # # wasDerivedFrom field, which points back to the original object
-        # if target_namespace:
-
-        #     # Map the identity of self into the target namespace
-        #     if hasattr(self, 'identity'):
-        #         old_uri = self.identity
-        #         new_uri = replace_namespace(old_uri, target_namespace, self.getTypeURI())
-        #         new_obj.identity = new_uri
-
-        #     if hasattr(self, 'persistentIdentity'):
-        #         old_uri = self.persistentIdentity
-        #         new_uri = replace_namespace(old_uri, target_namespace, self.getTypeURI())
-        #         new_obj.persistentIdentity = new_uri
-
-        #     # Map any references to other SBOL objects in the Document into the new
-        #     # namespace
-        #     if self.doc is not None:
-
-        #         # Collect ReferencedObject attributes
-        #         reference_properties = [p for p in new_obj.__dict__.values() if
-        #                                 isinstance(p, ReferencedObject)]
-
-        #         for reference_property in reference_properties:
-        #             values = new_obj.properties[reference_property._rdf_type]
-        #             new_values = []
-        #             for uri in values:
-        #                 if target_namespace in uri:
-
-        #                     referenced_object = self.doc.find(uri)
-        #                     if referenced_object is None:
-        #                         continue
-        #                     new_uri = replace_namespace(uri, target_namespace,
-        #                                                 referenced_object.getTypeURI())
-        #                     new_values.append(new_uri)
-        #             new_obj.properties[reference_property._rdf_type] = new_values
-
+            # TODO:
+            # Map into new namespace
 
         # Assign the new object to the target Document
         if target_doc:
-            target_doc.add(new_obj)
-
+            try:
+                target_doc.add(new_obj)
+            except TypeError:
+                pass  # object is not TopLevel
 
         # When an object is simply being cloned, the value of wasDerivedFrom should be
         # copied exactly as is from self. However, when copy is being used to generate
@@ -181,16 +138,13 @@ class SBOLObject:
         else:
             new_obj.derived_from = self.identity
 
-        # # Copy child objects recursively
-        # for property_uri, object_list in self.owned_objects.items():
-        #     # Don't copy hidden properties
-        #     if target_doc and property_uri in self._hidden_properties:
-        #         continue
-        #     for o in object_list:
-        #         o_copy = o.copy(target_doc, target_namespace, version)
-        #         new_obj.owned_objects[property_uri].append(o_copy)
-        #         o_copy.parent = self
-        #         # o_copy.update_uri()
+        # Copy child objects recursively
+        for property_uri, object_list in self._owned_objects.items():
+            for o in object_list:
+                o_copy = o.copy(target_doc, target_namespace)
+                new_obj._owned_objects[property_uri].append(o_copy)
+                o_copy.parent = self
+                # o_copy.update_uri()
 
         return new_obj
 
@@ -226,3 +180,8 @@ def replace_namespace(old_uri, target_namespace, rdf_type):
     if type(old_uri) is URIRef:
         return URIRef(new_uri)
     return new_uri
+
+
+# Global store for builder methods. Custom SBOL classes
+# register their builders in this store
+BUILDER_REGISTER: Dict[str, Callable[[str, str], SBOLObject]] = {}
