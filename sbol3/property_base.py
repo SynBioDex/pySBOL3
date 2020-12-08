@@ -70,6 +70,7 @@ class SingletonProperty(Property, abc.ABC):
         try:
             value = self._storage()[self.property_uri][0]
         except IndexError:
+            print(self.property_uri)
             return None
         return self.to_user(value)
 
