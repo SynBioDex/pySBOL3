@@ -6,7 +6,7 @@ from . import *
 from .om_prefix import Prefix
 
 
-class Unit(TopLevel, abc.ABC):
+class Unit(CustomTopLevel, abc.ABC):
     """om:Unit is an abstract base class.
 
     See Appendix A Section A.2 of the SBOL 3.0 specificiation.
@@ -27,12 +27,12 @@ class Unit(TopLevel, abc.ABC):
         self.long_comment = TextProperty(self, OM_LONG_COMMENT, 0, 1)
 
 
-class Measure(Identified):
+class Measure(CustomIdentified):
 
     def __init__(self, value: float, unit: str,
                  *, name: str = None,
                  type_uri: str = OM_MEASURE) -> None:
-        super().__init__(name, type_uri)
+        super().__init__(name=name, type_uri=type_uri)
         self.value = FloatProperty(self, OM_HAS_NUMERICAL_VALUE, 1, 1,
                                    initial_value=value)
         self.types = URIProperty(self, SBOL_TYPE, 0, math.inf)

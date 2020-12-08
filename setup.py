@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='sbol3',
-      version='1.0a3',
+      version='1.0a4',
       description='Python implementation of SBOL 3 standard',
       python_requires='>=3.6',
       url='https://github.com/SynBioDex/pySBOL3',
@@ -31,6 +31,7 @@ setup(name='sbol3',
       packages=['sbol3'],
       install_requires=[
             'rdflib>=5.0',
+            'rdflib-jsonld',
             'python-dateutil'
       ],
       test_suite='test',

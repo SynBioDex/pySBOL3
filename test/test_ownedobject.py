@@ -47,7 +47,7 @@ class TestOwnedObject(unittest.TestCase):
         tl.measure = m
         expected = posixpath.join(tl.identity, 'Measure1')
         self.assertIsNotNone(tl.measure.identity)
-        self.assertEqual(tl.measure.identity, expected)
+        self.assertEqual(expected, tl.measure.identity)
 
     def test_add_multiple_children(self):
         # Test that the the display_id and identity are overwritten
@@ -93,6 +93,12 @@ class TestOwnedObject(unittest.TestCase):
         # identity should cascade down to the location after it
         # is set on the sequence feature
         self.assertIsNotNone(loc.identity)
+
+    def test_type_constraint(self):
+        c = sbol3.Component('foo', sbol3.SBO_DNA)
+        with self.assertRaises(TypeError):
+            c.features = [sbol3.Range('https://example.com/fake', 1, 2)]
+        self.assertEqual(c.features.type_constraint, sbol3.Feature)
 
     # TODO: Write tests for adding via a slice
     #       comp.constraints[0:1] = sbol3.Constraint('foo')

@@ -15,6 +15,7 @@ class SequenceFeature(Feature):
         super().__init__(name, type_uri)
         self.locations: oo_list = OwnedObject(self, SBOL_LOCATION,
                                               1, math.inf,
+                                              type_constraint=Location,
                                               initial_value=locations)
         self.validate()
 

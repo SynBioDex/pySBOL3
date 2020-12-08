@@ -5,6 +5,11 @@ from typing import Dict, Callable, List, Optional
 
 import rdflib
 
+# Get the rdflib-jsonld capability initialized
+# Note: this is for side effect. The parser is not used.
+# The side effect is that the JSON-LD parser is registered in RDFlib.
+from rdflib_jsonld import parser as jsonld_parser
+
 from . import *
 
 _default_bindings = {
@@ -158,8 +163,15 @@ class Document:
         for prefix, uri in graph.namespaces():
             self.bind(prefix, uri)
 
+    def _guess_format(self, fpath: str):
+        return rdflib.util.guess_format(fpath)
+
     # Formats: 'n3', 'nt', 'turtle', 'xml'
-    def read(self, location: str, file_format: str) -> None:
+    def read(self, location: str, file_format: str = None) -> None:
+        if file_format is None:
+            file_format = self._guess_format(location)
+        if file_format is None:
+            raise ValueError('Unable to determine file format')
         if file_format == SORTED_NTRIPLES:
             file_format = NTRIPLES
         graph = rdflib.Graph()
@@ -213,12 +225,8 @@ class Document:
                 return obj
         return self._find_in_objects(search_string)
 
-    def write(self, path: str, file_format: str) -> None:
-        graph = rdflib.Graph()
-        for prefix, uri in self._namespaces.items():
-            graph.bind(prefix, uri)
-        for obj in self.objects:
-            obj.serialize(graph)
+    def write_string(self, file_format: str) -> bytes:
+        graph = self.graph()
         if file_format == SORTED_NTRIPLES:
             # have RDFlib give us the ntriples as a string
             nt_text = graph.serialize(format='nt')
@@ -228,10 +236,41 @@ class Document:
             lines.sort()
             # write out the lines
             # RDFlib gives us bytes, so open file in binary mode
-            with open(path, 'wb') as outfile:
-                outfile.writelines(lines)
+            result = b''.join(lines)
+        elif file_format == JSONLD:
+            context = {f'@{prefix}': uri for prefix, uri in self._namespaces.items()}
+            context['@vocab'] = 'https://sbolstandard.org/examples/'
+            result = graph.serialize(format=file_format, context=context)
         else:
-            graph.serialize(path, format=file_format)
+            result = graph.serialize(format=file_format)
+        return result
+
+    def write(self, fpath: str, file_format: str = None) -> None:
+        """Write the document to file.
+
+        If file_format is None the desired format is guessed from the
+        extension of fpath. If file_format cannot be guessed a ValueError
+        is raised.
+        """
+        if file_format is None:
+            file_format = self._guess_format(fpath)
+        if file_format is None:
+            raise ValueError('Unable to determine file format')
+        with open(fpath, 'wb') as outfile:
+            outfile.write(self.write_string(file_format))
+
+    def graph(self) -> rdflib.Graph:
+        """Convert document to an RDF Graph.
+
+        The returned graph is a snapshot of the document and will
+        not be updated by subsequent changes to the document.
+        """
+        graph = rdflib.Graph()
+        for prefix, uri in self._namespaces.items():
+            graph.bind(prefix, uri)
+        for obj in self.objects:
+            obj.serialize(graph)
+        return graph
 
     def bind(self, prefix: str, uri: str) -> None:
         """Bind a prefix to an RDF namespace in the written RDF document.
