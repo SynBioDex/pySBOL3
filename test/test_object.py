@@ -77,5 +77,6 @@ class TestObject(unittest.TestCase):
     #     self.assertEqual(type(comp.properties[sbol3.SBOL_SEQUENCE_PROPERTY][0]),
     #                      type(comp_copy.properties[sbol3.SBOL_SEQUENCE_PROPERTY][0]))
 
+
 if __name__ == '__main__':
     unittest.main()

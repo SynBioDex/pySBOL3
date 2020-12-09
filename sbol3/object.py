@@ -100,13 +100,12 @@ class SBOLObject:
                     return result
         return None
 
-
     def copy(self, target_doc=None, target_namespace=None):
 
         new_uri = self.identity
 
         # If caller specified a target_namespace argument, then copy the object into this
-        # new namespace. 
+        # new namespace.
         if target_namespace:
 
             # Map the identity of self into the target namespace
