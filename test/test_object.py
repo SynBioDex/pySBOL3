@@ -43,40 +43,6 @@ class TestObject(unittest.TestCase):
         self.assertEqual([sc.identity for sc in root.features],
                          [sc.identity for sc in root_copy.features])
 
-    # def test_import_object_into_new_namespace(self):
-    #     # When copying an object into a new namespace, confirm that it's URI is copied
-    #     # into the new namespace. Also confirm that any ReferencedObject attributes
-    #     # whose values point to an object in the old namespace are also copied into the
-    #     # new namespace
-    #     sbol3.setHomespace('http://examples.org')
-    #     sbol3.Config.setOption(sbol2.ConfigOptions.SBOL_COMPLIANT_URIS, True)
-    #     sbol3.Config.setOption(sbol2.ConfigOptions.SBOL_TYPED_URIS, False)
-    #     doc = sbol3.Document()
-    #     comp = sbol3.ComponentDefinition('cd')
-    #     seq = sbol3.Sequence('seq')
-    #     doc.addComponentDefinition(comp)
-    #     doc.addSequence(seq)
-    #     comp.sequences = seq.identity
-
-    #     # Import from old homespace into new homespace
-    #     old_homespace = sbol3.getHomespace()
-    #     sbol3.setHomespace('http://acme.com')
-    #     comp_copy = comp.copy(None, old_homespace)
-
-    #     # Verify new namespace was correctly substituted
-    #     self.assertEqual(comp_copy.identity, 'http://acme.com/cd/1')
-    #     self.assertEqual(comp_copy.persistentIdentity, 'http://acme.com/cd')
-    #     self.assertEqual(comp_copy.sequences[0], 'http://acme.com/seq/1')
-
-    #     # Verify wasDerivedFrom relationship
-    #     self.assertEqual(comp_copy.wasDerivedFrom[0], comp.identity)
-
-    #     # Ensure these are equal under the covers
-    #     self.assertEqual(type(comp.properties[sbol3.SBOL_SEQUENCE_PROPERTY][0]),
-    #                      rdflib.URIRef)
-    #     self.assertEqual(type(comp.properties[sbol3.SBOL_SEQUENCE_PROPERTY][0]),
-    #                      type(comp_copy.properties[sbol3.SBOL_SEQUENCE_PROPERTY][0]))
-
 
 if __name__ == '__main__':
     unittest.main()
