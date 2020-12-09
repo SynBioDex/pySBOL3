@@ -1,9 +1,9 @@
 import posixpath
 import uuid
 from collections import defaultdict
-from typing import Optional
 from urllib.parse import urlparse
-from typing import Dict, Callable
+from typing import Dict, Callable, Optional
+
 from . import *
 
 
@@ -143,7 +143,6 @@ class SBOLObject:
                 o_copy = o.copy(target_doc, target_namespace)
                 new_obj._owned_objects[property_uri].append(o_copy)
                 o_copy.parent = self
-                # o_copy.update_uri()
 
         return new_obj
 

@@ -2,8 +2,8 @@ import collections
 import logging
 import warnings
 from typing import Dict, Callable, List, Optional
-import rdflib
 
+import rdflib
 # Get the rdflib-jsonld capability initialized
 # Note: this is for side effect. The parser is not used.
 # The side effect is that the JSON-LD parser is registered in RDFlib.
