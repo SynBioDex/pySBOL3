@@ -6,6 +6,14 @@ from . import *
 
 class Component(TopLevel):
 
+    @staticmethod
+    def build_component(name: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:
+        missing = PYSBOL3_MISSING
+        obj = Component(name, [missing], type_uri=type_uri)
+        # Remove the dummy values
+        obj._properties[SBOL_TYPE] = []
+        return obj
+
     def __init__(self, name: str, component_type: Union[List[str], str],
                  *, type_uri: str = SBOL_COMPONENT):
         super().__init__(name, type_uri)
