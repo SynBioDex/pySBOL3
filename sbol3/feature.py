@@ -7,8 +7,8 @@ from . import *
 class Feature(Identified, abc.ABC):
     """Feature is an abstract base class."""
 
-    def __init__(self, name: str, type_uri: str) -> None:
-        super().__init__(name, type_uri)
+    def __init__(self, identity: str, type_uri: str) -> None:
+        super().__init__(identity, type_uri)
         self.roles = URIProperty(self, SBOL_ROLE, 0, math.inf)
         self.orientation = URIProperty(self, SBOL_ORIENTATION, 0, 1)
 

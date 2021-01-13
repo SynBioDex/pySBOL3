@@ -12,8 +12,8 @@ class SingleRefObj(sbol3.TopLevel):
     SRO_URI = 'https://github.com/synbiodex/sbol3#SingleRefObj'
     SEQUENCE_URI = 'https://github.com/synbiodex/sbol3#sequence'
 
-    def __init__(self, name: str, type_uri: str = SRO_URI):
-        super().__init__(name, type_uri)
+    def __init__(self, identity: str, type_uri: str = SRO_URI):
+        super().__init__(identity, type_uri)
         self.sequence = sbol3.ReferencedObject(self, SingleRefObj.SEQUENCE_URI, 0, 1)
 
 

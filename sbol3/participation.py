@@ -8,9 +8,9 @@ class Participation(Identified):
 
     def __init__(self, roles: List[str],
                  participant: Union[SBOLObject, str],
-                 *, name: str = None,
+                 *, identity: str = None,
                  type_uri: str = SBOL_PARTCIPATION) -> None:
-        super().__init__(name, type_uri)
+        super().__init__(identity, type_uri)
         self.roles: uri_list = URIProperty(self, SBOL_ROLE, 1, math.inf,
                                            initial_value=roles)
         self.participant = ReferencedObject(self, SBOL_PARTICIPANT, 1, 1,
@@ -25,9 +25,10 @@ class Participation(Identified):
             raise ValidationError('Participation must have a participant')
 
 
-def build_participation(name: str, *, type_uri: str = SBOL_PARTCIPATION) -> SBOLObject:
+def build_participation(identity: str,
+                        *, type_uri: str = SBOL_PARTCIPATION) -> SBOLObject:
     missing = PYSBOL3_MISSING
-    obj = Participation([missing], missing, name=name, type_uri=type_uri)
+    obj = Participation([missing], missing, identity=identity, type_uri=type_uri)
     # Remove the dummy values
     obj._properties[SBOL_ROLE] = []
     obj._properties[SBOL_PARTICIPANT] = []

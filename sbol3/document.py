@@ -55,7 +55,7 @@ class Document:
             except KeyError:
                 logging.warning(f'No builder found for {other_type}')
                 builder = CustomIdentified
-            return builder(name=identity, type_uri=other_type)
+            return builder(identity=identity, type_uri=other_type)
         elif SBOL_TOP_LEVEL in types:
             types.remove(SBOL_TOP_LEVEL)
             try:
@@ -69,7 +69,7 @@ class Document:
             except KeyError:
                 logging.warning(f'No builder found for {other_type}')
                 builder = CustomTopLevel
-            return builder(name=identity, type_uri=other_type)
+            return builder(identity=identity, type_uri=other_type)
         else:
             message = 'Custom types must contain either Identified or TopLevel'
             raise ValidationError(message)
@@ -97,7 +97,7 @@ class Document:
                 except KeyError:
                     logging.warning(f'No builder found for {type_uri}')
                     raise ValidationError(f'Unknown type {type_uri}')
-                obj = builder(name=identity, type_uri=type_uri)
+                obj = builder(identity=identity, type_uri=type_uri)
             elif len(types) == 2:
                 obj = self._make_custom_object(identity, types)
             else:

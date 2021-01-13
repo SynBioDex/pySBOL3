@@ -6,9 +6,9 @@ from . import *
 
 class CombinatorialDerivation(TopLevel):
 
-    def __init__(self, name: str, template: Union[Component, str],
+    def __init__(self, identity: str, template: Union[Component, str],
                  *, type_uri: str = SBOL_MODEL) -> None:
-        super().__init__(name, type_uri)
+        super().__init__(identity, type_uri)
         self.strategy = URIProperty(self, SBOL_STRATEGY, 0, 1)
         self.template = ReferencedObject(self, SBOL_TEMPLATE, 1, 1,
                                          initial_value=template)
@@ -25,10 +25,10 @@ class CombinatorialDerivation(TopLevel):
                 raise ValidationError(f'{self.strategy} is not a valid strategy')
 
 
-def build_combinatorial_derivation(name: str,
+def build_combinatorial_derivation(identity: str,
                                    *, type_uri: str = SBOL_COMBINATORIAL_DERIVATION):
     template = PYSBOL3_MISSING
-    return CombinatorialDerivation(name, template, type_uri=type_uri)
+    return CombinatorialDerivation(identity, template, type_uri=type_uri)
 
 
 Document.register_builder(SBOL_COMBINATORIAL_DERIVATION, build_combinatorial_derivation)

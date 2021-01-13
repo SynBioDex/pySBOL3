@@ -12,9 +12,9 @@ class Unit(CustomTopLevel, abc.ABC):
     See Appendix A Section A.2 of the SBOL 3.0 specificiation.
     """
 
-    def __init__(self, name: str, symbol: str, label: str,
+    def __init__(self, identity: str, symbol: str, label: str,
                  type_uri: str) -> None:
-        super().__init__(name, type_uri)
+        super().__init__(identity, type_uri)
         self.symbol = TextProperty(self, OM_SYMBOL, 1, 1,
                                    initial_value=symbol)
         self.alternative_symbols = TextProperty(self, OM_ALTERNATIVE_SYMBOL,
@@ -30,9 +30,9 @@ class Unit(CustomTopLevel, abc.ABC):
 class Measure(CustomIdentified):
 
     def __init__(self, value: float, unit: str,
-                 *, name: str = None,
+                 *, identity: str = None,
                  type_uri: str = OM_MEASURE) -> None:
-        super().__init__(name=name, type_uri=type_uri)
+        super().__init__(identity=identity, type_uri=type_uri)
         self.value = FloatProperty(self, OM_HAS_NUMERICAL_VALUE, 1, 1,
                                    initial_value=value)
         self.types = URIProperty(self, SBOL_TYPE, 0, math.inf)
@@ -41,9 +41,9 @@ class Measure(CustomIdentified):
         self.validate()
 
 
-def build_measure(name: str, *, type_uri: str = OM_MEASURE) -> SBOLObject:
+def build_measure(identity: str, *, type_uri: str = OM_MEASURE) -> SBOLObject:
     missing = PYSBOL3_MISSING
-    obj = Measure(1.0, missing, name=name, type_uri=type_uri)
+    obj = Measure(1.0, missing, identity=identity, type_uri=type_uri)
     # Remove the dummy values
     obj._properties[OM_HAS_NUMERICAL_VALUE] = []
     obj._properties[OM_HAS_UNIT] = []
@@ -55,17 +55,18 @@ Document.register_builder(OM_MEASURE, build_measure)
 
 class SingularUnit(Unit):
 
-    def __init__(self, name: str, symbol: str, label: str,
+    def __init__(self, identity: str, symbol: str, label: str,
                  *, type_uri: str = OM_SINGULAR_UNIT) -> None:
-        super().__init__(name, symbol, label, type_uri)
+        super().__init__(identity, symbol, label, type_uri)
         self.unit = ReferencedObject(self, OM_HAS_UNIT, 0, 1)
         self.factor = FloatProperty(self, OM_HAS_FACTOR, 0, 1)
         self.validate()
 
 
-def build_singular_unit(name: str, *, type_uri: str = OM_SINGULAR_UNIT) -> SBOLObject:
+def build_singular_unit(identity: str,
+                        *, type_uri: str = OM_SINGULAR_UNIT) -> SBOLObject:
     missing = PYSBOL3_MISSING
-    obj = SingularUnit(name, missing, missing, type_uri=type_uri)
+    obj = SingularUnit(identity, missing, missing, type_uri=type_uri)
     # Remove the dummy values
     obj._properties[OM_SYMBOL] = []
     obj._properties[OM_LABEL] = []
@@ -77,11 +78,11 @@ Document.register_builder(OM_SINGULAR_UNIT, build_singular_unit)
 
 class PrefixedUnit(Unit):
 
-    def __init__(self, name: str, symbol: str, label: str,
+    def __init__(self, identity: str, symbol: str, label: str,
                  unit: Union[Unit, str],
                  prefix: Union[Prefix, str],
                  *, type_uri: str = OM_PREFIXED_UNIT) -> None:
-        super().__init__(name, symbol, label, type_uri)
+        super().__init__(identity, symbol, label, type_uri)
         self.unit = ReferencedObject(self, OM_HAS_UNIT, 1, 1,
                                      initial_value=unit)
         self.prefix = ReferencedObject(self, OM_HAS_PREFIX, 1, 1,
@@ -89,9 +90,10 @@ class PrefixedUnit(Unit):
         self.validate()
 
 
-def build_prefixed_unit(name: str, *, type_uri: str = OM_PREFIXED_UNIT) -> SBOLObject:
+def build_prefixed_unit(identity: str,
+                        *, type_uri: str = OM_PREFIXED_UNIT) -> SBOLObject:
     missing = PYSBOL3_MISSING
-    obj = PrefixedUnit(name, missing, missing, missing, missing, type_uri=type_uri)
+    obj = PrefixedUnit(identity, missing, missing, missing, missing, type_uri=type_uri)
     # Remove the dummy values
     obj._properties[OM_SYMBOL] = []
     obj._properties[OM_LABEL] = []

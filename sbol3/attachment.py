@@ -3,9 +3,9 @@ from . import *
 
 class Attachment(TopLevel):
 
-    def __init__(self, name: str, source: str,
+    def __init__(self, identity: str, source: str,
                  *, type_uri: str = SBOL_ATTACHMENT):
-        super().__init__(name, type_uri)
+        super().__init__(identity, type_uri)
         self.source = URIProperty(self, SBOL_SOURCE, 1, 1,
                                   initial_value=source)
         self.format = URIProperty(self, SBOL_FORMAT, 0, 1)
@@ -22,9 +22,9 @@ class Attachment(TopLevel):
             raise ValidationError(message)
 
 
-def build_attachment(name: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:
+def build_attachment(identity: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:
     missing = PYSBOL3_MISSING
-    obj = Attachment(name, missing, type_uri=type_uri)
+    obj = Attachment(identity, missing, type_uri=type_uri)
     # Remove the dummy values
     obj._properties[SBOL_SOURCE] = []
     return obj

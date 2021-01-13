@@ -113,7 +113,8 @@ class SBOLObject:
                 old_uri = self.identity
                 new_uri = replace_namespace(old_uri, target_namespace, self.getTypeURI())
 
-        new_obj = BUILDER_REGISTER[self.type_uri](name=new_uri, type_uri=self.type_uri)
+        new_obj = BUILDER_REGISTER[self.type_uri](identity=new_uri,
+                                                  type_uri=self.type_uri)
 
         # Copy properties
         for property_uri, value_store in self._properties.items():

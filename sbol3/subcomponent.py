@@ -9,8 +9,8 @@ from .feature import Feature
 class SubComponent(Feature):
 
     def __init__(self, instance_of: Union[Identified, str],
-                 *, name: str = None, type_uri: str = SBOL_SUBCOMPONENT) -> None:
-        super().__init__(name, type_uri)
+                 *, identity: str = None, type_uri: str = SBOL_SUBCOMPONENT) -> None:
+        super().__init__(identity, type_uri)
         self.role_integration = URIProperty(self, SBOL_ROLE, 0, 1)
         self.instance_of = ReferencedObject(self, SBOL_INSTANCE_OF, 1, 1,
                                             initial_value=instance_of)
@@ -27,11 +27,11 @@ class SubComponent(Feature):
             raise ValidationError('SubComponent must have an instance_of')
 
 
-def build_subcomponent(name: str, type_uri: str = SBOL_SUBCOMPONENT) -> Identified:
+def build_subcomponent(identity: str, type_uri: str = SBOL_SUBCOMPONENT) -> Identified:
     """Used by Document to construct a SubComponent when reading an SBOL file.
     """
     missing = PYSBOL3_MISSING
-    obj = SubComponent(missing, name=name, type_uri=type_uri)
+    obj = SubComponent(missing, identity=identity, type_uri=type_uri)
     obj._properties[SBOL_INSTANCE_OF] = []
     return obj
 
