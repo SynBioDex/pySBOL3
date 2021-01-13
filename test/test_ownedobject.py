@@ -11,7 +11,7 @@ class TestOwnedObject(unittest.TestCase):
         con1 = sbol3.Constraint(sbol3.SBOL_REPLACES,
                                 'http://example.com/fake1',
                                 'http://example.com/fake2',
-                                name=con1_id)
+                                identity=con1_id)
         expected = posixpath.join(sbol3.get_namespace(), con1_id)
         # The constraint's identity and display_id will be overwritten as
         # part of the append operation. SBOL Compliant URIs (identities)
@@ -31,7 +31,7 @@ class TestOwnedObject(unittest.TestCase):
         con1 = sbol3.Constraint(sbol3.SBOL_REPLACES,
                                 'http://example.com/fake1',
                                 'http://example.com/fake2',
-                                name=con1_id)
+                                identity=con1_id)
         expected = posixpath.join(sbol3.get_namespace(), con1_id)
         expected2 = posixpath.join(comp.identity, 'Constraint1')
         self.assertNotEqual(expected, expected2)

@@ -16,8 +16,8 @@ PYSBOL3_CUSTOM_INT = 'https://github.com/synbiodex/pysbol3#customInt'
 
 
 class CustomTopClass(sbol3.CustomTopLevel):
-    def __init__(self, name, type_uri=PYSBOL3_CUSTOM_TOP):
-        super().__init__(name, type_uri)
+    def __init__(self, identity, type_uri=PYSBOL3_CUSTOM_TOP):
+        super().__init__(identity, type_uri)
         # Also test the boolean list while we're here
         self.foo_bool = sbol3.BooleanProperty(self, PYSBOL3_CUSTOM_BOOL,
                                               0, math.inf)
@@ -25,8 +25,8 @@ class CustomTopClass(sbol3.CustomTopLevel):
 
 
 class CustomIdentifiedClass(sbol3.CustomIdentified):
-    def __init__(self, type_uri=PYSBOL3_CUSTOM_IDENTIFIED, name=None):
-        super().__init__(type_uri, name=name)
+    def __init__(self, type_uri=PYSBOL3_CUSTOM_IDENTIFIED, identity=None):
+        super().__init__(type_uri, identity=identity)
         # Also test the int list while we're here
         self.foo_int = sbol3.IntProperty(self, PYSBOL3_CUSTOM_INT,
                                          0, math.inf)
@@ -98,7 +98,7 @@ class TestCustomIdentified(unittest.TestCase):
 
     def test_create(self):
         custom_type = 'https://github.com/synbiodex/pysbol3/CustomType'
-        ctl = sbol3.CustomIdentified(name='custom1',
+        ctl = sbol3.CustomIdentified(identity='custom1',
                                      type_uri=custom_type)
         self.assertEqual(custom_type, ctl.type_uri)
         # Go behind the scenes to verify

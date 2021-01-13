@@ -3,8 +3,8 @@ from . import *
 
 class Sequence(TopLevel):
 
-    def __init__(self, name: str, *, type_uri: str = SBOL_SEQUENCE) -> None:
-        super().__init__(name, type_uri)
+    def __init__(self, identity: str, *, type_uri: str = SBOL_SEQUENCE) -> None:
+        super().__init__(identity, type_uri)
         self.elements = TextProperty(self, SBOL_ELEMENTS, 0, 1)
         self.encoding = URIProperty(self, SBOL_ENCODING, 0, 1)
         self.validate()

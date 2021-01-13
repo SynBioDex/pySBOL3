@@ -14,9 +14,9 @@ class ExternallyDefined(Feature):
     """
 
     def __init__(self, types: List[str], definition: str,
-                 *, name: str = None,
+                 *, identity: str = None,
                  type_uri: str = SBOL_EXTERNALLY_DEFINED):
-        super().__init__(name, type_uri)
+        super().__init__(identity, type_uri)
         self.types: uri_list = URIProperty(self, SBOL_TYPE, 1, math.inf,
                                            initial_value=types)
         self.definition: uri_singleton = URIProperty(self, SBOL_DEFINITION, 1, 1,
@@ -31,10 +31,10 @@ class ExternallyDefined(Feature):
             raise ValidationError('ExternallyDefined must have a definition')
 
 
-def build_externally_defined(name: str,
+def build_externally_defined(identity: str,
                              *, type_uri: str = SBOL_EXTERNALLY_DEFINED) -> SBOLObject:
     missing = PYSBOL3_MISSING
-    obj = ExternallyDefined([missing], missing, name=name, type_uri=type_uri)
+    obj = ExternallyDefined([missing], missing, identity=identity, type_uri=type_uri)
     # Remove the dummy values
     obj._properties[SBOL_TYPE] = []
     obj._properties[SBOL_DEFINITION] = []

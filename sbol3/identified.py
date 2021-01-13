@@ -10,8 +10,8 @@ from . import *
 
 class Identified(SBOLObject):
 
-    def __init__(self, name: str, type_uri: str) -> None:
-        super().__init__(name, type_uri)
+    def __init__(self, identity: str, type_uri: str) -> None:
+        super().__init__(identity, type_uri)
         self._display_id = TextProperty(self, SBOL_DISPLAY_ID, 0, 1)
         self.name = TextProperty(self, SBOL_NAME, 0, 1)
         self.description = TextProperty(self, SBOL_DESCRIPTION, 0, 1)

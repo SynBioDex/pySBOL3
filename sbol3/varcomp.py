@@ -8,9 +8,9 @@ class VariableComponent(Identified):
     def __init__(self, *,
                  cardinality: str = None,
                  variable: str = None,
-                 name: str = None,
+                 identity: str = None,
                  type_uri: str = SBOL_VARIABLE_COMPONENT) -> None:
-        super().__init__(name, type_uri)
+        super().__init__(identity, type_uri)
         # Assign default values
         if cardinality is None:
             cardinality = SBOL_ZERO_OR_MORE
