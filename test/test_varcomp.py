@@ -6,7 +6,7 @@ import sbol3
 class TestVariableComponent(unittest.TestCase):
 
     def test_create(self):
-        vc = sbol3.VariableComponent()
+        vc = sbol3.VariableFeature()
         self.assertIsNotNone(vc)
         # Verify the correct default values
         self.assertEqual(sbol3.SBOL_ZERO_OR_MORE, vc.cardinality)
@@ -15,7 +15,7 @@ class TestVariableComponent(unittest.TestCase):
     def test_invalid_create(self):
         my_cardinality = 'https://github.com/synbiodex/pysbol3#someNumber'
         with self.assertRaises(sbol3.ValidationError):
-            vc = sbol3.VariableComponent(cardinality=my_cardinality)
+            vc = sbol3.VariableFeature(cardinality=my_cardinality)
 
 
 if __name__ == '__main__':

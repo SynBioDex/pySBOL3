@@ -3,13 +3,13 @@ import math
 from . import *
 
 
-class VariableComponent(Identified):
+class VariableFeature(Identified):
 
     def __init__(self, *,
                  cardinality: str = None,
                  variable: str = None,
                  identity: str = None,
-                 type_uri: str = SBOL_VARIABLE_COMPONENT) -> None:
+                 type_uri: str = SBOL_VARIABLE_FEATURE) -> None:
         super().__init__(identity, type_uri)
         # Assign default values
         if cardinality is None:
@@ -26,6 +26,8 @@ class VariableComponent(Identified):
                                                    0, math.inf)
         self.variant_derivation = ReferencedObject(self, SBOL_VARIANT_DERIVATION,
                                                    0, math.inf)
+        self.variant_measure = OwnedObject(self, SBOL_VARIANT_MEASURE,
+                                           0, math.inf)
         # Validate
         self.validate()
 

@@ -12,9 +12,9 @@ class CombinatorialDerivation(TopLevel):
         self.strategy = URIProperty(self, SBOL_STRATEGY, 0, 1)
         self.template = ReferencedObject(self, SBOL_TEMPLATE, 1, 1,
                                          initial_value=template)
-        self.variable_components = OwnedObject(self, SBOL_VARIABLE_COMPONENTS,
+        self.variable_components = OwnedObject(self, SBOL_VARIABLE_FEATURES,
                                                0, math.inf,
-                                               type_constraint=VariableComponent)
+                                               type_constraint=VariableFeature)
         self.validate()
 
     def validate(self) -> None:
