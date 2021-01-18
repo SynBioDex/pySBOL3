@@ -23,7 +23,7 @@ from .constraint import Constraint
 from .sequence import Sequence
 from .feature import Feature
 from .location import Location, Range, Cut, EntireSequence
-from .varcomp import VariableComponent
+from .varcomp import VariableFeature
 from .participation import Participation
 from .interaction import Interaction
 from .interface import Interface

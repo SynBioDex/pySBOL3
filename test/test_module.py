@@ -25,7 +25,7 @@ class TestModule(unittest.TestCase):
         self.assertIsInstance(sbol3.Participation, type)
         self.assertIsInstance(sbol3.Interface, type)
         self.assertIsInstance(sbol3.CombinatorialDerivation, type)
-        self.assertIsInstance(sbol3.VariableComponent, type)
+        self.assertIsInstance(sbol3.VariableFeature, type)
         self.assertIsInstance(sbol3.Implementation, type)
         self.assertIsInstance(sbol3.ExperimentalData, type)
         self.assertIsInstance(sbol3.Model, type)

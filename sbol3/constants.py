@@ -97,11 +97,12 @@ SBOL_TEMPLATE = SBOL3_NS + 'template'
 SBOL_TOP_LEVEL = SBOL3_NS + 'TopLevel'
 SBOL_TYPE = SBOL3_NS + 'type'
 SBOL_VARIABLE = SBOL3_NS + 'variable'
-SBOL_VARIABLE_COMPONENT = SBOL3_NS + 'VariableComponent'
-SBOL_VARIABLE_COMPONENTS = SBOL3_NS + 'hasVariableComponent'
+SBOL_VARIABLE_FEATURE = SBOL3_NS + 'VariableFeature'
+SBOL_VARIABLE_FEATURES = SBOL3_NS + 'hasVariableFeature'
 SBOL_VARIANT = SBOL3_NS + 'variant'
 SBOL_VARIANT_COLLECTION = SBOL3_NS + 'variantCollection'
 SBOL_VARIANT_DERIVATION = SBOL3_NS + 'variantDerivation'
+SBOL_VARIANT_MEASURE = SBOL3_NS + 'variantMeasure'
 
 # Recommended values for Sequence encoding
 SBOL_IUPAC_DNA = SBOL3_NS + 'iupacNucleicAcid'
@@ -119,7 +120,7 @@ SBOL_REVERSE_COMPLEMENT = SBOL3_NS + 'reverseComplement'
 SBOL_ENUMERATE = SBOL3_NS + 'enumerate'
 SBOL_SAMPLE = SBOL3_NS + 'sample'
 
-# Valid values for Variable Component cardinality
+# Valid values for Variable Feature cardinality
 # See SBOL3 Section 6.5 Table 13
 SBOL_ONE = SBOL3_NS + 'one'
 SBOL_ONE_OR_MORE = SBOL3_NS + 'oneOrMore'
