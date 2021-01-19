@@ -7,7 +7,7 @@ class Collection(TopLevel):
 
     def __init__(self, identity: str, *, type_uri: str = SBOL_COLLECTION) -> None:
         super().__init__(identity, type_uri)
-        self.members = ReferencedObject(self, SBOL_ORIENTATION, 0, math.inf)
+        self.members = ReferencedObject(self, SBOL_MEMBER, 0, math.inf)
 
 
 class Namespace(Collection):

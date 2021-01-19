@@ -21,6 +21,18 @@ class TestCollection(unittest.TestCase):
         self.assertIsNotNone(collection)
         self.assertIsInstance(collection, sbol3.Collection)
 
+    def test_member_property(self):
+        self.assertTrue(hasattr(sbol3, 'SBOL_MEMBER'))
+        collection = sbol3.Collection('collection1')
+        self.assertIn(sbol3.SBOL_MEMBER, collection._properties)
+        self.assertNotIn(sbol3.SBOL_ORIENTATION, collection._properties)
+        uris = ['https://github.com/synbiodex/pysbol3/thing1',
+                'https://github.com/synbiodex/pysbol3/thing2']
+        collection.members = uris
+        self.assertIn(sbol3.SBOL_MEMBER, collection._properties)
+        self.assertNotIn(sbol3.SBOL_ORIENTATION, collection._properties)
+        self.assertEqual(uris, collection.members)
+
 
 class TestNamespace(unittest.TestCase):
 
