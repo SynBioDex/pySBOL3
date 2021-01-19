@@ -225,7 +225,7 @@ class Document:
                 return obj
         return self._find_in_objects(search_string)
 
-    def write_string(self, file_format: str) -> bytes:
+    def write_string(self, file_format: str) -> str:
         graph = self.graph()
         if file_format == SORTED_NTRIPLES:
             # have RDFlib give us the ntriples as a string
