@@ -79,6 +79,17 @@ class TestCustomTopLevel(unittest.TestCase):
         # Compare specially
         self.assertCountEqual([True, False], obj2.foo_bool)
 
+    def test_none_identity(self):
+        # Make sure a ValueError is raised if None is passed
+        # as a CustomTopLevel identity. And also if identity
+        # is an empty string or not a string.
+        with self.assertRaises(ValueError):
+            obj = CustomTopClass(None)
+        with self.assertRaises(ValueError):
+            obj = CustomTopClass('')
+        with self.assertRaises(ValueError):
+            obj = CustomTopClass(3)
+
 
 class TestCustomIdentified(unittest.TestCase):
 
