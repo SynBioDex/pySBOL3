@@ -29,3 +29,9 @@ Please
 and follow
 [GitHub flow](https://guides.github.com/introduction/flow/)
 for development.
+
+## Acknowledgements
+
+Development of this library has been supported by the 
+[DARPA Synergistic Discovery and Design (SD2)](https://www.darpa.mil/program/synergistic-discovery-and-design)
+program and [Raytheon BBN Technologies](http://bbn.com/).
