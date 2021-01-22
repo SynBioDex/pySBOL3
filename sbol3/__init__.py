@@ -1,4 +1,4 @@
-__version__ = '1.0a5'
+__version__ = '1.0a6'
 
 from .constants import *
 from .config import set_defaults, get_namespace, set_namespace
