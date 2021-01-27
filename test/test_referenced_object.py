@@ -22,6 +22,9 @@ class TestReferencedObject(unittest.TestCase):
     def setUp(self) -> None:
         sbol3.set_defaults()
 
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_lookup(self):
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.ttl')
         test_format = sbol3.TURTLE
@@ -39,6 +42,7 @@ class TestReferencedObject(unittest.TestCase):
 
     def test_uri_assignment(self):
         # Test assignment to a ReferencedObject attribute with a URI string
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         component = sbol3.Component('c1', sbol3.SBO_DNA)
         sequence = sbol3.Sequence('seq1')
@@ -54,6 +58,7 @@ class TestReferencedObject(unittest.TestCase):
     def test_instance_append(self):
         # Test assignment to a ReferencedObject attribute with an
         # instance using append
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         component = sbol3.Component('c1', sbol3.SBO_DNA)
         sequence = sbol3.Sequence('seq1')
@@ -68,6 +73,7 @@ class TestReferencedObject(unittest.TestCase):
     def test_instance_assignment(self):
         # Test assignment to a ReferencedObject attribute with an
         # instance using assignment
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         component = sbol3.Component('c1', sbol3.SBO_DNA)
         sequence = sbol3.Sequence('seq1')
@@ -82,6 +88,7 @@ class TestReferencedObject(unittest.TestCase):
     def test_singleton_assignment(self):
         # Test assignment to a ReferencedObject attribute with an
         # instance using assignment
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         test_parent = SingleRefObj('sro1')
         sequence = sbol3.Sequence('seq1')

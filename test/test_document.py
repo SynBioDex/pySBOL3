@@ -17,6 +17,12 @@ class TestDocument(unittest.TestCase):
     def setUpClass(cls) -> None:
         logging.basicConfig(level=logging.INFO)
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_read_ntriples(self):
         # Initial test of Document.read
         filename = 'model.nt'
@@ -62,6 +68,7 @@ class TestDocument(unittest.TestCase):
         doc.read(test_path, sbol3.TURTLE)
 
     def test_add(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         type_uri = 'https://github.com/synbiodex/sbol3#TestObj'
         obj1 = sbol3.SBOLObject('obj', type_uri)
@@ -83,6 +90,7 @@ class TestDocument(unittest.TestCase):
             document.add(namespace2)
 
     def test_write(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         doc.add(sbol3.Component('c1', sbol3.SBO_DNA))
         with tempfile.TemporaryDirectory() as tmpdirname:
@@ -129,6 +137,7 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(0, len(g))
 
     def test_graph(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         doc.add(sbol3.Component('foo', sbol3.SBO_DNA))
         graph = doc.graph()

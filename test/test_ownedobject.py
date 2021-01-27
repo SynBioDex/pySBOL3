@@ -5,7 +5,14 @@ import sbol3
 
 class TestOwnedObject(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_identity_append(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         comp = sbol3.Component('c1', sbol3.SBO_DNA)
         con1_id = 'con1'
         con1 = sbol3.Constraint(sbol3.SBOL_REPLACES,
@@ -26,6 +33,7 @@ class TestOwnedObject(unittest.TestCase):
 
     def test_list_property_update_identity(self):
         # This test uses assignment instead of appending
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         comp = sbol3.Component('c1', sbol3.SBO_DNA)
         con1_id = 'con1'
         con1 = sbol3.Constraint(sbol3.SBOL_REPLACES,
@@ -41,6 +49,7 @@ class TestOwnedObject(unittest.TestCase):
         self.assertEqual(expected2, con1.identity)
 
     def test_singleton_property_update_identity(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         tl = sbol3.CustomTopLevel('foo', 'http://synbio.bbn.com/opil#MeasurementValue')
         tl.measure = sbol3.OwnedObject(tl, 'http://synbio.bbn.com/opil#measure', 0, 1)
         m = sbol3.Measure(10, 'liters')
@@ -52,6 +61,7 @@ class TestOwnedObject(unittest.TestCase):
     def test_add_multiple_children(self):
         # Test that the the display_id and identity are overwritten
         # properly when adding multiple child entities.
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         comp = sbol3.Component('c1', sbol3.SBO_DNA)
         comp.constraints.append(sbol3.Constraint(sbol3.SBOL_REPLACES,
                                                  'http://example.com/fake1',
@@ -67,8 +77,8 @@ class TestOwnedObject(unittest.TestCase):
     def test_identity_conflict2(self):
         # Test that the same display id will cause a validation
         # error when an item with the same display id is appended
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         comp = sbol3.Component('c1', sbol3.SBO_DNA)
-        con1_id = 'con1'
         constraints = [sbol3.Constraint(sbol3.SBOL_REPLACES,
                                         'http://example.com/fake1',
                                         'http://example.com/fake2'),
@@ -84,6 +94,7 @@ class TestOwnedObject(unittest.TestCase):
     def test_cascade_identity(self):
         # Test that updating identity of an owned object cascades
         # to child owned objects
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         c1 = sbol3.Component('c1', sbol3.SBO_DNA)
         seq = sbol3.Sequence('seq1')
         loc = sbol3.EntireSequence(seq)
@@ -95,6 +106,7 @@ class TestOwnedObject(unittest.TestCase):
         self.assertIsNotNone(loc.identity)
 
     def test_type_constraint(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         c = sbol3.Component('foo', sbol3.SBO_DNA)
         with self.assertRaises(TypeError):
             c.features = [sbol3.Range('https://example.com/fake', 1, 2)]

@@ -12,7 +12,11 @@ class TestIdentified(unittest.TestCase):
     def setUp(self) -> None:
         sbol3.set_defaults()
 
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_display_id(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         c1_display_id = 'c1'
         c = sbol3.Component(c1_display_id, sbol3.SBO_DNA)
         self.assertEqual(c1_display_id, c.display_id)
@@ -31,6 +35,7 @@ class TestIdentified(unittest.TestCase):
         # Test setting of display_id
         #   * Test by passing display_id to constructor
         #   * Test by having display_id deduced from identity
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         c1_display_id = 'c1'
         c1_identity = posixpath.join(sbol3.get_namespace(), c1_display_id)
         c1 = sbol3.Component(c1_display_id, sbol3.SBO_DNA)
@@ -47,12 +52,14 @@ class TestIdentified(unittest.TestCase):
         # Verify that a UUID can be used as an identity and that
         # the object does not have a display_id since the identity
         # is not a URL
-        identity = str(uuid.uuid5(uuid.NAMESPACE_URL, sbol3.get_namespace()))
+        identity = str(uuid.uuid5(uuid.NAMESPACE_URL,
+                                  'https://github.com/synbiodex/pysbol3'))
         c = sbol3.Component(identity, sbol3.SBO_DNA)
         self.assertEqual(identity, c.identity)
         self.assertIsNone(c.display_id)
 
     def test_basic_serialization(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         c = sbol3.Component('c1', sbol3.SBO_DNA)
         graph = rdflib.Graph()
         c.serialize(graph)

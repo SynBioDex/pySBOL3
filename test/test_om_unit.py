@@ -9,6 +9,12 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 
 class TestMeasure(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
         unit = 'https://sbolstandard.org/examples/millimolePerLitre'
         value = 0.1
@@ -42,7 +48,14 @@ class TestMeasure(unittest.TestCase):
 
 class TestPrefixedUnit(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         display_id = 'millimole'
         symbol = display_id
         label = display_id
@@ -75,7 +88,14 @@ class TestPrefixedUnit(unittest.TestCase):
 
 class TestSingularUnit(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         display_id = 'litre'
         symbol = display_id
         label = display_id

@@ -9,6 +9,12 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 
 class TestComponentReference(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
         in_child_of = 'https://github.com/synbiodex/pysbol3/subcomponent'
         feature = 'https://github.com/synbiodex/pysbol3/other_feature'

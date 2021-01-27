@@ -46,7 +46,14 @@ class TestCustomTopLevel(unittest.TestCase):
         if PYSBOL3_CUSTOM_TOP in store:
             del store[PYSBOL3_CUSTOM_TOP]
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         custom_type = 'https://github.com/synbiodex/pysbol3/CustomType'
         ctl = sbol3.CustomTopLevel('custom1', custom_type)
         self.assertEqual(custom_type, ctl.type_uri)
@@ -60,6 +67,7 @@ class TestCustomTopLevel(unittest.TestCase):
     def test_round_trip(self):
         # Test the boolean list property, which is not used by the
         # core SBOL 3 data model
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         obj_name = 'bool_test'
         obj = CustomTopClass(obj_name)
         self.assertEqual([], obj.foo_bool)
@@ -107,7 +115,14 @@ class TestCustomIdentified(unittest.TestCase):
             if uri in store:
                 del store[uri]
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         custom_type = 'https://github.com/synbiodex/pysbol3/CustomType'
         ctl = sbol3.CustomIdentified(identity='custom1',
                                      type_uri=custom_type)
@@ -123,6 +138,7 @@ class TestCustomIdentified(unittest.TestCase):
     def test_round_trip(self):
         # Test the int list property, which is not used by the
         # core SBOL 3 data model
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         obj = CustomIdentifiedClass()
         self.assertEqual([], obj.foo_int)
         obj.foo_int.append(7)

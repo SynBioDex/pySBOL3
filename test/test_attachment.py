@@ -9,7 +9,14 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 
 class TestAttachment(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         base_url = 'https://github.com/SynBioDex/pySBOL3/'
         source_uri = base_url + 'blob/master/sbol3/attachment.py'
         att = sbol3.Attachment('attachment1', source_uri)

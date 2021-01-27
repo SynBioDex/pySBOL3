@@ -9,7 +9,14 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 
 class TestSIPrefix(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         display_id = 'si_prefix'
         symbol = 'kilo'
         label = 'Kilo'
@@ -42,7 +49,14 @@ class TestSIPrefix(unittest.TestCase):
 
 class TestBinaryPrefix(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         display_id = 'binary_prefix'
         symbol = 'kilo'
         label = 'Kilo'

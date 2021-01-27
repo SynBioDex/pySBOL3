@@ -5,7 +5,14 @@ import sbol3
 
 class TestSequence(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         display_id = 'seq1'
         seq = sbol3.Sequence(display_id)
         self.assertIsNotNone(seq)
@@ -14,6 +21,7 @@ class TestSequence(unittest.TestCase):
         self.assertIsNone(seq.encoding)
 
     def test_invalid(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         display_id = 'seq1'
         seq = sbol3.Sequence(display_id)
         self.assertIsNotNone(seq)
@@ -22,6 +30,7 @@ class TestSequence(unittest.TestCase):
             seq.validate()
 
     def test_valid(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         display_id = 'seq1'
         seq = sbol3.Sequence(display_id)
         self.assertIsNotNone(seq)

@@ -7,7 +7,14 @@ import sbol3
 
 class TestCollection(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         collection = sbol3.Collection('collection1')
         self.assertIsNotNone(collection)
         self.assertEqual(0, len(collection.members))
@@ -22,6 +29,7 @@ class TestCollection(unittest.TestCase):
         self.assertIsInstance(collection, sbol3.Collection)
 
     def test_member_property(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         self.assertTrue(hasattr(sbol3, 'SBOL_MEMBER'))
         collection = sbol3.Collection('collection1')
         self.assertIn(sbol3.SBOL_MEMBER, collection._properties)
@@ -36,7 +44,14 @@ class TestCollection(unittest.TestCase):
 
 class TestNamespace(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         namespace = sbol3.Namespace('namespace1')
         self.assertIsNotNone(namespace)
         self.assertEqual(0, len(namespace.members))
@@ -53,7 +68,14 @@ class TestNamespace(unittest.TestCase):
 
 class TestExperiment(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         experiment = sbol3.Experiment('experiment1')
         self.assertIsNotNone(experiment)
         self.assertEqual(0, len(experiment.members))

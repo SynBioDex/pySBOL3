@@ -9,6 +9,9 @@ class TestObject(unittest.TestCase):
     def setUp(self) -> None:
         sbol3.set_defaults()
 
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_trailing_slash(self):
         # A trailing slash on an object's identity should automatically be removed
         sbol3.set_namespace('http://example.org/sbol3')
@@ -19,13 +22,14 @@ class TestObject(unittest.TestCase):
         self.assertEqual(identity, c.identity)
 
     def test_copy_properties(self):
-        doc = sbol3.Document()
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         root = sbol3.Component('root', sbol3.SBO_DNA)
         root.name = 'foo'
         root_copy = root.copy()
         self.assertEqual(root_copy.name, 'foo')
 
     def test_copy_child_objects(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         root = sbol3.Component('root', sbol3.SBO_DNA)
         sub1 = sbol3.Component('sub1', sbol3.SBO_DNA)

@@ -5,6 +5,12 @@ import sbol3
 
 class TestRange(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_creation(self):
         start = 1
         end = 10
@@ -36,6 +42,12 @@ class TestRange(unittest.TestCase):
 
 class TestCut(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_creation(self):
         at = 1
         cut = sbol3.Cut(sbol3.PYSBOL3_MISSING, at)
@@ -54,6 +66,12 @@ class TestCut(unittest.TestCase):
 
 
 class TestEntireSequence(unittest.TestCase):
+
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
 
     def test_creation(self):
         # EntireSequence has no properties, so there isn't much to test here
