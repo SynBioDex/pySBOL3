@@ -9,7 +9,14 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 
 class TestImplementation(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         implementation = sbol3.Implementation('impl1')
         self.assertIsNotNone(implementation)
         self.assertIsNone(implementation.built)

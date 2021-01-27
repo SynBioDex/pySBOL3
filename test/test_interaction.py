@@ -7,6 +7,12 @@ import sbol3
 
 class TestInteraction(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
         types = [sbol3.SBO_INHIBITION]
         interaction = sbol3.Interaction(types)

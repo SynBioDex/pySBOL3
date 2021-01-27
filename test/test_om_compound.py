@@ -9,7 +9,14 @@ SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 
 class TestUnitDivision(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         # Note, in practice we would use the already defined
         # http://www.ontology-of-units-of-measure.org/resource/om-2/kilometrePerHour
         display_id = 'udivision'
@@ -42,7 +49,14 @@ class TestUnitDivision(unittest.TestCase):
 
 class TestUnitExponentiation(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         # Note, in practice we would use the already defined
         # http://www.ontology-of-units-of-measure.org/resource/om-2/cubicMetre
         display_id = 'uexponentiation'
@@ -75,7 +89,14 @@ class TestUnitExponentiation(unittest.TestCase):
 
 class TestUnitMultiplication(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         # Note, in practice we would use the already defined
         # http://www.ontology-of-units-of-measure.org/resource/om-2/kelvinMole
         display_id = 'umultiplication'

@@ -5,7 +5,14 @@ import sbol3
 
 class TestActivity(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         display_id = 'activity'
         activity = sbol3.Activity(display_id)
         self.assertIsNotNone(activity)
@@ -21,7 +28,14 @@ class TestActivity(unittest.TestCase):
 
 class TestAgent(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         display_id = 'agent'
         agent = sbol3.Agent(display_id)
         self.assertIsNotNone(agent)
@@ -32,7 +46,14 @@ class TestAgent(unittest.TestCase):
 
 class TestAssociation(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         agent = sbol3.Agent('agent')
         association = sbol3.Association(agent)
         self.assertIsNotNone(association)
@@ -43,7 +64,14 @@ class TestAssociation(unittest.TestCase):
 
 class TestPlan(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         display_id = 'plan'
         plan = sbol3.Plan(display_id)
         self.assertIsNotNone(plan)
@@ -54,7 +82,14 @@ class TestPlan(unittest.TestCase):
 
 class TestUsage(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         agent = sbol3.Agent('agent')
         usage = sbol3.Usage(agent.identity)
         self.assertIsNotNone(usage)

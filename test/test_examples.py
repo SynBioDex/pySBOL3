@@ -19,6 +19,7 @@ EXPECTED_CIRCUIT = os.path.join(TEST_DIR, 'resources', 'circuit.nt')
 class TestExamples(unittest.TestCase):
 
     def setUp(self):
+        sbol3.set_defaults()
         # Create temp directory
         self.temp_out_dir = tempfile.mkdtemp()
         self.logger = logging.getLogger('sbol3.test')
@@ -30,6 +31,7 @@ class TestExamples(unittest.TestCase):
         if self.temp_out_dir:
             shutil.rmtree(self.temp_out_dir)
             self.temp_out_dir = None
+        sbol3.set_defaults()
 
     def test_circuit_example(self):
         cmd = [sys.executable, CIRCUIT_EXAMPLE]

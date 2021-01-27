@@ -6,7 +6,14 @@ import sbol3
 
 class TestComponent(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_roles(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         c = sbol3.Component('c1', sbol3.SBO_DNA)
         self.assertListEqual([], list(c.roles))
         self.assertEqual([], c.roles)

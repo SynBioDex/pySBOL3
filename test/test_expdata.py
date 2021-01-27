@@ -9,7 +9,14 @@ class TestExperimentalData(unittest.TestCase):
     # here. There are not yet any examples in the SBOLTestSuite. And
     # the class doesn't have any properties of its own.
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         display_id = 'exp_data'
         exp_data = sbol3.ExperimentalData(display_id)
         self.assertIsNotNone(exp_data)

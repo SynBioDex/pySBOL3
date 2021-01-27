@@ -8,7 +8,14 @@ import sbol3
 
 class TestProperty(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_slice_assignment(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         c = sbol3.Component('c1', sbol3.SBO_DNA)
         self.assertEqual([], c.roles)
         c.roles.append(sbol3.SO_PROMOTER)
@@ -41,6 +48,7 @@ class TestProperty(unittest.TestCase):
         self.assertEqual(expected, c._properties[sbol3.SBOL_ROLE])
 
     def test_boolean_property(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         c = sbol3.Component('c1', sbol3.SBO_DNA)
         c.boolean_attribute = sbol3.BooleanProperty(c, 'http://example.org#foo',
                                                     0, 1, [])
@@ -48,6 +56,7 @@ class TestProperty(unittest.TestCase):
         self.assertEqual(type(c.boolean_attribute), bool)
 
     def test_bounds(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         c = sbol3.Component('c1', sbol3.SBO_DNA)
         c.boolean_attribute = sbol3.BooleanProperty(c, 'http://example.org#foo',
                                                     0, math.inf, [])

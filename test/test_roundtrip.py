@@ -19,6 +19,7 @@ DEBUG_ENV_VAR = 'SBOL_TEST_DEBUG'
 class TestRoundTrip(unittest.TestCase):
 
     def setUp(self):
+        sbol3.set_defaults()
         # Create temp directory
         self.temp_out_dir = tempfile.mkdtemp()
         self.logger = logging.getLogger('sbol3.test')
@@ -32,6 +33,7 @@ class TestRoundTrip(unittest.TestCase):
         if self.temp_out_dir:
             shutil.rmtree(self.temp_out_dir)
             self.temp_out_dir = None
+        sbol3.set_defaults()
 
     def test_BBa_F2620_PoPSReceiver(self):
         sbol_path = os.path.join(SBOL3_LOCATION, 'BBa_F2620_PoPSReceiver',

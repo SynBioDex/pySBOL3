@@ -5,7 +5,14 @@ import sbol3
 
 class TestSubComponent(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         instance_of = sbol3.Component('comp1', sbol3.SBO_DNA)
         sc1 = sbol3.SubComponent(instance_of)
         self.assertIsNotNone(sc1)

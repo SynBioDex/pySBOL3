@@ -5,6 +5,12 @@ import sbol3
 
 class TestLocalSubComponent(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
         types = [sbol3.SBO_DNA]
         lsc = sbol3.LocalSubComponent(types)

@@ -7,11 +7,17 @@ import sbol3
 
 class TestAnnotation(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_annotation(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         # Create custom annotation
         annotation_uri = 'http://example.org/boolean_property'
         annotation_value = 'foo'
-
         c = sbol3.Component('c1', sbol3.SBO_DNA)
         c.annotation = sbol3.TextProperty(c, annotation_uri,
                                           0, 1, [])

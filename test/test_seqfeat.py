@@ -5,6 +5,12 @@ import sbol3
 
 class TestSequenceFeature(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
         es1 = sbol3.EntireSequence(sbol3.PYSBOL3_MISSING)
         locations = [es1]

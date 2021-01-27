@@ -5,6 +5,12 @@ import sbol3
 
 class TestVariableComponent(unittest.TestCase):
 
+    def setUp(self) -> None:
+        sbol3.set_defaults()
+
+    def tearDown(self) -> None:
+        sbol3.set_defaults()
+
     def test_create(self):
         vc = sbol3.VariableFeature()
         self.assertIsNotNone(vc)
