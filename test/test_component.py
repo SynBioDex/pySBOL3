@@ -28,7 +28,9 @@ class TestComponent(unittest.TestCase):
 
     def test_features(self):
         # See https://github.com/SynBioDex/pySBOL3/issues/149
-        media_template = sbol3.LocalSubComponent(identity='https://sd2e.org/media_template',
+
+        media_template_uri = 'https://sd2e.org/media_template'
+        media_template = sbol3.LocalSubComponent(identity=media_template_uri,
                                                  types=[sbol3.SBO_FUNCTIONAL_ENTITY])
         media_template.name = 'media template'
 
@@ -36,7 +38,8 @@ class TestComponent(unittest.TestCase):
         media_variable.variable = media_template
 
         all_sample_templates = [media_template]
-        sample_template = sbol3.Component(identity='https://sd2e.org/measurement_template',
+        sample_template_uri = 'https://sd2e.org/measurement_template'
+        sample_template = sbol3.Component(identity=sample_template_uri,
                                           component_type=sbol3.SBO_FUNCTIONAL_ENTITY)
         sample_template.name = 'measurement template'
         sample_template.features = all_sample_templates
