@@ -30,7 +30,7 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(None, sbol3.get_namespace())
         # Make sure that creating an object with a display_id
         # and no default namespace raises an exception
-        with self.assertRaises(ValueError):
+        with self.assertRaises(sbol3.NamespaceError):
             c = sbol3.Component('c1', sbol3.SBO_DNA)
 
 

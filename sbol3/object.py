@@ -74,8 +74,8 @@ class SBOLObject:
         base_uri = get_namespace()
         if base_uri is None:
             msg = 'No default namespace available.'
-            msg += ' Use set_namespace to set one.'
-            raise ValueError(msg)
+            msg += ' Use set_namespace() to set one.'
+            raise NamespaceError(msg)
         if base_uri.endswith('#'):
             return base_uri + name
         else:
