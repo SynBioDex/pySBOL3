@@ -47,6 +47,15 @@ class TestObject(unittest.TestCase):
         self.assertEqual([sc.identity for sc in root.features],
                          [sc.identity for sc in root_copy.features])
 
+    def test_replace_namespace(self):
+        # Verify that replace_namespace is not exported from sbol3
+        self.assertNotIn('replace_namespace', dir(sbol3))
+        # replace_namespace should raise NotImplmentedError
+        # See https://github.com/SynBioDex/pySBOL3/issues/132
+        with self.assertRaises(NotImplementedError):
+            from sbol3.object import replace_namespace
+            replace_namespace(None, None, None)
+
 
 if __name__ == '__main__':
     unittest.main()

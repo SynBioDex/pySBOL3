@@ -158,6 +158,11 @@ def replace_namespace(old_uri, target_namespace, rdf_type):
     rdf_type is used to map to and from sbol-typed namespaces.
     """
 
+    # Flag as not working to ensure nobody calls this function thinking
+    # it might do something.
+    # See https://github.com/SynBioDex/pySBOL3/issues/132
+    raise NotImplementedError()
+
     # Work around an issue where the Document itself is being copied and
     # doesn't have its own URI, so old_uri is None. Return empty string
     # because the identity is not allowed to be None.
