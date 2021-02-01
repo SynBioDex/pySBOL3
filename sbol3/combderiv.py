@@ -7,7 +7,7 @@ from . import *
 class CombinatorialDerivation(TopLevel):
 
     def __init__(self, identity: str, template: Union[Component, str],
-                 *, type_uri: str = SBOL_MODEL) -> None:
+                 *, type_uri: str = SBOL_COMBINATORIAL_DERIVATION) -> None:
         super().__init__(identity, type_uri)
         self.strategy = URIProperty(self, SBOL_STRATEGY, 0, 1)
         self.template = ReferencedObject(self, SBOL_TEMPLATE, 1, 1,
