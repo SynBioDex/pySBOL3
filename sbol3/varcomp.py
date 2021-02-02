@@ -40,3 +40,6 @@ class VariableFeature(Identified):
             raise ValidationError(f'{self.cardinality} is not a valid cardinality')
         if self.variable is None:
             raise ValidationError('VariableComponent.variable is required')
+
+
+Document.register_builder(SBOL_VARIABLE_FEATURE, VariableFeature)
