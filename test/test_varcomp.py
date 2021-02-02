@@ -45,6 +45,27 @@ class TestVariableComponent(unittest.TestCase):
         vf2 = doc2.find(vf1.identity)
         self.assertIsInstance(vf2, sbol3.VariableFeature)
 
+    def test_round_trip2(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/159
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        doc1 = sbol3.Document()
+        comp1 = sbol3.Component('comp1', sbol3.SBO_DNA)
+        doc1.add(comp1)
+        cd1 = sbol3.CombinatorialDerivation('cd1', comp1)
+        self.assertEqual(comp1.identity, cd1.template)
+        doc1.add(cd1)
+        vf1 = sbol3.VariableFeature()
+        hour = 'https://identifiers.org/ncit:C25529'
+        m1 = sbol3.Measure(32, hour)
+        vf1.variant_measure.append(m1)
+        cd1.variable_features.append(vf1)
+        self.assertTrue(vf1.identity.startswith(cd1.identity))
+        # Ensure that Measure m1 is valid. The bug tested here was that it
+        # had been assigned an invalid displayId.
+        # Note: validate() currently returns None if an object is valid,
+        #       and raises an exception if the object is not valid.
+        self.assertIsNone(m1.validate())
+
 
 if __name__ == '__main__':
     unittest.main()
