@@ -57,7 +57,7 @@ class TestVariableComponent(unittest.TestCase):
         vf1 = sbol3.VariableFeature()
         hour = 'https://identifiers.org/ncit:C25529'
         m1 = sbol3.Measure(32, hour)
-        vf1.variant_measure.append(m1)
+        vf1.variant_measures.append(m1)
         cd1.variable_features.append(vf1)
         self.assertTrue(vf1.identity.startswith(cd1.identity))
         # Ensure that Measure m1 is valid. The bug tested here was that it

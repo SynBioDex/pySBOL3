@@ -21,13 +21,13 @@ class VariableFeature(Identified):
                                        initial_value=cardinality)
         self.variable = ReferencedObject(self, SBOL_VARIABLE, 1, 1,
                                          initial_value=variable)
-        self.variant = ReferencedObject(self, SBOL_VARIANT, 0, math.inf)
-        self.variant_collection = ReferencedObject(self, SBOL_VARIANT_COLLECTION,
-                                                   0, math.inf)
-        self.variant_derivation = ReferencedObject(self, SBOL_VARIANT_DERIVATION,
-                                                   0, math.inf)
-        self.variant_measure = OwnedObject(self, SBOL_VARIANT_MEASURE,
-                                           0, math.inf)
+        self.variants = ReferencedObject(self, SBOL_VARIANT, 0, math.inf)
+        self.variant_collections = ReferencedObject(self, SBOL_VARIANT_COLLECTION,
+                                                    0, math.inf)
+        self.variant_derivations = ReferencedObject(self, SBOL_VARIANT_DERIVATION,
+                                                    0, math.inf)
+        self.variant_measures = OwnedObject(self, SBOL_VARIANT_MEASURE,
+                                            0, math.inf)
         # Validate
         self.validate()
 
