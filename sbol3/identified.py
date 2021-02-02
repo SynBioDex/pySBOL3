@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 import rdflib
 
 from . import *
+from .utils import parse_class_name
 
 
 class Identified(SBOLObject):
@@ -86,7 +87,7 @@ class Identified(SBOLObject):
                     new_display_id = child.display_id
                 else:
                     # Generate a display id based on type and number
-                    type_name = child.type_uri[len(SBOL3_NS):]
+                    type_name = parse_class_name(child.type_uri)
                     counter_value = self.counter_value(type_name)
                     new_display_id = f'{type_name}{counter_value}'
                 new_identity = posixpath.join(self.identity, new_display_id)
