@@ -39,6 +39,7 @@ class Document:
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)
         self.objects: List[Identified] = []
+        self.orphans: List[Identified] = []
         self._namespaces: Dict[str, str] = _default_bindings.copy()
 
     def _make_custom_object(self, identity: str, types: List[str]) -> Identified:
@@ -80,8 +81,6 @@ class Document:
         # create the entity. If two, it is a custom type (see section
         # 6.11 of the spec) and we instantiate it specially.
         #
-        # This will have to change in the future when we enable
-        # user-defined custom types somehow.
         identity_types: Dict[str, List[str]] = collections.defaultdict(list)
         for s, p, o in graph.triples((None, rdflib.RDF.type, None)):
             str_o = str(o)
@@ -159,6 +158,18 @@ class Document:
         # Store the TopLevel objects in the Document
         self.objects = [obj for uri, obj in objects.items()
                         if isinstance(obj, TopLevel)]
+        # Gather Orphans for future writing.
+        # These are expected to be non-TopLevel annotation objects whose owners
+        # have no custom implementation (i.e. no builder registered). These objects
+        # will be written out as part of Document.write_string()
+        self.orphans = []
+        for uri, obj in objects.items():
+            if obj in self.objects:
+                continue
+            found = self.find(uri)
+            if found:
+                continue
+            self.orphans.append(obj)
         # Store the namespaces in the Document for later use
         for prefix, uri in graph.namespaces():
             self.bind(prefix, uri)
@@ -268,6 +279,8 @@ class Document:
         graph = rdflib.Graph()
         for prefix, uri in self._namespaces.items():
             graph.bind(prefix, uri)
+        for orphan in self.orphans:
+            orphan.serialize(graph)
         for obj in self.objects:
             obj.serialize(graph)
         return graph
