@@ -63,9 +63,11 @@ class TestRoundTrip(unittest.TestCase):
         ext = os.path.splitext(filename)[1]
         # drop the leading dot
         ext = ext[1:]
-        ext_map = {'nt': sbol3.NTRIPLES,
-                   'ttl': sbol3.TURTLE,
-                   'rdf': sbol3.RDF_XML}
+        ext_map = {
+            'nt': sbol3.NTRIPLES,
+            'ttl': sbol3.TURTLE,
+            'rdf': sbol3.RDF_XML,
+        }
         if ext in ext_map:
             return ext_map[ext]
         else:
@@ -74,11 +76,13 @@ class TestRoundTrip(unittest.TestCase):
     def test_read_all(self):
         # In lieu of round tripping the files, just make sure we can
         # read them all.
-        # This is intended as a temporary test until the library is
-        # more complete.
+        #
+        # This was an early test, before the library was complete and
+        # the files could be round tripped.
+        #
+        # No files are skipped at this time. All SBOLTestSuite files can
+        # be read.
         skip_files = [
-            # See https://github.com/SynBioDex/SBOLTestSuite/issues/22
-            'annotation',
         ]
         for f in self.find_all_files(SBOL3_LOCATION):
             basename = os.path.basename(f)
@@ -133,9 +137,9 @@ class TestRoundTrip(unittest.TestCase):
 
     def test_sbol3_files(self):
         test_dir = SBOL3_LOCATION
+        # No files are skipped at this time. All SBOLTestSuite files can
+        # be round-tripped.
         skip_list = [
-            # See https://github.com/SynBioDex/SBOLTestSuite/issues/22
-            'annotation',
         ]
         for test_file in self.find_all_files(test_dir):
             basename = os.path.basename(test_file)
