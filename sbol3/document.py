@@ -153,8 +153,10 @@ class Document:
         self._parse_attributes(objects, graph)
         self._clean_up_singletons(objects)
         # Validate all the objects
-        for obj in objects.values():
-            obj.validate()
+        # TODO: Where does this belong? Is this automatic?
+        #       Or should a user invoke validate?
+        # for obj in objects.values():
+        #     obj.validate()
         # Store the TopLevel objects in the Document
         self.objects = [obj for uri, obj in objects.items()
                         if isinstance(obj, TopLevel)]

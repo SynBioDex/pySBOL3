@@ -20,8 +20,10 @@ class TestVariableComponent(unittest.TestCase):
 
     def test_invalid_create(self):
         my_cardinality = 'https://github.com/synbiodex/pysbol3#someNumber'
-        with self.assertRaises(sbol3.ValidationError):
-            vc = sbol3.VariableFeature(cardinality=my_cardinality)
+        vf = sbol3.VariableFeature(cardinality=my_cardinality)
+        report = vf.validate()
+        self.assertIsNotNone(report)
+        self.assertEqual(1, len(report.errors))
 
     def test_round_trip1(self):
         # See https://github.com/SynBioDex/pySBOL3/issues/155

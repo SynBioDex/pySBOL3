@@ -15,14 +15,15 @@ class CombinatorialDerivation(TopLevel):
         self.variable_features = OwnedObject(self, SBOL_VARIABLE_FEATURES,
                                              0, math.inf,
                                              type_constraint=VariableFeature)
-        self.validate()
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if self.strategy is not None:
             valid_strategies = [SBOL_ENUMERATE, SBOL_SAMPLE]
             if self.strategy not in valid_strategies:
-                raise ValidationError(f'{self.strategy} is not a valid strategy')
+                message = f'{self.strategy} is not a valid strategy'
+                report.addError(None, message)
+        return report
 
 
 def build_combinatorial_derivation(identity: str,

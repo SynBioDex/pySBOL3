@@ -22,8 +22,10 @@ class TestSubComponent(unittest.TestCase):
 
     def test_invalid_create(self):
         # SubComponent requires an `instance_of` argument
-        with self.assertRaises(sbol3.ValidationError):
-            sbol3.SubComponent('')
+        sc = sbol3.SubComponent('')
+        report = sc.validate()
+        self.assertIsNotNone(report)
+        self.assertEqual(1, len(report.errors))
 
     def test_external_instance_of(self):
         # See https://github.com/SynBioDex/pySBOL3/issues/136

@@ -16,10 +16,12 @@ class Location(Identified, abc.ABC):
         self.sequence = ReferencedObject(self, SBOL_SEQUENCES, 1, 1,
                                          initial_value=seq_or_uri)
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate()
         if not self.sequence:
-            raise ValidationError(f'Location {self.identity} does not have a sequence')
+            message = f'Location {self.identity} does not have a sequence'
+            report.addError(None, message)
+        return report
 
 
 class Range(Location):
@@ -33,14 +35,18 @@ class Range(Location):
                                              initial_value=end)
         self.validate()
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if self.start < 1:
-            raise ValidationError('Start must be greater than 0')
+            message = 'Start must be greater than 0'
+            report.addError(None, message)
         if self.end < 1:
-            raise ValidationError('Start must be greater than 0')
+            message = 'End must be greater than 0'
+            report.addError(None, message)
         if self.end < self.start:
-            raise ValidationError('End must be >= start')
+            message = 'End must be >= start'
+            report.addError(None, message)
+        return report
 
 
 def build_range(identity: str, type_uri: str = SBOL_RANGE):
@@ -66,12 +72,13 @@ class Cut(Location):
         super().__init__(seq_or_uri, identity, type_uri)
         self.at: int_property = IntProperty(self, SBOL_START, 1, 1,
                                             initial_value=at)
-        self.validate()
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if self.at < 0:
-            raise ValidationError('At must be >= 0')
+            message = 'Cut property "at" must be >= 0'
+            report.addError(None, message)
+        return report
 
 
 def build_cut(identity: str, type_uri: str = SBOL_CUT):

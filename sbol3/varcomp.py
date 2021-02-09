@@ -28,18 +28,19 @@ class VariableFeature(Identified):
                                                     0, math.inf)
         self.variant_measures = OwnedObject(self, SBOL_VARIANT_MEASURE,
                                             0, math.inf)
-        # Validate
-        self.validate()
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         # Cardinality must be in the set of valid URIs
         valid_cardinalities = [SBOL_ONE, SBOL_ONE_OR_MORE, SBOL_ZERO_OR_MORE,
                                SBOL_ZERO_OR_ONE]
         if self.cardinality not in valid_cardinalities:
-            raise ValidationError(f'{self.cardinality} is not a valid cardinality')
+            message = f'{self.cardinality} is not a valid cardinality'
+            report.addError(None, message)
         if self.variable is None:
-            raise ValidationError('VariableComponent.variable is required')
+            message = 'VariableComponent.variable is required'
+            report.addError(None, message)
+        return report
 
 
 Document.register_builder(SBOL_VARIABLE_FEATURE, VariableFeature)

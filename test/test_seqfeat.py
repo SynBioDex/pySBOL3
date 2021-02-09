@@ -19,8 +19,10 @@ class TestSequenceFeature(unittest.TestCase):
 
     def test_validation(self):
         locations = []
-        with self.assertRaises(sbol3.ValidationError):
-            sbol3.SequenceFeature(locations)
+        sf = sbol3.SequenceFeature(locations)
+        report = sf.validate()
+        self.assertIsNotNone(report)
+        self.assertEqual(1, len(report.errors))
 
 
 if __name__ == '__main__':

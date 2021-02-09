@@ -20,8 +20,10 @@ class TestLocalSubComponent(unittest.TestCase):
 
     def test_validation(self):
         types = []
-        with self.assertRaises(sbol3.ValidationError):
-            sbol3.LocalSubComponent(types)
+        lsc = sbol3.LocalSubComponent(types)
+        report = lsc.validate()
+        self.assertIsNotNone(report)
+        self.assertEqual(1, len(report.errors))
 
 
 if __name__ == '__main__':

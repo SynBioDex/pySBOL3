@@ -14,9 +14,10 @@ class TopLevel(Identified):
         super().__init__(identity, type_uri)
         self.attachments = ReferencedObject(self, SBOL_HAS_ATTACHMENT, 0, math.inf)
 
-    def validate_identity(self) -> None:
+    def validate_identity(self, report: ValidationReport) -> None:
         # TODO: See section 5.1 for rules about identity for TopLevel
-        super().validate_identity()
+        pass
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
+        return report

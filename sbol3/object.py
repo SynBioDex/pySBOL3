@@ -37,11 +37,6 @@ class SBOLObject:
             result = result.get()
         return result
 
-    def _validate_identity(self) -> None:
-        # TODO: identity must be a URI
-        # TODO: can identity be None?
-        pass
-
     @staticmethod
     def _is_url(name: str) -> bool:
         parsed = urlparse(name)
@@ -80,9 +75,6 @@ class SBOLObject:
             return base_uri + name
         else:
             return posixpath.join(base_uri, name.lstrip(posixpath.sep))
-
-    def validate(self) -> None:
-        self._validate_identity()
 
     @property
     def identity(self) -> str:
