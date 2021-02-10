@@ -1,11 +1,9 @@
 from typing import Sequence
 
-# TODO: Find all calls to super validate, make sure they pass report
-#    grep super sbol3/*.py | grep validate
-# TODO: Deconflict error.ValidationError and validation.ValidationError
-
 
 class ValidationError:
+    """A ValidationError is a violation of the SBOL specification.
+    """
 
     def __init__(self, code, message):
         self.code = code
@@ -13,6 +11,8 @@ class ValidationError:
 
 
 class ValidationWarning:
+    """A ValidationWarning is a violation of an SBOL best practice.
+    """
 
     def __init__(self, code, message):
         self.code = code
