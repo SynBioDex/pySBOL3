@@ -7,8 +7,5 @@ class Implementation(TopLevel):
         super().__init__(identity, type_uri)
         self.built = ReferencedObject(self, SBOL_BUILT, 0, 1)
 
-    def validate(self, report: ValidationReport) -> None:
-        super().validate(report)
-
 
 Document.register_builder(SBOL_IMPLEMENTATION, Implementation)

@@ -31,9 +31,10 @@ class Component(TopLevel):
             message = f'Component {self.identity} has no types'
             report.addError(None, message)
 
-    def validate(self, report: ValidationReport) -> None:
-        super().validate(report)
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         self._validate_types(report)
+        return report
 
 
 def build_component(identity: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:
