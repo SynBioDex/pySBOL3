@@ -15,7 +15,6 @@ class Participation(Identified):
                                            initial_value=roles)
         self.participant = ReferencedObject(self, SBOL_PARTICIPANT, 1, 1,
                                             initial_value=participant)
-        self.validate()
 
     def validate(self) -> None:
         super().validate()

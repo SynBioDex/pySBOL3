@@ -15,7 +15,6 @@ class Constraint(Identified):
                                         initial_value=subject)
         self.object = ReferencedObject(self, SBOL_OBJECT, 1, 1,
                                        initial_value=object)
-        self.validate()
 
     def validate(self) -> None:
         super().validate()

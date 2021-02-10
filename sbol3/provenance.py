@@ -12,7 +12,6 @@ class Usage(CustomIdentified):
         self.entity = URIProperty(self, PROV_ENTITY, 1, 1,
                                   initial_value=entity)
         self.roles = URIProperty(self, PROV_ROLES, 0, math.inf)
-        self.validate()
 
 
 def build_usage(identity: str, *, type_uri: str = PROV_USAGE) -> SBOLObject:
@@ -30,7 +29,6 @@ class Agent(CustomTopLevel):
 
     def __init__(self, identity: str, *, type_uri: str = PROV_AGENT) -> None:
         super().__init__(identity, type_uri)
-        self.validate()
 
 
 Document.register_builder(PROV_AGENT, Agent)
@@ -40,7 +38,6 @@ class Plan(CustomTopLevel):
 
     def __init__(self, identity: str, *, type_uri: str = PROV_PLAN) -> None:
         super().__init__(identity, type_uri)
-        self.validate()
 
 
 Document.register_builder(PROV_PLAN, Plan)
@@ -56,7 +53,6 @@ class Association(CustomIdentified):
         self.plan = ReferencedObject(self, PROV_PLANS, 0, 1)
         self.agent = ReferencedObject(self, PROV_AGENTS, 1, 1,
                                       initial_value=agent)
-        self.validate()
 
 
 def build_association(identity: str, *, type_uri: str = PROV_USAGE) -> SBOLObject:
@@ -81,7 +77,6 @@ class Activity(CustomTopLevel):
                                  type_constraint=Usage)
         self.association = OwnedObject(self, PROV_QUALIFIED_ASSOCIATION, 0, math.inf,
                                        type_constraint=Association)
-        self.validate()
 
 
 Document.register_builder(PROV_ACTIVITY, Activity)

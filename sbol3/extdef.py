@@ -21,7 +21,6 @@ class ExternallyDefined(Feature):
                                            initial_value=types)
         self.definition: uri_singleton = URIProperty(self, SBOL_DEFINITION, 1, 1,
                                                      initial_value=definition)
-        self.validate()
 
     def validate(self):
         super().validate()

@@ -16,7 +16,6 @@ class ComponentReference(Feature):
                                             initial_value=in_child_of)
         self.feature = ReferencedObject(self, SBOL_FEATURES, 1, 1,
                                         initial_value=feature)
-        self.validate()
 
     def validate(self) -> None:
         super().validate()

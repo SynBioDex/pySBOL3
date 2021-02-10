@@ -1,7 +1,5 @@
 from typing import Sequence
 
-# TODO: Find all self calls to validate, remove them
-#    grep 'self.validate()' sbol3/*.py
 # TODO: Find all calls to super validate, make sure they pass report
 #    grep super sbol3/*.py | grep validate
 # TODO: Deconflict error.ValidationError and validation.ValidationError

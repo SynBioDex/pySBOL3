@@ -33,7 +33,6 @@ class Range(Location):
                                                initial_value=start)
         self.end: int_property = IntProperty(self, SBOL_END, 1, 1,
                                              initial_value=end)
-        self.validate()
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         report = super().validate(report)
@@ -101,7 +100,6 @@ class EntireSequence(Location):
                  *, identity: str = None,
                  type_uri: str = SBOL_ENTIRE_SEQUENCE) -> None:
         super().__init__(seq_or_uri, identity, type_uri)
-        self.validate()
 
 
 def build_entire_sequence(identity: str, type_uri: str = SBOL_ENTIRE_SEQUENCE):

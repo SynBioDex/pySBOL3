@@ -23,7 +23,6 @@ class UnitMultiplication(CompoundUnit):
                                       initial_value=term1)
         self.term2 = ReferencedObject(self, OM_HAS_TERM2, 1, 1,
                                       initial_value=term2)
-        self.validate()
 
 
 def build_unit_multiplication(identity: str,
@@ -52,7 +51,6 @@ class UnitDivision(CompoundUnit):
                                           initial_value=numerator)
         self.denominator = ReferencedObject(self, OM_HAS_DENOMINATOR, 1, 1,
                                             initial_value=denominator)
-        self.validate()
 
 
 def build_unit_division(identity: str,
@@ -80,7 +78,6 @@ class UnitExponentiation(CompoundUnit):
                                      initial_value=base)
         self.exponent = IntProperty(self, OM_HAS_EXPONENT, 1, 1,
                                     initial_value=exponent)
-        self.validate()
 
 
 def build_unit_exponentiation(identity: str,
