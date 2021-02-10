@@ -32,8 +32,8 @@ class Component(TopLevel):
             report.addError(None, message)
 
     def validate(self, report: ValidationReport) -> None:
-        super().validate()
-        self._validate_types()
+        super().validate(report)
+        self._validate_types(report)
 
 
 def build_component(identity: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:

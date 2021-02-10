@@ -64,9 +64,8 @@ class TestVariableComponent(unittest.TestCase):
         self.assertTrue(vf1.identity.startswith(cd1.identity))
         # Ensure that Measure m1 is valid. The bug tested here was that it
         # had been assigned an invalid displayId.
-        # Note: validate() currently returns None if an object is valid,
-        #       and raises an exception if the object is not valid.
-        self.assertIsNone(m1.validate())
+        report = m1.validate()
+        self.assertEqual(0, len(report.errors))
 
 
 if __name__ == '__main__':

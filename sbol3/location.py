@@ -17,7 +17,7 @@ class Location(Identified, abc.ABC):
                                          initial_value=seq_or_uri)
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:
-        report = super().validate()
+        report = super().validate(report)
         if not self.sequence:
             message = f'Location {self.identity} does not have a sequence'
             report.addError(None, message)

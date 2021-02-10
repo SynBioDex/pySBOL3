@@ -17,15 +17,17 @@ class ComponentReference(Feature):
         self.feature = ReferencedObject(self, SBOL_FEATURES, 1, 1,
                                         initial_value=feature)
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         # Must have 1 feature
         if self.feature is None:
-            raise ValidationError('ComponentReference must have a feature')
+            message = 'ComponentReference must have a feature'
+            report.addError(None, message)
         # Must have 1 in_child_of
         if self.in_child_of is None:
-            msg = 'ComponentReference must have an in_child_of reference'
-            raise ValidationError(msg)
+            message = 'ComponentReference must have an in_child_of reference'
+            report.addError(None, message)
+        return report
 
 
 def build_component_reference(identity: str, *,

@@ -12,9 +12,6 @@ class Interface(Identified):
         self.output = ReferencedObject(self, SBOL_OUTPUT, 0, math.inf)
         self.non_directional = ReferencedObject(self, SBOL_NON_DIRECTIONAL, 0, math.inf)
 
-    def validate(self) -> None:
-        super().validate()
-
 
 def build_interface(identity: str, *, type_uri: str = SBOL_INTERFACE) -> SBOLObject:
     return Interface(identity=identity, type_uri=type_uri)

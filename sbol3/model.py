@@ -9,20 +9,21 @@ class Model(TopLevel):
         self.language = URIProperty(self, SBOL_LANGUAGE, 1, 1)
         self.framework = URIProperty(self, SBOL_FRAMEWORK, 1, 1)
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         # The source property is REQUIRED and MUST contain a URI reference (Section 6.8)
         if not self.source:
             msg = f'Model {self.identity} does not have a source'
-            raise ValidationError(msg)
+            report.addError(None, msg)
         # The language property is REQUIRED and MUST contain a URI (Section 6.8)
         if not self.language:
             msg = f'Model {self.identity} does not have a language'
-            raise ValidationError(msg)
+            report.addError(None, msg)
         # The framework property is REQUIRED and MUST contain a URI (Section 6.8)
         if not self.framework:
             msg = f'Model {self.identity} does not have a framework'
-            raise ValidationError(msg)
+            report.addError(None, msg)
+        return report
 
 
 Document.register_builder(SBOL_MODEL, Model)

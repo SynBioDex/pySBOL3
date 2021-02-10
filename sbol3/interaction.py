@@ -15,9 +15,6 @@ class Interaction(Identified):
         self.participations = OwnedObject(self, SBOL_PARTICIPATIONS, 0, math.inf,
                                           type_constraint=Participation)
 
-    def validate(self) -> None:
-        super().validate()
-
 
 def build_interaction(identity: str, *, type_uri: str = SBOL_INTERACTION) -> SBOLObject:
     interaction_type = PYSBOL3_MISSING

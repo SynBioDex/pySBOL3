@@ -11,10 +11,12 @@ class CustomIdentified(Identified):
         self.rdf_type = URIProperty(self, rdflib.RDF.type, 1, 1,
                                     initial_value=sbol_type_uri)
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if self.rdf_type is None:
-            raise ValidationError('rdf_type is a required property of CustomIdentified')
+            message = 'rdf_type is a required property of CustomIdentified'
+            report.addError(None, message)
+        return report
 
 
 class CustomTopLevel(TopLevel):
@@ -25,7 +27,9 @@ class CustomTopLevel(TopLevel):
         self.rdf_type = URIProperty(self, rdflib.RDF.type, 1, 1,
                                     initial_value=sbol_type_uri)
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if self.rdf_type is None:
-            raise ValidationError('rdf_type is a required property of CustomTopLevel')
+            message = 'rdf_type is a required property of CustomTopLevel'
+            report.addError(None, message)
+        return report
