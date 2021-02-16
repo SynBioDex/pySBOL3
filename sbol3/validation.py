@@ -25,6 +25,12 @@ class ValidationReport:
         self._errors = []
         self._warnings = []
 
+    def __bool__(self):
+        return bool(self._errors or self._warnings)
+
+    def __len__(self):
+        return len(self._errors) + len(self._warnings)
+
     @property
     def warnings(self) -> Sequence[ValidationWarning]:
         return tuple(self._warnings)
