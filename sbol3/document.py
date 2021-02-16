@@ -312,3 +312,11 @@ class Document:
         """
         warnings.warn('Use Document.bind() instead', DeprecationWarning)
         self.bind(prefix, namespace)
+
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        """Validate all objects in this document."""
+        if report is None:
+            report = ValidationReport()
+        for obj in self.objects:
+            obj.validate(report)
+        return report
