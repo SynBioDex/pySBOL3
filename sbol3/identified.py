@@ -112,7 +112,12 @@ class Identified(SBOLObject):
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         if report is None:
             report = ValidationReport()
+        # Do validations for Identified
         self._validate_display_id(report)
+        # Validate all owned objects
+        for object_list in self._owned_objects.values():
+            for obj in object_list:
+                obj.validate(report)
         return report
 
     def serialize(self, graph: rdflib.Graph):

@@ -24,6 +24,22 @@ class TestSequenceFeature(unittest.TestCase):
         self.assertIsNotNone(report)
         self.assertEqual(1, len(report.errors))
 
+    def test_recursive_validation(self):
+        # Test that the owned object, in this case the Range,
+        # is also validated when the SequenceFeature is validated.
+        seq_uri = 'https://github.com/synbiodex/pysbol3/sequence'
+        start = 10
+        end = 1
+        r = sbol3.Range(seq_uri, start, end)
+        report = r.validate()
+        # end < start is a validation error
+        self.assertEqual(1, len(report.errors))
+        sf = sbol3.SequenceFeature([r])
+        report = sf.validate()
+        # We should find the validation issue in the owned
+        # object (the range).
+        self.assertEqual(1, len(report.errors))
+
 
 if __name__ == '__main__':
     unittest.main()
