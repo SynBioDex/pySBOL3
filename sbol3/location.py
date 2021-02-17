@@ -20,7 +20,7 @@ class Location(Identified, abc.ABC):
         report = super().validate(report)
         if not self.sequence:
             message = f'Location {self.identity} does not have a sequence'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 
@@ -37,14 +37,16 @@ class Range(Location):
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         report = super().validate(report)
         if self.start < 1:
-            message = 'Start must be greater than 0'
-            report.addError(None, message)
+            message = 'Range.start must be greater than 0'
+            report.addError(self.identity, 'sbol3-11401', message)
+        # TODO: start must also be less than or equal to len(sequence)
         if self.end < 1:
-            message = 'End must be greater than 0'
-            report.addError(None, message)
+            message = 'Range.end must be greater than 0'
+            report.addError(self.identity, 'sbol3-11402', message)
+        # TODO: end must also be less than or equal to len(sequence)
         if self.end < self.start:
-            message = 'End must be >= start'
-            report.addError(None, message)
+            message = 'Range.end must be >= start'
+            report.addError(self.identity, 'sbol3-11403', message)
         return report
 
 
@@ -76,7 +78,7 @@ class Cut(Location):
         report = super().validate(report)
         if self.at < 0:
             message = 'Cut property "at" must be >= 0'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 

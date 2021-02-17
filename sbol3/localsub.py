@@ -21,7 +21,7 @@ class LocalSubComponent(Feature):
         report = super().validate(report)
         if len(self.types) < 1:
             message = 'LocalSubComponent must have at least 1 type'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 

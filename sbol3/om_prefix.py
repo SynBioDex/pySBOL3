@@ -30,13 +30,13 @@ class Prefix(CustomTopLevel, abc.ABC):
         report = super().validate(report)
         if not self.symbol:
             message = 'Prefix must contain a symbol'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         if not self.label:
             message = 'Prefix must contain a label'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         if not self.factor:
             message = 'Prefix must contain a factor'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 

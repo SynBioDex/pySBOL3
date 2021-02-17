@@ -22,11 +22,11 @@ class ComponentReference(Feature):
         # Must have 1 feature
         if self.feature is None:
             message = 'ComponentReference must have a feature'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         # Must have 1 in_child_of
         if self.in_child_of is None:
             message = 'ComponentReference must have an in_child_of reference'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 

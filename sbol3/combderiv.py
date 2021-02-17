@@ -22,7 +22,7 @@ class CombinatorialDerivation(TopLevel):
             valid_strategies = [SBOL_ENUMERATE, SBOL_SAMPLE]
             if self.strategy not in valid_strategies:
                 message = f'{self.strategy} is not a valid strategy'
-                report.addError(None, message)
+                report.addError(self.identity, None, message)
         return report
 
 

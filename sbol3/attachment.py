@@ -18,7 +18,7 @@ class Attachment(TopLevel):
         # An Attachment must have 1 source
         if self.source is None:
             message = f'Attachment {self.identity} must have a source'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 

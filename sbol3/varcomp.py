@@ -36,10 +36,10 @@ class VariableFeature(Identified):
                                SBOL_ZERO_OR_ONE]
         if self.cardinality not in valid_cardinalities:
             message = f'{self.cardinality} is not a valid cardinality'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         if self.variable is None:
             message = 'VariableComponent.variable is required'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 

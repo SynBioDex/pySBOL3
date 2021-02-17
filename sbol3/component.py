@@ -29,7 +29,7 @@ class Component(TopLevel):
         # A Component is REQUIRED to have one or more type properties (Section 6.4)
         if len(self.types) < 1:
             message = f'Component {self.identity} has no types'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         report = super().validate(report)

@@ -22,7 +22,7 @@ class SequenceFeature(Feature):
         report = super().validate(report)
         if len(self.locations) < 1:
             message = 'LocalSubComponent must have at least 1 location'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 

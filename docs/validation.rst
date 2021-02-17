@@ -23,7 +23,7 @@ generates a validation error in the ValidationReport:
     >>> for error in report.errors:
     ...     print(error.message)
     ...
-    End must be >= start
+    sbol3-11403: Range.end must be >= start
 
 .. end
 

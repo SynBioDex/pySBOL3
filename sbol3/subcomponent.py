@@ -24,7 +24,7 @@ class SubComponent(Feature):
         # The instance_of property is required
         if not self.instance_of:
             message = 'SubComponent must have an instance_of'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 

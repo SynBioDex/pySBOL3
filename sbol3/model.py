@@ -14,15 +14,15 @@ class Model(TopLevel):
         # The source property is REQUIRED and MUST contain a URI reference (Section 6.8)
         if not self.source:
             msg = f'Model {self.identity} does not have a source'
-            report.addError(None, msg)
+            report.addError(self.identity, None, msg)
         # The language property is REQUIRED and MUST contain a URI (Section 6.8)
         if not self.language:
             msg = f'Model {self.identity} does not have a language'
-            report.addError(None, msg)
+            report.addError(self.identity, None, msg)
         # The framework property is REQUIRED and MUST contain a URI (Section 6.8)
         if not self.framework:
             msg = f'Model {self.identity} does not have a framework'
-            report.addError(None, msg)
+            report.addError(self.identity, None, msg)
         return report
 
 

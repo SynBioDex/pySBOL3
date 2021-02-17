@@ -71,7 +71,7 @@ class Identified(SBOLObject):
             if Identified._is_valid_display_id(self.display_id):
                 return
         message = f'{self.display_id} is not a valid displayId for {self.identity}'
-        report.addError(None, message)
+        report.addError(self.identity, None, message)
 
     def _update_identity(self, identity: str, display_id: str) -> None:
         """Updates the identity of an Identified when it is added to a

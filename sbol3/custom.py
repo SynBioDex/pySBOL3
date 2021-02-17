@@ -15,7 +15,7 @@ class CustomIdentified(Identified):
         report = super().validate(report)
         if self.rdf_type is None:
             message = 'rdf_type is a required property of CustomIdentified'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 
@@ -31,5 +31,5 @@ class CustomTopLevel(TopLevel):
         report = super().validate(report)
         if self.rdf_type is None:
             message = 'rdf_type is a required property of CustomTopLevel'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report

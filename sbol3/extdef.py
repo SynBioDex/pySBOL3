@@ -26,10 +26,10 @@ class ExternallyDefined(Feature):
         report = super().validate(report)
         if len(self.types) < 1:
             message = 'ExternallyDefined must contain at least 1 type'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         if self.definition is None:
             message = 'ExternallyDefined must have a definition'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 

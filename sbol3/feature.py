@@ -19,5 +19,5 @@ class Feature(Identified, abc.ABC):
             valid_orientations = [SBOL_INLINE, SBOL_REVERSE_COMPLEMENT]
             if self.orientation not in valid_orientations:
                 message = f'{self.orientation} is not a valid orientation'
-                report.addError(None, message)
+                report.addError(self.identity, None, message)
         return report

@@ -20,10 +20,10 @@ class Participation(Identified):
         report = super().validate(report)
         if len(self.roles) < 1:
             message = 'Participation must have at least one role'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         if self.participant is None:
             message = 'Participation must have a participant'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 

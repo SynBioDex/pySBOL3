@@ -20,13 +20,13 @@ class Constraint(Identified):
         report = super().validate(report)
         if not self.restriction:
             message = 'Constraint must have a restriction'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         if not self.subject:
             message = 'Constraint must have a subject'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         if not self.object:
             message = 'Constraint must have an object'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 

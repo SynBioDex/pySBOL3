@@ -13,7 +13,7 @@ class Sequence(TopLevel):
         # If sequence is set, encoding is REQUIRED
         if self.elements and not self.encoding:
             message = 'Sequence encoding is required if elements are set'
-            report.addError(None, message)
+            report.addError(self.identity, None, message)
         return report
 
 
