@@ -40,7 +40,7 @@ class OwnedObjectPropertyMixin:
             if sibling == item:
                 continue
             if sibling.identity == new_url:
-                raise ValidationError(f'Duplicate URI: {new_url}')
+                raise ValueError(f'Duplicate URI: {new_url}')
         item._update_identity(new_url, new_display_id)
 
 

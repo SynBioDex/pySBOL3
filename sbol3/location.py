@@ -16,10 +16,12 @@ class Location(Identified, abc.ABC):
         self.sequence = ReferencedObject(self, SBOL_SEQUENCES, 1, 1,
                                          initial_value=seq_or_uri)
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if not self.sequence:
-            raise ValidationError(f'Location {self.identity} does not have a sequence')
+            message = f'Location {self.identity} does not have a sequence'
+            report.addError(self.identity, None, message)
+        return report
 
 
 class Range(Location):
@@ -31,16 +33,21 @@ class Range(Location):
                                                initial_value=start)
         self.end: int_property = IntProperty(self, SBOL_END, 1, 1,
                                              initial_value=end)
-        self.validate()
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if self.start < 1:
-            raise ValidationError('Start must be greater than 0')
+            message = 'Range.start must be greater than 0'
+            report.addError(self.identity, 'sbol3-11401', message)
+        # TODO: start must also be less than or equal to len(sequence)
         if self.end < 1:
-            raise ValidationError('Start must be greater than 0')
+            message = 'Range.end must be greater than 0'
+            report.addError(self.identity, 'sbol3-11402', message)
+        # TODO: end must also be less than or equal to len(sequence)
         if self.end < self.start:
-            raise ValidationError('End must be >= start')
+            message = 'Range.end must be >= start'
+            report.addError(self.identity, 'sbol3-11403', message)
+        return report
 
 
 def build_range(identity: str, type_uri: str = SBOL_RANGE):
@@ -66,12 +73,13 @@ class Cut(Location):
         super().__init__(seq_or_uri, identity, type_uri)
         self.at: int_property = IntProperty(self, SBOL_START, 1, 1,
                                             initial_value=at)
-        self.validate()
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if self.at < 0:
-            raise ValidationError('At must be >= 0')
+            message = 'Cut property "at" must be >= 0'
+            report.addError(self.identity, None, message)
+        return report
 
 
 def build_cut(identity: str, type_uri: str = SBOL_CUT):
@@ -94,7 +102,6 @@ class EntireSequence(Location):
                  *, identity: str = None,
                  type_uri: str = SBOL_ENTIRE_SEQUENCE) -> None:
         super().__init__(seq_or_uri, identity, type_uri)
-        self.validate()
 
 
 def build_entire_sequence(identity: str, type_uri: str = SBOL_ENTIRE_SEQUENCE):

@@ -4,7 +4,7 @@ class Error(Exception):
     pass
 
 
-class ValidationError(Error):
+class SBOLError(Error):
 
     def __init__(self, message: str):
         self.message = message

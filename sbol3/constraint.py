@@ -15,16 +15,19 @@ class Constraint(Identified):
                                         initial_value=subject)
         self.object = ReferencedObject(self, SBOL_OBJECT, 1, 1,
                                        initial_value=object)
-        self.validate()
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if not self.restriction:
-            raise ValidationError('Constraint must have a restriction')
+            message = 'Constraint must have a restriction'
+            report.addError(self.identity, None, message)
         if not self.subject:
-            raise ValidationError('Constraint must have a subject')
+            message = 'Constraint must have a subject'
+            report.addError(self.identity, None, message)
         if not self.object:
-            raise ValidationError('Constraint must have an object')
+            message = 'Constraint must have an object'
+            report.addError(self.identity, None, message)
+        return report
 
 
 def build_constraint(identity: str, type_uri: str = SBOL_CONSTRAINT) -> SBOLObject:

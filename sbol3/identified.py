@@ -61,7 +61,7 @@ class Identified(SBOLObject):
             msg += ' or underscore characters and MUST NOT begin with a digit.'
             raise ValueError(msg)
 
-    def _validate_display_id(self) -> None:
+    def _validate_display_id(self, report: ValidationReport) -> None:
         if self.identity_is_url():
             if (self.display_id is not None and
                     Identified._is_valid_display_id(self.display_id) and
@@ -71,7 +71,7 @@ class Identified(SBOLObject):
             if Identified._is_valid_display_id(self.display_id):
                 return
         message = f'{self.display_id} is not a valid displayId for {self.identity}'
-        raise ValidationError(message)
+        report.addError(self.identity, None, message)
 
     def _update_identity(self, identity: str, display_id: str) -> None:
         """Updates the identity of an Identified when it is added to a
@@ -109,9 +109,16 @@ class Identified(SBOLObject):
         # display_id is a read only property
         return self._display_id
 
-    def validate(self) -> None:
-        super().validate()
-        self._validate_display_id()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        if report is None:
+            report = ValidationReport()
+        # Do validations for Identified
+        self._validate_display_id(report)
+        # Validate all owned objects
+        for object_list in self._owned_objects.values():
+            for obj in object_list:
+                obj.validate(report)
+        return report
 
     def serialize(self, graph: rdflib.Graph):
         identity = rdflib.URIRef(self.identity)

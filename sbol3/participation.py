@@ -15,14 +15,16 @@ class Participation(Identified):
                                            initial_value=roles)
         self.participant = ReferencedObject(self, SBOL_PARTICIPANT, 1, 1,
                                             initial_value=participant)
-        self.validate()
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if len(self.roles) < 1:
-            raise ValidationError('Participation must have at least one role')
+            message = 'Participation must have at least one role'
+            report.addError(self.identity, None, message)
         if self.participant is None:
-            raise ValidationError('Participation must have a participant')
+            message = 'Participation must have a participant'
+            report.addError(self.identity, None, message)
+        return report
 
 
 def build_participation(identity: str,

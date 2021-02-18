@@ -20,8 +20,10 @@ class TestVariableComponent(unittest.TestCase):
 
     def test_invalid_create(self):
         my_cardinality = 'https://github.com/synbiodex/pysbol3#someNumber'
-        with self.assertRaises(sbol3.ValidationError):
-            vc = sbol3.VariableFeature(cardinality=my_cardinality)
+        vf = sbol3.VariableFeature(cardinality=my_cardinality)
+        report = vf.validate()
+        self.assertIsNotNone(report)
+        self.assertEqual(1, len(report.errors))
 
     def test_round_trip1(self):
         # See https://github.com/SynBioDex/pySBOL3/issues/155
@@ -62,9 +64,8 @@ class TestVariableComponent(unittest.TestCase):
         self.assertTrue(vf1.identity.startswith(cd1.identity))
         # Ensure that Measure m1 is valid. The bug tested here was that it
         # had been assigned an invalid displayId.
-        # Note: validate() currently returns None if an object is valid,
-        #       and raises an exception if the object is not valid.
-        self.assertIsNone(m1.validate())
+        report = m1.validate()
+        self.assertEqual(0, len(report.errors))
 
 
 if __name__ == '__main__':

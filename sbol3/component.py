@@ -24,17 +24,17 @@ class Component(TopLevel):
         self.interfaces = OwnedObject(self, SBOL_INTERFACES, 0, 1,
                                       type_constraint=Interface)
         self.models = ReferencedObject(self, SBOL_MODELS, 0, math.inf)
-        self.validate()
 
-    def _validate_types(self) -> None:
+    def _validate_types(self, report: ValidationReport) -> None:
         # A Component is REQUIRED to have one or more type properties (Section 6.4)
         if len(self.types) < 1:
             message = f'Component {self.identity} has no types'
-            raise ValidationError(message)
+            report.addError(self.identity, None, message)
 
-    def validate(self) -> None:
-        super().validate()
-        self._validate_types()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
+        self._validate_types(report)
+        return report
 
 
 def build_component(identity: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:

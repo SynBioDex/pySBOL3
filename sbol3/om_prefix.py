@@ -26,14 +26,18 @@ class Prefix(CustomTopLevel, abc.ABC):
         self.factor = FloatProperty(self, OM_HAS_FACTOR, 1, 1,
                                     initial_value=factor)
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if not self.symbol:
-            raise ValidationError('Prefix must contain a symbol')
+            message = 'Prefix must contain a symbol'
+            report.addError(self.identity, None, message)
         if not self.label:
-            raise ValidationError('Prefix must contain a label')
+            message = 'Prefix must contain a label'
+            report.addError(self.identity, None, message)
         if not self.factor:
-            raise ValidationError('Prefix must contain a factor')
+            message = 'Prefix must contain a factor'
+            report.addError(self.identity, None, message)
+        return report
 
 
 class SIPrefix(Prefix):
@@ -41,7 +45,6 @@ class SIPrefix(Prefix):
     def __init__(self, identity: str, symbol: str, label: str,
                  factor: float, *, type_uri: str = OM_SI_PREFIX) -> None:
         super().__init__(identity, symbol, label, factor, type_uri)
-        self.validate()
 
 
 def build_si_prefix(identity: str, *, type_uri: str = OM_SI_PREFIX) -> SBOLObject:
@@ -62,7 +65,6 @@ class BinaryPrefix(Prefix):
     def __init__(self, identity: str, symbol: str, label: str,
                  factor: float, *, type_uri: str = OM_BINARY_PREFIX) -> None:
         super().__init__(identity, symbol, label, factor, type_uri)
-        self.validate()
 
 
 def build_binary_prefix(identity: str,

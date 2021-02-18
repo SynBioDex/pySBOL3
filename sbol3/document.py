@@ -48,9 +48,9 @@ class Document:
             try:
                 other_type = types[0]
             except IndexError:
-                raise ValidationError('Expected one other type')
+                raise SBOLError('Custom object has only one RDF type')
             if other_type.startswith(SBOL3_NS):
-                raise ValidationError('Secondary type may not be in SBOL3 namespace')
+                raise SBOLError('Secondary type may not be in SBOL3 namespace')
             try:
                 builder = self._uri_type_map[other_type]
             except KeyError:
@@ -62,9 +62,9 @@ class Document:
             try:
                 other_type = types[0]
             except IndexError:
-                raise ValidationError('Expected one other type')
+                raise SBOLError('Custom object has only one RDF type')
             if other_type.startswith(SBOL3_NS):
-                raise ValidationError('Secondary type may not be in SBOL3 namespace')
+                raise SBOLError('Secondary type may not be in SBOL3 namespace')
             try:
                 builder = self._uri_type_map[other_type]
             except KeyError:
@@ -73,7 +73,7 @@ class Document:
             return builder(identity=identity, type_uri=other_type)
         else:
             message = 'Custom types must contain either Identified or TopLevel'
-            raise ValidationError(message)
+            raise SBOLError(message)
 
     def _parse_objects(self, graph: rdflib.Graph) -> Dict[str, SBOLObject]:
         # First extract the identities and their types. Each identity
@@ -95,13 +95,13 @@ class Document:
                     builder = self._uri_type_map[type_uri]
                 except KeyError:
                     logging.warning(f'No builder found for {type_uri}')
-                    raise ValidationError(f'Unknown type {type_uri}')
+                    raise SBOLError(f'Unknown type {type_uri}')
                 obj = builder(identity=identity, type_uri=type_uri)
             elif len(types) == 2:
                 obj = self._make_custom_object(identity, types)
             else:
                 message = f'Expected either 1 or 2 types for {identity}'
-                raise ValidationError(message)
+                raise SBOLError(message)
             obj.document = self
             result[obj.identity] = obj
         return result
@@ -153,8 +153,10 @@ class Document:
         self._parse_attributes(objects, graph)
         self._clean_up_singletons(objects)
         # Validate all the objects
-        for obj in objects.values():
-            obj.validate()
+        # TODO: Where does this belong? Is this automatic?
+        #       Or should a user invoke validate?
+        # for obj in objects.values():
+        #     obj.validate()
         # Store the TopLevel objects in the Document
         self.objects = [obj for uri, obj in objects.items()
                         if isinstance(obj, TopLevel)]
@@ -310,3 +312,11 @@ class Document:
         """
         warnings.warn('Use Document.bind() instead', DeprecationWarning)
         self.bind(prefix, namespace)
+
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        """Validate all objects in this document."""
+        if report is None:
+            report = ValidationReport()
+        for obj in self.objects:
+            obj.validate(report)
+        return report

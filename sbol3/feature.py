@@ -12,11 +12,12 @@ class Feature(Identified, abc.ABC):
         self.roles = URIProperty(self, SBOL_ROLE, 0, math.inf)
         self.orientation = URIProperty(self, SBOL_ORIENTATION, 0, 1)
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         # If there is an orientation, it must be in the valid set
         if self.orientation is not None:
             valid_orientations = [SBOL_INLINE, SBOL_REVERSE_COMPLEMENT]
             if self.orientation not in valid_orientations:
                 message = f'{self.orientation} is not a valid orientation'
-                raise ValidationError(message)
+                report.addError(self.identity, None, message)
+        return report

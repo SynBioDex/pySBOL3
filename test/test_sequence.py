@@ -26,8 +26,9 @@ class TestSequence(unittest.TestCase):
         seq = sbol3.Sequence(display_id)
         self.assertIsNotNone(seq)
         seq.elements = 'actg'
-        with self.assertRaises(sbol3.ValidationError):
-            seq.validate()
+        report = seq.validate()
+        self.assertIsNotNone(report)
+        self.assertEqual(1, len(report.errors))
 
     def test_valid(self):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')

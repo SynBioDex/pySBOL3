@@ -16,12 +16,13 @@ class LocalSubComponent(Feature):
                                            initial_value=types)
         self.locations = OwnedObject(self, SBOL_LOCATION, 0, math.inf,
                                      type_constraint=Location)
-        self.validate()
 
-    def validate(self):
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if len(self.types) < 1:
-            raise ValidationError('LocalSubComponent must have at least 1 type')
+            message = 'LocalSubComponent must have at least 1 type'
+            report.addError(self.identity, None, message)
+        return report
 
 
 def build_local_subcomponent(identity: str,

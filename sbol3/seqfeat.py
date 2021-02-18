@@ -17,12 +17,13 @@ class SequenceFeature(Feature):
                                               1, math.inf,
                                               type_constraint=Location,
                                               initial_value=locations)
-        self.validate()
 
-    def validate(self):
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if len(self.locations) < 1:
-            raise ValidationError('LocalSubComponent must have at least 1 location')
+            message = 'LocalSubComponent must have at least 1 location'
+            report.addError(self.identity, None, message)
+        return report
 
 
 def build_sequence_feature(identity: str,

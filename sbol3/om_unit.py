@@ -38,7 +38,6 @@ class Measure(CustomIdentified):
         self.types = URIProperty(self, SBOL_TYPE, 0, math.inf)
         self.unit = URIProperty(self, OM_HAS_UNIT, 1, 1,
                                 initial_value=unit)
-        self.validate()
 
 
 def build_measure(identity: str, *, type_uri: str = OM_MEASURE) -> SBOLObject:
@@ -60,7 +59,6 @@ class SingularUnit(Unit):
         super().__init__(identity, symbol, label, type_uri)
         self.unit = ReferencedObject(self, OM_HAS_UNIT, 0, 1)
         self.factor = FloatProperty(self, OM_HAS_FACTOR, 0, 1)
-        self.validate()
 
 
 def build_singular_unit(identity: str,
@@ -87,7 +85,6 @@ class PrefixedUnit(Unit):
                                      initial_value=unit)
         self.prefix = ReferencedObject(self, OM_HAS_PREFIX, 1, 1,
                                        initial_value=prefix)
-        self.validate()
 
 
 def build_prefixed_unit(identity: str,

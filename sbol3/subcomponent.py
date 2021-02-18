@@ -18,13 +18,14 @@ class SubComponent(Feature):
                                             type_constraint=Location)
         self.locations = OwnedObject(self, SBOL_LOCATION, 0, math.inf,
                                      type_constraint=Location)
-        self.validate()
 
-    def validate(self) -> None:
-        super().validate()
-        # If there is an orientation, it must be in the valid set
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
+        # The instance_of property is required
         if not self.instance_of:
-            raise ValidationError('SubComponent must have an instance_of')
+            message = 'SubComponent must have an instance_of'
+            report.addError(self.identity, None, message)
+        return report
 
 
 def build_subcomponent(identity: str, type_uri: str = SBOL_SUBCOMPONENT) -> Identified:

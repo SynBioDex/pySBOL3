@@ -174,6 +174,25 @@ class TestDocument(unittest.TestCase):
         actual = doc.write_string(sbol3.SORTED_NTRIPLES)
         self.assertEqual(expected, actual)
 
+    def test_validate(self):
+        # Test the document level validation
+        # This should validate all the objects in the document
+        # and return a report containing all errors and warnings.
+        doc = sbol3.Document()
+        c1 = sbol3.Component('https://github.com/synbiodex/pysbol3/c1',
+                             sbol3.SBO_DNA)
+        doc.add(c1)
+        s1 = sbol3.Sequence('https://github.com/synbiodex/pysbol3/s1')
+        doc.add(s1)
+        start = 10
+        end = 1
+        r = sbol3.Range(s1, start, end)
+        sf = sbol3.SequenceFeature([r])
+        c1.features.append(sf)
+        report = doc.validate()
+        # We should find the validation issue in the range
+        self.assertEqual(1, len(report))
+
 
 if __name__ == '__main__':
     unittest.main()

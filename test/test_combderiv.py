@@ -26,8 +26,9 @@ class TestCombinatorialDerivation(unittest.TestCase):
         comp1 = sbol3.Component('comp1', sbol3.SBO_DNA)
         cd1 = sbol3.CombinatorialDerivation('cd1', comp1)
         cd1.strategy = sbol3.SBOL_INLINE
-        with self.assertRaises(sbol3.ValidationError):
-            cd1.validate()
+        report = cd1.validate()
+        self.assertIsNotNone(report)
+        self.assertEqual(1, len(report.errors))
 
     def test_round_trip(self):
         # See https://github.com/SynBioDex/pySBOL3/issues/156

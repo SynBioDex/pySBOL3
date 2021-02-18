@@ -12,14 +12,14 @@ class Attachment(TopLevel):
         self.size = IntProperty(self, SBOL_SIZE, 0, 1)
         self.hash = TextProperty(self, SBOL_HASH, 0, 1)
         self.hash_algorithm = TextProperty(self, SBOL_HASH_ALGORITHM, 0, 1)
-        self.validate()
 
-    def validate(self) -> None:
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         # An Attachment must have 1 source
         if self.source is None:
             message = f'Attachment {self.identity} must have a source'
-            raise ValidationError(message)
+            report.addError(self.identity, None, message)
+        return report
 
 
 def build_attachment(identity: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:

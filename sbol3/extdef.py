@@ -21,14 +21,16 @@ class ExternallyDefined(Feature):
                                            initial_value=types)
         self.definition: uri_singleton = URIProperty(self, SBOL_DEFINITION, 1, 1,
                                                      initial_value=definition)
-        self.validate()
 
-    def validate(self):
-        super().validate()
+    def validate(self, report: ValidationReport = None) -> ValidationReport:
+        report = super().validate(report)
         if len(self.types) < 1:
-            raise ValidationError('ExternallyDefined must contain at least 1 type')
+            message = 'ExternallyDefined must contain at least 1 type'
+            report.addError(self.identity, None, message)
         if self.definition is None:
-            raise ValidationError('ExternallyDefined must have a definition')
+            message = 'ExternallyDefined must have a definition'
+            report.addError(self.identity, None, message)
+        return report
 
 
 def build_externally_defined(identity: str,
