@@ -52,6 +52,22 @@ class TestRange(unittest.TestCase):
         self.assertIsNotNone(report)
         self.assertEqual(0, len(report.errors))
 
+    def test_keyword_args(self):
+        # Test that all arguments, both required and optional, can be
+        # specified by keyword
+        seq_uri = 'https://example.com/pysbol3/seq1'
+        start = 7
+        end = 14
+        range_uri = 'https://example.com/pysbol3/r1'
+        r1 = sbol3.Range(seq_or_uri=seq_uri, end=end, start=start,
+                         identity=range_uri)
+        self.assertEqual(seq_uri, r1.sequence)
+        self.assertEqual(start, r1.start)
+        self.assertEqual(end, r1.end)
+        self.assertEqual(range_uri, r1.identity)
+        display_id = range_uri[range_uri.rindex('/') + 1:]
+        self.assertEqual(display_id, r1.display_id)
+
 
 class TestCut(unittest.TestCase):
 
