@@ -47,7 +47,7 @@ class TestComponent(unittest.TestCase):
         all_sample_templates = [media_template]
         sample_template_uri = 'https://sd2e.org/measurement_template'
         sample_template = sbol3.Component(identity=sample_template_uri,
-                                          component_type=sbol3.SBO_FUNCTIONAL_ENTITY)
+                                          types=sbol3.SBO_FUNCTIONAL_ENTITY)
         sample_template.name = 'measurement template'
         sample_template.features = all_sample_templates
         self.assertEqual(1, len(sample_template.features))

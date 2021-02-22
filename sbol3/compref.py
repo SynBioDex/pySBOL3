@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 
 from . import *
 # Feature is not exported
@@ -9,9 +9,17 @@ class ComponentReference(Feature):
 
     def __init__(self, in_child_of: Union[SubComponent, str],
                  feature: Union[Feature, str],
-                 *, identity: str = None,
+                 *, roles: List[str] = None, orientation: str = None,
+                 name: str = None, description: str = None,
+                 derived_from: List[str] = None,
+                 generated_by: List[str] = None,
+                 measures: List[SBOLObject] = None,
+                 identity: str = None,
                  type_uri: str = SBOL_COMPONENT_REFERENCE) -> None:
-        super().__init__(identity, type_uri)
+        super().__init__(identity=identity, type_uri=type_uri,
+                         roles=roles, orientation=orientation, name=name,
+                         description=description, derived_from=derived_from,
+                         generated_by=generated_by, measures=measures)
         self.in_child_of = ReferencedObject(self, SBOL_IN_CHILD_OF, 1, 1,
                                             initial_value=in_child_of)
         self.feature = ReferencedObject(self, SBOL_FEATURES, 1, 1,
