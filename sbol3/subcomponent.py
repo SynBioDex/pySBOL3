@@ -7,6 +7,14 @@ from .feature import Feature
 
 
 class SubComponent(Feature):
+    """The SubComponent class can be used to specify structural
+    hierarchy. For example, the Component of a gene might contain four
+    SubComponent objects: a promoter, RBS, CDS, and terminator, each
+    linked to a Component that provides the complete definition. In
+    turn, the Component of the promoter SubComponent might itself
+    contain SubComponent objects defining various operator sites, etc.
+
+    """
 
     def __init__(self, instance_of: Union[Identified, str],
                  *, role_integration: str = None,

@@ -7,6 +7,12 @@ from .typing import *
 
 
 class LocalSubComponent(Feature):
+    """LocalSubComponent serves as a way to create a placeholder in more
+    complex Components, such as a variable to be filled in later or a
+    composite that exists only within the context of the parent
+    Component.
+
+    """
 
     def __init__(self, types: List[str],
                  *, locations: List[Location] = None,

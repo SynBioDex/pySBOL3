@@ -11,12 +11,21 @@ class ExternallyDefined(Feature):
     """The ExternallyDefined class has been introduced so that
     external definitions in databases like ChEBI or UniProt
     can be referenced.
+
     """
 
     def __init__(self, types: List[str], definition: str,
-                 *, identity: str = None,
+                 *, roles: List[str] = None, orientation: str = None,
+                 name: str = None, description: str = None,
+                 derived_from: List[str] = None,
+                 generated_by: List[str] = None,
+                 measures: List[SBOLObject] = None,
+                 identity: str = None,
                  type_uri: str = SBOL_EXTERNALLY_DEFINED):
-        super().__init__(identity, type_uri)
+        super().__init__(identity=identity, type_uri=type_uri,
+                         roles=roles, orientation=orientation, name=name,
+                         description=description, derived_from=derived_from,
+                         generated_by=generated_by, measures=measures)
         self.types: uri_list = URIProperty(self, SBOL_TYPE, 1, math.inf,
                                            initial_value=types)
         self.definition: uri_singleton = URIProperty(self, SBOL_DEFINITION, 1, 1,

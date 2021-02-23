@@ -6,6 +6,10 @@ from .feature import Feature
 
 
 class ComponentReference(Feature):
+    """ComponentReference can be used to reference Features within
+    SubComponents.
+
+    """
 
     def __init__(self, in_child_of: Union[SubComponent, str],
                  feature: Union[Feature, str],
