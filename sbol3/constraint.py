@@ -1,14 +1,32 @@
-from typing import Optional, Union
+from typing import Optional, Union, List
 
 from . import *
 
 
 class Constraint(Identified):
+    """The Constraint class can be used to assert restrictions on the
+    relationships of pairs of Feature objects contained by the same
+    parent Component. Uses of this class include expressing
+    containment (e.g., a plasmid transformed into a chassis strain),
+    identity mappings (e.g., replacing a placeholder value with a
+    complete definition), and expressing relative, sequence-based
+    positions (e.g., the ordering of features within a template). Each
+    Constraint includes the subject, object, and restriction
+    properties.
+
+    """
 
     def __init__(self, restriction: str, subject: Union[Identified, str],
-                 object: Union[Identified, str], *, identity: Optional[str] = None,
+                 object: Union[Identified, str], *, name: str = None,
+                 description: str = None, derived_from: List[str] = None,
+                 generated_by: List[str] = None,
+                 measures: List[SBOLObject] = None,
+                 identity: Optional[str] = None,
                  type_uri: str = SBOL_CONSTRAINT) -> None:
-        super().__init__(identity, type_uri)
+        super().__init__(identity=identity, type_uri=type_uri,
+                         name=name, description=description,
+                         derived_from=derived_from, generated_by=generated_by,
+                         measures=measures)
         self.restriction = URIProperty(self, SBOL_RESTRICTION, 1, 1,
                                        initial_value=restriction)
         self.subject = ReferencedObject(self, SBOL_SUBJECT, 1, 1,

@@ -16,7 +16,8 @@ class TopLevel(Identified):
         # does not require an identity, only TopLevel does.
         if not identity or not isinstance(identity, str):
             raise ValueError('Identity must be a non-empty string')
-        super().__init__(identity, type_uri, name=name, description=description,
+        super().__init__(identity=identity, type_uri=type_uri,
+                         name=name, description=description,
                          derived_from=derived_from, generated_by=generated_by,
                          measures=measures)
         self.attachments = ReferencedObject(self, SBOL_HAS_ATTACHMENT, 0, math.inf,

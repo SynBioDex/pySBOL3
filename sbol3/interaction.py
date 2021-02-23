@@ -5,14 +5,36 @@ from . import *
 
 
 class Interaction(Identified):
+    """The Interaction class provides more detailed description of how the
+    Feature objects of a Component are intended to work together. For
+    example, this class can be used to represent different forms of
+    genetic regulation (e.g., transcriptional activation or
+    repression), processes from the central dogma of biology
+    (e.g. transcription and translation), and other basic molecular
+    interactions (e.g., non-covalent binding or enzymatic
+    phosphorylation). Each Interaction includes type properties that
+    refer to descriptive ontology terms and hasParticipation
+    properties that describe which Feature objects participate in
+    which ways in the Interaction.
 
-    def __init__(self, interaction_types: List[str],
-                 *, identity: str = None,
+    """
+
+    def __init__(self, types: List[str],
+                 *, participations: List[Participation] = None,
+                 name: str = None, description: str = None,
+                 derived_from: List[str] = None,
+                 generated_by: List[str] = None,
+                 measures: List[SBOLObject] = None,
+                 identity: str = None,
                  type_uri: str = SBOL_INTERACTION) -> None:
-        super().__init__(identity, type_uri)
+        super().__init__(identity=identity, type_uri=type_uri,
+                         name=name, description=description,
+                         derived_from=derived_from, generated_by=generated_by,
+                         measures=measures)
         self.types = URIProperty(self, SBOL_TYPE, 1, math.inf,
-                                 initial_value=interaction_types)
+                                 initial_value=types)
         self.participations = OwnedObject(self, SBOL_PARTICIPATIONS, 0, math.inf,
+                                          initial_value=participations,
                                           type_constraint=Participation)
 
 

@@ -7,6 +7,11 @@ int_property = Union[IntProperty, int]
 
 
 class Location(Identified, abc.ABC):
+    """The Location class is used to represent the location of Features
+    within Sequences. This class is extended by the Range, Cut, and
+    EntireSequence classes
+
+    """
 
     def __init__(self, sequence: Union[Sequence, str],
                  identity: str, type_uri: str,
@@ -29,6 +34,15 @@ class Location(Identified, abc.ABC):
 
 
 class Range(Location):
+    """A Range object specifies a region via discrete, inclusive start and
+    end positions that correspond to indices for characters in the
+    elements String of a Sequence.
+
+    Note that the index of the first location is 1, as is typical
+    practice in biology, rather than 0, as is typical practice in
+    computer science.
+
+    """
 
     def __init__(self, sequence: Union[Sequence, str], start: int, end: int,
                  *, orientation: str = None,
@@ -75,6 +89,14 @@ Document.register_builder(SBOL_RANGE, build_range)
 
 
 class Cut(Location):
+    """The Cut class has been introduced to enable the specification of a
+    region between two discrete positions. This specification is
+    accomplished using the at property, which specifies a discrete
+    position that corresponds to the index of a character in the
+    elements String of a Sequence (except in the case when at is equal
+    to zero).
+
+    """
 
     def __init__(self, sequence: Union[Sequence, str], at: int,
                  *, orientation: str = None,
@@ -109,6 +131,12 @@ Document.register_builder(SBOL_CUT, build_cut)
 
 
 class EntireSequence(Location):
+    """The EntireSequence class does not have any additional
+    properties. Use of this class indicates that the linked Sequence
+    describes the entirety of the Component or Feature parent of this
+    Location object.
+
+    """
 
     def __init__(self, sequence: Union[Sequence, str],
                  *, orientation: str = None,
