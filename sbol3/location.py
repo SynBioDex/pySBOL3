@@ -8,13 +8,17 @@ int_property = Union[IntProperty, int]
 
 class Location(Identified, abc.ABC):
 
-    def __init__(self, seq_or_uri: Union[Sequence, str],
-                 identity: str, type_uri: str) -> None:
+    def __init__(self, sequence: Union[Sequence, str],
+                 identity: str, type_uri: str,
+                 *, orientation: str = None,
+                 order: int = None) -> None:
         super().__init__(identity, type_uri)
-        self.orientation = URIProperty(self, SBOL_ORIENTATION, 0, 1)
-        self.order = IntProperty(self, SBOL_ORDER, 0, 1)
+        self.orientation = URIProperty(self, SBOL_ORIENTATION, 0, 1,
+                                       initial_value=orientation)
+        self.order = IntProperty(self, SBOL_ORDER, 0, 1,
+                                 initial_value=order)
         self.sequence = ReferencedObject(self, SBOL_SEQUENCES, 1, 1,
-                                         initial_value=seq_or_uri)
+                                         initial_value=sequence)
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         report = super().validate(report)
@@ -26,9 +30,13 @@ class Location(Identified, abc.ABC):
 
 class Range(Location):
 
-    def __init__(self, seq_or_uri: Union[Sequence, str], start: int, end: int,
-                 *, identity: str = None, type_uri: str = SBOL_RANGE) -> None:
-        super().__init__(seq_or_uri, identity, type_uri)
+    def __init__(self, sequence: Union[Sequence, str], start: int, end: int,
+                 *, orientation: str = None,
+                 order: int = None,
+                 identity: str = None, type_uri: str = SBOL_RANGE) -> None:
+        super().__init__(sequence=sequence, orientation=orientation,
+                         order=order, identity=identity,
+                         type_uri=type_uri)
         self.start: int_property = IntProperty(self, SBOL_START, 1, 1,
                                                initial_value=start)
         self.end: int_property = IntProperty(self, SBOL_END, 1, 1,
@@ -68,9 +76,13 @@ Document.register_builder(SBOL_RANGE, build_range)
 
 class Cut(Location):
 
-    def __init__(self, seq_or_uri: Union[Sequence, str], at: int,
-                 *, identity: str = None, type_uri: str = SBOL_CUT) -> None:
-        super().__init__(seq_or_uri, identity, type_uri)
+    def __init__(self, sequence: Union[Sequence, str], at: int,
+                 *, orientation: str = None,
+                 order: int = None,
+                 identity: str = None, type_uri: str = SBOL_CUT) -> None:
+        super().__init__(sequence=sequence, orientation=orientation,
+                         order=order, identity=identity,
+                         type_uri=type_uri)
         self.at: int_property = IntProperty(self, SBOL_START, 1, 1,
                                             initial_value=at)
 
@@ -98,10 +110,14 @@ Document.register_builder(SBOL_CUT, build_cut)
 
 class EntireSequence(Location):
 
-    def __init__(self, seq_or_uri: Union[Sequence, str],
-                 *, identity: str = None,
+    def __init__(self, sequence: Union[Sequence, str],
+                 *, orientation: str = None,
+                 order: int = None,
+                 identity: str = None,
                  type_uri: str = SBOL_ENTIRE_SEQUENCE) -> None:
-        super().__init__(seq_or_uri, identity, type_uri)
+        super().__init__(sequence=sequence, orientation=orientation,
+                         order=order, identity=identity,
+                         type_uri=type_uri)
 
 
 def build_entire_sequence(identity: str, type_uri: str = SBOL_ENTIRE_SEQUENCE):
