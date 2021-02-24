@@ -5,6 +5,10 @@ from . import *
 
 
 class Interface(Identified):
+    """The Interface class is a way of explicitly specifying the interface
+    of a Component.
+
+    """
 
     def __init__(self, *, input: str = None, output: str = None,
                  nondirectional: str = None, name: str = None,

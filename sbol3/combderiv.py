@@ -1,19 +1,42 @@
 import math
-from typing import Union
+from typing import Union, List
 
 from . import *
 
 
 class CombinatorialDerivation(TopLevel):
+    """The purpose of the CombinatorialDerivation class is to specify
+    combinatorial biological designs without having to specify every
+    possible design variant. For example, a CombinatorialDerivation
+    can be used to specify a library of reporter gene variants that
+    include different promoters and RBSs without having to specify a
+    Component for every possible combination of promoter, RBS, and CDS
+    in the library. Component objects that realize a
+    CombinatorialDerivation can be derived in accordance with the
+    class properties template, hasVariableFeature, and strategy.
+
+    """
 
     def __init__(self, identity: str, template: Union[Component, str],
-                 *, type_uri: str = SBOL_COMBINATORIAL_DERIVATION) -> None:
-        super().__init__(identity, type_uri)
-        self.strategy = URIProperty(self, SBOL_STRATEGY, 0, 1)
+                 *, strategy: str = None,
+                 variable_features: List[str] = None,
+                 attachments: List[str] = None,
+                 name: str = None, description: str = None,
+                 derived_from: List[str] = None,
+                 generated_by: List[str] = None,
+                 measures: List[SBOLObject] = None,
+                 type_uri: str = SBOL_COMBINATORIAL_DERIVATION) -> None:
+        super().__init__(identity=identity, type_uri=type_uri,
+                         attachments=attachments, name=name,
+                         description=description, derived_from=derived_from,
+                         generated_by=generated_by, measures=measures)
+        self.strategy = URIProperty(self, SBOL_STRATEGY, 0, 1,
+                                    initial_value=strategy)
         self.template = ReferencedObject(self, SBOL_TEMPLATE, 1, 1,
                                          initial_value=template)
         self.variable_features = OwnedObject(self, SBOL_VARIABLE_FEATURES,
                                              0, math.inf,
+                                             initial_value=variable_features,
                                              type_constraint=VariableFeature)
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:

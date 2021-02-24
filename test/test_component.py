@@ -41,7 +41,9 @@ class TestComponent(unittest.TestCase):
                                                  types=[sbol3.SBO_FUNCTIONAL_ENTITY])
         media_template.name = 'media template'
 
-        media_variable = sbol3.VariableFeature(cardinality=sbol3.SBOL_ONE)
+        variable_uri = 'https://github.com/synbiodex/pysbol3/variable'
+        media_variable = sbol3.VariableFeature(cardinality=sbol3.SBOL_ONE,
+                                               variable=media_template)
         media_variable.variable = media_template
 
         all_sample_templates = [media_template]

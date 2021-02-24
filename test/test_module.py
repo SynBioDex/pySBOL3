@@ -76,6 +76,8 @@ class TestModule(unittest.TestCase):
             'SequenceFeature': [[sbol3.EntireSequence('https://example.com/fake')]],
             'SubComponent': ['https://example.com/fake'],
             'Usage': ['https://example.com/fake'],
+            'VariableFeature': [sbol3.SBOL_ONE_OR_MORE,
+                                'https://example.com/fake']
         }
         skip_list = [sbol3.Identified, sbol3.Feature, sbol3.Location]
         for name in dir(sbol3):
