@@ -21,6 +21,7 @@ class TestAttachment(unittest.TestCase):
         source_uri = base_url + 'blob/master/sbol3/attachment.py'
         att = sbol3.Attachment('attachment1', source_uri)
         self.assertEqual(source_uri, att.source)
+        self.assertEqual(sbol3.SBOL_ATTACHMENT, att.type_uri)
 
     def test_read_from_file(self):
         test_file = os.path.join(SBOL3_LOCATION, 'entity', 'attachment',

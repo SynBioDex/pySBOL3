@@ -20,6 +20,15 @@ class TestImplementation(unittest.TestCase):
         implementation = sbol3.Implementation('impl1')
         self.assertIsNotNone(implementation)
         self.assertIsNone(implementation.built)
+        self.assertEqual(sbol3.SBOL_IMPLEMENTATION, implementation.type_uri)
+
+    def test_create2(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        c1 = sbol3.Component('c1', [sbol3.SBO_DNA])
+        implementation = sbol3.Implementation('impl1', built=c1)
+        self.assertIsNotNone(implementation)
+        self.assertEqual(c1.identity, implementation.built)
+        self.assertEqual(sbol3.SBOL_IMPLEMENTATION, implementation.type_uri)
 
     def test_read_from_file(self):
         test_file = os.path.join(SBOL3_LOCATION, 'entity', 'implementation',
