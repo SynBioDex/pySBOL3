@@ -9,7 +9,8 @@ class TopLevel(Identified):
     def __init__(self, identity: str, type_uri: str,
                  *, attachments: List[str] = None,
                  name: str = None, description: str = None,
-                 derived_from: List[str] = None, generated_by: List[str] = None,
+                 derived_from: List[str] = None,
+                 generated_by: List[str] = None,
                  measures: List[SBOLObject] = None) -> None:
         # Sanity check identity, which is required for a TopLevel
         # More checking on identity happens in Identified, but Identified
