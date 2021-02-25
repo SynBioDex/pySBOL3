@@ -14,19 +14,14 @@ class TestOwnedObject(unittest.TestCase):
     def test_identity_append(self):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         comp = sbol3.Component('c1', sbol3.SBO_DNA)
-        con1_id = 'con1'
         con1 = sbol3.Constraint(sbol3.SBOL_REPLACES,
                                 'http://example.com/fake1',
-                                'http://example.com/fake2',
-                                identity=con1_id)
-        expected = posixpath.join(sbol3.get_namespace(), con1_id)
+                                'http://example.com/fake2')
         # The constraint's identity and display_id will be overwritten as
         # part of the append operation. SBOL Compliant URIs (identities)
         # use the class of the object and a counter to generate the
         # display_id.
         expected2 = posixpath.join(comp.identity, 'Constraint1')
-        self.assertNotEqual(expected, expected2)
-        self.assertEqual(expected, con1.identity)
         # Append should cause the constraint's identity to change
         comp.constraints.append(con1)
         self.assertEqual(expected2, con1.identity)
@@ -35,15 +30,10 @@ class TestOwnedObject(unittest.TestCase):
         # This test uses assignment instead of appending
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         comp = sbol3.Component('c1', sbol3.SBO_DNA)
-        con1_id = 'con1'
         con1 = sbol3.Constraint(sbol3.SBOL_REPLACES,
                                 'http://example.com/fake1',
-                                'http://example.com/fake2',
-                                identity=con1_id)
-        expected = posixpath.join(sbol3.get_namespace(), con1_id)
+                                'http://example.com/fake2')
         expected2 = posixpath.join(comp.identity, 'Constraint1')
-        self.assertNotEqual(expected, expected2)
-        self.assertEqual(expected, con1.identity)
         # Setting to list should cause the constraint's identity to change
         comp.constraints = [con1]
         self.assertEqual(expected2, con1.identity)
@@ -104,6 +94,29 @@ class TestOwnedObject(unittest.TestCase):
         # identity should cascade down to the location after it
         # is set on the sequence feature
         self.assertIsNotNone(loc.identity)
+
+    def test_overwrite_identity(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        c1 = sbol3.Component('c1', sbol3.SBO_DNA)
+        seq = sbol3.Sequence('seq1')
+        loc = sbol3.EntireSequence(seq)
+        seq_feature = sbol3.SequenceFeature([loc])
+        c1.features.append(seq_feature)
+        self.assertIsNotNone(seq_feature.identity)
+        # identity should cascade down to the location after it
+        # is set on the sequence feature
+        self.assertIsNotNone(loc.identity)
+        old_sf_identity = seq_feature.identity
+        old_loc_identity = loc.identity
+        c2 = sbol3.Component('c2', sbol3.SBO_DNA)
+        # Try adding the same object to a different parent
+        # This should cause an error because the object is
+        # still parented by c1.
+        # See https://github.com/SynBioDex/pySBOL3/issues/178
+        with self.assertRaises(ValueError):
+            c2.features.append(seq_feature)
+        self.assertEqual(old_loc_identity, loc.identity)
+        self.assertEqual(old_sf_identity, seq_feature.identity)
 
     def test_type_constraint(self):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')

@@ -35,16 +35,18 @@ class TestComponent(unittest.TestCase):
 
     def test_features(self):
         # See https://github.com/SynBioDex/pySBOL3/issues/149
+        # Note: this example was modified when fixing
+        #       https://github.com/SynBioDex/pySBOL3/issues/178
+        #       media_variable is unused in the original example so
+        #       it has been commented out here
 
-        media_template_uri = 'https://sd2e.org/media_template'
-        media_template = sbol3.LocalSubComponent(identity=media_template_uri,
-                                                 types=[sbol3.SBO_FUNCTIONAL_ENTITY])
+        media_template = sbol3.LocalSubComponent(types=[sbol3.SBO_FUNCTIONAL_ENTITY])
         media_template.name = 'media template'
 
-        variable_uri = 'https://github.com/synbiodex/pysbol3/variable'
-        media_variable = sbol3.VariableFeature(cardinality=sbol3.SBOL_ONE,
-                                               variable=media_template)
-        media_variable.variable = media_template
+        # variable_uri = 'https://github.com/synbiodex/pysbol3/variable'
+        # media_variable = sbol3.VariableFeature(cardinality=sbol3.SBOL_ONE,
+        #                                        variable=media_template)
+        # media_variable.variable = media_template
 
         all_sample_templates = [media_template]
         sample_template_uri = 'https://sd2e.org/measurement_template'
