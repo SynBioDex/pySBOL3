@@ -92,6 +92,11 @@ class Identified(SBOLObject):
         parent object. SBOL compliant objects and URIs require updating
         whenever an owned object is added to a new parent.
         """
+        if self._identity is not None:
+            class_name = type(self).__name__
+            msg = f'{class_name} already has identity {self.identity}'
+            msg += ' and cannot be re-parented.'
+            raise ValueError(msg)
         self._identity = identity
         self._display_id = display_id
         # Now cycle through any owned objects and update their identities
