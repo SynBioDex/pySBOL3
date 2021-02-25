@@ -28,6 +28,9 @@ class OwnedObjectPropertyMixin:
         return self.property_owner._owned_objects
 
     def item_added(self, item: Any) -> None:
+        # First, set the document
+        if hasattr(item, 'document'):
+            item.document = self.property_owner.document
         if not self.property_owner.identity_is_url():
             return
         # if not item.display_id:
