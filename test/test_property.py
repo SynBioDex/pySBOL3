@@ -70,7 +70,6 @@ class TestProperty(unittest.TestCase):
         with self.assertRaises(TypeError):
             c.int_attribute = 0
 
-    @unittest.expectedFailure
     def test_iadd(self):
         # This is a test for the += operator, which is implemented as __iadd__()
         # When += is invoked the default __iadd__() implementation calls insert()
@@ -94,9 +93,11 @@ class TestProperty(unittest.TestCase):
         self.assertEqual('LocalSubComponent1', lsc1.display_id)
         self.assertEqual(posixpath.join(c1.identity, lsc1.display_id),
                          lsc1.identity)
+        self.assertEqual(doc, lsc1.document)
         self.assertEqual('LocalSubComponent2', lsc2.display_id)
         self.assertEqual(posixpath.join(c1.identity, lsc2.display_id),
                          lsc2.identity)
+        self.assertEqual(doc, lsc2.document)
 
         lsc3 = sbol3.LocalSubComponent(sbol3.SBO_DNA)
         lsc4 = sbol3.LocalSubComponent(sbol3.SBO_DNA)
@@ -105,16 +106,20 @@ class TestProperty(unittest.TestCase):
         self.assertEqual('LocalSubComponent1', lsc1.display_id)
         self.assertEqual(posixpath.join(c1.identity, lsc1.display_id),
                          lsc1.identity)
+        self.assertEqual(doc, lsc1.document)
         # Make sure lsc2 did not get renamed
         self.assertEqual('LocalSubComponent2', lsc2.display_id)
         self.assertEqual(posixpath.join(c1.identity, lsc2.display_id),
                          lsc2.identity)
+        self.assertEqual(doc, lsc2.document)
         self.assertEqual('LocalSubComponent3', lsc3.display_id)
         self.assertEqual(posixpath.join(c1.identity, lsc3.display_id),
                          lsc3.identity)
+        self.assertEqual(doc, lsc3.document)
         self.assertEqual('LocalSubComponent4', lsc4.display_id)
         self.assertEqual(posixpath.join(c1.identity, lsc4.display_id),
                          lsc4.identity)
+        self.assertEqual(doc, lsc4.document)
 
 
 if __name__ == '__main__':
