@@ -5,6 +5,14 @@ from . import *
 
 
 class TopLevel(Identified):
+    """TopLevel is an abstract class that is extended by any Identified
+    class that can be found at the top level of an SBOL document or
+    file. In other words, TopLevel objects are not nested inside any
+    other object via composite aggregation. Instead of nesting,
+    composite TopLevel objects refer to subordinate TopLevel objects
+    by their URIs using shared aggregation.
+
+    """
 
     def __init__(self, identity: str, type_uri: str,
                  *, attachments: List[str] = None,

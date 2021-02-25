@@ -10,6 +10,13 @@ from .utils import parse_class_name
 
 
 class Identified(SBOLObject):
+    """All SBOL-defined classes are directly or indirectly derived from
+    the Identified abstract class. This inheritance means that all
+    SBOL objects are uniquely identified using URIs that uniquely
+    refer to these objects within an SBOL document or at locations on
+    the World Wide Web.
+
+    """
 
     def __init__(self, identity: str, type_uri: str,
                  *, name: str = None, description: str = None,
