@@ -132,6 +132,11 @@ class ListProperty(Property, MutableSequence, abc.ABC):
         self.item_added(value)
 
     def set(self, value: Any) -> None:
+        # The += operator (_iadd_()) does an insert followed by a set.
+        # We only need one, not both. So if the current value of the
+        # property is identical to the value being set, do nothing.
+        if value == self._storage()[self.property_uri]:
+            return
         # TODO: validate here
         # TODO: test for iterable or sequence types, then convert to list?
         items = [self.from_user(v) for v in value]
