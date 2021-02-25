@@ -7,9 +7,12 @@ from .om_prefix import Prefix
 
 
 class Unit(CustomTopLevel, abc.ABC):
-    """om:Unit is an abstract base class.
+    """As adopted by SBOL, om:Unit is an abstract class that is extended
+    by other classes to describe units of measure using a shared set
+    of properties.
 
     See Appendix A Section A.2 of the SBOL 3.0 specificiation.
+
     """
 
     def __init__(self, identity: str, symbol: str, label: str,
@@ -44,6 +47,10 @@ class Unit(CustomTopLevel, abc.ABC):
 
 
 class Measure(CustomIdentified):
+    """The purpose of the om:Measure class is to link a numerical value to
+    a om:Unit.
+
+    """
 
     def __init__(self, value: float, unit: str,
                  *, types: List[str] = None,
@@ -78,6 +85,14 @@ Document.register_builder(OM_MEASURE, build_measure)
 
 
 class SingularUnit(Unit):
+    """The purpose of the om:SingularUnit class is to describe a unit of
+    measure that is not explicitly represented as a combination of
+    multiple units, but could be equivalent to such a
+    representation. For example, a joule is considered to be a
+    om:SingularUnit, but it is equivalent to the multiplication of a
+    newton and a meter.
+
+    """
 
     def __init__(self, identity: str, symbol: str, label: str,
                  *, unit: str = None, factor: str = None,
@@ -120,6 +135,12 @@ Document.register_builder(OM_SINGULAR_UNIT, build_singular_unit)
 
 
 class PrefixedUnit(Unit):
+    """The purpose of the om:PrefixedUnit class is to describe a unit of
+    measure that is the multiplication of another unit of measure and
+    a factor represented by a standard prefix such as “milli,”
+    “centi,” “kilo,” etc.
+
+    """
 
     def __init__(self, identity: str, symbol: str, label: str,
                  unit: Union[Unit, str],

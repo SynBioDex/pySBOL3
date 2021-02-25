@@ -1,28 +1,49 @@
 import abc
 import math
+from typing import List
 
 from . import *
 
 
 class Prefix(CustomTopLevel, abc.ABC):
-    """om:Prefix is an abstract base class.
+    """As adopted by SBOL, om:Prefix is an abstract class that is extended
+    by other classes to describe factors that are commonly represented
+    by standard unit prefixes. For example, the factor 10**−3 is
+    represented by the standard unit prefix "milli".
 
     See Appendix A Section A.2 of the SBOL 3.0 specificiation.
+
     """
 
     def __init__(self, identity: str, symbol: str, label: str,
-                 factor: float, type_uri: str) -> None:
-        super().__init__(identity, type_uri)
+                 factor: float, type_uri: str,
+                 *, alternative_symbols: List[str] = None,
+                 alternative_labels: List[str] = None,
+                 comment: str = None,
+                 long_comment: str = None,
+                 attachments: List[str] = None,
+                 name: str = None, description: str = None,
+                 derived_from: List[str] = None,
+                 generated_by: List[str] = None,
+                 measures: List[SBOLObject] = None) -> None:
+        super().__init__(identity=identity, type_uri=type_uri,
+                         attachments=attachments, name=name,
+                         description=description, derived_from=derived_from,
+                         generated_by=generated_by, measures=measures)
         self.symbol = TextProperty(self, OM_SYMBOL, 1, 1,
                                    initial_value=symbol)
         self.alternative_symbols = TextProperty(self, OM_ALTERNATIVE_SYMBOL,
-                                                0, math.inf)
+                                                0, math.inf,
+                                                initial_value=alternative_symbols)
         self.label = TextProperty(self, OM_LABEL, 1, 1,
                                   initial_value=label)
         self.alternative_labels = TextProperty(self, OM_ALTERNATIVE_LABEL,
-                                               0, math.inf)
-        self.comment = TextProperty(self, OM_COMMENT, 0, 1)
-        self.long_comment = TextProperty(self, OM_LONG_COMMENT, 0, 1)
+                                               0, math.inf,
+                                               initial_value=alternative_labels)
+        self.comment = TextProperty(self, OM_COMMENT, 0, 1,
+                                    initial_value=comment)
+        self.long_comment = TextProperty(self, OM_LONG_COMMENT, 0, 1,
+                                         initial_value=long_comment)
         self.factor = FloatProperty(self, OM_HAS_FACTOR, 1, 1,
                                     initial_value=factor)
 
@@ -41,15 +62,36 @@ class Prefix(CustomTopLevel, abc.ABC):
 
 
 class SIPrefix(Prefix):
+    """The purpose of the om:SIPrefix class is to describe standard SI
+    prefixes such as "milli," "centi," "kilo," etc.
+
+    """
 
     def __init__(self, identity: str, symbol: str, label: str,
-                 factor: float, *, type_uri: str = OM_SI_PREFIX) -> None:
-        super().__init__(identity, symbol, label, factor, type_uri)
+                 factor: float,
+                 *, alternative_symbols: List[str] = None,
+                 alternative_labels: List[str] = None,
+                 comment: str = None,
+                 long_comment: str = None,
+                 attachments: List[str] = None,
+                 name: str = None, description: str = None,
+                 derived_from: List[str] = None,
+                 generated_by: List[str] = None,
+                 measures: List[SBOLObject] = None,
+                 type_uri: str = OM_SI_PREFIX) -> None:
+        super().__init__(symbol=symbol, label=label, factor=factor,
+                         identity=identity, type_uri=type_uri,
+                         alternative_symbols=alternative_symbols,
+                         alternative_labels=alternative_labels,
+                         comment=comment, long_comment=long_comment,
+                         attachments=attachments, name=name,
+                         description=description, derived_from=derived_from,
+                         generated_by=generated_by, measures=measures)
 
 
 def build_si_prefix(identity: str, *, type_uri: str = OM_SI_PREFIX) -> SBOLObject:
-    missing = PYSBOL3_MISSING
-    obj = SIPrefix(identity, missing, missing, 1.0, type_uri=type_uri)
+    obj = SIPrefix(identity=identity, type_uri=type_uri,
+                   symbol=PYSBOL3_MISSING, label=PYSBOL3_MISSING, factor=1.0)
     # Remove the dummy values
     obj._properties[OM_SYMBOL] = []
     obj._properties[OM_LABEL] = []
@@ -61,16 +103,40 @@ Document.register_builder(OM_SI_PREFIX, build_si_prefix)
 
 
 class BinaryPrefix(Prefix):
+    """The purpose of the om:BinaryPrefix class is to describe standard
+    binary prefixes such as "kibi," "mebi," "gibi," etc.  These
+    prefixes commonly precede units of information such as "bit" and
+    "byte."
+
+    """
 
     def __init__(self, identity: str, symbol: str, label: str,
-                 factor: float, *, type_uri: str = OM_BINARY_PREFIX) -> None:
-        super().__init__(identity, symbol, label, factor, type_uri)
+                 factor: float,
+                 *, alternative_symbols: List[str] = None,
+                 alternative_labels: List[str] = None,
+                 comment: str = None,
+                 long_comment: str = None,
+                 attachments: List[str] = None,
+                 name: str = None, description: str = None,
+                 derived_from: List[str] = None,
+                 generated_by: List[str] = None,
+                 measures: List[SBOLObject] = None,
+                 type_uri: str = OM_BINARY_PREFIX) -> None:
+        super().__init__(symbol=symbol, label=label, factor=factor,
+                         identity=identity, type_uri=type_uri,
+                         alternative_symbols=alternative_symbols,
+                         alternative_labels=alternative_labels,
+                         comment=comment, long_comment=long_comment,
+                         attachments=attachments, name=name,
+                         description=description, derived_from=derived_from,
+                         generated_by=generated_by, measures=measures)
 
 
 def build_binary_prefix(identity: str,
                         *, type_uri: str = OM_BINARY_PREFIX) -> SBOLObject:
-    missing = PYSBOL3_MISSING
-    obj = BinaryPrefix(identity, missing, missing, 1.0, type_uri=type_uri)
+    obj = BinaryPrefix(identity=identity, type_uri=type_uri,
+                       symbol=PYSBOL3_MISSING, label=PYSBOL3_MISSING,
+                       factor=1.0)
     # Remove the dummy values
     obj._properties[OM_SYMBOL] = []
     obj._properties[OM_LABEL] = []
