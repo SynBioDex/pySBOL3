@@ -1,5 +1,5 @@
 import math
-from typing import Union
+from typing import Union, List
 
 from . import *
 # Feature is not exported
@@ -7,16 +7,39 @@ from .feature import Feature
 
 
 class SubComponent(Feature):
+    """The SubComponent class can be used to specify structural
+    hierarchy. For example, the Component of a gene might contain four
+    SubComponent objects: a promoter, RBS, CDS, and terminator, each
+    linked to a Component that provides the complete definition. In
+    turn, the Component of the promoter SubComponent might itself
+    contain SubComponent objects defining various operator sites, etc.
+
+    """
 
     def __init__(self, instance_of: Union[Identified, str],
-                 *, identity: str = None, type_uri: str = SBOL_SUBCOMPONENT) -> None:
-        super().__init__(identity, type_uri)
-        self.role_integration = URIProperty(self, SBOL_ROLE, 0, 1)
+                 *, role_integration: str = None,
+                 locations: List[Location] = None,
+                 source_locations: List[Location] = None,
+                 roles: List[str] = None, orientation: str = None,
+                 name: str = None, description: str = None,
+                 derived_from: List[str] = None,
+                 generated_by: List[str] = None,
+                 measures: List[SBOLObject] = None,
+                 identity: str = None,
+                 type_uri: str = SBOL_SUBCOMPONENT) -> None:
+        super().__init__(identity=identity, type_uri=type_uri,
+                         roles=roles, orientation=orientation, name=name,
+                         description=description, derived_from=derived_from,
+                         generated_by=generated_by, measures=measures)
+        self.role_integration = URIProperty(self, SBOL_ROLE, 0, 1,
+                                            initial_value=role_integration)
         self.instance_of = ReferencedObject(self, SBOL_INSTANCE_OF, 1, 1,
                                             initial_value=instance_of)
         self.source_locations = OwnedObject(self, SBOL_SOURCE_LOCATION, 0, math.inf,
+                                            initial_value=source_locations,
                                             type_constraint=Location)
         self.locations = OwnedObject(self, SBOL_LOCATION, 0, math.inf,
+                                     initial_value=locations,
                                      type_constraint=Location)
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:

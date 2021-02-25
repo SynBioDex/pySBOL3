@@ -18,6 +18,7 @@ class TestInterface(unittest.TestCase):
     def test_create(self):
         interface = sbol3.Interface()
         self.assertIsNotNone(interface)
+        self.assertEqual(sbol3.SBOL_INTERFACE, interface.type_uri)
 
     def test_read_from_file(self):
         test_file = os.path.join(SBOL3_LOCATION, 'entity', 'interface',
@@ -35,8 +36,8 @@ class TestInterface(unittest.TestCase):
         self.assertCountEqual(iface_input, interface.input)
         output = [laci_uri]
         self.assertEqual(output, interface.output)
-        non_directional = [atc_uri]
-        self.assertEqual(non_directional, interface.non_directional)
+        nondirectional = [atc_uri]
+        self.assertEqual(nondirectional, interface.nondirectional)
 
 
 if __name__ == '__main__':

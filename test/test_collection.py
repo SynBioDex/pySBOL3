@@ -18,6 +18,7 @@ class TestCollection(unittest.TestCase):
         collection = sbol3.Collection('collection1')
         self.assertIsNotNone(collection)
         self.assertEqual(0, len(collection.members))
+        self.assertEqual(sbol3.SBOL_COLLECTION, collection.type_uri)
 
     def test_read(self):
         identity = 'https://github.com/synbiodex/pysbol3/collection1'
@@ -55,6 +56,7 @@ class TestNamespace(unittest.TestCase):
         namespace = sbol3.Namespace('namespace1')
         self.assertIsNotNone(namespace)
         self.assertEqual(0, len(namespace.members))
+        self.assertEqual(sbol3.SBOL_NAMESPACE, namespace.type_uri)
 
     def test_read(self):
         identity = 'https://github.com/synbiodex/pysbol3/namespace1'
@@ -79,6 +81,7 @@ class TestExperiment(unittest.TestCase):
         experiment = sbol3.Experiment('experiment1')
         self.assertIsNotNone(experiment)
         self.assertEqual(0, len(experiment.members))
+        self.assertEqual(sbol3.SBOL_EXPERIMENT, experiment.type_uri)
 
     def test_read(self):
         identity = 'https://github.com/synbiodex/pysbol3/experiment1'

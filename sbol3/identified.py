@@ -1,6 +1,6 @@
 import math
 import posixpath
-from typing import Union
+from typing import Union, List
 from urllib.parse import urlparse
 
 import rdflib
@@ -10,19 +10,33 @@ from .utils import parse_class_name
 
 
 class Identified(SBOLObject):
+    """All SBOL-defined classes are directly or indirectly derived from
+    the Identified abstract class. This inheritance means that all
+    SBOL objects are uniquely identified using URIs that uniquely
+    refer to these objects within an SBOL document or at locations on
+    the World Wide Web.
 
-    def __init__(self, identity: str, type_uri: str) -> None:
+    """
+
+    def __init__(self, identity: str, type_uri: str,
+                 *, name: str = None, description: str = None,
+                 derived_from: List[str] = None, generated_by: List[str] = None,
+                 measures: List[SBOLObject] = None) -> None:
         super().__init__(identity, type_uri)
         self._display_id = TextProperty(self, SBOL_DISPLAY_ID, 0, 1)
-        self.name = TextProperty(self, SBOL_NAME, 0, 1)
-        self.description = TextProperty(self, SBOL_DESCRIPTION, 0, 1)
-        self.derived_from = URIProperty(self, PROV_DERIVED_FROM, 0, math.inf)
-        self.generated_by = URIProperty(self, PROV_GENERATED_BY, 0, math.inf)
+        self.name = TextProperty(self, SBOL_NAME, 0, 1, initial_value=name)
+        self.description = TextProperty(self, SBOL_DESCRIPTION, 0, 1,
+                                        initial_value=description)
+        self.derived_from = URIProperty(self, PROV_DERIVED_FROM, 0, math.inf,
+                                        initial_value=derived_from)
+        self.generated_by = URIProperty(self, PROV_GENERATED_BY, 0, math.inf,
+                                        initial_value=generated_by)
         # The type_constraint for measures should really be Measure but
         # that's a circular dependency. Instead we make the type constraint
         # Identified to constrain it somewhat. Identified is the best we
         # can do since every other SBOL class requires Identified to be defined.
         self.measures = OwnedObject(self, SBOL_HAS_MEASURE, 0, math.inf,
+                                    initial_value=measures,
                                     type_constraint=Identified)
         # Identity has been set by the SBOLObject constructor
         self._display_id = self._extract_display_id(self.identity)

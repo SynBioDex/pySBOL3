@@ -12,15 +12,18 @@ class TestVariableComponent(unittest.TestCase):
         sbol3.set_defaults()
 
     def test_create(self):
-        vc = sbol3.VariableFeature()
+        vc = sbol3.VariableFeature(cardinality=sbol3.SBOL_ZERO_OR_MORE,
+                                   variable=sbol3.PYSBOL3_MISSING)
         self.assertIsNotNone(vc)
         # Verify the correct default values
         self.assertEqual(sbol3.SBOL_ZERO_OR_MORE, vc.cardinality)
         self.assertEqual(sbol3.PYSBOL3_MISSING, vc.variable)
+        self.assertEqual(sbol3.SBOL_VARIABLE_FEATURE, vc.type_uri)
 
     def test_invalid_create(self):
         my_cardinality = 'https://github.com/synbiodex/pysbol3#someNumber'
-        vf = sbol3.VariableFeature(cardinality=my_cardinality)
+        vf = sbol3.VariableFeature(cardinality=my_cardinality,
+                                   variable=sbol3.PYSBOL3_MISSING)
         report = vf.validate()
         self.assertIsNotNone(report)
         self.assertEqual(1, len(report.errors))
@@ -34,7 +37,8 @@ class TestVariableComponent(unittest.TestCase):
         cd1 = sbol3.CombinatorialDerivation('cd1', comp1)
         self.assertEqual(comp1.identity, cd1.template)
         doc1.add(cd1)
-        vf1 = sbol3.VariableFeature()
+        vf1 = sbol3.VariableFeature(cardinality=sbol3.SBOL_ONE,
+                                    variable=sbol3.PYSBOL3_MISSING)
         cd1.variable_features.append(vf1)
         self.assertTrue(vf1.identity.startswith(cd1.identity))
         doc2 = sbol3.Document()
@@ -56,7 +60,8 @@ class TestVariableComponent(unittest.TestCase):
         cd1 = sbol3.CombinatorialDerivation('cd1', comp1)
         self.assertEqual(comp1.identity, cd1.template)
         doc1.add(cd1)
-        vf1 = sbol3.VariableFeature()
+        vf1 = sbol3.VariableFeature(cardinality=sbol3.SBOL_ONE,
+                                    variable=sbol3.PYSBOL3_MISSING)
         hour = 'https://identifiers.org/ncit:C25529'
         m1 = sbol3.Measure(32, hour)
         vf1.variant_measures.append(m1)

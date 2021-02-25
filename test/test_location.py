@@ -18,6 +18,7 @@ class TestRange(unittest.TestCase):
         self.assertIsNotNone(r)
         self.assertEqual(start, r.start)
         self.assertEqual(end, r.end)
+        self.assertEqual(sbol3.SBOL_RANGE, r.type_uri)
 
     def test_invalid_create(self):
         start = 0
@@ -52,6 +53,22 @@ class TestRange(unittest.TestCase):
         self.assertIsNotNone(report)
         self.assertEqual(0, len(report.errors))
 
+    def test_keyword_args(self):
+        # Test that all arguments, both required and optional, can be
+        # specified by keyword
+        seq_uri = 'https://example.com/pysbol3/seq1'
+        start = 7
+        end = 14
+        range_uri = 'https://example.com/pysbol3/r1'
+        r1 = sbol3.Range(sequence=seq_uri, end=end, start=start,
+                         identity=range_uri)
+        self.assertEqual(seq_uri, r1.sequence)
+        self.assertEqual(start, r1.start)
+        self.assertEqual(end, r1.end)
+        self.assertEqual(range_uri, r1.identity)
+        display_id = range_uri[range_uri.rindex('/') + 1:]
+        self.assertEqual(display_id, r1.display_id)
+
 
 class TestCut(unittest.TestCase):
 
@@ -70,6 +87,7 @@ class TestCut(unittest.TestCase):
         cut = sbol3.Cut(sbol3.PYSBOL3_MISSING, at)
         self.assertIsNotNone(cut)
         self.assertEqual(at, cut.at)
+        self.assertEqual(sbol3.SBOL_CUT, cut.type_uri)
 
     def test_invalid_create(self):
         # At must be >= 0
@@ -92,6 +110,7 @@ class TestEntireSequence(unittest.TestCase):
         # EntireSequence has no properties, so there isn't much to test here
         es = sbol3.EntireSequence(sbol3.PYSBOL3_MISSING)
         self.assertIsNotNone(es)
+        self.assertEqual(sbol3.SBOL_ENTIRE_SEQUENCE, es.type_uri)
 
 
 if __name__ == '__main__':

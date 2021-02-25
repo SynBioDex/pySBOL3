@@ -22,6 +22,18 @@ class TestExperimentalData(unittest.TestCase):
         self.assertIsNotNone(exp_data)
         self.assertEqual(display_id, exp_data.display_id)
         self.assertTrue(hasattr(exp_data, 'attachments'))
+        self.assertEqual(sbol3.SBOL_EXPERIMENTAL_DATA, exp_data.type_uri)
+
+    def test_create2(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        display_id = 'exp_data'
+        c1 = sbol3.Component('c1', [sbol3.SBO_DNA])
+        exp_data = sbol3.ExperimentalData(display_id, attachments=[c1])
+        self.assertIsNotNone(exp_data)
+        self.assertEqual(display_id, exp_data.display_id)
+        self.assertTrue(hasattr(exp_data, 'attachments'))
+        self.assertEqual(sbol3.SBOL_EXPERIMENTAL_DATA, exp_data.type_uri)
+        self.assertCountEqual([c1.identity], exp_data.attachments)
 
 
 if __name__ == '__main__':

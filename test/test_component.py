@@ -41,13 +41,15 @@ class TestComponent(unittest.TestCase):
                                                  types=[sbol3.SBO_FUNCTIONAL_ENTITY])
         media_template.name = 'media template'
 
-        media_variable = sbol3.VariableFeature(cardinality=sbol3.SBOL_ONE)
+        variable_uri = 'https://github.com/synbiodex/pysbol3/variable'
+        media_variable = sbol3.VariableFeature(cardinality=sbol3.SBOL_ONE,
+                                               variable=media_template)
         media_variable.variable = media_template
 
         all_sample_templates = [media_template]
         sample_template_uri = 'https://sd2e.org/measurement_template'
         sample_template = sbol3.Component(identity=sample_template_uri,
-                                          component_type=sbol3.SBO_FUNCTIONAL_ENTITY)
+                                          types=sbol3.SBO_FUNCTIONAL_ENTITY)
         sample_template.name = 'measurement template'
         sample_template.features = all_sample_templates
         self.assertEqual(1, len(sample_template.features))

@@ -7,14 +7,30 @@ from .typing import *
 
 
 class LocalSubComponent(Feature):
+    """LocalSubComponent serves as a way to create a placeholder in more
+    complex Components, such as a variable to be filled in later or a
+    composite that exists only within the context of the parent
+    Component.
+
+    """
 
     def __init__(self, types: List[str],
-                 *, identity: str = None,
+                 *, locations: List[Location] = None,
+                 roles: List[str] = None, orientation: str = None,
+                 name: str = None, description: str = None,
+                 derived_from: List[str] = None,
+                 generated_by: List[str] = None,
+                 measures: List[SBOLObject] = None,
+                 identity: str = None,
                  type_uri: str = SBOL_LOCAL_SUBCOMPONENT) -> None:
-        super().__init__(identity, type_uri)
+        super().__init__(identity=identity, type_uri=type_uri,
+                         roles=roles, orientation=orientation, name=name,
+                         description=description, derived_from=derived_from,
+                         generated_by=generated_by, measures=measures)
         self.types: uri_list = URIProperty(self, SBOL_TYPE, 1, math.inf,
                                            initial_value=types)
         self.locations = OwnedObject(self, SBOL_LOCATION, 0, math.inf,
+                                     initial_value=locations,
                                      type_constraint=Location)
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:
