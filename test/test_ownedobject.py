@@ -112,6 +112,18 @@ class TestOwnedObject(unittest.TestCase):
             c.features = [sbol3.Range('https://example.com/fake', 1, 2)]
         self.assertEqual(c.features.type_constraint, sbol3.Feature)
 
+    def test_set_document(self):
+        # Ensure that document is set on child objects
+        # See https://github.com/SynBioDex/pySBOL3/issues/176
+        sbol3.set_namespace('https://bioprotocols.org/paml/primitives/')
+        doc = sbol3.Document()
+        c = sbol3.Component("scratch", sbol3.SBO_DNA)
+        doc.add(c)
+        lsc = sbol3.LocalSubComponent(sbol3.SBO_DNA)
+        self.assertIsNone(lsc.document)
+        c.features.append(lsc)
+        self.assertIsNotNone(lsc.document)
+
     # TODO: Write tests for adding via a slice
     #       comp.constraints[0:1] = sbol3.Constraint('foo')
 
