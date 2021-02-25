@@ -123,6 +123,15 @@ class TestOwnedObject(unittest.TestCase):
         self.assertIsNone(lsc.document)
         c.features.append(lsc)
         self.assertIsNotNone(lsc.document)
+        interaction = sbol3.Interaction(sbol3.SBO_DEGRADATION)
+        c.interactions.append(interaction)
+        self.assertEqual(doc, interaction.document)
+        p = sbol3.Participation(sbol3.SBO_REACTANT, lsc)
+        interaction.participations.append(p)
+        self.assertEqual(doc, p.document)
+        resolved_lsc = p.participant.lookup()
+        self.assertEqual(lsc, resolved_lsc)
+        self.assertEqual(lsc.identity, resolved_lsc.identity)
 
     # TODO: Write tests for adding via a slice
     #       comp.constraints[0:1] = sbol3.Constraint('foo')
