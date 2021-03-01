@@ -190,8 +190,56 @@ class TestDocument(unittest.TestCase):
         sf = sbol3.SequenceFeature([r])
         c1.features.append(sf)
         report = doc.validate()
-        # We should find the validation issue in the range
+        # We should find the validation issue in the Range
         self.assertEqual(1, len(report))
+
+    def test_find_all(self):
+        test_files = {
+            os.path.join(SBOL3_LOCATION, 'entity', 'model',
+                         'model.nt'): 2,
+            os.path.join(SBOL3_LOCATION, 'multicellular',
+                         'multicellular.nt'): 77,
+        }
+        for file, count in test_files.items():
+            doc = sbol3.Document()
+            doc.read(file)
+            found = doc.find_all(lambda _: True)
+            self.assertEqual(count, len(found))
+
+    def test_find_all2(self):
+        file = os.path.join(SBOL3_LOCATION, 'multicellular',
+                            'multicellular.nt')
+        doc = sbol3.Document()
+        doc.read(file)
+        # Find all instances of Participation
+        found = doc.find_all(lambda obj: isinstance(obj, sbol3.Participation))
+        self.assertEqual(11, len(found))
+
+    def test_visit_all(self):
+        visited_list = []
+
+        def my_visitor(obj: sbol3.Identified):
+            visited_list.append(obj)
+        file = os.path.join(SBOL3_LOCATION, 'multicellular',
+                            'multicellular.nt')
+        doc = sbol3.Document()
+        doc.read(file)
+        doc.accept(my_visitor)
+        self.assertEqual(77, len(visited_list))
+
+    def test_visit_participations(self):
+        # Visit all and only the participations
+        visited_list = []
+
+        def my_visitor(obj: sbol3.Identified):
+            if isinstance(obj, sbol3.Participation):
+                visited_list.append(obj)
+        file = os.path.join(SBOL3_LOCATION, 'multicellular',
+                            'multicellular.nt')
+        doc = sbol3.Document()
+        doc.read(file)
+        doc.accept(my_visitor)
+        self.assertEqual(11, len(visited_list))
 
 
 if __name__ == '__main__':

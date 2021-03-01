@@ -1,6 +1,6 @@
 import math
 import posixpath
-from typing import Union, List
+from typing import Union, List, Callable
 from urllib.parse import urlparse
 
 import rdflib
@@ -155,3 +155,12 @@ class Identified(SBOLObject):
             for item in items:
                 graph.add((identity, rdf_prop, rdflib.URIRef(item.identity)))
                 item.serialize(graph)
+
+    def accept(self, visitor: Callable):
+        """Implement the visitor pattern by invoking `visitor` on self
+        and all child objects.
+        """
+        visitor(self)
+        for object_list in self._owned_objects.values():
+            for obj in object_list:
+                obj.accept(visitor)
