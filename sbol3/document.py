@@ -320,3 +320,42 @@ class Document:
         for obj in self.objects:
             obj.validate(report)
         return report
+
+    def find_all(self, predicate: Callable) -> List[Identified]:
+        """Executes a predicate on every object in the document tree,
+        gathering the list of objects to which the predicate returns true.
+        """
+        result: List[Identified] = []
+
+        def wrapped_filter(visited: Identified):
+            if predicate(visited):
+                result.append(visited)
+        self.accept(wrapped_filter)
+        return result
+
+    # TODO: Implement the visitor pattern allowing the user to specify
+    #       a function to direct the search, instead of only doing
+    #       depth-first search. For example, visit objects in provenance
+    #       order using Identified.derived_from.
+    # def accept_with_strategy(self, visitor: Callable, *, strategy: Callable = None):
+    #     # Use the strategy to compute the set of objects to visit
+    #     if strategy is None:
+    #         visit_list = self.objects
+    #     else:
+    #         visit_list = self.find_all(strategy)
+    #     while visit_list:
+    #         for obj in visit_list:
+    #             obj.accept(visitor)
+    #         # Compute the next set of objects to visit
+    #         if strategy is None:
+    #             visit_list = []
+    #         else:
+    #             visit_list = self.find_all(strategy)
+
+    def accept(self, visitor: Callable):
+        """Implement the visitor pattern by invoking `visitor` on all
+        top-level objects in the document. Those objects, in turn, will
+        invoke `visitor` on all of their child objects.
+        """
+        for obj in self.objects:
+            obj.accept(visitor)
