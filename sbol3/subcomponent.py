@@ -42,14 +42,6 @@ class SubComponent(Feature):
                                      initial_value=locations,
                                      type_constraint=Location)
 
-    def validate(self, report: ValidationReport = None) -> ValidationReport:
-        report = super().validate(report)
-        # The instance_of property is required
-        if not self.instance_of:
-            message = 'SubComponent must have an instance_of'
-            report.addError(self.identity, None, message)
-        return report
-
 
 def build_subcomponent(identity: str, type_uri: str = SBOL_SUBCOMPONENT) -> Identified:
     """Used by Document to construct a SubComponent when reading an SBOL file.

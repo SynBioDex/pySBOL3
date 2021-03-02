@@ -33,13 +33,6 @@ class LocalSubComponent(Feature):
                                      initial_value=locations,
                                      type_constraint=Location)
 
-    def validate(self, report: ValidationReport = None) -> ValidationReport:
-        report = super().validate(report)
-        if len(self.types) < 1:
-            message = 'LocalSubComponent must have at least 1 type'
-            report.addError(self.identity, None, message)
-        return report
-
 
 def build_local_subcomponent(identity: str,
                              *, type_uri: str = SBOL_LOCAL_SUBCOMPONENT) -> SBOLObject:

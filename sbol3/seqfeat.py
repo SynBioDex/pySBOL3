@@ -26,13 +26,6 @@ class SequenceFeature(Feature):
                                               type_constraint=Location,
                                               initial_value=locations)
 
-    def validate(self, report: ValidationReport = None) -> ValidationReport:
-        report = super().validate(report)
-        if len(self.locations) < 1:
-            message = 'LocalSubComponent must have at least 1 location'
-            report.addError(self.identity, None, message)
-        return report
-
 
 def build_sequence_feature(identity: str,
                            *, type_uri: str = SBOL_SEQUENCE_FEATURE) -> SBOLObject:
