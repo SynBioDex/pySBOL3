@@ -45,17 +45,6 @@ class Component(TopLevel):
         self.models = ReferencedObject(self, SBOL_MODELS, 0, math.inf,
                                        initial_value=models)
 
-    def _validate_types(self, report: ValidationReport) -> None:
-        # A Component is REQUIRED to have one or more type properties (Section 6.4)
-        if len(self.types) < 1:
-            message = f'Component {self.identity} has no types'
-            report.addError(self.identity, None, message)
-
-    def validate(self, report: ValidationReport = None) -> ValidationReport:
-        report = super().validate(report)
-        self._validate_types(report)
-        return report
-
 
 def build_component(identity: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:
     missing = PYSBOL3_MISSING

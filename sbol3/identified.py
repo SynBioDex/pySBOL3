@@ -128,11 +128,20 @@ class Identified(SBOLObject):
         # display_id is a read only property
         return self._display_id
 
+    def _validate_properties(self, report: ValidationReport) -> None:
+        """Call validate on all the properties. Pass the name of the
+        property so the error message is more friendly.
+        """
+        for k, v in self.__dict__.items():
+            if isinstance(v, Property):
+                v.validate(k, report)
+
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         if report is None:
             report = ValidationReport()
         # Do validations for Identified
         self._validate_display_id(report)
+        self._validate_properties(report)
         # Validate all owned objects
         for object_list in self._owned_objects.values():
             for obj in object_list:

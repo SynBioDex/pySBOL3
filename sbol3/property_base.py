@@ -3,6 +3,8 @@ import collections
 from collections import MutableSequence, Iterable
 from typing import Any, Optional, List, Dict, Union
 
+from sbol3 import ValidationReport
+
 
 class Property(abc.ABC):
 
@@ -35,6 +37,18 @@ class Property(abc.ABC):
     @abc.abstractmethod
     def from_user(self, value: Any):
         pass
+
+    def validate(self, name: str, report: ValidationReport):
+        values = self._storage()[self.property_uri]
+        length = len(values)
+        if length < self.lower_bound:
+            msg = f'Too few values for property {name}.'
+            msg += f' Expected {self.lower_bound}, found {length}'
+            report.addError(self.property_owner.identity, None, msg)
+        elif length > self.upper_bound:
+            msg = f'Too many values for property {name}.'
+            msg += f' Expected {self.upper_bound}, found {length}'
+            report.addError(self.property_owner.identity, None, msg)
 
     def item_added(self, item: Any) -> None:
         """Stub method for child classes to override if they have to do

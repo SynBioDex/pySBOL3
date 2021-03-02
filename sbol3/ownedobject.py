@@ -18,7 +18,7 @@ class OwnedObjectPropertyMixin:
         if self.type_constraint:
             desired_type = self.type_constraint
         if not isinstance(value, desired_type):
-            raise TypeError(f'Expecting SBOLObject, got {type(value)}')
+            raise TypeError(f'Expecting {desired_type}, got {type(value)}')
         return value
 
     def to_user(self, value: Any) -> str:
@@ -46,6 +46,14 @@ class OwnedObjectPropertyMixin:
                 raise ValueError(f'Duplicate URI: {new_url}')
         item._update_identity(new_url, new_display_id)
 
+    def validate_type_constraint(self, name: str, report: ValidationReport):
+        if not self.type_constraint:
+            return
+        for item in self._storage()[self.property_uri]:
+            if not isinstance(item, self.type_constraint):
+                msg = f'Value {item} is not of type {self.type_constraint}'
+                report.addError(self.property_owner.identity, None, msg)
+
 
 class OwnedObjectSingletonProperty(OwnedObjectPropertyMixin, SingletonProperty):
 
@@ -66,6 +74,12 @@ class OwnedObjectSingletonProperty(OwnedObjectPropertyMixin, SingletonProperty):
         if initial_value:
             self.set(initial_value)
 
+    def validate(self, name: str, report: ValidationReport):
+        # Invoke Property.validate()
+        super().validate(name, report)
+        # Invoke OwnedObjectPropertyMixin type constraint checking
+        super().validate_type_constraint(name, report)
+
 
 class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
 
@@ -85,6 +99,12 @@ class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
         self.type_constraint = type_constraint
         if initial_value:
             self.set(initial_value)
+
+    def validate(self, name: str, report: ValidationReport):
+        # Invoke Property.validate()
+        super().validate(name, report)
+        # Invoke OwnedObjectPropertyMixin type constraint checking
+        super().validate_type_constraint(name, report)
 
 
 def OwnedObject(property_owner: Any, property_uri: str,
