@@ -58,6 +58,20 @@ class TestComponent(unittest.TestCase):
         self.assertEqual(media_template.identity,
                          sample_template.features[0].identity)
 
+    def test_type_validation(self):
+        # Test the validation of types on owned object properties by
+        # going behind the scenes to set a bad value
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        c1 = sbol3.Component('c1', sbol3.SBO_DNA)
+        report = c1.validate()
+        self.assertEqual(0, len(report))
+        c1._owned_objects[sbol3.SBOL_FEATURES] = [sbol3.Interface(),
+                                                  sbol3.Implementation('i1')
+                                                  ]
+        report = c1.validate()
+        # Expecting 2 errors, one for each inappropriate value
+        self.assertEqual(2, len(report))
+
 
 if __name__ == '__main__':
     unittest.main()
