@@ -60,7 +60,8 @@ class ReferencedObjectSingleton(ReferencedObjectMixin, SingletonProperty):
 
     def set(self, value: Any) -> None:
         super().set(value)
-        self.maybe_add_to_document(value)
+        # See bug 184 - don't add to document
+        # self.maybe_add_to_document(value)
 
 
 class ReferencedObjectList(ReferencedObjectMixin, ListProperty):
@@ -74,8 +75,9 @@ class ReferencedObjectList(ReferencedObjectMixin, ListProperty):
         if initial_value:
             self.set(initial_value)
 
-    def item_added(self, item: Any) -> None:
-        self.maybe_add_to_document(item)
+    # See bug 184 - don't add to document
+    # def item_added(self, item: Any) -> None:
+    #     self.maybe_add_to_document(item)
 
 
 def ReferencedObject(property_owner: Any, property_uri: str,
