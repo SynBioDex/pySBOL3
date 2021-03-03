@@ -352,7 +352,7 @@ class Document:
     #         else:
     #             visit_list = self.find_all(strategy)
 
-    def accept(self, visitor: Callable):
+    def accept(self, visitor: Callable[[Identified], None]):
         """Implement the visitor pattern by invoking `visitor` on all
         top-level objects in the document. Those objects, in turn, will
         invoke `visitor` on all of their child objects.
