@@ -92,7 +92,6 @@ class TestComponent(unittest.TestCase):
                          c2.identity)
         self.assertListEqual(list(c1.sequences), list(c2.sequences))
 
-    @unittest.expectedFailure
     def test_cloning_with_children(self):
         # This test does not use `sbol3.set_namespace` as the other
         # cloning unit tests do. This is on purpose to verify that
@@ -119,6 +118,7 @@ class TestComponent(unittest.TestCase):
         self.assertIsInstance(sc2, sbol3.SubComponent)
         self.assertNotEqual(sc1.identity, sc2.identity)
         self.assertTrue(sc2.identity.startswith(c2.identity))
+        # Ensure that the reference was updated properly
         self.assertEqual(c2.identity, sc2.instance_of)
         self.assertIsNone(sc2.document)
         es2 = sc2.source_locations[0]
