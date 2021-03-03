@@ -1,8 +1,12 @@
+import os
 import posixpath
 import unittest
 from collections import Container
 
 import sbol3
+
+MODULE_LOCATION = os.path.dirname(os.path.abspath(__file__))
+SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 
 
 class TestComponent(unittest.TestCase):
@@ -127,6 +131,43 @@ class TestComponent(unittest.TestCase):
         self.assertTrue(es2.identity.startswith(c2.identity))
         self.assertEqual(es1.sequence, es2.sequence)
         self.assertIsNone(es2.document)
+
+    def test_cloning_references(self):
+        # Verify that when we clone the constraint references
+        # are in the namespace of the clone
+        test_file = os.path.join(SBOL3_LOCATION, 'toggle_switch',
+                                 'toggle_switch.nt')
+        doc = sbol3.Document()
+        doc.read(test_file)
+        toggle_uri = 'https://sbolstandard.org/examples/toggle_switch'
+        toggle = doc.find(toggle_uri)
+        new_uri = 'https://github.com/synbiodex/pysbol3/toggle_switch'
+        toggle_clone = toggle.clone(new_uri)
+        self.assertNotEqual(toggle.identity, toggle_clone.identity)
+        self.assertEqual(new_uri, toggle_clone.identity)
+        doc2 = sbol3.Document()
+        doc2.add(toggle_clone)
+        self.assertEqual(len(toggle.constraints), len(toggle_clone.constraints))
+        for i in range(len(toggle.constraints)):
+            c = toggle.constraints[i]
+            c_clone = toggle_clone.constraints[i]
+            self.assertNotEqual(c.identity, c_clone.identity)
+            s = c.subject.lookup()
+            self.assertIsInstance(s, sbol3.ComponentReference)
+            self.assertTrue(s.identity.startswith(toggle.identity))
+            s_clone = c_clone.subject.lookup()
+            self.assertIsInstance(s_clone, sbol3.ComponentReference)
+            self.assertTrue(s_clone.identity.startswith(toggle_clone.identity))
+            self.assertNotEqual(s.identity, s_clone.identity)
+            self.assertEqual(s.feature, s_clone.feature)
+            o = c.object.lookup()
+            self.assertIsInstance(o, sbol3.ComponentReference)
+            self.assertTrue(o.identity.startswith(toggle.identity))
+            o_clone = c_clone.object.lookup()
+            self.assertIsInstance(o_clone, sbol3.ComponentReference)
+            self.assertTrue(o_clone.identity.startswith(toggle_clone.identity))
+            self.assertNotEqual(o.identity, o_clone.identity)
+            self.assertEqual(o.feature, o_clone.feature)
 
 
 if __name__ == '__main__':
