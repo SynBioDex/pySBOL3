@@ -165,7 +165,7 @@ class Identified(SBOLObject):
                 graph.add((identity, rdf_prop, rdflib.URIRef(item.identity)))
                 item.serialize(graph)
 
-    def accept(self, visitor: Callable):
+    def accept(self, visitor: Callable[['Identified'], None]):
         """Implement the visitor pattern by invoking `visitor` on self
         and all child objects.
         """

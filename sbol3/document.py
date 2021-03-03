@@ -212,7 +212,12 @@ class Document:
             message += ' already exists in document'
             raise ValueError(message)
         self.objects.append(obj)
-        obj.document = self
+
+        # Assign this document to the object tree rooted
+        # in the TopLevel being added
+        def assign_document(x: Identified):
+            x.document = self
+        obj.accept(assign_document)
 
     def _find_in_objects(self, search_string: str) -> Optional[Identified]:
         # TODO: implement recursive search
@@ -321,7 +326,7 @@ class Document:
             obj.validate(report)
         return report
 
-    def find_all(self, predicate: Callable) -> List[Identified]:
+    def find_all(self, predicate: Callable[[Identified], bool]) -> List[Identified]:
         """Executes a predicate on every object in the document tree,
         gathering the list of objects to which the predicate returns true.
         """
@@ -352,7 +357,7 @@ class Document:
     #         else:
     #             visit_list = self.find_all(strategy)
 
-    def accept(self, visitor: Callable):
+    def accept(self, visitor: Callable[[Identified], None]):
         """Implement the visitor pattern by invoking `visitor` on all
         top-level objects in the document. Those objects, in turn, will
         invoke `visitor` on all of their child objects.
