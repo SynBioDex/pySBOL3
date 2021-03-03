@@ -1,3 +1,4 @@
+import posixpath
 import unittest
 from collections import Container
 
@@ -71,6 +72,61 @@ class TestComponent(unittest.TestCase):
         report = c1.validate()
         # Expecting 2 errors, one for each inappropriate value
         self.assertEqual(2, len(report))
+
+    def test_cloning(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        c1 = sbol3.Component('c1', sbol3.SBO_DNA)
+        new_identity = 'c2'
+        c2 = c1.clone(new_identity)
+        self.assertEqual(posixpath.join(sbol3.get_namespace(), new_identity),
+                         c2.identity)
+
+    def test_cloning_with_references(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        c1 = sbol3.Component('c1', sbol3.SBO_DNA)
+        new_identity = 'c2'
+        seq1 = sbol3.Sequence('s1')
+        c1.sequences.append(seq1)
+        c2 = c1.clone(new_identity)
+        self.assertEqual(posixpath.join(sbol3.get_namespace(), new_identity),
+                         c2.identity)
+        self.assertListEqual(list(c1.sequences), list(c2.sequences))
+
+    @unittest.expectedFailure
+    def test_cloning_with_children(self):
+        # This test does not use `sbol3.set_namespace` as the other
+        # cloning unit tests do. This is on purpose to verify that
+        # cloning does not rely on the default namespace.
+        doc = sbol3.Document()
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        c1_identity = posixpath.join(namespace, 'c1')
+        c2_identity = posixpath.join(namespace, 'c2')
+        s1_identity = posixpath.join(namespace, 's1')
+        c1 = sbol3.Component(c1_identity, sbol3.SBO_DNA)
+        doc.add(c1)
+        seq1 = sbol3.Sequence(s1_identity)
+        doc.add(seq1)
+        c1.sequences.append(seq1)
+        sc1 = sbol3.SubComponent(c1)
+        es1 = sbol3.EntireSequence(seq1)
+        sc1.source_locations.append(es1)
+        c1.features = [sc1]
+        c2 = c1.clone(c2_identity)
+        self.assertEqual(c2_identity, c2.identity)
+        self.assertIsNone(c2.document)
+        # Check on the SubComponent
+        sc2 = c2.features[0]
+        self.assertIsInstance(sc2, sbol3.SubComponent)
+        self.assertNotEqual(sc1.identity, sc2.identity)
+        self.assertTrue(sc2.identity.startswith(c2.identity))
+        self.assertEqual(c2.identity, sc2.instance_of)
+        self.assertIsNone(sc2.document)
+        es2 = sc2.source_locations[0]
+        self.assertIsInstance(es2, sbol3.EntireSequence)
+        self.assertNotEqual(es1.identity, es2.identity)
+        self.assertTrue(es2.identity.startswith(c2.identity))
+        self.assertEqual(es1.sequence, es2.sequence)
+        self.assertIsNone(es2.document)
 
 
 if __name__ == '__main__':

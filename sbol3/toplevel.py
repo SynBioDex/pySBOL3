@@ -1,5 +1,6 @@
+import copy
 import math
-from typing import List
+from typing import List, Dict, Callable
 
 from . import *
 
@@ -39,3 +40,53 @@ class TopLevel(Identified):
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         report = super().validate(report)
         return report
+
+    def _reparent_child_objects(self) -> None:
+        for k, v in self.__dict__.items():
+            if not isinstance(v, Property):
+                continue
+            if v.property_uri not in self._owned_objects:
+                continue
+            print(f'{k}: {v}')
+            old_list = self._owned_objects[v.property_uri]
+            if len(old_list) == 0:
+                continue
+            self._owned_objects[v.property_uri] = []
+            if isinstance(v, ListProperty):
+                setattr(self, k, old_list)
+            else:
+                setattr(self, k, old_list[0])
+
+    def clone(self, new_identity: str) -> 'TopLevel':
+        obj = copy.deepcopy(self)
+        identity_map = {self.identity: obj}
+        # Set identity of new object
+        obj._identity = obj._make_identity(new_identity)
+        # Set display_id of new object
+        obj._display_id = obj._extract_display_id(obj._identity)
+        # Drop the document pointer
+        obj.document = None
+
+        # Erase the identity and display_id of the entire tree
+        obj.accept(make_erase_identity_visitor(identity_map))
+
+        # Now remove and re-add all child objects to update
+        # their identities
+        obj._reparent_child_objects()
+
+        # TODO: Now remap any properties that reference old
+        #       identities in the identity_map
+
+        return obj
+
+
+def make_erase_identity_visitor(identity_map: Dict[str, Identified])\
+        -> Callable[[Identified], None]:
+    def erase_identity_visitor(x):
+        if isinstance(x, TopLevel):
+            return
+        identity_map[x.identity] = x
+        x._identity = None
+        x._display_id = None
+        x.document = None
+    return erase_identity_visitor
