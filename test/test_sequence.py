@@ -36,14 +36,15 @@ class TestSequence(unittest.TestCase):
         seq = sbol3.Sequence(display_id)
         self.assertIsNotNone(seq)
         seq.elements = 'actg'
-        seq.encoding = sbol3.SBOL_IUPAC_DNA
+        seq.encoding = sbol3.IUPAC_DNA_ENCODING
         # Should not raise a ValidationError
-        seq.validate()
+        report = seq.validate()
+        self.assertEqual(0, len(report))
 
     def test_full_constructor(self):
         identity = 'https://github.com/synbiodex/pysbol3/s1'
         elements = 'GCAT'
-        encoding = sbol3.SBOL_IUPAC_DNA
+        encoding = sbol3.IUPAC_DNA_ENCODING
         attachments = ['https://github.com/synbiodex/pysbol3/attachment1']
         name = None
         description = None
@@ -69,6 +70,21 @@ class TestSequence(unittest.TestCase):
         self.assertEqual(derived_from, s1.derived_from)
         self.assertEqual(generated_by, s1.generated_by)
         self.assertEqual(measures, s1.measures)
+
+    def test_invalid_encoding(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        display_id = 'seq1'
+        seq = sbol3.Sequence(display_id)
+        self.assertIsNotNone(seq)
+        seq.elements = 'actg'
+        # This is an encoding from SBOL 3.0. It is no longer
+        # valid as of 3.0.1/3.1.
+        seq.encoding = 'http://sbols.org/v3#iupacNucleicAcid'
+        # We expect 1 warning for the encoding that is not in the
+        # recommended set.
+        report = seq.validate()
+        self.assertEqual(1, len(report))
+        self.assertEqual(1, len(report.warnings))
 
 
 if __name__ == '__main__':
