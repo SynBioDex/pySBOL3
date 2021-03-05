@@ -34,7 +34,7 @@ class Document:
 
     # Map type URIs to a builder function to construct entities from
     # RDF triples.
-    _uri_type_map: Dict[str, Callable[[str, str], SBOLObject]] = BUILDER_REGISTER
+    _uri_type_map: Dict[str, Callable[[str, str], Identified]] = BUILDER_REGISTER
 
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)
@@ -364,3 +364,17 @@ class Document:
         """
         for obj in self.objects:
             obj.accept(visitor)
+
+    def builder(self, type_uri: str) -> Callable[[str, str], Identified]:
+        """Lookup up the builder callable for the given type_uri.
+
+        The builder must have been previously registered under this
+        type_uri via Document.register_builder().
+
+        :raises: ValueError if the type_uri does not have an associated
+                 builder.
+        """
+        try:
+            return self._uri_type_map[type_uri]
+        except KeyError:
+            raise ValueError(f'No builder for {type_uri}')

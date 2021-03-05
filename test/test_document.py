@@ -241,6 +241,18 @@ class TestDocument(unittest.TestCase):
         doc.accept(my_visitor)
         self.assertEqual(11, len(visited_list))
 
+    def test_builder_lookup(self):
+        # Test looking up a builder function
+        # See https://github.com/SynBioDex/pySBOL3/issues/175
+        doc = sbol3.Document()
+        builder = doc.builder(sbol3.SBOL_EXTERNALLY_DEFINED)
+        self.assertIsNotNone(builder)
+        self.assertTrue(callable(builder))
+        with self.assertRaises(ValueError):
+            doc.builder('http://example.com/SomeType')
+        with self.assertRaises(ValueError):
+            doc.builder(None)
+
 
 if __name__ == '__main__':
     unittest.main()
