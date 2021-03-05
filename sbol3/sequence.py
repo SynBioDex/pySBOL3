@@ -27,6 +27,14 @@ class Sequence(TopLevel):
         if self.elements and not self.encoding:
             message = 'Sequence encoding is required if elements are set'
             report.addError(self.identity, None, message)
+        # Check that the encoding is part of the recommended set
+        encodings = {
+            IUPAC_DNA_ENCODING, IUPAC_RNA_ENCODING, IUPAC_PROTEIN_ENCODING,
+            INCHI_ENCODING, SMILES_ENCODING
+        }
+        if self.encoding and self.encoding not in encodings:
+            message = 'Sequence encoding is not in the recommended set'
+            report.addWarning(self.identity, 'sbol3-10505', message)
         return report
 
 

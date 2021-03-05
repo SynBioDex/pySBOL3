@@ -106,10 +106,11 @@ SBOL_VARIANT_DERIVATION = SBOL3_NS + 'variantDerivation'
 SBOL_VARIANT_MEASURE = SBOL3_NS + 'variantMeasure'
 
 # Recommended values for Sequence encoding
-SBOL_IUPAC_DNA = SBOL3_NS + 'iupacNucleicAcid'
-SBOL_IUPAC_RNA = SBOL_IUPAC_DNA
-SBOL_IUPAC_PROTEIN = SBOL3_NS + 'iupacAminoAcid'
-SMILES_ENCODING = 'http://www.opensmiles.org/opensmiles.html'
+IUPAC_DNA_ENCODING = 'https://identifiers.org/edam:format_1207'
+IUPAC_RNA_ENCODING = 'https://identifiers.org/edam:format_1207'
+IUPAC_PROTEIN_ENCODING = 'https://identifiers.org/edam:format_1208'
+INCHI_ENCODING = 'https://identifiers.org/edam:format_1197'
+SMILES_ENCODING = 'https://identifiers.org/edam:format_1196'
 
 # Valid values for Feature orientation
 # See SBOL3 Section 6.4.1 Table 5
