@@ -81,56 +81,114 @@ for layout rendering.
     <http://example.org/sbol3/c1> <http://sbols.org/v3#displayId> "c1" .
     <http://example.org/sbol3/c1> <http://sbols.org/v3#type> <https://identifiers.org/SBO:0000251> .
     <http://example.org/sbol3/c1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://sbols.org/v3#Component> .
-
->>> 
+    
+    >>> 
 
 .. end
 
 As you can see, when the file is serialized, the extension data are integrated with core SBOL data.
 
-The examples above demonstrate how to write extension data. The
-following example now demonstrates how to recover extension data upon
+The example above demonstrates how to write extension data. The
+following example demonstrates how to recover extension data upon
 loading a file. This code block simply takes the output from above and
 reads it into a new `Document`. Once the `IntProperty` interfaces are
-initialized, the extension data becomes instantly accessible.
+initialized, the extension data becomes accessible.
 
 .. code:: xml
 
-  doc2 = sbol2.Document()
-  doc2.readString(doc.writeString())
-  cd = doc2.componentDefinitions['cd']
-  cd.x_coordinate = sbol2.IntProperty(cd, 'http://examples.org#x_coordinate', '0', '1', [])
-  cd.y_coordinate = sbol2.IntProperty(cd, 'http://examples.org#y_coordinate', '0', '1', [])
-  assert(cd.x_coordinate == 150)
-  assert(cd.y_coordinate == 100)
+    >>> doc2 = sbol3.Document()
+    >>> doc2.read_string(doc.write_string(sbol3.NTRIPLES), sbol3.NTRIPLES)
+    >>> c1a = doc2.find('http://example.org/sbol3/c1')
+    >>> c1a.display_id
+    'c1'
+
+    # See that x_coordinate is not known
+    >>> c1a.x_coordinate
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "/path/to/sbol3/object.py", line 35, in __getattribute__
+        result = object.__getattribute__(self, name)
+    AttributeError: 'Component' object has no attribute 'x_coordinate'
+    
+    # Now define the extension properties
+    >>> c1a.x_coordinate = sbol3.IntProperty(c1, 'http://example.org/my_vis#x_coordinate', 0, 1)
+    >>> c1a.y_coordinate = sbol3.IntProperty(c1, 'http://example.org/my_vis#y_coordinate', 0, 1)
+    >>> c1a.x_coordinate
+    150
+    >>> c1a.y_coordinate
+    175
+
 .. end
 
-While in many cases a user knows in advance whether or not a file contains certain types of extension data, it may not always be obvious. Therefore it is possible to inspect the data fields contained in an object using the `getProperties` method. This method lists all the XML QNames associated with an object. Most of the properties listed are core properties, especially those in the `http://sbols.org`, `http://www.w3.org/ns/prov`, and `http://purl.org/dc/terms` namespaces. If any URIs are listed in a namespace that is not one of these, then it is likely custom extension data.
+While in many cases a user knows in advance whether or not a file
+contains certain types of extension data, it may not always be
+obvious. Therefore it is possible to inspect the data fields contained
+in an object using the `properties` attribute. This attribute contains
+the URIs of the properties associated with an object. Most of the
+properties listed will be core properties, especially those in the
+`http://sbols.org`, `http://www.w3.org/ns/prov`, and
+`http://purl.org/dc/terms` namespaces. If any URIs are listed in a
+namespace that is not one of these, then it is likely custom extension
+data.
 
 .. code:: python
-  print(cd.getProperties)
 
-  ['http://sbols.org/v2#identity', 'http://sbols.org/v2#persistentIdentity', 'http://sbols.org/v2#displayId', 'http://sbols.org/v2#version', 'http://purl.org/dc/terms/title', 'http://purl.org/dc/terms/description', 'http://www.w3.org/ns/prov#wasDerivedFrom', 'http://www.w3.org/ns/prov#wasGeneratedBy', 'http://sbols.org/v2#attachment', 'http://sbols.org/v2#type', 'http://sbols.org/v2#role', 'http://sbols.org/v2#sequence', 'http://examples.org#x_coordinate', 'http://examples.org#y_coordinate', 'http://sbols.org/v2#sequenceAnnotation', 'http://sbols.org/v2#component', 'http://sbols.org/v2#sequenceConstraint']
+    >>> pprint.pprint(sorted(c1a.properties))
+    ['http://example.org/my_vis#x_coordinate',
+     'http://example.org/my_vis#y_coordinate',
+     'http://sbols.org/v3#description',
+     'http://sbols.org/v3#displayId',
+     'http://sbols.org/v3#hasAttachment',
+     'http://sbols.org/v3#hasModel',
+     'http://sbols.org/v3#hasSequence',
+     'http://sbols.org/v3#name',
+     'http://sbols.org/v3#role',
+     'http://sbols.org/v3#type',
+     'http://www.w3.org/ns/prov#wasDerivedFrom',
+     'http://www.w3.org/ns/prov#wasGeneratedBy']
+
 .. end
 
 -----------------------------------
 Extension Classes
 -----------------------------------
-Extension classes are classes that are derived from SBOL classes. Using extension classes, the data model can be expanded *ad hoc* to represent a wider domain of synthetic biology knowledge. Extension classes allow a user to define an explicit specification for the types of annotation data it contains. This is advantageous when a user wants to efficiently share extension data with other users. A user can share the Python files containing the extension class definition, and other users will have instant access to the extension data.
 
-In the following examples, an extension class includes a class definition containing attributes with SBOL property interfaces, as described in the preceding example. Each class definition must have a builder--a no-argument constructor. The pySBOL parser invokes the builder function when it encounters the RDF type of an object in the SBOL file.
+Extension classes are classes that are derived from SBOL
+classes. Using extension classes, the data model can be expanded *ad
+hoc* to represent a wider domain of synthetic biology
+knowledge. Extension classes allow a user to define an explicit
+specification for the types of annotation data it contains. This is
+advantageous when a user wants to efficiently share extension data
+with other users. A user can share the Python files containing the
+extension class definition, and other users will have instant access
+to the extension data.
+
+In the following examples, an extension class includes a class
+definition containing attributes with SBOL property interfaces, as
+described in the preceding example. Each class definition must have a
+builder function. The pySBOL parser invokes the builder function when
+it encounters the RDF type of an object in the SBOL file.
 
 Example 1: Override a Core Class
 --------------------------------
 
-The following example illustrates this concept. It defines a `ComponentDefinitionExtension` class which, like the example in the preceding section, includes `x_coordinate` and `y_coordinate` properties. However, in this case, the user does not need to define the property interface, because the extension class definition already does this. The user can simply import the class definition into their code base and access the additional annotation data.
+The following example illustrates this concept. It defines a
+`ComponentExtension` class which, like the example in the
+preceding section, includes `x_coordinate` and `y_coordinate`
+properties. However, in this case, the user does not need to define
+the property interface, because the extension class definition already
+does this. The user can simply import the class definition into their
+code base and access the additional annotation data.
 
-In this example, overriding the core class has the effect that any `ComponentDefinition` that is accessed in a Document after file I/O is now represented as a `ComponentDefinitionExtension` rather than a `ComponentDefinition`. 
+In this example, overriding the core class has the effect that any
+`Component` that is accessed in a Document after file I/O is
+now represented as a `ComponentExtension` rather than a
+`Component`.
 
 .. code:: python
 
   # Extension class definition
-  class ComponentDefinitionOverride(sbol2.ComponentDefinition):
+  class ComponentExtension(sbol3.Component):
 
       # Note that a no-argument constructor is defined using a default URI
       def __init__(self, uri='example'):
@@ -140,8 +198,8 @@ In this example, overriding the core class has the effect that any `ComponentDef
 
   # It is important to register the constructor, so the pySBOL parser can call
   # the correct constructor when it encounters `type_uri` in the SBOL file.
-  # The following statement overrides the ComponentDefinition builder so that
-  # the ComponentDefinitionExtension builder is invoked by the parser
+  # The following statement overrides the Component builder so that
+  # the ComponentExtension builder is invoked by the parser
   Config.register_extension_class(ComponentDefinitionExtension,
                                   sbol2.SBOL_COMPONENT_DEFINITION)
 

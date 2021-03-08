@@ -128,6 +128,10 @@ class Identified(SBOLObject):
         # display_id is a read only property
         return self._display_id
 
+    @property
+    def properties(self):
+        return list(self._properties.keys())
+
     def _validate_properties(self, report: ValidationReport) -> None:
         """Call validate on all the properties. Pass the name of the
         property so the error message is more friendly.
