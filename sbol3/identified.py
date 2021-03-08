@@ -132,6 +132,21 @@ class Identified(SBOLObject):
     def properties(self):
         return list(self._properties.keys())
 
+    def clear_property(self, uri):
+        """Clears the internal storage of a property based on the URI.
+        This is for advanced usage only, and may cause inconsistent
+        objects and/or graphs.
+
+        USE WITH CARE.
+        """
+        # If the URI is not in _properties or _owned_objects
+        # silently do nothing. This is for advanced usage, so
+        # don't tell the user it wasn't there.
+        if uri in self._properties:
+            self._properties[uri] = []
+        elif uri in self._owned_objects:
+            self._owned_objects[uri] = []
+
     def _validate_properties(self, report: ValidationReport) -> None:
         """Call validate on all the properties. Pass the name of the
         property so the error message is more friendly.
