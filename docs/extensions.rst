@@ -223,9 +223,22 @@ loaded and the new properties are preserved.
 .. end
 
 
-Example 2: Define a New Class
------------------------------
-In the above example, the extension class overrides the core `ComponentDefinition` class, allowing the user to extend the core class definition with extra properties. In other cases, a user may want to extend the SBOL data model with an entirely new class. In this case, the user defines a new class derived from `TopLevel`. The definition of the extension this class differs from the example above in one important respect. It now becomes necessary to specify an RDF type for the new class. The RDF type is a URI represented by the `type_uri` parameter passed to the constructor. The `type_uri` dictates that the object will now be serialized as an entirely new class. The following example defines a custom `Analysis` extension class.
+Example 2: Define a New Class ----------------------------- In the
+above example, the extension class overrides the core
+`ComponentDefinition` class, allowing the user to extend the core
+class definition with extra properties. In other cases, a user may
+want to extend the SBOL data model with an entirely new class. In this
+case, the user defines a new class derived from `TopLevel`. The
+definition of this extension class differs from the example above in
+one important respect. It now becomes necessary to specify an RDF type
+for the new class. The RDF type is a URI represented by the `type_uri`
+parameter passed to the constructor. The `type_uri` dictates that the
+object will now be serialized as an entirely new class. The following
+example defines a custom `Analysis` extension class.
+
+.. literalinclude:: ../examples/analysisext.py
+  :language: python
+  :caption: examples/analysisext.py
 
 .. code:: python
 
@@ -244,7 +257,8 @@ In the above example, the extension class overrides the core `ComponentDefinitio
   Config.register_extension_class(Analysis, Analysis.RDF_TYPE)
 .. end
 
-Extension classes that do not override a core SBOL class can be accessed from a `Document` through general `add` and `get` methods. 
+Extension classes that do not override a core SBOL class can be
+accessed from a `Document` through general `add` and `find` methods.
 
 .. code:: python
 
