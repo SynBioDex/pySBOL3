@@ -223,43 +223,31 @@ now represented as a `ComponentExtension` rather than a
 
 .. code:: python
 
-  # Extension class definition
-  class ComponentExtension(sbol3.Component):
+    >>> c = ComponentExtension('http://example.org/sbol3/c1', sbol3.SBO_DNA)
+    >>> c.x_coordinate
+    0
+    >>> c.y_coordinate
+    0
+    >>> c.x_coordinate = 150
+    >>> c.y_coordinate = 100
+    >>>
+    >>> # Round trip the document
+    >>> doc = sbol3.Document()
+    >>> doc.add(c)
+    >>> doc2 = sbol3.Document()
+    >>> doc2.read_string(doc.write_string(sbol3.NTRIPLES), sbol3.NTRIPLES)
+    >>>
+    >>> # Fetch the Component out of the new document
+    >>> c2 = doc2.find('c1')
+    >>> c2.x_coordinate
+    150
+    >>> c2.y_coordinate
+    100
+    >>> type(c2).__name__
+    'ComponentExtension'
 
-      # Note that a no-argument constructor is defined using a default URI
-      def __init__(self, uri='example'):
-          super().__init__(uri=uri)
-          self.x_coordinate = sbol2.IntProperty(cd, 'http://examples.org#x_coordinate', '0', '1', [])
-          self.y_coordinate = sbol2.IntProperty(cd, 'http://examples.org#y_coordinate', '0', '1', [])
-
-  # It is important to register the constructor, so the pySBOL parser can call
-  # the correct constructor when it encounters `type_uri` in the SBOL file.
-  # The following statement overrides the Component builder so that
-  # the ComponentExtension builder is invoked by the parser
-  Config.register_extension_class(ComponentDefinitionExtension,
-                                  sbol2.SBOL_COMPONENT_DEFINITION)
-
-  # Define extension object
-  cd = ComponentDefinitionOverride('cd')
-  cd.x_coordinate = 150
-  cd.y_coordinate = 100
-
-  # Round-trip the extension data
-  doc = sbol2.Document()
-  doc2 = sbol2.Document()
-  doc.add(cd)
-  doc2.readString(doc.writeString())
-
-  # Note the object is stored in the Document as a ComponentDefinition
-  cd = doc2.componentDefinitions[cd.identity]
-
-  # Confirm the extension data is there
-  assert(cd.x_coordinate == 150)
-  assert(cd.y_coordinate == 100)
-
-  # Confirm that the specialized type is preserved
-  assert(type(cd) is ComponentDefinitionOverride)
 .. end
+
 
 Example 2: Define a New Class
 -----------------------------

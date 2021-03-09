@@ -7,10 +7,13 @@ Y_COORDINATE_URI = 'http://example.org/my_vis#y_coordinate'
 class ComponentExtension(sbol3.Component):
 
     # Note that a no-argument constructor is defined using a default URI
-    def __init__(self, *, identity, types, type_uri):
+    def __init__(self, identity, types,
+                 *, type_uri=sbol3.SBOL_COMPONENT):
         super().__init__(identity=identity, types=types, type_uri=type_uri)
-        self.x_coordinate = sbol3.IntProperty(self, X_COORDINATE_URI, 0, 1)
-        self.y_coordinate = sbol3.IntProperty(self, Y_COORDINATE_URI, 0, 1)
+        self.x_coordinate = sbol3.IntProperty(self, X_COORDINATE_URI, 0, 1,
+                                              initial_value=0)
+        self.y_coordinate = sbol3.IntProperty(self, Y_COORDINATE_URI, 0, 1,
+                                              initial_value=0)
 
 
 def build_component_extension(*, identity, type_uri):
