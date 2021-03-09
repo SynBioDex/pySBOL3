@@ -186,6 +186,10 @@ In this example, overriding the core class has the effect that any
 now represented as a `ComponentExtension` rather than a
 `Component`.
 
+.. literalinclude:: ../examples/compext.py
+  :language: python
+
+
 .. code:: python
 
     import sbol3
@@ -220,6 +224,11 @@ now represented as a `ComponentExtension` rather than a
 
 .. end
 
+In a Python interpreter with the `ComponentExtension` class loaded you
+can now use the `x_coordinate` and `y_coordinate` properties
+automatically. Here is an example that creates a `ComponentExtension`,
+sets the new properties, then saves it to file. The saved file is then
+loaded and the new properties are preserved.
 
 .. code:: python
 
