@@ -223,8 +223,10 @@ loaded and the new properties are preserved.
 .. end
 
 
-Example 2: Define a New Class ----------------------------- In the
-above example, the extension class overrides the core
+Example 2: Define a New Class
+-----------------------------
+
+ In the above example, the extension class overrides the core
 `ComponentDefinition` class, allowing the user to extend the core
 class definition with extra properties. In other cases, a user may
 want to extend the SBOL data model with an entirely new class. In this
@@ -262,6 +264,9 @@ accessed from a `Document` through general `add` and `find` methods.
 
 .. code:: python
 
+  # --------------------
+  # N.B. This example needs to be updated
+  # --------------------
   doc = sbol2.Document()
   a = sbol2.Analysis('a')
   doc.add(a)
@@ -273,7 +278,13 @@ accessed from a `Document` through general `add` and `find` methods.
 Example 3: Composing Extension Objects
 --------------------------------------
 
-It is also possible to create extension classes that have a parent-child compositional relationship. In this case the child class should be defined to inherit from `Identified`, while the parent class inherits from `TopLevel`. The child class is referenced through an `OwnedObject` interface. The following example introduces the `DataSheet` class which can now be referenced through the parent `Analysis` class.
+It is also possible to create extension classes that have a
+parent-child compositional relationship. In this case the child class
+should be defined to inherit from `Identified`, while the parent class
+inherits from `TopLevel`. The child class is referenced through an
+`OwnedObject` interface. The following example introduces the
+`DataSheet` class which can now be referenced through the parent
+`Analysis` class.
 
 .. code:: python
 
