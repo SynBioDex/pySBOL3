@@ -1,7 +1,7 @@
 import sbol3
 
 
-class Analysis(sbol3.TopLevel):
+class Analysis(sbol3.CustomTopLevel):
 
     TYPE_URI = 'http://examples.org#Analysis'
     FITTED_MODEL_URI = 'http://example.org/sbol3#fit'

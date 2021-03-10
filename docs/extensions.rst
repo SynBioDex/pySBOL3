@@ -226,7 +226,7 @@ loaded and the new properties are preserved.
 Example 2: Define a New Class
 -----------------------------
 
- In the above example, the extension class overrides the core
+In the above example, the extension class overrides the core
 `ComponentDefinition` class, allowing the user to extend the core
 class definition with extra properties. In other cases, a user may
 want to extend the SBOL data model with an entirely new class. In this
@@ -264,27 +264,31 @@ accessed from a `Document` through general `add` and `find` methods.
 
 .. code:: python
 
-  # --------------------
-  # N.B. This example needs to be updated
-  # --------------------
-  doc = sbol2.Document()
-  a = sbol2.Analysis('a')
-  doc.add(a)
-  also_a = doc.get(a.identity)
-  assert(also_a is a)
+    >>> doc = sbol3.Document()
+    >>> a = Analysis('http://example.org/sbol3/a1')
+    >>> doc.add(a)
+    >>> also_a = doc.find(a.identity)
+    >>> also_a is a
+    True
 
 .. end
+
 
 Example 3: Composing Extension Objects
 --------------------------------------
 
 It is also possible to create extension classes that have a
 parent-child compositional relationship. In this case the child class
-should be defined to inherit from `Identified`, while the parent class
-inherits from `TopLevel`. The child class is referenced through an
-`OwnedObject` interface. The following example introduces the
-`DataSheet` class which can now be referenced through the parent
+should be defined to inherit from `CustomIdentified`, while the parent
+class inherits from `CustomTopLevel`. The child class is referenced
+through an `OwnedObject` interface. The following example introduces
+the `DataSheet` class which can now be referenced through the parent
 `Analysis` class.
+
+.. literalinclude:: ../examples/datasheetext.py
+  :language: python
+  :caption: examples/datasheetext.py
+
 
 .. code:: python
 
@@ -314,9 +318,16 @@ inherits from `TopLevel`. The child class is referenced through an
   Config.register_extension_class(Analysis, Analysis.RDF_TYPE)
   Config.register_extension_class(DataSheet, DataSheet.RDF_TYPE)
 
-  doc = sbol2.Document()
-  analysis = Analysis('foo')
-  doc.add(analysis)
-  analysis.dataSheet = DataSheet('foo')
-  analysis.dataSheet.transcriptionRate = 96.3
+.. end
+
+.. code:: python
+
+    >>> doc = sbol3.Document()
+    >>> a = Analysis('http://example.org/sbol3/a1')
+    >>> doc.add(a)
+    >>> a.data_sheet = DataSheet()
+    >>> a.data_sheet.transcription_rate = 96.3
+    >>> a.data_sheet.transcription_rate
+    96.3
+
 .. end
