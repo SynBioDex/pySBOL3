@@ -13,10 +13,10 @@ and constructing genetic designs according to the standardized specifications of
 
    introduction
    installation
+   extensions
 ..   getting_started
 ..   repositories
 ..   sbol_examples
-   extensions
 
 
 Indices and tables
