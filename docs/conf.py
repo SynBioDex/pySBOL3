@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'pySBOL3'
-copyright = '2020, Raytheon BBN Technologies'
+copyright = '2021, Raytheon BBN Technologies'
 author = 'Bryan Bartley and Tom Mitchell'
 
 # The full version, including alpha/beta/rc tags

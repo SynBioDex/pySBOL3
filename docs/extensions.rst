@@ -242,23 +242,6 @@ example defines a custom `Analysis` extension class.
   :language: python
   :caption: examples/analysisext.py
 
-.. code:: python
-
-  class Analysis(sbol2.TopLevel):
-
-      RDF_TYPE = 'http://examples.org#Analysis'
-
-      def __init__(self, uri=None, model=None):
-          # Override the default type_uri that is used when serializing
-          super().__init__(uri=uri,
-                           type_uri=Analysis.RDF_TYPE)
-          self.fittedModel = sbol2.ReferencedObject(self, 'http://examples.org#fit',
-                                                    sbol2.SBOL_MODEL, 0, 1, [])
-
-  # Register the constructor with the parser
-  Config.register_extension_class(Analysis, Analysis.RDF_TYPE)
-.. end
-
 Extension classes that do not override a core SBOL class can be
 accessed from a `Document` through general `add` and `find` methods.
 
@@ -289,36 +272,6 @@ the `DataSheet` class which can now be referenced through the parent
   :language: python
   :caption: examples/datasheetext.py
 
-
-.. code:: python
-
-  class DataSheet(sbol2.Identified):
-
-      RDF_TYPE = 'http://examples.org#DataSheet'
-
-      def __init__(self, uri='example'):
-          super().__init__(uri=uri,
-                           type_uri=DataSheet.RDF_TYPE)
-          self.transcriptionRate = sbol2.FloatProperty(self, 'http://examples.org#txRate',
-                                                       0, 1, [])
-
-  class Analysis(sbol2.TopLevel):
-
-      RDF_TYPE = 'http://examples.org#Analysis'
-
-      def __init__(self, uri=None, model=None):
-          super().__init__(uri=uri,
-                           type_uri=Analysis.RDF_TYPE)
-          self.fittedModel = sbol2.ReferencedObject(self, 'http://examples.org#fittedModel',
-                                                    sbol2.SBOL_MODEL, 0, 1, [])
-          self.dataSheet = sbol2.OwnedObject(self, 'http://examples.org#dataSheet',
-                                             DataSheet, 0, 1, [])
-
-  # Register the constructors with the parser
-  Config.register_extension_class(Analysis, Analysis.RDF_TYPE)
-  Config.register_extension_class(DataSheet, DataSheet.RDF_TYPE)
-
-.. end
 
 .. code:: python
 
