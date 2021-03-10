@@ -16,7 +16,7 @@ and constructing genetic designs according to the standardized specifications of
 ..   getting_started
 ..   repositories
 ..   sbol_examples
-..   extensions
+   extensions
 
 
 Indices and tables
