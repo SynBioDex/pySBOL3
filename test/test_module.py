@@ -70,7 +70,7 @@ class TestModule(unittest.TestCase):
             'Interaction': [['https://example.com/fake']],
             'LocalSubComponent': [['https://example.com/fake']],
             'Measure': [1.0, OM_KILOGRAM],
-            'Participation': [sbol3.SBO_INHIBITOR,
+            'Participation': [[sbol3.SBO_INHIBITOR],
                               'https://example.com/fake'],
             'Range': ['https://example.com/fake', 1, 2],
             'SequenceFeature': [[sbol3.EntireSequence('https://example.com/fake')]],
