@@ -4,9 +4,10 @@ Using Ontology Terms
 SBOL leans heavily on a variety of ontologies for
 terminology. Examples include `PROV-O
 <https://www.w3.org/TR/prov-o/>`_ for provenance terms, and `Ontology
-of units of Measure <>`_ for defining and using measures and units.
-The most commonly used terms are defined as pySBOL3 constants. These
-only scratch the surface of what is available.
+of units of Measure <https://www.ebi.ac.uk/ols/ontologies/om>`_ for
+defining and using measures and units.  The most commonly used terms
+are defined as pySBOL3 constants. These only scratch the surface of
+what is available.
 
 `TYTO <https://github.com/SynBioDex/tyto>`_ is a Python module that
 automates the lookup of ontology terms so that you do not have to
