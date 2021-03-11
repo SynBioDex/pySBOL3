@@ -57,6 +57,19 @@ class Property(abc.ABC):
         """
         pass
 
+    @property
+    def attribute_name(self) -> Union[str, None]:
+        """Heuristically determine which attribute is associated with
+        this property. If no attribute can be found for this property
+        return None.
+        """
+        # Iterate through the property owner's __dict__ looking for
+        # an attribute whose value is this property.
+        for name, value in self.property_owner.__dict__.items():
+            if value is self:
+                return name
+        return None
+
 
 class SingletonProperty(Property, abc.ABC):
 
@@ -151,8 +164,17 @@ class ListProperty(Property, MutableSequence, abc.ABC):
         # property is identical to the value being set, do nothing.
         if value == self._storage()[self.property_uri]:
             return
-        # TODO: validate here
-        # TODO: test for iterable or sequence types, then convert to list?
+        # Give a better error message if the value is a string
+        # or is not iterable.
+        # See https://github.com/SynBioDex/pySBOL3/issues/195
+        if (isinstance(value, (str, bytes)) or
+                not isinstance(value, Iterable)):
+            name = self.attribute_name
+            if not name:
+                name = f'Property {self.property_uri}'
+            msg = f'{name} requires one or more values'
+            msg += ' packed in an iterable'
+            raise TypeError(msg)
         items = [self.from_user(v) for v in value]
         self._storage()[self.property_uri] = items
         for val in value:

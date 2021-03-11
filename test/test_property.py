@@ -1,6 +1,7 @@
 import math
 import posixpath
 import unittest
+from collections import Iterable
 
 import rdflib
 
@@ -79,7 +80,7 @@ class TestProperty(unittest.TestCase):
         doc = sbol3.Document()
         c1 = sbol3.Component('c1', sbol3.SBO_DNA)
         doc.add(c1)
-        lsc1 = sbol3.LocalSubComponent(sbol3.SBO_DNA)
+        lsc1 = sbol3.LocalSubComponent([sbol3.SBO_DNA])
         c1.features += [lsc1]
         self.assertEqual('LocalSubComponent1', lsc1.display_id)
         self.assertEqual(posixpath.join(c1.identity, lsc1.display_id),
@@ -87,7 +88,7 @@ class TestProperty(unittest.TestCase):
         # TODO: Add checks for document at each step below
         self.assertEqual(doc, lsc1.document)
 
-        lsc2 = sbol3.LocalSubComponent(sbol3.SBO_DNA)
+        lsc2 = sbol3.LocalSubComponent([sbol3.SBO_DNA])
         c1.features += [lsc2]
         # Make sure lsc1 did not get renamed
         self.assertEqual('LocalSubComponent1', lsc1.display_id)
@@ -99,8 +100,8 @@ class TestProperty(unittest.TestCase):
                          lsc2.identity)
         self.assertEqual(doc, lsc2.document)
 
-        lsc3 = sbol3.LocalSubComponent(sbol3.SBO_DNA)
-        lsc4 = sbol3.LocalSubComponent(sbol3.SBO_DNA)
+        lsc3 = sbol3.LocalSubComponent([sbol3.SBO_DNA])
+        lsc4 = sbol3.LocalSubComponent([sbol3.SBO_DNA])
         c1.features += [lsc3, lsc4]
         # Make sure lsc1 did not get renamed
         self.assertEqual('LocalSubComponent1', lsc1.display_id)
@@ -120,6 +121,26 @@ class TestProperty(unittest.TestCase):
         self.assertEqual(posixpath.join(c1.identity, lsc4.display_id),
                          lsc4.identity)
         self.assertEqual(doc, lsc4.document)
+
+    def test_not_iterable(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        c1 = sbol3.Component('c1', sbol3.SBO_DNA)
+        self.assertIsInstance(c1.types, Iterable)
+        with self.assertRaises(TypeError):
+            c1.types = sbol3.SBO_PROTEIN
+        with self.assertRaises(TypeError):
+            c1.types = object()
+
+    def test_attribute_name(self):
+        # Verify that a property can figure out what its attribute name is.
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        c1 = sbol3.Component('c1', sbol3.SBO_DNA)
+        types_property = c1.__dict__['types']
+        aname = types_property.attribute_name
+        self.assertEqual('types', aname)
+        features_property = c1.__dict__['features']
+        aname = features_property.attribute_name
+        self.assertEqual('features', aname)
 
 
 if __name__ == '__main__':
