@@ -241,26 +241,26 @@ extend `CombinatorialDerivation`:
 
 .. code:: python
 
-SAMPLE_SET_URI = 'http://bioprotocols.org/opil/v1#SampleSet'
+    SAMPLE_SET_URI = 'http://bioprotocols.org/opil/v1#SampleSet'
 
 
-class SampleSet(sbol3.CombinatorialDerivation, sbol3.CustomTopLevel):
-    TYPE_URI = 'http://bioprotocols.org/opil/v1#SampleSet'
+    class SampleSet(sbol3.CombinatorialDerivation, sbol3.CustomTopLevel):
+        TYPE_URI = 'http://bioprotocols.org/opil/v1#SampleSet'
 
-    def __init__(self, identity: str, template: Union[sbol3.Component, str],
-                 *, type_uri: str = SAMPLE_SET_URI):
-        super().__init__(identity=identity, template=template,
-                         type_uri=type_uri)
-        # Add additional properties here
-
-
-def build_sample_set(identity: str,
-                     *, type_uri: str = SampleSet.TYPE_URI):
-    template = sbol3.PYSBOL3_MISSING
-    return SampleSet(identity=identity, template=template, type_uri=type_uri)
+        def __init__(self, identity: str, template: Union[sbol3.Component, str],
+                     *, type_uri: str = SAMPLE_SET_URI):
+            super().__init__(identity=identity, template=template,
+                             type_uri=type_uri)
+            # Add additional properties here
 
 
-sbol3.Document.register_builder(SAMPLE_SET_URI, build_sample_set)
+    def build_sample_set(identity: str,
+                         *, type_uri: str = SampleSet.TYPE_URI):
+        template = sbol3.PYSBOL3_MISSING
+        return SampleSet(identity=identity, template=template, type_uri=type_uri)
+
+
+    sbol3.Document.register_builder(SAMPLE_SET_URI, build_sample_set)
 
 .. end
 
