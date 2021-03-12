@@ -169,7 +169,7 @@ class TestDocument(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdirname:
             test_file = os.path.join(tmpdirname, filename)
             doc.write(test_file, sbol3.SORTED_NTRIPLES)
-            with open(test_file, 'rb') as infile:
+            with open(test_file, 'r') as infile:
                 expected = infile.read()
         actual = doc.write_string(sbol3.SORTED_NTRIPLES)
         self.assertEqual(expected, actual)
