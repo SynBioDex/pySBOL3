@@ -223,20 +223,62 @@ loaded and the new properties are preserved.
 .. end
 
 
-Example 2: Define a New Class
+Example 2: Extend a Core Class
+------------------------------
+
+Instead of annotating a class like in the above example, it is also
+possible to extend a core class, creating a new class that has all the
+properties of the core class as well as additional properties. The key
+to doing this extension properly is to use multiple inheritance to
+extend both the desired core class as well as the appropriate `Custom`
+class, either `CustomTopLevel` or `CustomIdentified`. The choice of
+which Custom class is dictated by the class you are choosing to
+extend. If the core class is a `TopLevel`, choose
+`CustomTopLevel`. Otherwise choose `CustomIdentified`.
+
+Here is an example class definition that uses multiple inheritance to
+extend `CombinatorialDerivation`:
+
+.. code:: python
+
+    SAMPLE_SET_URI = 'http://bioprotocols.org/opil/v1#SampleSet'
+
+
+    class SampleSet(sbol3.CombinatorialDerivation, sbol3.CustomTopLevel):
+
+        def __init__(self, identity: str, template: Union[sbol3.Component, str],
+                     *, type_uri: str = SAMPLE_SET_URI):
+            super().__init__(identity=identity, template=template,
+                             type_uri=type_uri)
+            # Add additional properties here
+
+
+    def build_sample_set(identity: str,
+                         *, type_uri: str = SAMPLE_SET_URI):
+        template = sbol3.PYSBOL3_MISSING
+        return SampleSet(identity=identity, template=template, type_uri=type_uri)
+
+
+    sbol3.Document.register_builder(SAMPLE_SET_URI, build_sample_set)
+
+.. end
+
+
+Example 3: Define a New Class
 -----------------------------
 
-In the above example, the extension class overrides the core
-`ComponentDefinition` class, allowing the user to extend the core
-class definition with extra properties. In other cases, a user may
-want to extend the SBOL data model with an entirely new class. In this
-case, the user defines a new class derived from `TopLevel`. The
-definition of this extension class differs from the example above in
-one important respect. It now becomes necessary to specify an RDF type
-for the new class. The RDF type is a URI represented by the `type_uri`
-parameter passed to the constructor. The `type_uri` dictates that the
-object will now be serialized as an entirely new class. The following
-example defines a custom `Analysis` extension class.
+In the above annotation example (Example 1), the extension class
+overrides the core `ComponentDefinition` class, allowing the user to
+extend the core class definition with extra properties. In other
+cases, a user may want to extend the SBOL data model with an entirely
+new class. In this case, the user defines a new class derived from
+`TopLevel`. The definition of this extension class differs from the
+example above in one important respect. It now becomes necessary to
+specify an RDF type for the new class. The RDF type is a URI
+represented by the `type_uri` parameter passed to the constructor. The
+`type_uri` dictates that the object will now be serialized as an
+entirely new class. The following example defines a custom `Analysis`
+extension class.
 
 .. literalinclude:: ../examples/analysisext.py
   :language: python
@@ -257,7 +299,7 @@ accessed from a `Document` through general `add` and `find` methods.
 .. end
 
 
-Example 3: Composing Extension Objects
+Example 4: Composing Extension Objects
 --------------------------------------
 
 It is also possible to create extension classes that have a
