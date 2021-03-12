@@ -245,7 +245,6 @@ extend `CombinatorialDerivation`:
 
 
     class SampleSet(sbol3.CombinatorialDerivation, sbol3.CustomTopLevel):
-        TYPE_URI = 'http://bioprotocols.org/opil/v1#SampleSet'
 
         def __init__(self, identity: str, template: Union[sbol3.Component, str],
                      *, type_uri: str = SAMPLE_SET_URI):
@@ -255,7 +254,7 @@ extend `CombinatorialDerivation`:
 
 
     def build_sample_set(identity: str,
-                         *, type_uri: str = SampleSet.TYPE_URI):
+                         *, type_uri: str = SAMPLE_SET_URI):
         template = sbol3.PYSBOL3_MISSING
         return SampleSet(identity=identity, template=template, type_uri=type_uri)
 
