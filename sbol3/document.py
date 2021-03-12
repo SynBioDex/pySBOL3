@@ -261,7 +261,7 @@ class Document:
             result = graph.serialize(format=file_format, context=context)
         else:
             result = graph.serialize(format=file_format)
-        return result
+        return result.decode()
 
     def write(self, fpath: str, file_format: str = None) -> None:
         """Write the document to file.
@@ -274,7 +274,7 @@ class Document:
             file_format = self._guess_format(fpath)
         if file_format is None:
             raise ValueError('Unable to determine file format')
-        with open(fpath, 'wb') as outfile:
+        with open(fpath, 'w') as outfile:
             outfile.write(self.write_string(file_format))
 
     def graph(self) -> rdflib.Graph:
