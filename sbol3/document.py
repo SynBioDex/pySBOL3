@@ -91,6 +91,9 @@ class Document:
         for identity, types in identity_types.items():
             if len(types) == 1:
                 type_uri = types[0]
+                if not type_uri.startswith(SBOL3_NS):
+                    # Skip non-SBOL objects
+                    continue
                 try:
                     builder = self._uri_type_map[type_uri]
                 except KeyError:
@@ -114,7 +117,11 @@ class Document:
                 continue
             str_s = str(s)
             str_p = str(p)
-            obj = objects[str_s]
+            try:
+                obj = objects[str_s]
+            except KeyError:
+                # Object is not an SBOL object, skip it
+                continue
             if str_p in obj._owned_objects:
                 other_identity = str(o)
                 other = objects[other_identity]
