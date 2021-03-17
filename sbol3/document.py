@@ -39,41 +39,71 @@ class Document:
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)
         self.objects: List[Identified] = []
+        # Orphans are non-TopLevel objects that are not otherwise linked
+        # into the object hierarchy.
         self.orphans: List[Identified] = []
         self._namespaces: Dict[str, str] = _default_bindings.copy()
+        # Non-SBOL triples. These are triples that are not recognized as
+        # SBOL. They are stored in _other_rdf for round-tripping purposes.
+        self._other_rdf = rdflib.Graph()
 
-    def _make_custom_object(self, identity: str, types: List[str]) -> Identified:
-        if SBOL_IDENTIFIED in types:
-            types.remove(SBOL_IDENTIFIED)
+    def _build_extension_object(self, identity: str, sbol_type: str,
+                                types: List[str]) -> Optional[Identified]:
+        custom_types = {
+            SBOL_IDENTIFIED: CustomIdentified,
+            SBOL_TOP_LEVEL: CustomTopLevel
+        }
+        if sbol_type not in custom_types:
+            msg = f'{identity} has SBOL type {sbol_type} which is not one of'
+            msg += f' {custom_types.keys()}. (See Section 6.11)'
+            raise SBOLError(msg)
+        # Section 6.11 implies that an extension object MUST have one
+        # type outside the SBOL3 namespace
+        if len(types) > 1:
+            msg = f'{identity} has more than one rdfType property outside the'
+            msg += f' {SBOL3_NS} namespace. (See Section 6.11)'
+            raise SBOLError(msg)
+        build_type = types[0]
+        try:
+            builder = self._uri_type_map[build_type]
+        except KeyError:
+            logging.warning(f'No builder found for {build_type}')
+            builder = custom_types[sbol_type]
+        return builder(identity=identity, type_uri=build_type)
+
+    def _build_object(self, identity: str, types: List[str]) -> Optional[Identified]:
+        # Given an identity and a list of RDF types, build an object if possible.
+        # If there is 1 SBOL type and we don't know it, raise an exception
+        # If there are multiple types and 1 is TopLevel or Identified, then
+        #    it is an extension. Use the other types to try to build it. If
+        #    no other type is known, build a generic TopLevel or Identified.
+        sbol_types = [t for t in types if t.startswith(SBOL3_NS)]
+        if len(sbol_types) == 0:
+            # If there are no SBOL types in the list, do not build
+            return None
+        if len(sbol_types) > 1:
+            # If there are multiple SBOL types in the list, raise an error.
+            # SBOL 3.0.1 Section 5.4: "an object MUST have no more than one
+            # rdfType property in the 'http://sbols.org/v3#' namespace"
+            msg = f'{identity} has more than one rdfType property in the'
+            msg += f' {SBOL3_NS} namespace.'
+            raise SBOLError(msg)
+        if len(types) == 1:
+            # Simple case: the one SBOL type is the only type.
+            type_uri = types[0]
             try:
-                other_type = types[0]
-            except IndexError:
-                raise SBOLError('Custom object has only one RDF type')
-            if other_type.startswith(SBOL3_NS):
-                raise SBOLError('Secondary type may not be in SBOL3 namespace')
-            try:
-                builder = self._uri_type_map[other_type]
+                builder = self._uri_type_map[type_uri]
             except KeyError:
-                logging.warning(f'No builder found for {other_type}')
-                builder = CustomIdentified
-            return builder(identity=identity, type_uri=other_type)
-        elif SBOL_TOP_LEVEL in types:
-            types.remove(SBOL_TOP_LEVEL)
-            try:
-                other_type = types[0]
-            except IndexError:
-                raise SBOLError('Custom object has only one RDF type')
-            if other_type.startswith(SBOL3_NS):
-                raise SBOLError('Secondary type may not be in SBOL3 namespace')
-            try:
-                builder = self._uri_type_map[other_type]
-            except KeyError:
-                logging.warning(f'No builder found for {other_type}')
-                builder = CustomTopLevel
-            return builder(identity=identity, type_uri=other_type)
+                logging.warning(f'No builder found for {type_uri}')
+                raise SBOLError(f'Unknown type {type_uri}')
+            obj = builder(identity=identity, type_uri=type_uri)
+            return obj
         else:
-            message = 'Custom types must contain either Identified or TopLevel'
-            raise SBOLError(message)
+            # If there is more than 1 rdf type, it must be an
+            # extension.
+            sbol_type = sbol_types[0]
+            types.remove(sbol_type)
+            return self._build_extension_object(identity, sbol_type, types)
 
     def _parse_objects(self, graph: rdflib.Graph) -> Dict[str, SBOLObject]:
         # First extract the identities and their types. Each identity
@@ -89,21 +119,10 @@ class Document:
         # Now iterate over the identity->type dict creating the objects.
         result = {}
         for identity, types in identity_types.items():
-            if len(types) == 1:
-                type_uri = types[0]
-                try:
-                    builder = self._uri_type_map[type_uri]
-                except KeyError:
-                    logging.warning(f'No builder found for {type_uri}')
-                    raise SBOLError(f'Unknown type {type_uri}')
-                obj = builder(identity=identity, type_uri=type_uri)
-            elif len(types) == 2:
-                obj = self._make_custom_object(identity, types)
-            else:
-                message = f'Expected either 1 or 2 types for {identity}'
-                raise SBOLError(message)
-            obj.document = self
-            result[obj.identity] = obj
+            obj = self._build_object(identity, types)
+            if obj:
+                obj.document = self
+                result[obj.identity] = obj
         return result
 
     @staticmethod
@@ -114,7 +133,11 @@ class Document:
                 continue
             str_s = str(s)
             str_p = str(p)
-            obj = objects[str_s]
+            try:
+                obj = objects[str_s]
+            except KeyError:
+                # Object is not an SBOL object, skip it
+                continue
             if str_p in obj._owned_objects:
                 other_identity = str(o)
                 other = objects[other_identity]
@@ -175,6 +198,13 @@ class Document:
         # Store the namespaces in the Document for later use
         for prefix, uri in graph.namespaces():
             self.bind(prefix, uri)
+        # Remove the triples for every object we have loaded, leaving
+        # the non-RDF triples for round tripping
+        # See https://github.com/SynBioDex/pySBOL3/issues/96
+        for uri in objects:
+            graph.remove((uri, None, None))
+        # Now tuck away the graph for use in Document.write_string()
+        self._other_rdf = graph
 
     def _guess_format(self, fpath: str):
         return rdflib.util.guess_format(fpath)
@@ -290,6 +320,8 @@ class Document:
             orphan.serialize(graph)
         for obj in self.objects:
             obj.serialize(graph)
+        # Add the non-SBOL RDF triples into the generated graph
+        graph += self._other_rdf
         return graph
 
     def bind(self, prefix: str, uri: str) -> None:

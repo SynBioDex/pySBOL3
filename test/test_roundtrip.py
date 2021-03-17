@@ -12,6 +12,7 @@ import sbol3
 MODULE_LOCATION = os.path.dirname(os.path.abspath(__file__))
 SBOL_TEST_SUITE = os.path.join(MODULE_LOCATION, 'SBOLTestSuite')
 SBOL3_LOCATION = os.path.join(SBOL_TEST_SUITE, 'SBOL3')
+TEST_RESOURCE_DIR = os.path.join(MODULE_LOCATION, 'resources')
 
 DEBUG_ENV_VAR = 'SBOL_TEST_DEBUG'
 
@@ -153,6 +154,11 @@ class TestRoundTrip(unittest.TestCase):
                 self.setUp()
                 self.run_round_trip_file(test_file, file_format)
                 self.tearDown()
+
+    def test_mixed_rdf(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/96
+        test_file = os.path.join(TEST_RESOURCE_DIR, 'mixed-rdf.nt')
+        self.run_round_trip_file(test_file, sbol3.NTRIPLES)
 
 
 if __name__ == '__main__':
