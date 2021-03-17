@@ -26,7 +26,10 @@ class TextSingletonProperty(TextPropertyMixin, SingletonProperty):
                  initial_value: Optional[str] = None):
         super().__init__(property_owner, property_uri,
                          lower_bound, upper_bound, validation_rules)
-        if initial_value:
+        # See https://github.com/SynBioDex/pySBOL3/issues/208
+        # The empty string is boolean False, so explicitly check for None
+        # so that we don't discard an empty string as an initial value
+        if initial_value is not None:
             self.set(initial_value)
 
 
@@ -38,7 +41,7 @@ class TextListProperty(TextPropertyMixin, ListProperty):
                  initial_value: Optional[str] = None):
         super().__init__(property_owner, property_uri,
                          lower_bound, upper_bound, validation_rules)
-        if initial_value:
+        if initial_value is not None:
             self.set(initial_value)
 
 

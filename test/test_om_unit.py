@@ -132,6 +132,30 @@ class TestSingularUnit(unittest.TestCase):
         self.assertIsNotNone(sunit.description)
         self.assertEqual('litre', sunit.display_id)
 
+    def test_initial_value(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/208
+        # Use `alt_symbols` to test setting with the empty string.
+        # This isn't the actual bug reported in #208. It is a possibly
+        # related issue, so we add a unit test just in case.
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        display_id = 'litre'
+        symbol = display_id
+        label = display_id
+        unit = 'https://sbolstandard.org/examples/litre'
+        factor = 0.001
+        alt_symbols = ['']
+        sunit = sbol3.SingularUnit(display_id, symbol, label,
+                                   alternative_symbols=alt_symbols,
+                                   unit=unit,
+                                   factor=factor)
+        self.assertIsNotNone(sunit)
+        self.assertIsInstance(sunit, sbol3.SingularUnit)
+        self.assertEqual(factor, sunit.factor)
+        self.assertEqual(unit, sunit.unit)
+        self.assertEqual(symbol, sunit.symbol)
+        self.assertEqual(label, sunit.label)
+        self.assertCountEqual(alt_symbols, sunit.alternative_symbols)
+
 
 if __name__ == '__main__':
     unittest.main()

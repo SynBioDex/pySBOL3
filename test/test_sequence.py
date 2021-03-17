@@ -86,6 +86,17 @@ class TestSequence(unittest.TestCase):
         self.assertEqual(1, len(report))
         self.assertEqual(1, len(report.warnings))
 
+    def test_initial_value(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/208
+        identity = 'https://github.com/synbiodex/pysbol3/s1'
+        elements = ''
+        # encoding = sbol3.IUPAC_DNA_ENCODING
+        s1 = sbol3.Sequence(identity=identity,
+                            elements=elements)
+        self.assertEqual(identity, s1.identity)
+        self.assertEqual(elements, s1.elements)
+        # self.assertEqual(encoding, s1.encoding)
+
 
 if __name__ == '__main__':
     unittest.main()
