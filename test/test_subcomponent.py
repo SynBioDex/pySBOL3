@@ -22,7 +22,7 @@ class TestSubComponent(unittest.TestCase):
 
     def test_invalid_create(self):
         # SubComponent requires an `instance_of` argument
-        sc = sbol3.SubComponent('')
+        sc = sbol3.SubComponent(None)
         report = sc.validate()
         self.assertIsNotNone(report)
         self.assertEqual(1, len(report.errors))

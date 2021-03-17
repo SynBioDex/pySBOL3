@@ -26,7 +26,7 @@ class URISingletonProperty(URIPropertyMixin, SingletonProperty):
                  initial_value: Optional[str] = None):
         super().__init__(property_owner, property_uri,
                          lower_bound, upper_bound, validation_rules)
-        if initial_value:
+        if initial_value is not None:
             self.set(initial_value)
 
 
@@ -38,7 +38,7 @@ class URIListProperty(URIPropertyMixin, ListProperty):
                  initial_value: Optional[str] = None):
         super().__init__(property_owner, property_uri,
                          lower_bound, upper_bound, validation_rules)
-        if initial_value:
+        if initial_value is not None:
             self.set(initial_value)
 
 

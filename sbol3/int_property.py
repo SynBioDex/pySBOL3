@@ -38,7 +38,7 @@ class IntListProperty(IntPropertyMixin, ListProperty):
                  initial_value: Optional[List[int]] = None):
         super().__init__(property_owner, property_uri,
                          lower_bound, upper_bound, validation_rules)
-        if initial_value:
+        if initial_value is not None:
             self.set(initial_value)
 
 
