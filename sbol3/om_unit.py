@@ -95,7 +95,7 @@ class SingularUnit(Unit):
     """
 
     def __init__(self, identity: str, symbol: str, label: str,
-                 *, unit: str = None, factor: str = None,
+                 *, unit: str = None, factor: float = None,
                  alternative_symbols: List[str] = None,
                  alternative_labels: List[str] = None,
                  comment: str = None,
