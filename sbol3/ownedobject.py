@@ -71,7 +71,7 @@ class OwnedObjectSingletonProperty(OwnedObjectPropertyMixin, SingletonProperty):
         # methods are not set up properly for that. They would need
         # to accept unknown keyword arguments.
         self.type_constraint = type_constraint
-        if initial_value:
+        if initial_value is not None:
             self.set(initial_value)
 
     def validate(self, name: str, report: ValidationReport):
@@ -97,7 +97,7 @@ class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
         # methods are not set up properly for that. They would need
         # to accept unknown keyword arguments.
         self.type_constraint = type_constraint
-        if initial_value:
+        if initial_value is not None:
             self.set(initial_value)
 
     def validate(self, name: str, report: ValidationReport):
