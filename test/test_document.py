@@ -9,7 +9,6 @@ import sbol3
 
 MODULE_LOCATION = os.path.dirname(os.path.abspath(__file__))
 SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
-TEST_RESOURCE_DIR = os.path.join(MODULE_LOCATION, 'resources')
 
 
 class TestDocument(unittest.TestCase):
@@ -253,15 +252,6 @@ class TestDocument(unittest.TestCase):
             doc.builder('http://example.com/SomeType')
         with self.assertRaises(ValueError):
             doc.builder(None)
-
-    def test_mixed_rdf(self):
-        # Test loading a file that contains both SBOL and non-SBOL
-        test_file = os.path.join(TEST_RESOURCE_DIR, 'mixed-rdf.nt')
-        doc = sbol3.Document()
-        doc.read(test_file)
-        out_file = os.path.join(os.path.dirname(MODULE_LOCATION),
-                                'tmp', 'mixed-rdf.nt')
-        doc.write(out_file)
 
 
 if __name__ == '__main__':
