@@ -160,6 +160,12 @@ class TestRoundTrip(unittest.TestCase):
         test_file = os.path.join(TEST_RESOURCE_DIR, 'mixed-rdf.nt')
         self.run_round_trip_file(test_file, sbol3.NTRIPLES)
 
+    def test_multi_type_sbol(self):
+        # Load a file that includes an SBOL object that has multiple other
+        # rdf:type properties
+        test_file = os.path.join(TEST_RESOURCE_DIR, 'multi-type-sbol.nt')
+        self.run_round_trip_file(test_file, sbol3.NTRIPLES)
+
 
 if __name__ == '__main__':
     unittest.main()
