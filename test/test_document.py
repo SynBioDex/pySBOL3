@@ -70,10 +70,9 @@ class TestDocument(unittest.TestCase):
     def test_add(self):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
-        type_uri = 'https://github.com/synbiodex/sbol3#TestObj'
-        obj1 = sbol3.SBOLObject('obj', type_uri)
+        non_top_level = sbol3.Interface()
         with self.assertRaises(TypeError):
-            doc.add(obj1)
+            doc.add(non_top_level)
         seq = sbol3.Sequence('seq1')
         doc.add(seq)
         seq2 = doc.find(seq.identity)

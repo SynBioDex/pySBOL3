@@ -22,7 +22,7 @@ class Identified(SBOLObject):
                  *, name: str = None, description: str = None,
                  derived_from: List[str] = None, generated_by: List[str] = None,
                  measures: List[SBOLObject] = None) -> None:
-        super().__init__(identity, type_uri)
+        super().__init__(identity)
         self._display_id = TextProperty(self, SBOL_DISPLAY_ID, 0, 1)
         self.name = TextProperty(self, SBOL_NAME, 0, 1, initial_value=name)
         self.description = TextProperty(self, SBOL_DESCRIPTION, 0, 1,
@@ -40,6 +40,8 @@ class Identified(SBOLObject):
                                     type_constraint=Identified)
         # Identity has been set by the SBOLObject constructor
         self._display_id = self._extract_display_id(self.identity)
+        self._rdf_types = URIProperty(self, rdflib.RDF.type, 1, math.inf,
+                                      initial_value=[type_uri])
 
     @staticmethod
     def _is_valid_display_id(display_id: str) -> bool:
@@ -74,6 +76,10 @@ class Identified(SBOLObject):
             msg += ' A displayId MUST be composed of only alphanumeric'
             msg += ' or underscore characters and MUST NOT begin with a digit.'
             raise ValueError(msg)
+
+    @property
+    def type_uri(self):
+        return self._rdf_types[0]
 
     def _validate_display_id(self, report: ValidationReport) -> None:
         if self.identity_is_url():
@@ -169,7 +175,7 @@ class Identified(SBOLObject):
 
     def serialize(self, graph: rdflib.Graph):
         identity = rdflib.URIRef(self.identity)
-        graph.add((identity, rdflib.RDF.type, rdflib.URIRef(self.type_uri)))
+        # graph.add((identity, rdflib.RDF.type, rdflib.URIRef(self.type_uri)))
         for prop, items in self._properties.items():
             if not items:
                 continue

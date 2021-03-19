@@ -128,9 +128,6 @@ class Document:
     @staticmethod
     def _parse_attributes(objects, graph):
         for s, p, o in graph.triples((None, None, None)):
-            if p == rdflib.RDF.type:
-                # RDF.types have been processed already
-                continue
             str_s = str(s)
             str_p = str(p)
             try:
