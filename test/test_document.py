@@ -253,6 +253,28 @@ class TestDocument(unittest.TestCase):
         with self.assertRaises(ValueError):
             doc.builder(None)
 
+    def test_other_rdf_round_trip(self):
+        filename = 'mixed-rdf.nt'
+        test_file = os.path.join(MODULE_LOCATION, 'resources', filename)
+        doc = sbol3.Document()
+        doc.read(test_file)
+        c_uri = 'http://example.com/sbol3/c1'
+        c = doc.find(c_uri)
+        self.assertIsNotNone(c)
+        self.assertEqual([sbol3.SBO_DNA], c.types)
+        c.types = [sbol3.SBO_PROTEIN]
+        self.assertEqual([sbol3.SBO_PROTEIN], c.types)
+        # Now round trip the file and make sure the
+        # types property remains the same
+        doc2 = sbol3.Document()
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            tmp_file = os.path.join(tmpdirname, filename)
+            doc.write(tmp_file)
+            doc2.read(tmp_file)
+        c2 = doc2.find(c_uri)
+        self.assertIsNotNone(c2)
+        self.assertEqual([sbol3.SBO_PROTEIN], c2.types)
+
 
 if __name__ == '__main__':
     unittest.main()
