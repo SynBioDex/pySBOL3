@@ -202,7 +202,7 @@ class Document:
         # the non-RDF triples for round tripping
         # See https://github.com/SynBioDex/pySBOL3/issues/96
         for uri in objects:
-            graph.remove((uri, None, None))
+            graph.remove((rdflib.URIRef(uri), None, None))
         # Now tuck away the graph for use in Document.write_string()
         self._other_rdf = graph
 
