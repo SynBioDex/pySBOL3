@@ -28,7 +28,7 @@ class TestAttachment(unittest.TestCase):
                                  'attachment.nt')
         doc = sbol3.Document()
         doc.read(test_file, sbol3.NTRIPLES)
-        search_uri = 'http://parts.igem.org/Part:/attachment1'
+        search_uri = 'https://sbolstandard.org/examples/attachment1'
         attachment = doc.find(search_uri)
         self.assertIsNotNone(attachment)
         self.assertIsInstance(attachment, sbol3.Attachment)

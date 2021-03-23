@@ -25,13 +25,13 @@ class TestInterface(unittest.TestCase):
                                  'interface.nt')
         doc = sbol3.Document()
         doc.read(test_file, sbol3.NTRIPLES)
-        search_uri = 'https://sbolstandard.org/examples/LacI_producer/interface'
+        search_uri = 'https://sbolstandard.org/examples/LacI_producer/Interface1'
         interface = doc.find(search_uri)
         self.assertIsNotNone(interface)
         self.assertIsInstance(interface, sbol3.Interface)
-        tetr_uri = 'https://sbolstandard.org/examples/LacI_producer/TetR_protein'
-        laci_uri = 'https://sbolstandard.org/examples/LacI_producer/LacI_protein'
-        atc_uri = 'https://sbolstandard.org/examples/LacI_producer/aTC'
+        tetr_uri = 'https://sbolstandard.org/examples/LacI_producer/SubComponent2'
+        laci_uri = 'https://sbolstandard.org/examples/LacI_producer/SubComponent1'
+        atc_uri = 'https://sbolstandard.org/examples/LacI_producer/SubComponent3'
         iface_input = [tetr_uri, laci_uri]
         self.assertCountEqual(iface_input, interface.input)
         output = [laci_uri]

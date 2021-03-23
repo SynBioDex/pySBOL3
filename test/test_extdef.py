@@ -1,4 +1,5 @@
 import os
+import posixpath
 import unittest
 
 import sbol3
@@ -28,14 +29,14 @@ class TestExternallyDefined(unittest.TestCase):
                                  'measurement', 'measurement.nt')
         doc = sbol3.Document()
         doc.read(test_file, sbol3.NTRIPLES)
-        uri = 'https://sbolstandard.org/examples/M9_Glucose_CAA/CaCl2'
+        uri = 'https://sbolstandard.org/examples/M9_Glucose_CAA/ExternallyDefined1'
         ext_def = doc.find(uri)
         self.assertIsNotNone(ext_def)
         self.assertIsInstance(ext_def, sbol3.ExternallyDefined)
         self.assertCountEqual(['https://identifiers.org/SBO:0000247'], ext_def.types)
         self.assertEqual('https://identifiers.org/CHEBI:3312', ext_def.definition)
-        self.assertEqual('CaCl2', ext_def.display_id)
+        self.assertEqual('ExternallyDefined1', ext_def.display_id)
         self.assertEqual(1, len(ext_def.measures))
         measure = ext_def.measures[0]
-        measure_uri = 'https://sbolstandard.org/examples/M9_Glucose_CAA/CaCl2/measure1'
+        measure_uri = posixpath.join(uri, 'measure1')
         self.assertEqual(measure_uri, measure.identity)
