@@ -156,4 +156,4 @@ def build_entire_sequence(identity: str, type_uri: str = SBOL_ENTIRE_SEQUENCE):
     return obj
 
 
-Document.register_builder(SBOL_ENTIRE_SEQUENCE, EntireSequence)
+Document.register_builder(SBOL_ENTIRE_SEQUENCE, build_entire_sequence)

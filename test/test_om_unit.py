@@ -1,4 +1,5 @@
 import os
+import posixpath
 import unittest
 
 import sbol3
@@ -33,7 +34,8 @@ class TestMeasure(unittest.TestCase):
                                  'measurement', 'measurement.nt')
         doc = sbol3.Document()
         doc.read(test_file, sbol3.NTRIPLES)
-        uri = 'https://sbolstandard.org/examples/M9_Glucose_CAA/CaCl2/measure1'
+        namespace = 'https://sbolstandard.org/examples'
+        uri = posixpath.join(namespace, 'M9_Glucose_CAA/ExternallyDefined1/measure1')
         measure = doc.find(uri)
         self.assertIsNotNone(measure)
         self.assertIsInstance(measure, sbol3.Measure)
@@ -122,7 +124,7 @@ class TestSingularUnit(unittest.TestCase):
         self.assertIsInstance(sunit, sbol3.SingularUnit)
         self.assertEqual(0.001, sunit.factor)
         self.assertIsNone(sunit.unit)
-        self.assertIsNone(sunit.symbol)
+        self.assertEqual('l', sunit.symbol)
         self.assertCountEqual(['L', 'L2'], sunit.alternative_symbols)
         self.assertEqual('liter', sunit.label)
         self.assertCountEqual(['liter', 'litre2'], sunit.alternative_labels)

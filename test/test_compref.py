@@ -28,13 +28,13 @@ class TestComponentReference(unittest.TestCase):
                                  'toggle_switch.nt')
         doc = sbol3.Document()
         doc.read(test_file, sbol3.NTRIPLES)
-        uri = 'https://sbolstandard.org/examples/toggle_switch/componentreference_1'
+        uri = 'https://sbolstandard.org/examples/toggle_switch/ComponentReference1'
         comp_ref = doc.find(uri)
         self.assertIsNotNone(comp_ref)
         self.assertIsInstance(comp_ref, sbol3.ComponentReference)
-        in_child_of = 'https://sbolstandard.org/examples/toggle_switch/LacI_producer'
+        in_child_of = 'https://sbolstandard.org/examples/toggle_switch/SubComponent1'
         self.assertEqual(in_child_of, comp_ref.in_child_of)
-        feature = 'https://sbolstandard.org/examples/LacI_producer/LacI_protein'
+        feature = 'https://sbolstandard.org/examples/LacI_producer/SubComponent7'
         self.assertEqual(feature, comp_ref.feature)
 
 

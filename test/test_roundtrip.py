@@ -41,11 +41,11 @@ class TestRoundTrip(unittest.TestCase):
                                  'BBa_F2620_PoPSReceiver.ttl')
         doc = sbol3.Document()
         doc.read(sbol_path, sbol3.TURTLE)
-        uri = 'https://synbiohub.org/public/igem/BBa_F2620/subcomponent_3/location_1'
+        uri = 'https://synbiohub.org/public/igem/BBa_F2620/SubComponent3/Range1'
         range1 = doc.find(uri)
         self.assertIsNotNone(range1)
-        self.assertEqual(55, range1.start)
-        self.assertEqual(108, range1.end)
+        self.assertEqual(1, range1.start)
+        self.assertEqual(53, range1.end)
 
     def find_all_files(self, dirname: str):
         for item in os.listdir(dirname):
@@ -141,6 +141,8 @@ class TestRoundTrip(unittest.TestCase):
         # No files are skipped at this time. All SBOLTestSuite files can
         # be round-tripped.
         skip_list = [
+            'component_urn_uri',
+            'component_urn_uri_ordered'
         ]
         for test_file in self.find_all_files(test_dir):
             basename = os.path.basename(test_file)

@@ -61,14 +61,14 @@ For developers
 
 .. code::
 
-        $ git clone --recurse-submodules https://github.com/SynBioDex/sbol3.git
+        $ git clone --recurse-submodules https://github.com/synbiodex/pysbol3.git
 
 2. Install pySBOL3 using the ``setup.py`` file:
 
 .. code::
 
-        $ cd sbol3
-        $ python setup.py install
+        $ cd pysbol3
+        $ python3 setup.py install
 
 3. Test the installation by importing it in a Python interpreter:
 
