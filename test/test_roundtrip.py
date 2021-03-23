@@ -136,12 +136,13 @@ class TestRoundTrip(unittest.TestCase):
                 self.logger.debug('Only in loaded: %r', stmt)
             self.fail('Differences in RDF detected')
 
-    @unittest.expectedFailure
     def test_sbol3_files(self):
         test_dir = SBOL3_LOCATION
         # No files are skipped at this time. All SBOLTestSuite files can
         # be round-tripped.
         skip_list = [
+            'component_urn_uri',
+            'component_urn_uri_ordered'
         ]
         for test_file in self.find_all_files(test_dir):
             basename = os.path.basename(test_file)
