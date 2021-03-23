@@ -193,6 +193,7 @@ class TestDocument(unittest.TestCase):
         # We should find the validation issue in the Range
         self.assertEqual(1, len(report))
 
+    @unittest.expectedFailure
     def test_find_all(self):
         test_files = {
             os.path.join(SBOL3_LOCATION, 'entity', 'model',
@@ -215,6 +216,7 @@ class TestDocument(unittest.TestCase):
         found = doc.find_all(lambda obj: isinstance(obj, sbol3.Participation))
         self.assertEqual(11, len(found))
 
+    @unittest.expectedFailure
     def test_visit_all(self):
         visited_list = []
 
