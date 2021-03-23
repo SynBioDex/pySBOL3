@@ -168,6 +168,30 @@ class TestRoundTrip(unittest.TestCase):
         test_file = os.path.join(TEST_RESOURCE_DIR, 'multi-type-sbol.nt')
         self.run_round_trip_file(test_file, sbol3.NTRIPLES)
 
+    def test_multi_type_ext(self):
+        # Load a file that includes an SBOL object that has multiple other
+        # rdf:type properties
+        test_file = os.path.join(TEST_RESOURCE_DIR, 'multi-type-ext.nt')
+        self.run_round_trip_file(test_file, sbol3.NTRIPLES)
+
+    def test_multi_type_ext_builder(self):
+        class MultiTypeExtension(sbol3.TopLevel):
+            def __init__(self, identity: str, type_uri: str):
+                super().__init__(identity=identity, type_uri=type_uri)
+
+        def mte_builder(identity: str = None,
+                        type_uri: str = None) -> sbol3.Identified:
+            return MultiTypeExtension(identity=identity, type_uri=type_uri)
+
+        ext_type_uri = 'http://example.com/fake/Type1'
+        test_file = os.path.join(TEST_RESOURCE_DIR, 'multi-type-ext.nt')
+        try:
+            sbol3.Document.register_builder(ext_type_uri, mte_builder)
+            self.run_round_trip_file(test_file, sbol3.NTRIPLES)
+        finally:
+            # Reach behind the scenes to remove the registered builder
+            del sbol3.Document._uri_type_map[ext_type_uri]
+
 
 if __name__ == '__main__':
     unittest.main()

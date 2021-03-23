@@ -57,18 +57,20 @@ class Document:
             msg = f'{identity} has SBOL type {sbol_type} which is not one of'
             msg += f' {custom_types.keys()}. (See Section 6.11)'
             raise SBOLError(msg)
-        # Section 6.11 implies that an extension object MUST have one
-        # type outside the SBOL3 namespace
-        if len(types) > 1:
-            msg = f'{identity} has more than one rdfType property outside the'
-            msg += f' {SBOL3_NS} namespace. (See Section 6.11)'
-            raise SBOLError(msg)
-        build_type = types[0]
-        try:
-            builder = self._uri_type_map[build_type]
-        except KeyError:
-            logging.warning(f'No builder found for {build_type}')
+        # Look for a builder associated with one of the rdf:types.
+        # If none of the rdf:types have a builder, use the sbol_type's builder
+        builder = None
+        build_type = None
+        for type_uri in types:
+            try:
+                builder = self._uri_type_map[type_uri]
+                build_type = type_uri
+                break
+            except KeyError:
+                logging.warning(f'No builder found for {type_uri}')
+        if builder is None:
             builder = custom_types[sbol_type]
+            build_type = types[0]
         return builder(identity=identity, type_uri=build_type)
 
     def _build_object(self, identity: str, types: List[str]) -> Optional[Identified]:
