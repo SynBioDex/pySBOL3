@@ -40,7 +40,7 @@ class Identified(SBOLObject):
                                     type_constraint=Identified)
         # Identity has been set by the SBOLObject constructor
         self._display_id = self._extract_display_id(self.identity)
-        self._rdf_types = URIProperty(self, rdflib.RDF.type, 1, math.inf,
+        self._rdf_types = URIProperty(self, RDF_TYPE, 1, math.inf,
                                       initial_value=[type_uri])
 
     @staticmethod

@@ -14,6 +14,9 @@ SBOL3_NS = 'http://sbols.org/v3#'
 SBOL2_NS = 'http://sbols.org/v2#'
 SBOL1_NS = 'http://sbols.org/v1#'
 
+# RDF
+RDF_NS = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+
 # Provenance
 PROV_NS = 'http://www.w3.org/ns/prov#'
 
@@ -25,6 +28,11 @@ SO_NS = "https://identifiers.org/SO:"
 
 # Namespace for Systems Biology Ontology (SBO) terms
 SBO_NS = 'https://identifiers.org/SBO:'
+
+# ----------
+# RDF terms
+# ----------
+RDF_TYPE = RDF_NS + 'type'
 
 # ----------
 # SBOL 3 terms

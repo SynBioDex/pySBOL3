@@ -9,6 +9,7 @@ import sbol3
 
 MODULE_LOCATION = os.path.dirname(os.path.abspath(__file__))
 SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
+TEST_RESOURCE_DIR = os.path.join(MODULE_LOCATION, 'resources')
 
 
 class TestDocument(unittest.TestCase):
@@ -273,6 +274,57 @@ class TestDocument(unittest.TestCase):
         c2 = doc2.find(c_uri)
         self.assertIsNotNone(c2)
         self.assertEqual([sbol3.SBO_PROTEIN], c2.types)
+
+    def test_multi_type_sbol(self):
+        # Load a file that includes an SBOL object that has multiple other
+        # rdf:type properties
+        test_file = os.path.join(TEST_RESOURCE_DIR, 'multi-type-sbol.nt')
+        doc = sbol3.Document()
+        doc.read(test_file)
+        c_uri = 'http://example.com/sbol3/c1'
+        c = doc.find(c_uri)
+        self.assertIsNotNone(c)
+        self.assertEqual(3, len(c._rdf_types))
+        self.assertEqual(sbol3.SBOL_COMPONENT, c.type_uri)
+        self.assertIsInstance(c, sbol3.Component)
+
+    def test_multi_type_ext(self):
+        # Load a file that includes an SBOL object that has multiple other
+        # rdf:type properties
+        test_file = os.path.join(TEST_RESOURCE_DIR, 'multi-type-ext.nt')
+        doc = sbol3.Document()
+        doc.read(test_file)
+        uri = 'http://example.com/sbol3/c1'
+        x = doc.find(uri)
+        self.assertIsNotNone(x)
+        self.assertEqual(3, len(x._rdf_types))
+        self.assertNotEqual(sbol3.SBOL_TOP_LEVEL, x.type_uri)
+        self.assertIsInstance(x, sbol3.CustomTopLevel)
+
+    def test_multi_type_ext_builder(self):
+        class MultiTypeExtension(sbol3.TopLevel):
+            def __init__(self, identity: str, type_uri: str):
+                super().__init__(identity=identity, type_uri=type_uri)
+
+        def mte_builder(identity: str = None,
+                        type_uri: str = None) -> sbol3.Identified:
+            return MultiTypeExtension(identity=identity, type_uri=type_uri)
+
+        ext_type_uri = 'http://example.com/fake/Type1'
+        test_file = os.path.join(TEST_RESOURCE_DIR, 'multi-type-ext.nt')
+        try:
+            sbol3.Document.register_builder(ext_type_uri, mte_builder)
+            doc = sbol3.Document()
+            doc.read(test_file)
+            uri = 'http://example.com/sbol3/c1'
+            x = doc.find(uri)
+            self.assertIsNotNone(x)
+            self.assertEqual(3, len(x._rdf_types))
+            self.assertEqual(ext_type_uri, x.type_uri)
+            self.assertIsInstance(x, MultiTypeExtension)
+        finally:
+            # Reach behind the scenes to remove the registered builder
+            del sbol3.Document._uri_type_map[ext_type_uri]
 
 
 if __name__ == '__main__':

@@ -144,6 +144,13 @@ class Document:
                 other_identity = str(o)
                 other = objects[other_identity]
                 obj._owned_objects[str_p].append(other)
+            elif str_p == RDF_TYPE:
+                # Handle rdf:type specially because the main type(s)
+                # will already be in the list from the build_object
+                # phase and those entries need to be maintained and
+                # we don't want duplicates
+                if o not in obj._properties[str_p]:
+                    obj._properties[str_p].append(o)
             else:
                 obj._properties[str_p].append(o)
 
