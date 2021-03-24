@@ -68,6 +68,8 @@ class TestRoundTrip(unittest.TestCase):
             'nt': sbol3.NTRIPLES,
             'ttl': sbol3.TURTLE,
             'rdf': sbol3.RDF_XML,
+            'jsonld': sbol3.JSONLD,
+            'jsonld_expanded': sbol3.JSONLD,
         }
         if ext in ext_map:
             return ext_map[ext]
