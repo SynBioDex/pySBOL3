@@ -36,6 +36,11 @@
    python3 -m twine upload dist/*
    ```
 
+1. (While in prerelease) Update the default version on [readthedocs](https://readthedocs.org/)
+   * Admin -> Advanced Settings
+   * Set "Default version" to the newly release alpha version
+   * We shouldn't have to do this after the 1.0 release
+
 1. Bump the version numbers on the develop branches
    * _Note: Use the standard contribution process by submitting these
      changes via a pull request on your fork, not a direct push to the
