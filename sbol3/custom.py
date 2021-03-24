@@ -18,13 +18,12 @@ class CustomIdentified(Identified):
                          name=name, description=description,
                          derived_from=derived_from, generated_by=generated_by,
                          measures=measures)
-        self.rdf_type = URIProperty(self, rdflib.RDF.type, 1, 1,
-                                    initial_value=sbol_type_uri)
+        self._rdf_types.append(sbol_type_uri)
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         report = super().validate(report)
-        if self.rdf_type is None:
-            message = 'rdf_type is a required property of CustomIdentified'
+        if len(self._rdf_types) < 2:
+            message = 'Extension classes must have at least 2 rdf:type properties'
             report.addError(self.identity, None, message)
         return report
 
@@ -42,12 +41,11 @@ class CustomTopLevel(TopLevel):
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
-        self.rdf_type = URIProperty(self, rdflib.RDF.type, 1, 1,
-                                    initial_value=sbol_type_uri)
+        self._rdf_types.append(sbol_type_uri)
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         report = super().validate(report)
-        if self.rdf_type is None:
-            message = 'rdf_type is a required property of CustomTopLevel'
+        if len(self._rdf_types) < 2:
+            message = 'Extension classes must have at least 2 rdf:type properties'
             report.addError(self.identity, None, message)
         return report

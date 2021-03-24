@@ -9,7 +9,7 @@ from . import *
 
 class SBOLObject:
 
-    def __init__(self, name: str, type_uri: str) -> None:
+    def __init__(self, name: str) -> None:
         self._properties = defaultdict(list)
         self._owned_objects = defaultdict(list)
         # Does this need to be a property? It does not get serialized to the RDF file.
@@ -17,8 +17,6 @@ class SBOLObject:
         # now, and change to a property in the future if needed.
         self._identity = SBOLObject._make_identity(name)
         self.document = None
-        # This is the URI for this object's type, used for serialization
-        self.type_uri = type_uri
 
     def __setattr__(self, name, value):
         try:

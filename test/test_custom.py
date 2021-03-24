@@ -58,8 +58,8 @@ class TestCustomTopLevel(unittest.TestCase):
         ctl = sbol3.CustomTopLevel('custom1', custom_type)
         self.assertEqual(custom_type, ctl.type_uri)
         # Go behind the scenes to verify
-        self.assertEqual(rdflib.URIRef(sbol3.SBOL_TOP_LEVEL),
-                         ctl._properties[rdflib.RDF.type][0])
+        expected = [custom_type, sbol3.SBOL_TOP_LEVEL]
+        self.assertCountEqual(expected, ctl._rdf_types)
 
     # TODO: We really want to verify the serialization of the custom top
     #       level as well. There is no Document.writeString() yet.
@@ -128,8 +128,8 @@ class TestCustomIdentified(unittest.TestCase):
                                      type_uri=custom_type)
         self.assertEqual(custom_type, ctl.type_uri)
         # Go behind the scenes to verify
-        self.assertEqual(rdflib.URIRef(sbol3.SBOL_IDENTIFIED),
-                         ctl._properties[rdflib.RDF.type][0])
+        expected = [custom_type, sbol3.SBOL_IDENTIFIED]
+        self.assertCountEqual(expected, ctl._rdf_types)
 
     # TODO: We really want to verify the serialization of the custom
     #       identified as well. We need to attach it to a top level

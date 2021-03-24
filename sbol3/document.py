@@ -57,18 +57,20 @@ class Document:
             msg = f'{identity} has SBOL type {sbol_type} which is not one of'
             msg += f' {custom_types.keys()}. (See Section 6.11)'
             raise SBOLError(msg)
-        # Section 6.11 implies that an extension object MUST have one
-        # type outside the SBOL3 namespace
-        if len(types) > 1:
-            msg = f'{identity} has more than one rdfType property outside the'
-            msg += f' {SBOL3_NS} namespace. (See Section 6.11)'
-            raise SBOLError(msg)
-        build_type = types[0]
-        try:
-            builder = self._uri_type_map[build_type]
-        except KeyError:
-            logging.warning(f'No builder found for {build_type}')
+        # Look for a builder associated with one of the rdf:types.
+        # If none of the rdf:types have a builder, use the sbol_type's builder
+        builder = None
+        build_type = None
+        for type_uri in types:
+            try:
+                builder = self._uri_type_map[type_uri]
+                build_type = type_uri
+                break
+            except KeyError:
+                logging.warning(f'No builder found for {type_uri}')
+        if builder is None:
             builder = custom_types[sbol_type]
+            build_type = types[0]
         return builder(identity=identity, type_uri=build_type)
 
     def _build_object(self, identity: str, types: List[str]) -> Optional[Identified]:
@@ -79,7 +81,9 @@ class Document:
         #    no other type is known, build a generic TopLevel or Identified.
         sbol_types = [t for t in types if t.startswith(SBOL3_NS)]
         if len(sbol_types) == 0:
-            # If there are no SBOL types in the list, do not build
+            # If there are no SBOL types in the list. Ignore this entity.
+            # Its triples will be stored in self._other_rdf later in the
+            # load process.
             return None
         if len(sbol_types) > 1:
             # If there are multiple SBOL types in the list, raise an error.
@@ -88,22 +92,23 @@ class Document:
             msg = f'{identity} has more than one rdfType property in the'
             msg += f' {SBOL3_NS} namespace.'
             raise SBOLError(msg)
-        if len(types) == 1:
-            # Simple case: the one SBOL type is the only type.
-            type_uri = types[0]
-            try:
-                builder = self._uri_type_map[type_uri]
-            except KeyError:
-                logging.warning(f'No builder found for {type_uri}')
-                raise SBOLError(f'Unknown type {type_uri}')
-            obj = builder(identity=identity, type_uri=type_uri)
-            return obj
-        else:
-            # If there is more than 1 rdf type, it must be an
-            # extension.
-            sbol_type = sbol_types[0]
+        extension_types = {
+            SBOL_IDENTIFIED: CustomIdentified,
+            SBOL_TOP_LEVEL: CustomTopLevel
+        }
+        sbol_type = sbol_types[0]
+        if sbol_type in extension_types:
+            # Build an extension object
             types.remove(sbol_type)
             return self._build_extension_object(identity, sbol_type, types)
+        else:
+            try:
+                builder = self._uri_type_map[sbol_type]
+            except KeyError:
+                logging.warning(f'No builder found for {sbol_type}')
+                raise SBOLError(f'Unknown type {sbol_type}')
+            obj = builder(identity=identity, type_uri=sbol_type)
+            return obj
 
     def _parse_objects(self, graph: rdflib.Graph) -> Dict[str, SBOLObject]:
         # First extract the identities and their types. Each identity
@@ -128,9 +133,6 @@ class Document:
     @staticmethod
     def _parse_attributes(objects, graph):
         for s, p, o in graph.triples((None, None, None)):
-            if p == rdflib.RDF.type:
-                # RDF.types have been processed already
-                continue
             str_s = str(s)
             str_p = str(p)
             try:
@@ -142,6 +144,13 @@ class Document:
                 other_identity = str(o)
                 other = objects[other_identity]
                 obj._owned_objects[str_p].append(other)
+            elif str_p == RDF_TYPE:
+                # Handle rdf:type specially because the main type(s)
+                # will already be in the list from the build_object
+                # phase and those entries need to be maintained and
+                # we don't want duplicates
+                if o not in obj._properties[str_p]:
+                    obj._properties[str_p].append(o)
             else:
                 obj._properties[str_p].append(o)
 
