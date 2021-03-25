@@ -141,7 +141,7 @@ class TestDocument(unittest.TestCase):
         doc = sbol3.Document()
         doc.add(sbol3.Component('foo', sbol3.SBO_DNA))
         graph = doc.graph()
-        self.assertEqual(3, len(graph))
+        self.assertEqual(4, len(graph))
         subjects = set()
         predicates = set()
         for s, p, _ in graph:
@@ -150,7 +150,7 @@ class TestDocument(unittest.TestCase):
         # Expecting 1 subject, the component
         self.assertEqual(1, len(subjects))
         # Expecting 3 predicates
-        self.assertEqual(3, len(predicates))
+        self.assertEqual(4, len(predicates))
         self.assertIn(rdflib.RDF.type, predicates)
         # Convert predicates to strings for the remaining assertions
         predicates = [str(p) for p in predicates]

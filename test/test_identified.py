@@ -54,7 +54,8 @@ class TestIdentified(unittest.TestCase):
         # is not a URL
         identity = str(uuid.uuid5(uuid.NAMESPACE_URL,
                                   'https://github.com/synbiodex/pysbol3'))
-        c = sbol3.Component(identity, sbol3.SBO_DNA)
+        namespace = str(uuid.uuid4())
+        c = sbol3.Component(identity, sbol3.SBO_DNA, namespace=namespace)
         self.assertEqual(identity, c.identity)
         self.assertIsNone(c.display_id)
 
@@ -66,8 +67,8 @@ class TestIdentified(unittest.TestCase):
         # Is there a better way to get all the triples?
         triples = list(graph.triples((None, None, None)))
         # Expecting a triple for the type, a triple for the displayId,
-        # and a triple for the component type
-        self.assertEqual(3, len(triples))
+        # a triple for the namespace, and a triple for the component type
+        self.assertEqual(4, len(triples))
 
 
 if __name__ == '__main__':

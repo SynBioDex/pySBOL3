@@ -1,4 +1,6 @@
+import posixpath
 import unittest
+import uuid
 
 import rdflib
 
@@ -41,6 +43,35 @@ class TestCollection(unittest.TestCase):
         self.assertIn(sbol3.SBOL_MEMBER, collection._properties)
         self.assertNotIn(sbol3.SBOL_ORIENTATION, collection._properties)
         self.assertEqual(uris, collection.members)
+
+    # Namespace testing
+    def test_namespace_deduced(self):
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        identity = posixpath.join(namespace, 'collection1')
+        collection = sbol3.Collection(identity)
+        self.assertEqual(namespace, collection.namespace)
+        # Now test a namespace with a trailing #
+        identity2 = f'{namespace}#collection2'
+        collection2 = sbol3.Collection(identity2)
+        self.assertEqual(namespace, collection2.namespace)
+
+    def test_namespace_set(self):
+        # Test that namespace is properly set on an object after
+        # using set_namespace()
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        collection = sbol3.Collection('collection1')
+        self.assertEqual(namespace, collection.namespace)
+
+    def test_namespace_none(self):
+        # Test the exception case when a namespace cannot be deduced
+        identity = uuid.uuid4().urn
+        collection = sbol3.Collection(identity)
+        # The namespace should be None in this case.
+        # We can't determine a namespace from a UUID and we don't
+        # want to error and break file loading if we can't
+        # determine a namespace.
+        self.assertIsNone(collection.namespace)
 
 
 class TestExperiment(unittest.TestCase):
