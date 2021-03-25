@@ -36,29 +36,6 @@ class Collection(TopLevel):
                                         initial_value=members)
 
 
-class Namespace(Collection):
-    """The Namespace class is a subclass of Collection and is used to
-    define member entities that share the same URI prefix. Namely, all
-    linked objects MUST have a URI prefix matching the URI of the
-    Namespace object.
-
-    """
-
-    def __init__(self, identity: str,
-                 *, members: List[str] = None,
-                 attachments: List[str] = None,
-                 name: str = None, description: str = None,
-                 derived_from: List[str] = None,
-                 generated_by: List[str] = None,
-                 measures: List[SBOLObject] = None,
-                 type_uri: str = SBOL_NAMESPACE) -> None:
-        super().__init__(identity=identity, type_uri=type_uri,
-                         members=members,
-                         attachments=attachments, name=name,
-                         description=description, derived_from=derived_from,
-                         generated_by=generated_by, measures=measures)
-
-
 class Experiment(Collection):
     """The purpose of the Experiment class is to aggregate
     ExperimentalData objects for subsequent analysis, usually in
@@ -84,5 +61,4 @@ class Experiment(Collection):
 
 
 Document.register_builder(SBOL_COLLECTION, Collection)
-Document.register_builder(SBOL_NAMESPACE, Namespace)
 Document.register_builder(SBOL_EXPERIMENT, Experiment)

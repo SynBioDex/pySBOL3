@@ -33,7 +33,7 @@ from .model import Model
 from .subcomponent import SubComponent
 from .localsub import LocalSubComponent
 from .seqfeat import SequenceFeature
-from .collection import Collection, Namespace, Experiment
+from .collection import Collection, Experiment
 from .combderiv import CombinatorialDerivation
 from .compref import ComponentReference
 from .extdef import ExternallyDefined

@@ -83,11 +83,11 @@ class TestDocument(unittest.TestCase):
         # Ensure that duplicate identities cannot be added to the document.
         # See https://github.com/SynBioDex/pySBOL3/issues/39
         document = sbol3.Document()
-        namespace1 = sbol3.Namespace(identity=sbol3.SBOL3_NS)
-        document.add(namespace1)
-        namespace2 = sbol3.Namespace(identity=sbol3.SBOL3_NS)
+        experiment1 = sbol3.Experiment(identity=sbol3.SBOL3_NS)
+        document.add(experiment1)
+        experiment2 = sbol3.Experiment(identity=sbol3.SBOL3_NS)
         with self.assertRaises(ValueError):
-            document.add(namespace2)
+            document.add(experiment2)
 
     def test_write(self):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')

@@ -43,31 +43,6 @@ class TestCollection(unittest.TestCase):
         self.assertEqual(uris, collection.members)
 
 
-class TestNamespace(unittest.TestCase):
-
-    def setUp(self) -> None:
-        sbol3.set_defaults()
-
-    def tearDown(self) -> None:
-        sbol3.set_defaults()
-
-    def test_create(self):
-        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
-        namespace = sbol3.Namespace('namespace1')
-        self.assertIsNotNone(namespace)
-        self.assertEqual(0, len(namespace.members))
-        self.assertEqual(sbol3.SBOL_NAMESPACE, namespace.type_uri)
-
-    def test_read(self):
-        identity = 'https://github.com/synbiodex/pysbol3/namespace1'
-        nt_data = f'<{identity}> <{rdflib.RDF.type}> <{sbol3.SBOL_NAMESPACE}> .'
-        doc = sbol3.Document()
-        doc.read_string(nt_data, 'ttl')
-        namespace = doc.find(identity)
-        self.assertIsNotNone(namespace)
-        self.assertIsInstance(namespace, sbol3.Namespace)
-
-
 class TestExperiment(unittest.TestCase):
 
     def setUp(self) -> None:
