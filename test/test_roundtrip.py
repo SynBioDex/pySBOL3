@@ -143,8 +143,6 @@ class TestRoundTrip(unittest.TestCase):
         # No files are skipped at this time. All SBOLTestSuite files can
         # be round-tripped.
         skip_list = [
-            'component_urn_uri',
-            'component_urn_uri_ordered',
             # Waiting for https://github.com/SynBioDex/SBOLTestSuite/issues/33
             'annotation',
             'annotation_ordered',

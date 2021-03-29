@@ -60,7 +60,7 @@ class SBOLObject:
         try:
             # If it is a UUID, accept it as the identity
             identity_uuid = uuid.UUID(name)
-            return str(identity_uuid)
+            return name
         except ValueError:
             pass
         # Not a URL or a UUID, so append to the namespace
