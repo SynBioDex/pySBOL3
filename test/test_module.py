@@ -30,7 +30,6 @@ class TestModule(unittest.TestCase):
         self.assertIsInstance(sbol3.ExperimentalData, type)
         self.assertIsInstance(sbol3.Model, type)
         self.assertIsInstance(sbol3.Collection, type)
-        self.assertIsInstance(sbol3.Namespace, type)
         self.assertIsInstance(sbol3.Experiment, type)
         self.assertIsInstance(sbol3.Attachment, type)
 

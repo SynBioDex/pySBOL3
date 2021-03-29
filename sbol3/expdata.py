@@ -13,13 +13,15 @@ class ExperimentalData(TopLevel):
     """
 
     def __init__(self, identity: str,
-                 *, attachments: List[str] = None,
+                 *, namespace: str = None,
+                 attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
                  generated_by: List[str] = None,
                  measures: List[SBOLObject] = None,
                  type_uri: str = SBOL_EXPERIMENTAL_DATA):
         super().__init__(identity=identity, type_uri=type_uri,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)

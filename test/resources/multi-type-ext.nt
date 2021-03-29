@@ -2,7 +2,8 @@
 <http://example.com/foaf/pparker> <http://xmlns.com/foaf/0.1/mbox> <mailto:peter.parker@dailybugle.com> .
 <http://example.com/foaf/pparker> <http://xmlns.com/foaf/0.1/name> "Peter Parker" .
 <http://example.com/sbol3/c1> <http://sbols.org/v3#displayId> "c1" .
-<http://example.com/sbol3/c1> <http://example.com/sbol3#type> <https://identifiers.org/SBO:0000251> .
+<http://example.com/sbol3/c1> <http://sbols.org/v3#hasNamespace> <http://example.com> .
+<http://example.com/sbol3/c1> <http://sbols.org/v3#type> <https://identifiers.org/SBO:0000251> .
 <http://example.com/sbol3/c1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://sbols.org/v3#TopLevel> .
 <http://example.com/sbol3/c1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://example.com/fake/Type1> .
 <http://example.com/sbol3/c1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://example.com/fake/v2#Type2> .

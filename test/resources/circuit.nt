@@ -1,12 +1,14 @@
 
 <https://github.com/BuildACell/BioCRNPyler/GFP> <http://sbols.org/v3#description> "GFP Coding Sequence" .
 <https://github.com/BuildACell/BioCRNPyler/GFP> <http://sbols.org/v3#displayId> "GFP" .
+<https://github.com/BuildACell/BioCRNPyler/GFP> <http://sbols.org/v3#hasNamespace> <https://github.com/BuildACell/BioCRNPyler> .
 <https://github.com/BuildACell/BioCRNPyler/GFP> <http://sbols.org/v3#name> "GFP" .
 <https://github.com/BuildACell/BioCRNPyler/GFP> <http://sbols.org/v3#role> <https://identifiers.org/SO:0000316> .
 <https://github.com/BuildACell/BioCRNPyler/GFP> <http://sbols.org/v3#type> <https://identifiers.org/SBO:0000251> .
 <https://github.com/BuildACell/BioCRNPyler/GFP> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://sbols.org/v3#Component> .
 <https://github.com/BuildACell/BioCRNPyler/UTR1> <http://sbols.org/v3#description> "Your Description Here" .
 <https://github.com/BuildACell/BioCRNPyler/UTR1> <http://sbols.org/v3#displayId> "UTR1" .
+<https://github.com/BuildACell/BioCRNPyler/UTR1> <http://sbols.org/v3#hasNamespace> <https://github.com/BuildACell/BioCRNPyler> .
 <https://github.com/BuildACell/BioCRNPyler/UTR1> <http://sbols.org/v3#role> <https://identifiers.org/SO:0000139> .
 <https://github.com/BuildACell/BioCRNPyler/UTR1> <http://sbols.org/v3#type> <https://identifiers.org/SBO:0000251> .
 <https://github.com/BuildACell/BioCRNPyler/UTR1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://sbols.org/v3#Component> .
@@ -45,16 +47,19 @@
 <https://github.com/BuildACell/BioCRNPyler/circuit> <http://sbols.org/v3#hasFeature> <https://github.com/BuildACell/BioCRNPyler/circuit/SubComponent2> .
 <https://github.com/BuildACell/BioCRNPyler/circuit> <http://sbols.org/v3#hasFeature> <https://github.com/BuildACell/BioCRNPyler/circuit/SubComponent3> .
 <https://github.com/BuildACell/BioCRNPyler/circuit> <http://sbols.org/v3#hasFeature> <https://github.com/BuildACell/BioCRNPyler/circuit/SubComponent4> .
+<https://github.com/BuildACell/BioCRNPyler/circuit> <http://sbols.org/v3#hasNamespace> <https://github.com/BuildACell/BioCRNPyler> .
 <https://github.com/BuildACell/BioCRNPyler/circuit> <http://sbols.org/v3#role> <https://identifiers.org/SO:0000804> .
 <https://github.com/BuildACell/BioCRNPyler/circuit> <http://sbols.org/v3#type> <https://identifiers.org/SBO:0000251> .
 <https://github.com/BuildACell/BioCRNPyler/circuit> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://sbols.org/v3#Component> .
 <https://github.com/BuildACell/BioCRNPyler/op1> <http://sbols.org/v3#description> "Your Description Here" .
 <https://github.com/BuildACell/BioCRNPyler/op1> <http://sbols.org/v3#displayId> "op1" .
+<https://github.com/BuildACell/BioCRNPyler/op1> <http://sbols.org/v3#hasNamespace> <https://github.com/BuildACell/BioCRNPyler> .
 <https://github.com/BuildACell/BioCRNPyler/op1> <http://sbols.org/v3#role> <https://identifiers.org/SO:0000057> .
 <https://github.com/BuildACell/BioCRNPyler/op1> <http://sbols.org/v3#type> <https://identifiers.org/SBO:0000251> .
 <https://github.com/BuildACell/BioCRNPyler/op1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://sbols.org/v3#Component> .
 <https://github.com/BuildACell/BioCRNPyler/pTetR> <http://sbols.org/v3#description> "TetR repressible promoter" .
 <https://github.com/BuildACell/BioCRNPyler/pTetR> <http://sbols.org/v3#displayId> "pTetR" .
+<https://github.com/BuildACell/BioCRNPyler/pTetR> <http://sbols.org/v3#hasNamespace> <https://github.com/BuildACell/BioCRNPyler> .
 <https://github.com/BuildACell/BioCRNPyler/pTetR> <http://sbols.org/v3#name> "pTetR" .
 <https://github.com/BuildACell/BioCRNPyler/pTetR> <http://sbols.org/v3#role> <https://identifiers.org/SO:0000167> .
 <https://github.com/BuildACell/BioCRNPyler/pTetR> <http://sbols.org/v3#type> <https://identifiers.org/SBO:0000251> .

@@ -29,8 +29,8 @@ class Identified(SBOLObject):
                                         initial_value=description)
         self.derived_from = URIProperty(self, PROV_DERIVED_FROM, 0, math.inf,
                                         initial_value=derived_from)
-        self.generated_by = URIProperty(self, PROV_GENERATED_BY, 0, math.inf,
-                                        initial_value=generated_by)
+        self.generated_by = ReferencedObject(self, PROV_GENERATED_BY, 0, math.inf,
+                                             initial_value=generated_by)
         # The type_constraint for measures should really be Measure but
         # that's a circular dependency. Instead we make the type constraint
         # Identified to constrain it somewhat. Identified is the best we

@@ -21,12 +21,14 @@ class Prefix(CustomTopLevel, abc.ABC):
                  alternative_labels: List[str] = None,
                  comment: str = None,
                  long_comment: str = None,
+                 namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
                  generated_by: List[str] = None,
                  measures: List[SBOLObject] = None) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
@@ -73,6 +75,7 @@ class SIPrefix(Prefix):
                  alternative_labels: List[str] = None,
                  comment: str = None,
                  long_comment: str = None,
+                 namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -84,6 +87,7 @@ class SIPrefix(Prefix):
                          alternative_symbols=alternative_symbols,
                          alternative_labels=alternative_labels,
                          comment=comment, long_comment=long_comment,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
@@ -116,6 +120,7 @@ class BinaryPrefix(Prefix):
                  alternative_labels: List[str] = None,
                  comment: str = None,
                  long_comment: str = None,
+                 namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -127,6 +132,7 @@ class BinaryPrefix(Prefix):
                          alternative_symbols=alternative_symbols,
                          alternative_labels=alternative_labels,
                          comment=comment, long_comment=long_comment,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)

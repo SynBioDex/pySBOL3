@@ -22,6 +22,7 @@ class Collection(TopLevel):
 
     def __init__(self, identity: str,
                  *, members: List[str] = None,
+                 namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -29,34 +30,12 @@ class Collection(TopLevel):
                  measures: List[SBOLObject] = None,
                  type_uri: str = SBOL_COLLECTION) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
         self.members = ReferencedObject(self, SBOL_MEMBER, 0, math.inf,
                                         initial_value=members)
-
-
-class Namespace(Collection):
-    """The Namespace class is a subclass of Collection and is used to
-    define member entities that share the same URI prefix. Namely, all
-    linked objects MUST have a URI prefix matching the URI of the
-    Namespace object.
-
-    """
-
-    def __init__(self, identity: str,
-                 *, members: List[str] = None,
-                 attachments: List[str] = None,
-                 name: str = None, description: str = None,
-                 derived_from: List[str] = None,
-                 generated_by: List[str] = None,
-                 measures: List[SBOLObject] = None,
-                 type_uri: str = SBOL_NAMESPACE) -> None:
-        super().__init__(identity=identity, type_uri=type_uri,
-                         members=members,
-                         attachments=attachments, name=name,
-                         description=description, derived_from=derived_from,
-                         generated_by=generated_by, measures=measures)
 
 
 class Experiment(Collection):
@@ -70,6 +49,7 @@ class Experiment(Collection):
 
     def __init__(self, identity: str,
                  *, members: List[str] = None,
+                 namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -77,12 +57,11 @@ class Experiment(Collection):
                  measures: List[SBOLObject] = None,
                  type_uri: str = SBOL_EXPERIMENT) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
-                         members=members,
+                         members=members, namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
 
 
 Document.register_builder(SBOL_COLLECTION, Collection)
-Document.register_builder(SBOL_NAMESPACE, Namespace)
 Document.register_builder(SBOL_EXPERIMENT, Experiment)

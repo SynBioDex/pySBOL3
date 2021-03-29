@@ -1,6 +1,8 @@
 import copy
 import math
-from typing import List, Dict, Callable
+import posixpath
+from typing import List, Dict, Callable, Union
+from urllib.parse import urlparse
 
 from . import *
 
@@ -16,7 +18,8 @@ class TopLevel(Identified):
     """
 
     def __init__(self, identity: str, type_uri: str,
-                 *, attachments: List[str] = None,
+                 *, namespace: str = None,
+                 attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
                  generated_by: List[str] = None,
@@ -30,8 +33,38 @@ class TopLevel(Identified):
                          name=name, description=description,
                          derived_from=derived_from, generated_by=generated_by,
                          measures=measures)
+        if namespace is None:
+            namespace = TopLevel.default_namespace(namespace, identity)
+        self.namespace = URIProperty(self, SBOL_NAMESPACE, 1, 1,
+                                     initial_value=namespace)
         self.attachments = ReferencedObject(self, SBOL_HAS_ATTACHMENT, 0, math.inf,
                                             initial_value=attachments)
+
+    @staticmethod
+    def default_namespace(namespace: Union[None, str], identity: str) -> str:
+        # short circuit if a namespace is set
+        if namespace is not None:
+            return namespace
+        # Try using the default namespace if set
+        namespace = get_namespace()
+        if namespace is None:
+            # No default namespace was defined
+            # Try parsing the identity as a URL
+            parsed = urlparse(identity)
+            if parsed.scheme and parsed.netloc and parsed.path:
+                # This is a URL
+                # Reverse index to drop the displayId and use the rest
+                # for the namespace
+                delim = posixpath.sep
+                if '#' in identity:
+                    delim = '#'
+                namespace = identity[:identity.rindex(delim)]
+        if namespace is None:
+            # TODO: what should we do here? We haven't been able to determine
+            #       a namespace. But in the case where we're loading a file
+            #       that's probably ok. We don't want that loading to fail.
+            pass
+        return namespace
 
     def validate_identity(self, report: ValidationReport) -> None:
         # TODO: See section 5.1 for rules about identity for TopLevel

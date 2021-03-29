@@ -1,4 +1,6 @@
+import posixpath
 import unittest
+import uuid
 
 import rdflib
 
@@ -42,30 +44,34 @@ class TestCollection(unittest.TestCase):
         self.assertNotIn(sbol3.SBOL_ORIENTATION, collection._properties)
         self.assertEqual(uris, collection.members)
 
+    # Namespace testing
+    def test_namespace_deduced(self):
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        identity = posixpath.join(namespace, 'collection1')
+        collection = sbol3.Collection(identity)
+        self.assertEqual(namespace, collection.namespace)
+        # Now test a namespace with a trailing #
+        identity2 = f'{namespace}#collection2'
+        collection2 = sbol3.Collection(identity2)
+        self.assertEqual(namespace, collection2.namespace)
 
-class TestNamespace(unittest.TestCase):
+    def test_namespace_set(self):
+        # Test that namespace is properly set on an object after
+        # using set_namespace()
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        collection = sbol3.Collection('collection1')
+        self.assertEqual(namespace, collection.namespace)
 
-    def setUp(self) -> None:
-        sbol3.set_defaults()
-
-    def tearDown(self) -> None:
-        sbol3.set_defaults()
-
-    def test_create(self):
-        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
-        namespace = sbol3.Namespace('namespace1')
-        self.assertIsNotNone(namespace)
-        self.assertEqual(0, len(namespace.members))
-        self.assertEqual(sbol3.SBOL_NAMESPACE, namespace.type_uri)
-
-    def test_read(self):
-        identity = 'https://github.com/synbiodex/pysbol3/namespace1'
-        nt_data = f'<{identity}> <{rdflib.RDF.type}> <{sbol3.SBOL_NAMESPACE}> .'
-        doc = sbol3.Document()
-        doc.read_string(nt_data, 'ttl')
-        namespace = doc.find(identity)
-        self.assertIsNotNone(namespace)
-        self.assertIsInstance(namespace, sbol3.Namespace)
+    def test_namespace_none(self):
+        # Test the exception case when a namespace cannot be deduced
+        identity = uuid.uuid4().urn
+        collection = sbol3.Collection(identity)
+        # The namespace should be None in this case.
+        # We can't determine a namespace from a UUID and we don't
+        # want to error and break file loading if we can't
+        # determine a namespace.
+        self.assertIsNone(collection.namespace)
 
 
 class TestExperiment(unittest.TestCase):

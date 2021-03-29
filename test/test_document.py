@@ -83,11 +83,11 @@ class TestDocument(unittest.TestCase):
         # Ensure that duplicate identities cannot be added to the document.
         # See https://github.com/SynBioDex/pySBOL3/issues/39
         document = sbol3.Document()
-        namespace1 = sbol3.Namespace(identity=sbol3.SBOL3_NS)
-        document.add(namespace1)
-        namespace2 = sbol3.Namespace(identity=sbol3.SBOL3_NS)
+        experiment1 = sbol3.Experiment(identity=sbol3.SBOL3_NS)
+        document.add(experiment1)
+        experiment2 = sbol3.Experiment(identity=sbol3.SBOL3_NS)
         with self.assertRaises(ValueError):
-            document.add(namespace2)
+            document.add(experiment2)
 
     def test_write(self):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
@@ -141,7 +141,7 @@ class TestDocument(unittest.TestCase):
         doc = sbol3.Document()
         doc.add(sbol3.Component('foo', sbol3.SBO_DNA))
         graph = doc.graph()
-        self.assertEqual(3, len(graph))
+        self.assertEqual(4, len(graph))
         subjects = set()
         predicates = set()
         for s, p, _ in graph:
@@ -150,7 +150,7 @@ class TestDocument(unittest.TestCase):
         # Expecting 1 subject, the component
         self.assertEqual(1, len(subjects))
         # Expecting 3 predicates
-        self.assertEqual(3, len(predicates))
+        self.assertEqual(4, len(predicates))
         self.assertIn(rdflib.RDF.type, predicates)
         # Convert predicates to strings for the remaining assertions
         predicates = [str(p) for p in predicates]

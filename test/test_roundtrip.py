@@ -144,7 +144,10 @@ class TestRoundTrip(unittest.TestCase):
         # be round-tripped.
         skip_list = [
             'component_urn_uri',
-            'component_urn_uri_ordered'
+            'component_urn_uri_ordered',
+            # Waiting for https://github.com/SynBioDex/SBOLTestSuite/issues/33
+            'annotation',
+            'annotation_ordered',
         ]
         for test_file in self.find_all_files(test_dir):
             basename = os.path.basename(test_file)
