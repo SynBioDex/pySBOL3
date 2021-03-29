@@ -22,6 +22,7 @@ class Collection(TopLevel):
 
     def __init__(self, identity: str,
                  *, members: List[str] = None,
+                 namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -29,6 +30,7 @@ class Collection(TopLevel):
                  measures: List[SBOLObject] = None,
                  type_uri: str = SBOL_COLLECTION) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
@@ -47,6 +49,7 @@ class Experiment(Collection):
 
     def __init__(self, identity: str,
                  *, members: List[str] = None,
+                 namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -54,7 +57,7 @@ class Experiment(Collection):
                  measures: List[SBOLObject] = None,
                  type_uri: str = SBOL_EXPERIMENT) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
-                         members=members,
+                         members=members, namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)

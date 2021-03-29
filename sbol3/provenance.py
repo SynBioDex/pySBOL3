@@ -54,13 +54,15 @@ class Agent(CustomTopLevel):
     """
 
     def __init__(self, identity: str,
-                 *, attachments: List[str] = None,
+                 *, namespace: str = None,
+                 attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
                  generated_by: List[str] = None,
                  measures: List[SBOLObject] = None,
                  type_uri: str = PROV_AGENT) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
@@ -77,13 +79,15 @@ class Plan(CustomTopLevel):
     """
 
     def __init__(self, identity: str,
-                 *, attachments: List[str] = None,
+                 *, namespace: str = None,
+                 attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
                  generated_by: List[str] = None,
                  measures: List[SBOLObject] = None,
                  type_uri: str = PROV_PLAN) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
@@ -157,6 +161,7 @@ class Activity(CustomTopLevel):
                  end_time: Union[str, datetime.datetime] = None,
                  usage: List[Identified] = None,
                  association: List[Identified] = None,
+                 namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -164,6 +169,7 @@ class Activity(CustomTopLevel):
                  measures: List[SBOLObject] = None,
                  type_uri: str = PROV_ACTIVITY) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)

@@ -19,6 +19,7 @@ class CompoundUnit(Unit, abc.ABC):
                  alternative_labels: List[str] = None,
                  comment: str = None,
                  long_comment: str = None,
+                 namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -29,6 +30,7 @@ class CompoundUnit(Unit, abc.ABC):
                          alternative_symbols=alternative_symbols,
                          alternative_labels=alternative_labels,
                          comment=comment, long_comment=long_comment,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
@@ -47,6 +49,7 @@ class UnitMultiplication(CompoundUnit):
                  alternative_labels: List[str] = None,
                  comment: str = None,
                  long_comment: str = None,
+                 namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -58,6 +61,7 @@ class UnitMultiplication(CompoundUnit):
                          alternative_symbols=alternative_symbols,
                          alternative_labels=alternative_labels,
                          comment=comment, long_comment=long_comment,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
@@ -95,6 +99,7 @@ class UnitDivision(CompoundUnit):
                  alternative_labels: List[str] = None,
                  comment: str = None,
                  long_comment: str = None,
+                 namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -106,6 +111,7 @@ class UnitDivision(CompoundUnit):
                          alternative_symbols=alternative_symbols,
                          alternative_labels=alternative_labels,
                          comment=comment, long_comment=long_comment,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
@@ -143,6 +149,7 @@ class UnitExponentiation(CompoundUnit):
                  alternative_labels: List[str] = None,
                  comment: str = None,
                  long_comment: str = None,
+                 namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -154,6 +161,7 @@ class UnitExponentiation(CompoundUnit):
                          alternative_symbols=alternative_symbols,
                          alternative_labels=alternative_labels,
                          comment=comment, long_comment=long_comment,
+                         namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
