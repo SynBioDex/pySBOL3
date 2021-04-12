@@ -89,6 +89,15 @@ class Identified(SBOLObject):
     @document.setter
     def document(self, value):
         self._document = value
+        # Now assign document to the whole object hierarchy
+        # rooted here
+        # Note: we prevent an infinite loop by assigning to
+        # `_document` instead of recursively entering this
+        # method by assigning to `document`.
+
+        def assign_document(x: Identified):
+            x._document = value
+        self.accept(assign_document)
 
     def _validate_display_id(self, report: ValidationReport) -> None:
         if self.identity_is_url():
