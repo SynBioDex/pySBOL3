@@ -149,6 +149,31 @@ class TestOwnedObject(unittest.TestCase):
     # TODO: Write tests for adding via a slice
     #       comp.constraints[0:1] = sbol3.Constraint('foo')
 
+    def test_compose_then_set_document(self):
+        # Ensure that document is set on child objects
+        # See https://github.com/SynBioDex/pySBOL3/issues/230
+        sbol3.set_namespace('https://bioprotocols.org/paml/primitives/')
+        c = sbol3.Component("scratch", sbol3.SBO_DNA)
+        lsc = sbol3.LocalSubComponent([sbol3.SBO_DNA])
+        self.assertIsNone(lsc.document)
+        c.features.append(lsc)
+        doc = sbol3.Document()
+        doc.add(c)
+        self.assertIsNotNone(lsc.document)
+        self.assertEqual(doc, lsc.document)
+        interaction = sbol3.Interaction([sbol3.SBO_DEGRADATION])
+        p = sbol3.Participation([sbol3.SBO_REACTANT], lsc)
+        interaction.participations.append(p)
+        c.interactions.append(interaction)
+        # Now that we've composed the objects, add them to the parent.
+        # This should assign the document to all the objects in the hierarchy
+        # See https://github.com/SynBioDex/pySBOL3/issues/230
+        self.assertEqual(doc, interaction.document)
+        self.assertEqual(doc, p.document)
+        resolved_lsc = p.participant.lookup()
+        self.assertEqual(lsc, resolved_lsc)
+        self.assertEqual(lsc.identity, resolved_lsc.identity)
+
 
 if __name__ == '__main__':
     unittest.main()

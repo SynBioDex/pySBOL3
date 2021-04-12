@@ -23,6 +23,7 @@ class Identified(SBOLObject):
                  derived_from: List[str] = None, generated_by: List[str] = None,
                  measures: List[SBOLObject] = None) -> None:
         super().__init__(identity)
+        self._document = None
         self._display_id = TextProperty(self, SBOL_DISPLAY_ID, 0, 1)
         self.name = TextProperty(self, SBOL_NAME, 0, 1, initial_value=name)
         self.description = TextProperty(self, SBOL_DESCRIPTION, 0, 1,
@@ -80,6 +81,23 @@ class Identified(SBOLObject):
     @property
     def type_uri(self):
         return self._rdf_types[0]
+
+    @property
+    def document(self):
+        return self._document
+
+    @document.setter
+    def document(self, value):
+        self._document = value
+        # Now assign document to the whole object hierarchy
+        # rooted here
+        # Note: we prevent an infinite loop by assigning to
+        # `_document` instead of recursively entering this
+        # method by assigning to `document`.
+
+        def assign_document(x: Identified):
+            x._document = value
+        self.accept(assign_document)
 
     def _validate_display_id(self, report: ValidationReport) -> None:
         if self.identity_is_url():
