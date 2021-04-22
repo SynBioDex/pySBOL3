@@ -89,7 +89,7 @@ def main(argv=None):
     doc = sbol3.Document()
     doc.read(args.inputfile)
     my_visitor = MyVisitor()
-    doc.accept(my_visitor)
+    doc.traverse(my_visitor)
 
 
 if __name__ == '__main__':
