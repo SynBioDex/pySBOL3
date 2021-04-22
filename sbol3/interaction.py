@@ -37,6 +37,9 @@ class Interaction(Identified):
                                           initial_value=participations,
                                           type_constraint=Participation)
 
+    def accept(self, visitor):
+        visitor.visit_interaction(self)
+
 
 def build_interaction(identity: str, *, type_uri: str = SBOL_INTERACTION) -> SBOLObject:
     interaction_type = PYSBOL3_MISSING

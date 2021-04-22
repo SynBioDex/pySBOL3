@@ -41,6 +41,9 @@ class ComponentReference(Feature):
             report.addError(self.identity, None, message)
         return report
 
+    def accept(self, visitor):
+        visitor.visit_component_reference(self)
+
 
 def build_component_reference(identity: str, *,
                               type_uri: str = SBOL_COMPONENT_REFERENCE) -> SBOLObject:

@@ -26,5 +26,8 @@ class ExperimentalData(TopLevel):
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
 
+    def accept(self, visitor):
+        visitor.visit_experimental_data(self)
+
 
 Document.register_builder(SBOL_EXPERIMENTAL_DATA, ExperimentalData)

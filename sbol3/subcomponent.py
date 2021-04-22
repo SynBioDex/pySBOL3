@@ -42,6 +42,9 @@ class SubComponent(Feature):
                                      initial_value=locations,
                                      type_constraint=Location)
 
+    def accept(self, visitor):
+        visitor.visit_sub_component(self)
+
 
 def build_subcomponent(identity: str, type_uri: str = SBOL_SUBCOMPONENT) -> Identified:
     """Used by Document to construct a SubComponent when reading an SBOL file.

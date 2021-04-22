@@ -92,6 +92,9 @@ class SIPrefix(Prefix):
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
 
+    def accept(self, visitor):
+        visitor.visit_si_prefix(self)
+
 
 def build_si_prefix(identity: str, *, type_uri: str = OM_SI_PREFIX) -> SBOLObject:
     obj = SIPrefix(identity=identity, type_uri=type_uri,
@@ -136,6 +139,9 @@ class BinaryPrefix(Prefix):
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
+
+    def accept(self, visitor):
+        visitor.visit_binary_prefix(self)
 
 
 def build_binary_prefix(identity: str,

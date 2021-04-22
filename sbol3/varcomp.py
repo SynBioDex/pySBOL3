@@ -65,6 +65,9 @@ class VariableFeature(Identified):
             report.addError(self.identity, None, message)
         return report
 
+    def accept(self, visitor):
+        visitor.visit_variable_feature(self)
+
 
 def build_variable_feature(identity: str, type_uri: str = SBOL_VARIABLE_FEATURE):
     """Used by Document to construct a VariableFeature when reading an SBOL file.

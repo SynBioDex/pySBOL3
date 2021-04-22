@@ -26,6 +26,9 @@ class SequenceFeature(Feature):
                                               type_constraint=Location,
                                               initial_value=locations)
 
+    def accept(self, visitor):
+        visitor.visit_sequence_feature(self)
+
 
 def build_sequence_feature(identity: str,
                            *, type_uri: str = SBOL_SEQUENCE_FEATURE) -> SBOLObject:

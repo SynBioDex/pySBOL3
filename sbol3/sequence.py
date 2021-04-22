@@ -39,5 +39,8 @@ class Sequence(TopLevel):
             report.addWarning(self.identity, 'sbol3-10505', message)
         return report
 
+    def accept(self, visitor):
+        visitor.visit_sequence(self)
+
 
 Document.register_builder(SBOL_SEQUENCE, Sequence)

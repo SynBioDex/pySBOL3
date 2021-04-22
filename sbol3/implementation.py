@@ -34,5 +34,8 @@ class Implementation(TopLevel):
         self.built = ReferencedObject(self, SBOL_BUILT, 0, 1,
                                       initial_value=built)
 
+    def accept(self, visitor):
+        visitor.visit_implementation(self)
+
 
 Document.register_builder(SBOL_IMPLEMENTATION, Implementation)

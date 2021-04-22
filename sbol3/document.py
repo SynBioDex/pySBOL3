@@ -379,6 +379,9 @@ class Document:
         self.traverse(wrapped_filter)
         return result
 
+    def accept(self, visitor):
+        visitor.visit_document(self)
+
     def traverse(self, func: Callable[[Identified], None]):
         """Enable a traversal of the entire object hierarchy contained
         in this document.

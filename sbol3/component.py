@@ -47,6 +47,9 @@ class Component(TopLevel):
         self.models = ReferencedObject(self, SBOL_MODELS, 0, math.inf,
                                        initial_value=models)
 
+    def accept(self, visitor):
+        visitor.visit_component(self)
+
 
 def build_component(identity: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:
     missing = PYSBOL3_MISSING

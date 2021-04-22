@@ -41,6 +41,9 @@ class ExternallyDefined(Feature):
             report.addError(self.identity, None, message)
         return report
 
+    def accept(self, visitor):
+        visitor.visit_externally_defined(self)
+
 
 def build_externally_defined(identity: str,
                              *, type_uri: str = SBOL_EXTERNALLY_DEFINED) -> SBOLObject:

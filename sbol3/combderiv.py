@@ -50,6 +50,9 @@ class CombinatorialDerivation(TopLevel):
                 report.addError(self.identity, None, message)
         return report
 
+    def accept(self, visitor):
+        visitor.visit_combinatorial_derivation(self)
+
 
 def build_combinatorial_derivation(identity: str,
                                    *, type_uri: str = SBOL_COMBINATORIAL_DERIVATION):

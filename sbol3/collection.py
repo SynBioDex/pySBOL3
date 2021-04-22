@@ -37,6 +37,9 @@ class Collection(TopLevel):
         self.members = ReferencedObject(self, SBOL_MEMBER, 0, math.inf,
                                         initial_value=members)
 
+    def accept(self, visitor):
+        visitor.visit_collection(self)
+
 
 class Experiment(Collection):
     """The purpose of the Experiment class is to aggregate
@@ -61,6 +64,9 @@ class Experiment(Collection):
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
+
+    def accept(self, visitor):
+        visitor.visit_experiment(self)
 
 
 Document.register_builder(SBOL_COLLECTION, Collection)

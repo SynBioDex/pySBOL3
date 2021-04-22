@@ -33,6 +33,9 @@ class LocalSubComponent(Feature):
                                      initial_value=locations,
                                      type_constraint=Location)
 
+    def accept(self, visitor):
+        visitor.visit_local_sub_component(self)
+
 
 def build_local_subcomponent(identity: str,
                              *, type_uri: str = SBOL_LOCAL_SUBCOMPONENT) -> SBOLObject:

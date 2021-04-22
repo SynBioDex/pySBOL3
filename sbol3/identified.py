@@ -208,6 +208,10 @@ class Identified(SBOLObject):
                 graph.add((identity, rdf_prop, rdflib.URIRef(item.identity)))
                 item.serialize(graph)
 
+    def accept(self, visitor):
+        message = f'accept is not implemented for {type(self).__qualname__}'
+        raise NotImplementedError(message)
+
     def traverse(self, func: Callable[['Identified'], None]):
         """Enable a traversal of this object and all of its children by
         invoking the passed function on all objects.

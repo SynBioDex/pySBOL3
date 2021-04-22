@@ -47,6 +47,9 @@ class Constraint(Identified):
             report.addError(self.identity, None, message)
         return report
 
+    def accept(self, visitor):
+        visitor.visit_constraint(self)
+
 
 def build_constraint(identity: str, type_uri: str = SBOL_CONSTRAINT) -> SBOLObject:
     missing = PYSBOL3_MISSING

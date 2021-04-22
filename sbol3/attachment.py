@@ -44,6 +44,9 @@ class Attachment(TopLevel):
             report.addError(self.identity, None, message)
         return report
 
+    def accept(self, visitor):
+        visitor.visit_attachment(self)
+
 
 def build_attachment(identity: str,
                      *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:

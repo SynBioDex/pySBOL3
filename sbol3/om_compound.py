@@ -70,6 +70,9 @@ class UnitMultiplication(CompoundUnit):
         self.term2 = ReferencedObject(self, OM_HAS_TERM2, 1, 1,
                                       initial_value=term2)
 
+    def accept(self, visitor):
+        visitor.visit_unit_multiplication(self)
+
 
 def build_unit_multiplication(identity: str,
                               *, type_uri: str = OM_UNIT_MULTIPLICATION) -> SBOLObject:
@@ -120,6 +123,9 @@ class UnitDivision(CompoundUnit):
         self.denominator = ReferencedObject(self, OM_HAS_DENOMINATOR, 1, 1,
                                             initial_value=denominator)
 
+    def accept(self, visitor):
+        visitor.visit_unit_division(self)
+
 
 def build_unit_division(identity: str,
                         *, type_uri: str = OM_UNIT_DIVISION) -> SBOLObject:
@@ -169,6 +175,9 @@ class UnitExponentiation(CompoundUnit):
                                      initial_value=base)
         self.exponent = IntProperty(self, OM_HAS_EXPONENT, 1, 1,
                                     initial_value=exponent)
+
+    def accept(self, visitor):
+        visitor.visit_unit_exponentiation(self)
 
 
 def build_unit_exponentiation(identity: str,

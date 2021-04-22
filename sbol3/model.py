@@ -50,6 +50,9 @@ class Model(TopLevel):
             report.addError(self.identity, None, msg)
         return report
 
+    def accept(self, visitor):
+        visitor.visit_model(self)
+
 
 def build_model(identity: str, type_uri: str = SBOL_MODEL):
     """Used by Document to construct a Range when reading an SBOL file.

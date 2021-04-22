@@ -37,6 +37,9 @@ class Participation(Identified):
             report.addError(self.identity, None, message)
         return report
 
+    def accept(self, visitor):
+        visitor.visit_participation(self)
+
 
 def build_participation(identity: str,
                         *, type_uri: str = SBOL_PARTCIPATION) -> SBOLObject:

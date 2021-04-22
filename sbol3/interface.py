@@ -30,6 +30,9 @@ class Interface(Identified):
                                                0, math.inf,
                                                initial_value=nondirectional)
 
+    def accept(self, visitor):
+        visitor.visit_interface(self)
+
 
 def build_interface(identity: str, *, type_uri: str = SBOL_INTERFACE) -> SBOLObject:
     return Interface(identity=identity, type_uri=type_uri)

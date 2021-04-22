@@ -34,6 +34,9 @@ class Usage(CustomIdentified):
         self.roles = URIProperty(self, PROV_ROLES, 0, math.inf,
                                  initial_value=roles)
 
+    def accept(self, visitor):
+        visitor.visit_usage(self)
+
 
 def build_usage(identity: str, *, type_uri: str = PROV_USAGE) -> SBOLObject:
     obj = Usage(entity=PYSBOL3_MISSING, identity=identity, type_uri=type_uri)
@@ -67,6 +70,9 @@ class Agent(CustomTopLevel):
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
 
+    def accept(self, visitor):
+        visitor.visit_agent(self)
+
 
 Document.register_builder(PROV_AGENT, Agent)
 
@@ -91,6 +97,9 @@ class Plan(CustomTopLevel):
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
+
+    def accept(self, visitor):
+        visitor.visit_plan(self)
 
 
 Document.register_builder(PROV_PLAN, Plan)
@@ -122,6 +131,9 @@ class Association(CustomIdentified):
                                      initial_value=plan)
         self.agent = ReferencedObject(self, PROV_AGENTS, 1, 1,
                                       initial_value=agent)
+
+    def accept(self, visitor):
+        visitor.visit_association(self)
 
 
 def build_association(identity: str,
@@ -186,6 +198,9 @@ class Activity(CustomTopLevel):
                                        0, math.inf,
                                        initial_value=association,
                                        type_constraint=Association)
+
+    def accept(self, visitor):
+        visitor.visit_activity(self)
 
 
 Document.register_builder(PROV_ACTIVITY, Activity)
