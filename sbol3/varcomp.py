@@ -1,5 +1,5 @@
 import math
-from typing import List, Union
+from typing import List, Union, Any
 
 from . import *
 
@@ -65,7 +65,7 @@ class VariableFeature(Identified):
             report.addError(self.identity, None, message)
         return report
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_variable_feature` on `visitor` with `self` as the
         only argument.
 

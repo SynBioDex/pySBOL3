@@ -1,5 +1,5 @@
 import math
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 
@@ -50,7 +50,7 @@ class CombinatorialDerivation(TopLevel):
                 report.addError(self.identity, None, message)
         return report
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_combinatorial_derivation` on `visitor` with `self`
         as the only argument.
 

@@ -1,4 +1,5 @@
 import math
+from typing import Any
 
 from . import *
 from .typing import *
@@ -37,7 +38,7 @@ class Participation(Identified):
             report.addError(self.identity, None, message)
         return report
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_participation` on `visitor` with `self` as the only
         argument.
 

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -39,7 +39,7 @@ class Sequence(TopLevel):
             report.addWarning(self.identity, 'sbol3-10505', message)
         return report
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_sequence` on `visitor` with `self` as the only
         argument.
 

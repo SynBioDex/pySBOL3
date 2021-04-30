@@ -1,5 +1,5 @@
 import math
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -37,7 +37,7 @@ class Interaction(Identified):
                                           initial_value=participations,
                                           type_constraint=Participation)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_interaction` on `visitor` with `self` as the only
         argument.
 

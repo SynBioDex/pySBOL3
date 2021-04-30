@@ -1,4 +1,5 @@
 import math
+from typing import Any
 
 from . import *
 
@@ -41,7 +42,7 @@ class ExternallyDefined(Feature):
             report.addError(self.identity, None, message)
         return report
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_externally_defined` on `visitor` with `self` as the
         only argument.
 

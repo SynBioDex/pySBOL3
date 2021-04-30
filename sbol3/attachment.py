@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -44,7 +44,7 @@ class Attachment(TopLevel):
             report.addError(self.identity, None, message)
         return report
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_attachment` on `visitor` with `self` as the only
         argument.
 

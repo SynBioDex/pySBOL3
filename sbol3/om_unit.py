@@ -1,6 +1,6 @@
 import abc
 import math
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 from .om_prefix import Prefix
@@ -73,7 +73,7 @@ class Measure(CustomIdentified):
         self.unit = URIProperty(self, OM_HAS_UNIT, 1, 1,
                                 initial_value=unit)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_measure` on `visitor` with `self` as the only
         argument.
 
@@ -136,7 +136,7 @@ class SingularUnit(Unit):
         self.factor = FloatProperty(self, OM_HAS_FACTOR, 0, 1,
                                     initial_value=factor)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_singular_unit` on `visitor` with `self` as the only
         argument.
 
@@ -200,7 +200,7 @@ class PrefixedUnit(Unit):
         self.prefix = ReferencedObject(self, OM_HAS_PREFIX, 1, 1,
                                        initial_value=prefix)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_prefixed_unit` on `visitor` with `self` as the only
         argument.
 

@@ -1,6 +1,6 @@
 import datetime
 import math
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 
@@ -34,7 +34,7 @@ class Usage(CustomIdentified):
         self.roles = URIProperty(self, PROV_ROLES, 0, math.inf,
                                  initial_value=roles)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_usage` on `visitor` with `self` as the only
         argument.
 
@@ -80,7 +80,7 @@ class Agent(CustomTopLevel):
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_agent` on `visitor` with `self` as the only
         argument.
 
@@ -118,7 +118,7 @@ class Plan(CustomTopLevel):
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_plan` on `visitor` with `self` as the only argument.
 
         :param visitor: The visitor instance
@@ -160,7 +160,7 @@ class Association(CustomIdentified):
         self.agent = ReferencedObject(self, PROV_AGENTS, 1, 1,
                                       initial_value=agent)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_association` on `visitor` with `self` as the only
         argument.
 
@@ -237,7 +237,7 @@ class Activity(CustomTopLevel):
                                        initial_value=association,
                                        type_constraint=Association)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_activity` on `visitor` with `self` as the only
         argument.
 

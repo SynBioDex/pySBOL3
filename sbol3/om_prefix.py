@@ -1,6 +1,6 @@
 import abc
 import math
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -92,7 +92,7 @@ class SIPrefix(Prefix):
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_si_prefix` on `visitor` with `self` as the only
         argument.
 
@@ -150,7 +150,7 @@ class BinaryPrefix(Prefix):
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_binary_prefix` on `visitor` with `self` as the only
         argument.
 

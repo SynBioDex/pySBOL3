@@ -1,4 +1,4 @@
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 
@@ -34,7 +34,7 @@ class Implementation(TopLevel):
         self.built = ReferencedObject(self, SBOL_BUILT, 0, 1,
                                       initial_value=built)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_implementation` on `visitor` with `self` as the only
         argument.
 

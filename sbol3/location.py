@@ -1,5 +1,5 @@
 import abc
-from typing import Union
+from typing import Union, Any
 
 from . import *
 
@@ -71,7 +71,7 @@ class Range(Location):
             report.addError(self.identity, 'sbol3-11403', message)
         return report
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_range` on `visitor` with `self` as the only
         argument.
 
@@ -128,7 +128,7 @@ class Cut(Location):
             report.addError(self.identity, None, message)
         return report
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_cut` on `visitor` with `self` as the only argument.
 
         :param visitor: The visitor instance
@@ -171,7 +171,7 @@ class EntireSequence(Location):
                          order=order, identity=identity,
                          type_uri=type_uri)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_entire_sequence` on `visitor` with `self` as the
         only argument.
 

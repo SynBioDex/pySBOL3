@@ -1,6 +1,6 @@
 import math
 import posixpath
-from typing import Union, List, Callable
+from typing import Union, List, Callable, Any
 from urllib.parse import urlparse
 
 import rdflib
@@ -208,7 +208,7 @@ class Identified(SBOLObject):
                 graph.add((identity, rdf_prop, rdflib.URIRef(item.identity)))
                 item.serialize(graph)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         message = f'accept is not implemented for {type(self).__qualname__}'
         raise NotImplementedError(message)
 

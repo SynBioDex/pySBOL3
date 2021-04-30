@@ -1,4 +1,5 @@
 import math
+from typing import Any
 
 from . import *
 # Feature is not exported
@@ -33,7 +34,7 @@ class LocalSubComponent(Feature):
                                      initial_value=locations,
                                      type_constraint=Location)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_local_sub_component` on `visitor` with `self` as the
         only argument.
 

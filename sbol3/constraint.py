@@ -1,4 +1,4 @@
-from typing import Optional, Union, List
+from typing import Optional, Union, List, Any
 
 from . import *
 
@@ -47,7 +47,7 @@ class Constraint(Identified):
             report.addError(self.identity, None, message)
         return report
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_constraint` on `visitor` with `self` as the only
         argument.
 

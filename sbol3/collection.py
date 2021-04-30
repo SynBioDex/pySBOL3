@@ -1,5 +1,5 @@
 import math
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -37,7 +37,7 @@ class Collection(TopLevel):
         self.members = ReferencedObject(self, SBOL_MEMBER, 0, math.inf,
                                         initial_value=members)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_collection` on `visitor` with `self` as the only
         argument.
 
@@ -75,7 +75,7 @@ class Experiment(Collection):
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_experiment` on `visitor` with `self` as the only
         argument.
 

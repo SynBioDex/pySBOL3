@@ -1,5 +1,5 @@
 import math
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 # Feature is not exported
@@ -42,7 +42,7 @@ class SubComponent(Feature):
                                      initial_value=locations,
                                      type_constraint=Location)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_sub_component` on `visitor` with `self` as the only
         argument.
 

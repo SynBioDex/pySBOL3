@@ -1,7 +1,7 @@
 import collections
 import logging
 import warnings
-from typing import Dict, Callable, List, Optional
+from typing import Dict, Callable, List, Optional, Any
 
 import rdflib
 # Get the rdflib-jsonld capability initialized
@@ -379,7 +379,7 @@ class Document:
         self.traverse(wrapped_filter)
         return result
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_document` on `visitor` with `self` as the only
         argument.
 

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -26,7 +26,7 @@ class ExperimentalData(TopLevel):
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_experimental_data` on `visitor` with `self` as the
         only argument.
 

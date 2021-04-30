@@ -1,5 +1,5 @@
 import math
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -30,7 +30,7 @@ class Interface(Identified):
                                                0, math.inf,
                                                initial_value=nondirectional)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_interface` on `visitor` with `self` as the only
         argument.
 

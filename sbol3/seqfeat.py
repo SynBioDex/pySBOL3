@@ -1,4 +1,5 @@
 import math
+from typing import Any
 
 from . import *
 # Feature is not exported
@@ -26,7 +27,7 @@ class SequenceFeature(Feature):
                                               type_constraint=Location,
                                               initial_value=locations)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_sequence_feature` on `visitor` with `self` as the
         only argument.
 

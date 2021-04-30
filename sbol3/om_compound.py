@@ -1,5 +1,5 @@
 import abc
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 
@@ -70,7 +70,7 @@ class UnitMultiplication(CompoundUnit):
         self.term2 = ReferencedObject(self, OM_HAS_TERM2, 1, 1,
                                       initial_value=term2)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_unit_multiplication` on `visitor` with `self` as the
         only argument.
 
@@ -134,7 +134,7 @@ class UnitDivision(CompoundUnit):
         self.denominator = ReferencedObject(self, OM_HAS_DENOMINATOR, 1, 1,
                                             initial_value=denominator)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_unit_division` on `visitor` with `self` as the only
         argument.
 
@@ -197,7 +197,7 @@ class UnitExponentiation(CompoundUnit):
         self.exponent = IntProperty(self, OM_HAS_EXPONENT, 1, 1,
                                     initial_value=exponent)
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_unit_exponentiation` on `visitor` with `self` as the
         only argument.
 

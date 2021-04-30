@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -50,7 +50,7 @@ class Model(TopLevel):
             report.addError(self.identity, None, msg)
         return report
 
-    def accept(self, visitor):
+    def accept(self, visitor: Any) -> Any:
         """Invokes `visit_model` on `visitor` with `self` as the only
         argument.
 
