@@ -37,8 +37,10 @@
    ```
 
 1. (While in prerelease) Update the default version on [readthedocs](https://readthedocs.org/)
-   * Admin -> Advanced Settings
+   * Activate new version on Versions page
+   * Then Admin -> Advanced Settings
    * Set "Default version" to the newly release alpha version
+   * Scroll to bottom and click save
    * We shouldn't have to do this after the 1.0 release
 
 1. Bump the version numbers on the develop branches
