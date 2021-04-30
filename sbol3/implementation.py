@@ -1,4 +1,4 @@
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 
@@ -33,6 +33,19 @@ class Implementation(TopLevel):
                          generated_by=generated_by, measures=measures)
         self.built = ReferencedObject(self, SBOL_BUILT, 0, 1,
                                       initial_value=built)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_implementation` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_implementation method
+        :return: Whatever `visitor.visit_implementation` returns
+        :rtype: Any
+
+        """
+        visitor.visit_implementation(self)
 
 
 Document.register_builder(SBOL_IMPLEMENTATION, Implementation)

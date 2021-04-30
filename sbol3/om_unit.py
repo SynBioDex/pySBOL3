@@ -1,6 +1,6 @@
 import abc
 import math
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 from .om_prefix import Prefix
@@ -73,6 +73,19 @@ class Measure(CustomIdentified):
         self.unit = URIProperty(self, OM_HAS_UNIT, 1, 1,
                                 initial_value=unit)
 
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_measure` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_measure method
+        :return: Whatever `visitor.visit_measure` returns
+        :rtype: Any
+
+        """
+        visitor.visit_measure(self)
+
 
 def build_measure(identity: str, *, type_uri: str = OM_MEASURE) -> SBOLObject:
     missing = PYSBOL3_MISSING
@@ -122,6 +135,19 @@ class SingularUnit(Unit):
                                      initial_value=unit)
         self.factor = FloatProperty(self, OM_HAS_FACTOR, 0, 1,
                                     initial_value=factor)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_singular_unit` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_singular_unit method
+        :return: Whatever `visitor.visit_singular_unit` returns
+        :rtype: Any
+
+        """
+        visitor.visit_singular_unit(self)
 
 
 def build_singular_unit(identity: str,
@@ -173,6 +199,19 @@ class PrefixedUnit(Unit):
                                      initial_value=unit)
         self.prefix = ReferencedObject(self, OM_HAS_PREFIX, 1, 1,
                                        initial_value=prefix)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_prefixed_unit` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_prefixed_unit method
+        :return: Whatever `visitor.visit_prefixed_unit` returns
+        :rtype: Any
+
+        """
+        visitor.visit_prefixed_unit(self)
 
 
 def build_prefixed_unit(identity: str,

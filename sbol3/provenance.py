@@ -1,6 +1,6 @@
 import datetime
 import math
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 
@@ -33,6 +33,19 @@ class Usage(CustomIdentified):
                                   initial_value=entity)
         self.roles = URIProperty(self, PROV_ROLES, 0, math.inf,
                                  initial_value=roles)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_usage` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_usage method
+        :return: Whatever `visitor.visit_usage` returns
+        :rtype: Any
+
+        """
+        visitor.visit_usage(self)
 
 
 def build_usage(identity: str, *, type_uri: str = PROV_USAGE) -> SBOLObject:
@@ -67,6 +80,19 @@ class Agent(CustomTopLevel):
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
 
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_agent` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_agent method
+        :return: Whatever `visitor.visit_agent` returns
+        :rtype: Any
+
+        """
+        visitor.visit_agent(self)
+
 
 Document.register_builder(PROV_AGENT, Agent)
 
@@ -91,6 +117,17 @@ class Plan(CustomTopLevel):
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_plan` on `visitor` with `self` as the only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_plan method
+        :return: Whatever `visitor.visit_plan` returns
+        :rtype: Any
+        """
+        visitor.visit_plan(self)
 
 
 Document.register_builder(PROV_PLAN, Plan)
@@ -122,6 +159,19 @@ class Association(CustomIdentified):
                                      initial_value=plan)
         self.agent = ReferencedObject(self, PROV_AGENTS, 1, 1,
                                       initial_value=agent)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_association` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_association method
+        :return: Whatever `visitor.visit_association` returns
+        :rtype: Any
+
+        """
+        visitor.visit_association(self)
 
 
 def build_association(identity: str,
@@ -186,6 +236,19 @@ class Activity(CustomTopLevel):
                                        0, math.inf,
                                        initial_value=association,
                                        type_constraint=Association)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_activity` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_activity method
+        :return: Whatever `visitor.visit_activity` returns
+        :rtype: Any
+
+        """
+        visitor.visit_activity(self)
 
 
 Document.register_builder(PROV_ACTIVITY, Activity)

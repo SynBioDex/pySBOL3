@@ -1,4 +1,4 @@
-from typing import Optional, Union, List
+from typing import Optional, Union, List, Any
 
 from . import *
 
@@ -46,6 +46,19 @@ class Constraint(Identified):
             message = 'Constraint must have an object'
             report.addError(self.identity, None, message)
         return report
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_constraint` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_constraint method
+        :return: Whatever `visitor.visit_constraint` returns
+        :rtype: Any
+
+        """
+        visitor.visit_constraint(self)
 
 
 def build_constraint(identity: str, type_uri: str = SBOL_CONSTRAINT) -> SBOLObject:

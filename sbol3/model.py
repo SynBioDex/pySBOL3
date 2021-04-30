@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -49,6 +49,19 @@ class Model(TopLevel):
             msg = f'Model {self.identity} does not have a framework'
             report.addError(self.identity, None, msg)
         return report
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_model` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_model method
+        :return: Whatever `visitor.visit_model` returns
+        :rtype: Any
+
+        """
+        visitor.visit_model(self)
 
 
 def build_model(identity: str, type_uri: str = SBOL_MODEL):

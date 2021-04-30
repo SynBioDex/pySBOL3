@@ -100,7 +100,7 @@ class TopLevel(Identified):
         obj.document = None
 
         # Erase the identity and display_id of the entire tree
-        obj.accept(make_erase_identity_visitor(identity_map))
+        obj.traverse(make_erase_identity_traverser(identity_map))
 
         # Now remove and re-add all child objects to update
         # their identities
@@ -108,25 +108,25 @@ class TopLevel(Identified):
 
         # TODO: Now remap any properties that reference old
         #       identities in the identity_map
-        obj.accept(make_update_references_visitor(identity_map))
+        obj.traverse(make_update_references_traverser(identity_map))
         return obj
 
 
-def make_erase_identity_visitor(identity_map: Dict[str, Identified])\
+def make_erase_identity_traverser(identity_map: Dict[str, Identified])\
         -> Callable[[Identified], None]:
-    def erase_identity_visitor(x):
+    def erase_identity_traverser(x):
         if isinstance(x, TopLevel):
             return
         identity_map[x.identity] = x
         x._identity = None
         x._display_id = None
         x.document = None
-    return erase_identity_visitor
+    return erase_identity_traverser
 
 
-def make_update_references_visitor(identity_map: Dict[str, Identified])\
+def make_update_references_traverser(identity_map: Dict[str, Identified])\
         -> Callable[[Identified], None]:
-    def update_references_visitor(x):
+    def update_references_traverser(x):
         # Use the identity map to update references.
         # References to objects outside of the object
         # being cloned will be left as is.
@@ -146,4 +146,4 @@ def make_update_references_visitor(identity_map: Dict[str, Identified])\
                     # Hacky? yes, and it seems to work
                     constructor = type(items[i])
                     items[i] = constructor(new_reference)
-    return update_references_visitor
+    return update_references_traverser

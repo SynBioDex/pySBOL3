@@ -1,5 +1,5 @@
 import math
-from typing import List, Union
+from typing import List, Union, Any
 
 from . import *
 
@@ -46,6 +46,19 @@ class Component(TopLevel):
                                       type_constraint=Interface)
         self.models = ReferencedObject(self, SBOL_MODELS, 0, math.inf,
                                        initial_value=models)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_component` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_component method
+        :return: Whatever `visitor.visit_component` returns
+        :rtype: Any
+
+        """
+        visitor.visit_component(self)
 
 
 def build_component(identity: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -38,6 +38,19 @@ class Sequence(TopLevel):
             message = 'Sequence encoding is not in the recommended set'
             report.addWarning(self.identity, 'sbol3-10505', message)
         return report
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_sequence` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_sequence method
+        :return: Whatever `visitor.visit_sequence` returns
+        :rtype: Any
+
+        """
+        visitor.visit_sequence(self)
 
 
 Document.register_builder(SBOL_SEQUENCE, Sequence)

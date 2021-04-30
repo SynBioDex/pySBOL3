@@ -1,5 +1,5 @@
 import abc
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 
@@ -70,6 +70,20 @@ class UnitMultiplication(CompoundUnit):
         self.term2 = ReferencedObject(self, OM_HAS_TERM2, 1, 1,
                                       initial_value=term2)
 
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_unit_multiplication` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_unit_multiplication
+                                method
+        :return: Whatever `visitor.visit_unit_multiplication` returns
+        :rtype: Any
+
+        """
+        visitor.visit_unit_multiplication(self)
+
 
 def build_unit_multiplication(identity: str,
                               *, type_uri: str = OM_UNIT_MULTIPLICATION) -> SBOLObject:
@@ -120,6 +134,19 @@ class UnitDivision(CompoundUnit):
         self.denominator = ReferencedObject(self, OM_HAS_DENOMINATOR, 1, 1,
                                             initial_value=denominator)
 
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_unit_division` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_unit_division method
+        :return: Whatever `visitor.visit_unit_division` returns
+        :rtype: Any
+
+        """
+        visitor.visit_unit_division(self)
+
 
 def build_unit_division(identity: str,
                         *, type_uri: str = OM_UNIT_DIVISION) -> SBOLObject:
@@ -169,6 +196,20 @@ class UnitExponentiation(CompoundUnit):
                                      initial_value=base)
         self.exponent = IntProperty(self, OM_HAS_EXPONENT, 1, 1,
                                     initial_value=exponent)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_unit_exponentiation` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_unit_exponentiation
+                                method
+        :return: Whatever `visitor.visit_unit_exponentiation` returns
+        :rtype: Any
+
+        """
+        visitor.visit_unit_exponentiation(self)
 
 
 def build_unit_exponentiation(identity: str,

@@ -1,5 +1,5 @@
 import math
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -37,6 +37,19 @@ class Collection(TopLevel):
         self.members = ReferencedObject(self, SBOL_MEMBER, 0, math.inf,
                                         initial_value=members)
 
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_collection` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_collection method
+        :return: Whatever `visitor.visit_collection` returns
+        :rtype: Any
+
+        """
+        visitor.visit_collection(self)
+
 
 class Experiment(Collection):
     """The purpose of the Experiment class is to aggregate
@@ -61,6 +74,19 @@ class Experiment(Collection):
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_experiment` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_experiment method
+        :return: Whatever `visitor.visit_experiment` returns
+        :rtype: Any
+
+        """
+        visitor.visit_experiment(self)
 
 
 Document.register_builder(SBOL_COLLECTION, Collection)

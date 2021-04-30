@@ -1,5 +1,5 @@
 import math
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 # Feature is not exported
@@ -41,6 +41,19 @@ class SubComponent(Feature):
         self.locations = OwnedObject(self, SBOL_LOCATION, 0, math.inf,
                                      initial_value=locations,
                                      type_constraint=Location)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_sub_component` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_sub_component method
+        :return: Whatever `visitor.visit_sub_component` returns
+        :rtype: Any
+
+        """
+        visitor.visit_sub_component(self)
 
 
 def build_subcomponent(identity: str, type_uri: str = SBOL_SUBCOMPONENT) -> Identified:

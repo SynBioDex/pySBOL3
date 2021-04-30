@@ -1,5 +1,5 @@
 import math
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -29,6 +29,19 @@ class Interface(Identified):
         self.nondirectional = ReferencedObject(self, SBOL_NONDIRECTIONAL,
                                                0, math.inf,
                                                initial_value=nondirectional)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_interface` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_interface method
+        :return: Whatever `visitor.visit_interface` returns
+        :rtype: Any
+
+        """
+        visitor.visit_interface(self)
 
 
 def build_interface(identity: str, *, type_uri: str = SBOL_INTERFACE) -> SBOLObject:

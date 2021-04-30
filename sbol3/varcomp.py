@@ -1,5 +1,5 @@
 import math
-from typing import List, Union
+from typing import List, Union, Any
 
 from . import *
 
@@ -64,6 +64,19 @@ class VariableFeature(Identified):
             message = 'VariableComponent.variable is required'
             report.addError(self.identity, None, message)
         return report
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_variable_feature` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_variable_feature method
+        :return: Whatever `visitor.visit_variable_feature` returns
+        :rtype: Any
+
+        """
+        visitor.visit_variable_feature(self)
 
 
 def build_variable_feature(identity: str, type_uri: str = SBOL_VARIABLE_FEATURE):

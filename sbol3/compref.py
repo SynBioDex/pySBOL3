@@ -1,4 +1,4 @@
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 # Feature is not exported
@@ -40,6 +40,20 @@ class ComponentReference(Feature):
             message = 'ComponentReference must have an in_child_of reference'
             report.addError(self.identity, None, message)
         return report
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_component_reference` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_component_reference
+                                method
+        :return: Whatever `visitor.visit_component_reference` returns
+        :rtype: Any
+
+        """
+        visitor.visit_component_reference(self)
 
 
 def build_component_reference(identity: str, *,

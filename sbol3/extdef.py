@@ -1,4 +1,5 @@
 import math
+from typing import Any
 
 from . import *
 
@@ -40,6 +41,20 @@ class ExternallyDefined(Feature):
             message = 'ExternallyDefined must have a definition'
             report.addError(self.identity, None, message)
         return report
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_externally_defined` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_externally_defined
+                                method
+        :return: Whatever `visitor.visit_externally_defined` returns
+        :rtype: Any
+
+        """
+        visitor.visit_externally_defined(self)
 
 
 def build_externally_defined(identity: str,

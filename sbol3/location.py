@@ -1,5 +1,5 @@
 import abc
-from typing import Union
+from typing import Union, Any
 
 from . import *
 
@@ -71,6 +71,19 @@ class Range(Location):
             report.addError(self.identity, 'sbol3-11403', message)
         return report
 
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_range` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_range method
+        :return: Whatever `visitor.visit_range` returns
+        :rtype: Any
+
+        """
+        visitor.visit_range(self)
+
 
 def build_range(identity: str, type_uri: str = SBOL_RANGE):
     """Used by Document to construct a Range when reading an SBOL file.
@@ -115,6 +128,17 @@ class Cut(Location):
             report.addError(self.identity, None, message)
         return report
 
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_cut` on `visitor` with `self` as the only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_cut method
+        :return: Whatever `visitor.visit_cut` returns
+        :rtype: Any
+        """
+        visitor.visit_cut(self)
+
 
 def build_cut(identity: str, type_uri: str = SBOL_CUT):
     """Used by Document to construct a Cut when reading an SBOL file.
@@ -146,6 +170,20 @@ class EntireSequence(Location):
         super().__init__(sequence=sequence, orientation=orientation,
                          order=order, identity=identity,
                          type_uri=type_uri)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_entire_sequence` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_entire_sequence
+                                method
+        :return: Whatever `visitor.visit_entire_sequence` returns
+        :rtype: Any
+
+        """
+        visitor.visit_entire_sequence(self)
 
 
 def build_entire_sequence(identity: str, type_uri: str = SBOL_ENTIRE_SEQUENCE):

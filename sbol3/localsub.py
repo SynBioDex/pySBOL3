@@ -1,4 +1,5 @@
 import math
+from typing import Any
 
 from . import *
 # Feature is not exported
@@ -32,6 +33,20 @@ class LocalSubComponent(Feature):
         self.locations = OwnedObject(self, SBOL_LOCATION, 0, math.inf,
                                      initial_value=locations,
                                      type_constraint=Location)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_local_sub_component` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_local_sub_component
+                                method
+        :return: Whatever `visitor.visit_local_sub_component` returns
+        :rtype: Any
+
+        """
+        visitor.visit_local_sub_component(self)
 
 
 def build_local_subcomponent(identity: str,

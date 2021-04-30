@@ -1,5 +1,5 @@
 import math
-from typing import Union, List
+from typing import Union, List, Any
 
 from . import *
 
@@ -49,6 +49,20 @@ class CombinatorialDerivation(TopLevel):
                 message = f'{self.strategy} is not a valid strategy'
                 report.addError(self.identity, None, message)
         return report
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_combinatorial_derivation` on `visitor` with `self`
+        as the only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_combinatorial_derivation
+                                method
+        :return: Whatever `visitor.visit_combinatorial_derivation` returns
+        :rtype: Any
+
+        """
+        visitor.visit_combinatorial_derivation(self)
 
 
 def build_combinatorial_derivation(identity: str,

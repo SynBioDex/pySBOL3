@@ -1,6 +1,6 @@
 import math
 import posixpath
-from typing import Union, List, Callable
+from typing import Union, List, Callable, Any
 from urllib.parse import urlparse
 
 import rdflib
@@ -97,7 +97,7 @@ class Identified(SBOLObject):
 
         def assign_document(x: Identified):
             x._document = value
-        self.accept(assign_document)
+        self.traverse(assign_document)
 
     def _validate_display_id(self, report: ValidationReport) -> None:
         if self.identity_is_url():
@@ -208,11 +208,16 @@ class Identified(SBOLObject):
                 graph.add((identity, rdf_prop, rdflib.URIRef(item.identity)))
                 item.serialize(graph)
 
-    def accept(self, visitor: Callable[['Identified'], None]):
-        """Implement the visitor pattern by invoking `visitor` on self
-        and all child objects.
+    def accept(self, visitor: Any) -> Any:
+        message = f'accept is not implemented for {type(self).__qualname__}'
+        raise NotImplementedError(message)
+
+    def traverse(self, func: Callable[['Identified'], None]):
+        """Enable a traversal of this object and all of its children by
+        invoking the passed function on all objects.
         """
-        visitor(self)
+        # Call the function on the children first, then self.
         for object_list in self._owned_objects.values():
             for obj in object_list:
-                obj.accept(visitor)
+                obj.traverse(func)
+        func(self)

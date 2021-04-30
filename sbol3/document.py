@@ -1,7 +1,7 @@
 import collections
 import logging
 import warnings
-from typing import Dict, Callable, List, Optional
+from typing import Dict, Callable, List, Optional, Any
 
 import rdflib
 # Get the rdflib-jsonld capability initialized
@@ -256,7 +256,7 @@ class Document:
         # in the TopLevel being added
         def assign_document(x: Identified):
             x.document = self
-        obj.accept(assign_document)
+        obj.traverse(assign_document)
 
     def _find_in_objects(self, search_string: str) -> Optional[Identified]:
         # TODO: implement recursive search
@@ -376,35 +376,28 @@ class Document:
         def wrapped_filter(visited: Identified):
             if predicate(visited):
                 result.append(visited)
-        self.accept(wrapped_filter)
+        self.traverse(wrapped_filter)
         return result
 
-    # TODO: Implement the visitor pattern allowing the user to specify
-    #       a function to direct the search, instead of only doing
-    #       depth-first search. For example, visit objects in provenance
-    #       order using Identified.derived_from.
-    # def accept_with_strategy(self, visitor: Callable, *, strategy: Callable = None):
-    #     # Use the strategy to compute the set of objects to visit
-    #     if strategy is None:
-    #         visit_list = self.objects
-    #     else:
-    #         visit_list = self.find_all(strategy)
-    #     while visit_list:
-    #         for obj in visit_list:
-    #             obj.accept(visitor)
-    #         # Compute the next set of objects to visit
-    #         if strategy is None:
-    #             visit_list = []
-    #         else:
-    #             visit_list = self.find_all(strategy)
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_document` on `visitor` with `self` as the only
+        argument.
 
-    def accept(self, visitor: Callable[[Identified], None]):
-        """Implement the visitor pattern by invoking `visitor` on all
-        top-level objects in the document. Those objects, in turn, will
-        invoke `visitor` on all of their child objects.
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_document method
+        :return: Whatever `visitor.visit_document` returns
+        :rtype: Any
+
+        """
+        visitor.visit_document(self)
+
+    def traverse(self, func: Callable[[Identified], None]):
+        """Enable a traversal of the entire object hierarchy contained
+        in this document.
         """
         for obj in self.objects:
-            obj.accept(visitor)
+            obj.traverse(func)
 
     def builder(self, type_uri: str) -> Callable[[str, str], Identified]:
         """Lookup up the builder callable for the given type_uri.

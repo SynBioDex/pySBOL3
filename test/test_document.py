@@ -215,31 +215,31 @@ class TestDocument(unittest.TestCase):
         found = doc.find_all(lambda obj: isinstance(obj, sbol3.Participation))
         self.assertEqual(11, len(found))
 
-    def test_visit_all(self):
-        visited_list = []
+    def test_traverse_all(self):
+        traversed_list = []
 
-        def my_visitor(obj: sbol3.Identified):
-            visited_list.append(obj)
+        def my_traverser(obj: sbol3.Identified):
+            traversed_list.append(obj)
         file = os.path.join(SBOL3_LOCATION, 'multicellular',
                             'multicellular.nt')
         doc = sbol3.Document()
         doc.read(file)
-        doc.accept(my_visitor)
-        self.assertEqual(75, len(visited_list))
+        doc.traverse(my_traverser)
+        self.assertEqual(75, len(traversed_list))
 
-    def test_visit_participations(self):
-        # Visit all and only the participations
-        visited_list = []
+    def test_traverse_participations(self):
+        # Traverse all and only the participations
+        traversed_list = []
 
-        def my_visitor(obj: sbol3.Identified):
+        def my_traverser(obj: sbol3.Identified):
             if isinstance(obj, sbol3.Participation):
-                visited_list.append(obj)
+                traversed_list.append(obj)
         file = os.path.join(SBOL3_LOCATION, 'multicellular',
                             'multicellular.nt')
         doc = sbol3.Document()
         doc.read(file)
-        doc.accept(my_visitor)
-        self.assertEqual(11, len(visited_list))
+        doc.traverse(my_traverser)
+        self.assertEqual(11, len(traversed_list))
 
     def test_builder_lookup(self):
         # Test looking up a builder function

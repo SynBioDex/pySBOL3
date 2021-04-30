@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -43,6 +43,19 @@ class Attachment(TopLevel):
             message = f'Attachment {self.identity} must have a source'
             report.addError(self.identity, None, message)
         return report
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_attachment` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_attachment method
+        :return: Whatever `visitor.visit_attachment` returns
+        :rtype: Any
+
+        """
+        visitor.visit_attachment(self)
 
 
 def build_attachment(identity: str,

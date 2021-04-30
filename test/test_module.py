@@ -79,11 +79,16 @@ class TestModule(unittest.TestCase):
                                 'https://example.com/fake']
         }
         skip_list = [sbol3.Identified, sbol3.Feature, sbol3.Location]
+        abstract_list = [sbol3.CustomIdentified, sbol3.TopLevel,
+                         sbol3.CustomTopLevel]
         for name in dir(sbol3):
             item = getattr(sbol3, name)
             if not isinstance(item, type):
                 continue
             if issubclass(item, sbol3.TopLevel):
+                if item not in abstract_list:
+                    self.assertTrue(hasattr(item, 'accept'),
+                                    f'{str(item)} has no accept attribute')
                 continue
             if not issubclass(item, sbol3.Identified):
                 continue
@@ -98,6 +103,12 @@ class TestModule(unittest.TestCase):
                 self.fail('Unable to construct sbol3.%s: %s' % (name, e))
             except sbol3.ValidationError as e:
                 self.fail('Constructed invalid sbol3.%s: %s' % (name, e))
+            if item in abstract_list:
+                # Skip over abstract classes when checking for the
+                # accept method
+                continue
+            self.assertTrue(hasattr(item, 'accept'),
+                            f'{str(item)} has no accept attribute')
 
 
 if __name__ == '__main__':

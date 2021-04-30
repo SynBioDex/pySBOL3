@@ -1,4 +1,5 @@
 import math
+from typing import Any
 
 from . import *
 from .typing import *
@@ -36,6 +37,19 @@ class Participation(Identified):
             message = 'Participation must have a participant'
             report.addError(self.identity, None, message)
         return report
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_participation` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_participation method
+        :return: Whatever `visitor.visit_participation` returns
+        :rtype: Any
+
+        """
+        visitor.visit_participation(self)
 
 
 def build_participation(identity: str,

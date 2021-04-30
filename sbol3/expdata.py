@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -25,6 +25,20 @@ class ExperimentalData(TopLevel):
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_experimental_data` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_experimental_data
+                                method
+        :return: Whatever `visitor.visit_experimental_data` returns
+        :rtype: Any
+
+        """
+        visitor.visit_experimental_data(self)
 
 
 Document.register_builder(SBOL_EXPERIMENTAL_DATA, ExperimentalData)

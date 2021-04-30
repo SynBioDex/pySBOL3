@@ -1,6 +1,6 @@
 import abc
 import math
-from typing import List
+from typing import List, Any
 
 from . import *
 
@@ -92,6 +92,19 @@ class SIPrefix(Prefix):
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
 
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_si_prefix` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_si_prefix method
+        :return: Whatever `visitor.visit_si_prefix` returns
+        :rtype: Any
+
+        """
+        visitor.visit_si_prefix(self)
+
 
 def build_si_prefix(identity: str, *, type_uri: str = OM_SI_PREFIX) -> SBOLObject:
     obj = SIPrefix(identity=identity, type_uri=type_uri,
@@ -136,6 +149,19 @@ class BinaryPrefix(Prefix):
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
+
+    def accept(self, visitor: Any) -> Any:
+        """Invokes `visit_binary_prefix` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_binary_prefix method
+        :return: Whatever `visitor.visit_binary_prefix` returns
+        :rtype: Any
+
+        """
+        visitor.visit_binary_prefix(self)
 
 
 def build_binary_prefix(identity: str,
