@@ -53,9 +53,9 @@ The ``pull`` operation will retrieve ``ComponentDefinitions`` and their associat
 
 .. end
 
---------------------
+------------------------
 Logging in to Part Repos
---------------------
+------------------------
 
 Some parts repositories can be accessed as above, without
 authenticating to the parts repository. You may also have access to
