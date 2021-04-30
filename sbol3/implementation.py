@@ -35,6 +35,16 @@ class Implementation(TopLevel):
                                       initial_value=built)
 
     def accept(self, visitor):
+        """Invokes `visit_implementation` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_implementation method
+        :return: Whatever `visitor.visit_implementation` returns
+        :rtype: Any
+
+        """
         visitor.visit_implementation(self)
 
 

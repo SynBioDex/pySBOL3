@@ -51,6 +51,17 @@ class CombinatorialDerivation(TopLevel):
         return report
 
     def accept(self, visitor):
+        """Invokes `visit_combinatorial_derivation` on `visitor` with `self`
+        as the only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_combinatorial_derivation
+                                method
+        :return: Whatever `visitor.visit_combinatorial_derivation` returns
+        :rtype: Any
+
+        """
         visitor.visit_combinatorial_derivation(self)
 
 

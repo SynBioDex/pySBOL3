@@ -35,6 +35,16 @@ class Usage(CustomIdentified):
                                  initial_value=roles)
 
     def accept(self, visitor):
+        """Invokes `visit_usage` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_usage method
+        :return: Whatever `visitor.visit_usage` returns
+        :rtype: Any
+
+        """
         visitor.visit_usage(self)
 
 
@@ -71,6 +81,16 @@ class Agent(CustomTopLevel):
                          generated_by=generated_by, measures=measures)
 
     def accept(self, visitor):
+        """Invokes `visit_agent` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_agent method
+        :return: Whatever `visitor.visit_agent` returns
+        :rtype: Any
+
+        """
         visitor.visit_agent(self)
 
 
@@ -99,6 +119,14 @@ class Plan(CustomTopLevel):
                          generated_by=generated_by, measures=measures)
 
     def accept(self, visitor):
+        """Invokes `visit_plan` on `visitor` with `self` as the only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_plan method
+        :return: Whatever `visitor.visit_plan` returns
+        :rtype: Any
+        """
         visitor.visit_plan(self)
 
 
@@ -133,6 +161,16 @@ class Association(CustomIdentified):
                                       initial_value=agent)
 
     def accept(self, visitor):
+        """Invokes `visit_association` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_association method
+        :return: Whatever `visitor.visit_association` returns
+        :rtype: Any
+
+        """
         visitor.visit_association(self)
 
 
@@ -200,6 +238,16 @@ class Activity(CustomTopLevel):
                                        type_constraint=Association)
 
     def accept(self, visitor):
+        """Invokes `visit_activity` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_activity method
+        :return: Whatever `visitor.visit_activity` returns
+        :rtype: Any
+
+        """
         visitor.visit_activity(self)
 
 

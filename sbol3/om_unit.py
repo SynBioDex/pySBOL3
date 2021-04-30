@@ -74,6 +74,16 @@ class Measure(CustomIdentified):
                                 initial_value=unit)
 
     def accept(self, visitor):
+        """Invokes `visit_measure` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_measure method
+        :return: Whatever `visitor.visit_measure` returns
+        :rtype: Any
+
+        """
         visitor.visit_measure(self)
 
 
@@ -127,6 +137,16 @@ class SingularUnit(Unit):
                                     initial_value=factor)
 
     def accept(self, visitor):
+        """Invokes `visit_singular_unit` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_singular_unit method
+        :return: Whatever `visitor.visit_singular_unit` returns
+        :rtype: Any
+
+        """
         visitor.visit_singular_unit(self)
 
 
@@ -181,6 +201,16 @@ class PrefixedUnit(Unit):
                                        initial_value=prefix)
 
     def accept(self, visitor):
+        """Invokes `visit_prefixed_unit` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_prefixed_unit method
+        :return: Whatever `visitor.visit_prefixed_unit` returns
+        :rtype: Any
+
+        """
         visitor.visit_prefixed_unit(self)
 
 

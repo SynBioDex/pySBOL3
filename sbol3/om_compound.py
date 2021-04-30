@@ -71,6 +71,17 @@ class UnitMultiplication(CompoundUnit):
                                       initial_value=term2)
 
     def accept(self, visitor):
+        """Invokes `visit_unit_multiplication` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_unit_multiplication
+                                method
+        :return: Whatever `visitor.visit_unit_multiplication` returns
+        :rtype: Any
+
+        """
         visitor.visit_unit_multiplication(self)
 
 
@@ -124,6 +135,16 @@ class UnitDivision(CompoundUnit):
                                             initial_value=denominator)
 
     def accept(self, visitor):
+        """Invokes `visit_unit_division` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_unit_division method
+        :return: Whatever `visitor.visit_unit_division` returns
+        :rtype: Any
+
+        """
         visitor.visit_unit_division(self)
 
 
@@ -177,6 +198,17 @@ class UnitExponentiation(CompoundUnit):
                                     initial_value=exponent)
 
     def accept(self, visitor):
+        """Invokes `visit_unit_exponentiation` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_unit_exponentiation
+                                method
+        :return: Whatever `visitor.visit_unit_exponentiation` returns
+        :rtype: Any
+
+        """
         visitor.visit_unit_exponentiation(self)
 
 

@@ -48,6 +48,16 @@ class Constraint(Identified):
         return report
 
     def accept(self, visitor):
+        """Invokes `visit_constraint` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_constraint method
+        :return: Whatever `visitor.visit_constraint` returns
+        :rtype: Any
+
+        """
         visitor.visit_constraint(self)
 
 

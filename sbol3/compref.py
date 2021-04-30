@@ -42,6 +42,17 @@ class ComponentReference(Feature):
         return report
 
     def accept(self, visitor):
+        """Invokes `visit_component_reference` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_component_reference
+                                method
+        :return: Whatever `visitor.visit_component_reference` returns
+        :rtype: Any
+
+        """
         visitor.visit_component_reference(self)
 
 

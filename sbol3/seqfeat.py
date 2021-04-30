@@ -27,6 +27,16 @@ class SequenceFeature(Feature):
                                               initial_value=locations)
 
     def accept(self, visitor):
+        """Invokes `visit_sequence_feature` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_sequence_feature method
+        :return: Whatever `visitor.visit_sequence_feature` returns
+        :rtype: Any
+
+        """
         visitor.visit_sequence_feature(self)
 
 

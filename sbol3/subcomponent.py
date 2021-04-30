@@ -43,6 +43,16 @@ class SubComponent(Feature):
                                      type_constraint=Location)
 
     def accept(self, visitor):
+        """Invokes `visit_sub_component` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_sub_component method
+        :return: Whatever `visitor.visit_sub_component` returns
+        :rtype: Any
+
+        """
         visitor.visit_sub_component(self)
 
 

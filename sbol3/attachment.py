@@ -45,6 +45,16 @@ class Attachment(TopLevel):
         return report
 
     def accept(self, visitor):
+        """Invokes `visit_attachment` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_attachment method
+        :return: Whatever `visitor.visit_attachment` returns
+        :rtype: Any
+
+        """
         visitor.visit_attachment(self)
 
 

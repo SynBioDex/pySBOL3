@@ -38,6 +38,16 @@ class Participation(Identified):
         return report
 
     def accept(self, visitor):
+        """Invokes `visit_participation` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_participation method
+        :return: Whatever `visitor.visit_participation` returns
+        :rtype: Any
+
+        """
         visitor.visit_participation(self)
 
 

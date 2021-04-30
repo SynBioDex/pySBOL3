@@ -66,6 +66,16 @@ class VariableFeature(Identified):
         return report
 
     def accept(self, visitor):
+        """Invokes `visit_variable_feature` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_variable_feature method
+        :return: Whatever `visitor.visit_variable_feature` returns
+        :rtype: Any
+
+        """
         visitor.visit_variable_feature(self)
 
 

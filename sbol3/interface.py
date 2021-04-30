@@ -31,6 +31,16 @@ class Interface(Identified):
                                                initial_value=nondirectional)
 
     def accept(self, visitor):
+        """Invokes `visit_interface` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_interface method
+        :return: Whatever `visitor.visit_interface` returns
+        :rtype: Any
+
+        """
         visitor.visit_interface(self)
 
 

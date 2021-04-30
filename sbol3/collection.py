@@ -38,6 +38,16 @@ class Collection(TopLevel):
                                         initial_value=members)
 
     def accept(self, visitor):
+        """Invokes `visit_collection` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_collection method
+        :return: Whatever `visitor.visit_collection` returns
+        :rtype: Any
+
+        """
         visitor.visit_collection(self)
 
 
@@ -66,6 +76,16 @@ class Experiment(Collection):
                          generated_by=generated_by, measures=measures)
 
     def accept(self, visitor):
+        """Invokes `visit_experiment` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_experiment method
+        :return: Whatever `visitor.visit_experiment` returns
+        :rtype: Any
+
+        """
         visitor.visit_experiment(self)
 
 

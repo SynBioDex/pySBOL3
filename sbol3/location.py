@@ -72,6 +72,16 @@ class Range(Location):
         return report
 
     def accept(self, visitor):
+        """Invokes `visit_range` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_range method
+        :return: Whatever `visitor.visit_range` returns
+        :rtype: Any
+
+        """
         visitor.visit_range(self)
 
 
@@ -119,6 +129,14 @@ class Cut(Location):
         return report
 
     def accept(self, visitor):
+        """Invokes `visit_cut` on `visitor` with `self` as the only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_cut method
+        :return: Whatever `visitor.visit_cut` returns
+        :rtype: Any
+        """
         visitor.visit_cut(self)
 
 
@@ -154,6 +172,17 @@ class EntireSequence(Location):
                          type_uri=type_uri)
 
     def accept(self, visitor):
+        """Invokes `visit_entire_sequence` on `visitor` with `self` as the
+        only argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_entire_sequence
+                                method
+        :return: Whatever `visitor.visit_entire_sequence` returns
+        :rtype: Any
+
+        """
         visitor.visit_entire_sequence(self)
 
 

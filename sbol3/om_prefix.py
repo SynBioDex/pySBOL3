@@ -93,6 +93,16 @@ class SIPrefix(Prefix):
                          generated_by=generated_by, measures=measures)
 
     def accept(self, visitor):
+        """Invokes `visit_si_prefix` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_si_prefix method
+        :return: Whatever `visitor.visit_si_prefix` returns
+        :rtype: Any
+
+        """
         visitor.visit_si_prefix(self)
 
 
@@ -141,6 +151,16 @@ class BinaryPrefix(Prefix):
                          generated_by=generated_by, measures=measures)
 
     def accept(self, visitor):
+        """Invokes `visit_binary_prefix` on `visitor` with `self` as the only
+        argument.
+
+        :param visitor: The visitor instance
+        :type visitor: Any
+        :raises AttributeError: If visitor lacks a visit_binary_prefix method
+        :return: Whatever `visitor.visit_binary_prefix` returns
+        :rtype: Any
+
+        """
         visitor.visit_binary_prefix(self)
 
 
