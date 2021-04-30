@@ -14,6 +14,7 @@ and constructing genetic designs according to the standardized specifications of
    introduction
    installation
    extensions
+   visitor
    ontology
 ..   getting_started
 ..   repositories
