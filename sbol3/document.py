@@ -371,6 +371,34 @@ class Document:
         warnings.warn('Use Document.bind() instead', DeprecationWarning)
         self.bind(prefix, namespace)
 
+    def parse_shacl_graph(self, shacl_graph: rdflib.Graph,
+                          report: ValidationReport) -> ValidationReport:
+        """Convert SHACL violations and warnings into a pySBOL3
+        validation report.
+
+        :param shacl_graph: The output graph from pyshacl
+        :type shacl_graph: rdflib.Graph
+        :param report: The ValidationReport to be populated
+        :type report: ValidationReport
+        :return: report
+        :rtype: ValidationReport
+        """
+        shacl_ns = rdflib.Namespace('http://www.w3.org/ns/shacl#')
+        sh_result_severity = shacl_ns.resultSeverity
+        sh_warning = shacl_ns.Warning
+        sh_violation = shacl_ns.Violation
+        for shacl_report, in shacl_graph.subjects(rdflib.RDF.type,
+                                                  shacl_ns.ValidationReport):
+            for result in shacl_graph.objects(shacl_report, shacl_ns.result):
+                object_id = shacl_graph.value(result, shacl_ns.focusNode)
+                message = shacl_graph.value(result, shacl_ns.resultMessage)
+                severity = shacl_graph.value(result, sh_result_severity)
+                if severity == sh_violation:
+                    report.addError(object_id, None, message)
+                elif severity == sh_warning:
+                    report.addWarning(object_id, None, message)
+        return report
+
     def validate_shacl(self,
                        report: Optional[ValidationReport] = None
                        ) -> ValidationReport:
@@ -383,34 +411,18 @@ class Document:
         shacl_graph = None
         data_graph.parse(data_path(os.path.join('rdf', 'sbol3-shapes.ttl')),
                          format='ttl')
-        conforms, results_graph, results_text_foo = \
-            pyshacl.validate(data_graph=data_graph, shacl_graph=shacl_graph,
-                             ont_graph=None, inference=None,
-                             abort_on_error=False, meta_shacl=False,
-                             advanced=True, debug=False)
-        if conforms:
-            # Graph is valid
-            return report
-        # Convert SHACL errors to our validation report
-        shacl_ns = rdflib.Namespace('http://www.w3.org/ns/shacl#')
-        sh_result_severity = shacl_ns.resultSeverity
-        sh_warning = shacl_ns.Warning
-        sh_violation = shacl_ns.Violation
-        for shacl_report, _, _ in results_graph.triples((None,
-                                                         rdflib.RDF.type,
-                                                         shacl_ns.ValidationReport)):
-            # print(f'{s}\t{p}\t{o}')
-            for _, _, result in results_graph.triples((shacl_report,
-                                                       shacl_ns.result,
-                                                       None)):
-                object_id = results_graph.value(result, shacl_ns.focusNode)
-                message = results_graph.value(result, shacl_ns.resultMessage)
-                severity = results_graph.value(result, sh_result_severity)
-                if severity == sh_violation:
-                    report.addError(object_id, None, message)
-                elif severity == sh_warning:
-                    report.addWarning(object_id, None, message)
-                # print(f'{severity}: {object_id}: {message}')
+        shacl_report = pyshacl.validate(data_graph=data_graph,
+                                        shacl_graph=shacl_graph,
+                                        ont_graph=None,
+                                        inference=None,
+                                        abort_on_error=False,
+                                        meta_shacl=False,
+                                        advanced=True,
+                                        debug=False)
+        # Split up the shacl_report tuple
+        conforms, results_graph, _ = shacl_report
+        if not conforms:
+            self.parse_shacl_graph(results_graph, report)
         return report
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:
