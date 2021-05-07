@@ -125,11 +125,9 @@ class TestRoundTrip(unittest.TestCase):
         if os.path.splitext(basename)[0] not in skip_list:
             # Validate files that are not in the skip list
             report = doc.validate()
-            if len(report):
-                for error in report.errors:
-                    print(error)
-                for warning in report.warnings:
-                    print(warning)
+            if report:
+                for item in report:
+                    print(item)
                 self.fail(f'got {len(report)} validation errors')
 
         doc.write(test2_path, file_format)

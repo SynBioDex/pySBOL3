@@ -44,6 +44,12 @@ class ValidationReport:
     def __len__(self):
         return len(self._errors) + len(self._warnings)
 
+    def __iter__(self):
+        for error in self._errors:
+            yield error
+        for warning in self._warnings:
+            yield warning
+
     @property
     def warnings(self) -> Sequence[ValidationWarning]:
         return tuple(self._warnings)
