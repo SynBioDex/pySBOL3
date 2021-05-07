@@ -8,7 +8,7 @@ implements `SBOL 3.0
 <https://sbolstandard.org/wp-content/uploads/2020/04/SBOL3.0specification.pdf>`_. The
 module provides an API to work with SBOL objects, and the ability to
 read and write SBOL version 3 files in a variety of RDF formats.
-pySBOL3 supports Python 3.6 or later. pySBOL3 does not support
+pySBOL3 supports Python 3.7 or later. pySBOL3 does not support
 Python 2. pySBOL3 is made freely available under the `Apache 2.0
 license <https://www.apache.org/licenses/>`_.
 

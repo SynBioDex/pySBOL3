@@ -3,7 +3,7 @@ Installation
 
 pySBOL3 is a pure `Python <https://www.python.org>`_ package and is
 available on any platform that supports Python 3.  pySBOL3 requires
-Python 3.6 or higher, and can be installed using using `pip
+Python version 3.7 or higher, and can be installed using using `pip
 <https://pypi.org/project/pip/>`_
 
 .. note:: Python 2 is not supported.
