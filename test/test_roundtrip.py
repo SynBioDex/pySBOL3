@@ -28,15 +28,9 @@ class TestRoundTrip(unittest.TestCase):
         ]
         # Skip round tripping these files
         cls.skip_round_trip = [
-            # Waiting for https://github.com/SynBioDex/SBOLTestSuite/issues/33
-            'annotation',
-            'annotation_ordered',
         ]
         # Skip validating these files
         cls.skip_validation = [
-            # Waiting for https://github.com/SynBioDex/SBOLTestSuite/issues/34
-            'activity',
-            'activity_ordered',
         ]
 
     def setUp(self):
