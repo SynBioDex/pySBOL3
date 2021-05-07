@@ -1,8 +1,8 @@
 from typing import Sequence
 
 
-class ValidationError:
-    """A ValidationError is a violation of the SBOL specification.
+class ValidationIssue:
+    """Base class for ValidationError and ValidationWarning.
     """
 
     def __init__(self, object_id, rule_id, message):
@@ -11,20 +11,28 @@ class ValidationError:
         self.object_id = object_id
 
     def __str__(self):
-        result = f'{self.rule_id}: {self.message}'
-        if self.object_id is not None:
-            result = f'{self.object_id} {result}'
-        return result
+        if self.object_id and self.rule_id:
+            return f'{self.object_id} {self.rule_id}: {self.message}'
+        elif self.object_id:
+            return f'{self.object_id}: {self.message}'
+        elif self.rule_id:
+            return f'{self.rule_id}: {self.message}'
+        else:
+            return self.message
 
 
-class ValidationWarning:
+class ValidationError(ValidationIssue):
+    """A ValidationError is a violation of the SBOL specification.
+    """
+    # All functionality is in the base class
+    pass
+
+
+class ValidationWarning(ValidationIssue):
     """A ValidationWarning is a violation of an SBOL best practice.
     """
-
-    def __init__(self, object_id, rule_id, message):
-        self.rule_id = rule_id
-        self.message = message
-        self.object_id = object_id
+    # All functionality is in the base class
+    pass
 
 
 class ValidationReport:
