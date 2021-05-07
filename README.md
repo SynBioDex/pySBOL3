@@ -12,7 +12,9 @@ missing features.
 
 ## Installation
 
-Use pip to install the library:
+pySBOL3 requires [Python 3.7](https://www.python.org) or newer.
+
+Use `pip` (or `pip3`) to install the library:
 
 ```
 pip install sbol3
