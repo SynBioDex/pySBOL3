@@ -1,8 +1,10 @@
 import collections
 import logging
+import os
 import warnings
 from typing import Dict, Callable, List, Optional, Any
 
+import pyshacl
 import rdflib
 # Get the rdflib-jsonld capability initialized
 # Note: this is for side effect. The parser is not used.
@@ -18,6 +20,16 @@ _default_bindings = {
     'om': OM_NS,
     # Should others like SO, SBO, and CHEBI be added?
 }
+
+
+def data_path(path: str) -> str:
+    """Expand path based on module installation directory.
+
+    :param path:
+    :return:
+    """
+    # Expand path based on module installation directory
+    return os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
 
 
 class Document:
@@ -359,12 +371,67 @@ class Document:
         warnings.warn('Use Document.bind() instead', DeprecationWarning)
         self.bind(prefix, namespace)
 
+    def parse_shacl_graph(self, shacl_graph: rdflib.Graph,
+                          report: ValidationReport) -> ValidationReport:
+        """Convert SHACL violations and warnings into a pySBOL3
+        validation report.
+
+        :param shacl_graph: The output graph from pyshacl
+        :type shacl_graph: rdflib.Graph
+        :param report: The ValidationReport to be populated
+        :type report: ValidationReport
+        :return: report
+        :rtype: ValidationReport
+        """
+        shacl_ns = rdflib.Namespace('http://www.w3.org/ns/shacl#')
+        sh_result_severity = shacl_ns.resultSeverity
+        sh_warning = shacl_ns.Warning
+        sh_violation = shacl_ns.Violation
+        for shacl_report, in shacl_graph.subjects(rdflib.RDF.type,
+                                                  shacl_ns.ValidationReport):
+            for result in shacl_graph.objects(shacl_report, shacl_ns.result):
+                object_id = shacl_graph.value(result, shacl_ns.focusNode)
+                message = shacl_graph.value(result, shacl_ns.resultMessage)
+                severity = shacl_graph.value(result, sh_result_severity)
+                if severity == sh_violation:
+                    report.addError(object_id, None, message)
+                elif severity == sh_warning:
+                    report.addWarning(object_id, None, message)
+        return report
+
+    def validate_shacl(self,
+                       report: Optional[ValidationReport] = None
+                       ) -> ValidationReport:
+        """Validate this document using SHACL rules.
+        """
+        if report is None:
+            report = ValidationReport()
+        # Save to RDF, then run SHACL over the resulting graph
+        data_graph = self.graph()
+        shacl_graph = None
+        data_graph.parse(data_path(os.path.join('rdf', 'sbol3-shapes.ttl')),
+                         format='ttl')
+        shacl_report = pyshacl.validate(data_graph=data_graph,
+                                        shacl_graph=shacl_graph,
+                                        ont_graph=None,
+                                        inference=None,
+                                        abort_on_error=False,
+                                        meta_shacl=False,
+                                        advanced=True,
+                                        debug=False)
+        # Split up the shacl_report tuple
+        conforms, results_graph, _ = shacl_report
+        if not conforms:
+            self.parse_shacl_graph(results_graph, report)
+        return report
+
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         """Validate all objects in this document."""
         if report is None:
             report = ValidationReport()
         for obj in self.objects:
             obj.validate(report)
+        self.validate_shacl(report)
         return report
 
     def find_all(self, predicate: Callable[[Identified], bool]) -> List[Identified]:

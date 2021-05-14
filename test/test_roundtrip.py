@@ -19,6 +19,20 @@ DEBUG_ENV_VAR = 'SBOL_TEST_DEBUG'
 
 class TestRoundTrip(unittest.TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        # Skip reading these files
+        # No files are skipped at this time. All SBOLTestSuite files can
+        # be read.
+        cls.skip_reading = [
+        ]
+        # Skip round tripping these files
+        cls.skip_round_trip = [
+        ]
+        # Skip validating these files
+        cls.skip_validation = [
+        ]
+
     def setUp(self):
         sbol3.set_defaults()
         # Create temp directory
@@ -82,14 +96,10 @@ class TestRoundTrip(unittest.TestCase):
         #
         # This was an early test, before the library was complete and
         # the files could be round tripped.
-        #
-        # No files are skipped at this time. All SBOLTestSuite files can
-        # be read.
-        skip_files = [
-        ]
+        skip_list = self.skip_reading
         for f in self.find_all_files(SBOL3_LOCATION):
             basename = os.path.basename(f)
-            if os.path.splitext(basename)[0] in skip_files:
+            if os.path.splitext(basename)[0] in skip_list:
                 # print(f'Skipping {f}')
                 continue
             rdf_type = self.rdf_type(f)
@@ -110,6 +120,16 @@ class TestRoundTrip(unittest.TestCase):
         # Read the document, then write it back to disk
         doc = sbol3.Document()
         doc.read(test_path, file_format)
+        skip_list = self.skip_validation
+        basename = os.path.basename(test_path)
+        if os.path.splitext(basename)[0] not in skip_list:
+            # Validate files that are not in the skip list
+            report = doc.validate()
+            if report:
+                for item in report:
+                    print(item)
+                self.fail(f'got {len(report)} validation errors')
+
         doc.write(test2_path, file_format)
 
         # Read the newly written document and compare results
@@ -140,13 +160,7 @@ class TestRoundTrip(unittest.TestCase):
 
     def test_sbol3_files(self):
         test_dir = SBOL3_LOCATION
-        # No files are skipped at this time. All SBOLTestSuite files can
-        # be round-tripped.
-        skip_list = [
-            # Waiting for https://github.com/SynBioDex/SBOLTestSuite/issues/33
-            'annotation',
-            'annotation_ordered',
-        ]
+        skip_list = self.skip_round_trip
         for test_file in self.find_all_files(test_dir):
             basename = os.path.basename(test_file)
             if os.path.splitext(basename)[0] in skip_list:

@@ -29,10 +29,12 @@ setup(name='sbol3',
       # What does your project relate to?
       keywords='synthetic biology',
       packages=['sbol3'],
+      package_data={'sbol3': ['rdf/sbol3-shapes.ttl']},
       install_requires=[
             'rdflib>=5.0',
             'rdflib-jsonld',
-            'python-dateutil'
+            'python-dateutil',
+            'pyshacl',
       ],
       test_suite='test',
       tests_require=[
