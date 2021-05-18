@@ -1,5 +1,6 @@
 import posixpath
 import uuid
+import warnings
 from collections import defaultdict
 from urllib.parse import urlparse
 from typing import Dict, Callable, Optional
@@ -65,9 +66,10 @@ class SBOLObject:
         # Not a URL or a UUID, so append to the namespace
         base_uri = get_namespace()
         if base_uri is None:
-            msg = 'No default namespace available.'
-            msg += ' Use set_namespace() to set one.'
-            raise NamespaceError(msg)
+            # See https://github.com/SynBioDex/pySBOL3/issues/254
+            warnings.warn('Using a default namespace.'
+                          ' To set a namespace use set_namespace()')
+            base_uri = PYSBOL3_DEFAULT_NAMESPACE
         if base_uri.endswith('#'):
             return base_uri + name
         else:

@@ -141,6 +141,8 @@ SBOL_ZERO_OR_ONE = SBOL3_NS + 'zeroOrOne'
 PYSBOL3_NS = 'https://github.com/synbiodex/pysbol3#'
 PYSBOL3_MISSING = PYSBOL3_NS + 'missing'
 
+# Used if no namespace has been set via set_namespace()
+PYSBOL3_DEFAULT_NAMESPACE = 'http://sbols.org/unspecified_namespace/'
 
 # ----------
 # Provenance terms
