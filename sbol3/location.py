@@ -91,7 +91,7 @@ def build_range(identity: str, type_uri: str = SBOL_RANGE):
     start = 1
     end = 1
     obj = Range(PYSBOL3_MISSING, start, end, identity=identity, type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[SBOL_SEQUENCES] = []
     obj._properties[SBOL_START] = []
     obj._properties[SBOL_END] = []
@@ -145,7 +145,7 @@ def build_cut(identity: str, type_uri: str = SBOL_CUT):
     """
     at = 0
     obj = Cut(PYSBOL3_MISSING, at, identity=identity, type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[SBOL_SEQUENCES] = []
     obj._properties[SBOL_START] = []
     return obj

@@ -109,7 +109,7 @@ class SIPrefix(Prefix):
 def build_si_prefix(identity: str, *, type_uri: str = OM_SI_PREFIX) -> SBOLObject:
     obj = SIPrefix(identity=identity, type_uri=type_uri,
                    symbol=PYSBOL3_MISSING, label=PYSBOL3_MISSING, factor=1.0)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[OM_SYMBOL] = []
     obj._properties[OM_LABEL] = []
     obj._properties[OM_HAS_FACTOR] = []
@@ -169,7 +169,7 @@ def build_binary_prefix(identity: str,
     obj = BinaryPrefix(identity=identity, type_uri=type_uri,
                        symbol=PYSBOL3_MISSING, label=PYSBOL3_MISSING,
                        factor=1.0)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[OM_SYMBOL] = []
     obj._properties[OM_LABEL] = []
     obj._properties[OM_HAS_FACTOR] = []

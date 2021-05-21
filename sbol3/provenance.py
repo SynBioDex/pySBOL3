@@ -50,7 +50,7 @@ class Usage(CustomIdentified):
 
 def build_usage(identity: str, *, type_uri: str = PROV_USAGE) -> SBOLObject:
     obj = Usage(entity=PYSBOL3_MISSING, identity=identity, type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[PROV_ENTITY] = []
     return obj
 
@@ -178,7 +178,7 @@ def build_association(identity: str,
                       *, type_uri: str = PROV_USAGE) -> SBOLObject:
     obj = Association(agent=PYSBOL3_MISSING, identity=identity,
                       type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[PROV_AGENTS] = []
     return obj
 

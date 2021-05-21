@@ -62,7 +62,7 @@ def build_attachment(identity: str,
                      *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:
     obj = Attachment(identity=identity, source=PYSBOL3_MISSING,
                      type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[SBOL_SOURCE] = []
     return obj
 

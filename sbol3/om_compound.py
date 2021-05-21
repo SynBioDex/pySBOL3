@@ -90,7 +90,7 @@ def build_unit_multiplication(identity: str,
     obj = UnitMultiplication(identity=identity, type_uri=type_uri,
                              symbol=PYSBOL3_MISSING, label=PYSBOL3_MISSING,
                              term1=PYSBOL3_MISSING, term2=PYSBOL3_MISSING)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[OM_SYMBOL] = []
     obj._properties[OM_LABEL] = []
     obj._properties[OM_HAS_TERM1] = []
@@ -153,7 +153,7 @@ def build_unit_division(identity: str,
     obj = UnitDivision(identity=identity, type_uri=type_uri,
                        symbol=PYSBOL3_MISSING, label=PYSBOL3_MISSING,
                        numerator=PYSBOL3_MISSING, denominator=PYSBOL3_MISSING)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[OM_SYMBOL] = []
     obj._properties[OM_LABEL] = []
     obj._properties[OM_HAS_NUMERATOR] = []
@@ -217,7 +217,7 @@ def build_unit_exponentiation(identity: str,
     obj = UnitExponentiation(identity=identity, type_uri=type_uri,
                              symbol=PYSBOL3_MISSING, label=PYSBOL3_MISSING,
                              base=PYSBOL3_MISSING, exponent=1)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[OM_SYMBOL] = []
     obj._properties[OM_LABEL] = []
     obj._properties[OM_HAS_BASE] = []

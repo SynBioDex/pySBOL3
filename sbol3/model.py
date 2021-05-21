@@ -70,7 +70,7 @@ def build_model(identity: str, type_uri: str = SBOL_MODEL):
     obj = Model(identity=identity, source=PYSBOL3_MISSING,
                 language=PYSBOL3_MISSING, framework=PYSBOL3_MISSING,
                 type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[SBOL_SOURCE] = []
     obj._properties[SBOL_LANGUAGE] = []
     obj._properties[SBOL_FRAMEWORK] = []
