@@ -84,7 +84,7 @@ def build_variable_feature(identity: str, type_uri: str = SBOL_VARIABLE_FEATURE)
     """
     obj = VariableFeature(cardinality=PYSBOL3_MISSING, variable=PYSBOL3_MISSING,
                           identity=identity, type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[SBOL_CARDINALITY] = []
     obj._properties[SBOL_VARIABLE] = []
     return obj

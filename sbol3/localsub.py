@@ -53,7 +53,7 @@ def build_local_subcomponent(identity: str,
                              *, type_uri: str = SBOL_LOCAL_SUBCOMPONENT) -> SBOLObject:
     missing = PYSBOL3_MISSING
     obj = LocalSubComponent([missing], identity=identity, type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[SBOL_TYPE] = []
     return obj
 

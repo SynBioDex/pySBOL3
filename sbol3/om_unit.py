@@ -90,7 +90,7 @@ class Measure(CustomIdentified):
 def build_measure(identity: str, *, type_uri: str = OM_MEASURE) -> SBOLObject:
     missing = PYSBOL3_MISSING
     obj = Measure(1.0, missing, identity=identity, type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[OM_HAS_NUMERICAL_VALUE] = []
     obj._properties[OM_HAS_UNIT] = []
     return obj
@@ -155,7 +155,7 @@ def build_singular_unit(identity: str,
     missing = PYSBOL3_MISSING
     obj = SingularUnit(symbol=missing, label=missing,
                        identity=identity, type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[OM_SYMBOL] = []
     obj._properties[OM_LABEL] = []
     return obj
@@ -219,7 +219,7 @@ def build_prefixed_unit(identity: str,
     obj = PrefixedUnit(identity=identity, type_uri=type_uri,
                        symbol=PYSBOL3_MISSING, label=PYSBOL3_MISSING,
                        unit=PYSBOL3_MISSING, prefix=PYSBOL3_MISSING)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[OM_SYMBOL] = []
     obj._properties[OM_LABEL] = []
     obj._properties[OM_HAS_UNIT] = []

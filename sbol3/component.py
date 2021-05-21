@@ -64,7 +64,7 @@ class Component(TopLevel):
 def build_component(identity: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:
     missing = PYSBOL3_MISSING
     obj = Component(identity, [missing], type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[SBOL_TYPE] = []
     return obj
 

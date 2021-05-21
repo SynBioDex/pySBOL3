@@ -57,7 +57,7 @@ def build_participation(identity: str,
     missing = PYSBOL3_MISSING
     obj = Participation(roles=[missing], participant=missing,
                         identity=identity, type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._properties[SBOL_ROLE] = []
     obj._properties[SBOL_PARTICIPANT] = []
     return obj

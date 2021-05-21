@@ -54,7 +54,7 @@ class Interaction(Identified):
 def build_interaction(identity: str, *, type_uri: str = SBOL_INTERACTION) -> SBOLObject:
     interaction_type = PYSBOL3_MISSING
     obj = Interaction([interaction_type], identity=identity, type_uri=type_uri)
-    # Remove the dummy type
+    # Remove the placeholder type
     obj._properties[SBOL_TYPE] = []
     return obj
 

@@ -45,7 +45,7 @@ def build_sequence_feature(identity: str,
                            *, type_uri: str = SBOL_SEQUENCE_FEATURE) -> SBOLObject:
     obj = SequenceFeature([EntireSequence(PYSBOL3_MISSING)],
                           identity=identity, type_uri=type_uri)
-    # Remove the dummy values
+    # Remove the placeholder values
     obj._owned_objects[SBOL_LOCATION] = []
     return obj
 

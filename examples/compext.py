@@ -29,7 +29,7 @@ def build_component_extension(*, identity, type_uri):
     obj = ComponentExtension(identity=identity,
                              types=[sbol3.PYSBOL3_MISSING],
                              type_uri=type_uri)
-    # Remove the dummy value
+    # Remove the placeholder value
     obj.clear_property(sbol3.SBOL_TYPE)
     return obj
 

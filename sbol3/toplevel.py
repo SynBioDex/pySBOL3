@@ -24,7 +24,7 @@ class TopLevel(Identified):
                  derived_from: List[str] = None,
                  generated_by: List[str] = None,
                  measures: List[SBOLObject] = None) -> None:
-        # Sanity check identity, which is required for a TopLevel
+        # Check identity, which is required for a TopLevel
         # More checking on identity happens in Identified, but Identified
         # does not require an identity, only TopLevel does.
         if not identity or not isinstance(identity, str):
