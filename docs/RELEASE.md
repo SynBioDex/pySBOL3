@@ -7,8 +7,8 @@
 
    ```shell
    cd <pySBOL3>
-   git checkout master
-   git tag -a v1.X -m "Release 1.X" master
+   git checkout main
+   git tag -a v1.X -m "Release 1.X" main
    git push origin --tags
    ```
 
