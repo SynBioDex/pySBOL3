@@ -387,8 +387,8 @@ class Document:
         sh_result_severity = shacl_ns.resultSeverity
         sh_warning = shacl_ns.Warning
         sh_violation = shacl_ns.Violation
-        for shacl_report, in shacl_graph.subjects(rdflib.RDF.type,
-                                                  shacl_ns.ValidationReport):
+        for shacl_report in shacl_graph.subjects(rdflib.RDF.type,
+                                                 shacl_ns.ValidationReport):
             for result in shacl_graph.objects(shacl_report, shacl_ns.result):
                 object_id = shacl_graph.value(result, shacl_ns.focusNode)
                 message = shacl_graph.value(result, shacl_ns.resultMessage)

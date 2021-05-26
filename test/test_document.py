@@ -193,6 +193,30 @@ class TestDocument(unittest.TestCase):
         # We should find the validation issue in the Range
         self.assertEqual(1, len(report))
 
+    def test_validate_invalid_doc(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/257
+        # This should return an error from the shacl validation
+        doc = sbol3.Document()
+        test_path = os.path.join(SBOL3_LOCATION, 'multicellular',
+                                 'multicellular.nt')
+        doc.read(test_path)
+        report = doc.validate()
+        # Confirm that the original document is valid
+        self.assertEqual(0, len(report))
+        # Now modify an object to be invalid
+        uri = 'https://sbolstandard.org/examples/rbs_luxR'
+        c = doc.find(uri)
+        self.assertIsNotNone(c)
+        c._properties[sbol3.SBOL_TYPE] = []
+        report = doc.validate()
+        # Confirm that the modified document is not valid
+        #
+        # The lack of a component.type is a violation that should be
+        # detected by the shacl validation. This currently causes 2
+        # validation errors, one for too few values for the type property,
+        # and the other for less than 1 value on the type property.
+        self.assertEqual(2, len(report))
+
     def test_find_all(self):
         test_files = {
             os.path.join(SBOL3_LOCATION, 'entity', 'model',
