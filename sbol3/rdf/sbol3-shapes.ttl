@@ -1,4 +1,3 @@
-@prefix dash: <http://datashapes.org/dash#> .
 @prefix om: <http://www.ontology-of-units-of-measure.org/resource/om-2/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -22,10 +21,10 @@ sbol:CombinatorialDerivation a rdfs:Class,
         sh:NodeShape ;
     rdfs:label "CombinatorialDerivation"@en ;
     tawny:name "CombinatorialDerivation"@en ;
-    rdfs:comment "The purpose of the CombinatorialDerivation class is to specify combinatorial genetic designs without having to specify every possible design variant. For example, a CombinatorialDerivation can be used to specify a library of reporter gene variants that include different promoters and RBSs without having to specify a ComponentDefinition for every possible combination of promoter, RBS, and CDS in the library. ComponentDefinition objects that realize a CombinatorialDerivation can be derived in accordance with the class properties template, variableComponents, and strategy."@en ;
+    rdfs:comment "The purpose of the CombinatorialDerivation class is to specify combinatorial genetic designs without having to specify every possible design variant. For example, a CombinatorialDerivation can be used to specify a library of reporter gene variants that include different promoters and RBSs without having to specify a ComponentDefinition for every possible combination of promoter, RBS, and CDS in the library. ComponentDefinition objects that realize a CombinatorialDerivation can be derived in accordance with the class properties template, variableFeatures, and strategy."@en ;
     rdfs:subClassOf sbol:TopLevel ;
     sh:property sbol:CombinatorialDerivation-template,
-        sbol:CombinatorialDerivation-variableComponent .
+        sbol:CombinatorialDerivation-variableFeature .
 
 sbol:Component a rdfs:Class,
         owl:Class,
@@ -67,20 +66,21 @@ sbol:Identified a rdfs:Class,
         sbol:Identified-hasMeasure,
         sbol:Identified-name .
 
-sbol:VariableComponent a rdfs:Class,
+sbol:VariableFeature a rdfs:Class,
         owl:Class,
         sh:NodeShape ;
-    rdfs:label "VariableComponent"@en ;
-    tawny:name "VariableComponent"@en ;
-    rdfs:comment "The VariableComponent class can be used to specify a choice of ComponentDefinition objects for any new 35 Component derived from a template Component in the template ComponentDefinition."@en ;
+    rdfs:label "VariableFeature"@en ;
+    tawny:name "VariableFeature"@en ;
+    rdfs:comment "The VariableFeature class can be used to specify a choice of ComponentDefinition objects for any new 35 Component derived from a template Component in the template ComponentDefinition."@en ;
     rdfs:subClassOf [ a owl:Restriction ;
             owl:onProperty sbol:variable ;
-            owl:someValuesFrom sbol:Component ],
+            owl:someValuesFrom sbol:Feature ],
         sbol:Identified ;
-    sh:property sbol:VariableComponent-variable,
-        sbol:VariableComponent-variant,
-        sbol:VariableComponent-variantCollection,
-        sbol:VariableComponent-variantDerivation .
+    sh:property sbol:VariableFeature-variable,
+        sbol:VariableFeature-variant,
+        sbol:VariableFeature-variantCollection,
+        sbol:VariableFeature-variantDerivation,
+        sbol:VariableFeature-variantMeasure .
 
 om:Measure a rdfs:Class,
         owl:Class,
@@ -107,13 +107,16 @@ sbol:LocalSubComponent a owl:Class ;
 sbol:SequenceFeature a owl:Class ;
     rdfs:subClassOf sbol:Feature .
 
+sbol:SubComponent a owl:Class ;
+    rdfs:subClassOf sbol:Feature .
+
 sbol:hasMeasure-shape a sh:NodeShape ;
     sh:class sbol:Identified ;
     sh:targetSubjectsOf sbol:hasMeasure .
 
-sbol:hasVariableComponent a owl:ObjectProperty ;
-    rdfs:label "hasVariableComponent" ;
-    tawny:name "hasVariableComponent" .
+sbol:hasVariableFeature a owl:ObjectProperty ;
+    rdfs:label "hasVariableFeature" ;
+    tawny:name "hasVariableFeature" .
 
 sbol:isMemberOf a owl:ObjectProperty ;
     rdfs:label "isMemberOf"@en ;
@@ -130,24 +133,28 @@ sbol:template-shape a sh:NodeShape ;
     sh:targetSubjectsOf sbol:template .
 
 sbol:variable-shape a sh:NodeShape ;
-    sh:class sbol:VariableComponent ;
+    sh:class sbol:VariableFeature ;
     sh:targetSubjectsOf sbol:variable .
 
-sbol:variableComponent-shape a sh:NodeShape ;
+sbol:variableFeature-shape a sh:NodeShape ;
     sh:class sbol:CombinatorialDerivation ;
-    sh:targetSubjectsOf sbol:variableComponent .
+    sh:targetSubjectsOf sbol:variableFeature .
 
 sbol:variant-shape a sh:NodeShape ;
-    sh:class sbol:VariableComponent ;
+    sh:class sbol:VariableFeature ;
     sh:targetSubjectsOf sbol:variant .
 
 sbol:variantCollection-shape a sh:NodeShape ;
-    sh:class sbol:VariableComponent ;
+    sh:class sbol:VariableFeature ;
     sh:targetSubjectsOf sbol:variantCollection .
 
 sbol:variantDerivation-shape a sh:NodeShape ;
-    sh:class sbol:VariableComponent ;
+    sh:class sbol:VariableFeature ;
     sh:targetSubjectsOf sbol:variantDerivation .
+
+sbol:variantMeasure-shape a sh:NodeShape ;
+    sh:class sbol:VariableFeature ;
+    sh:targetSubjectsOf sbol:variantMeasure .
 
 tawny:name a owl:AnnotationProperty .
 
@@ -159,9 +166,9 @@ sbol:CombinatorialDerivation-template a sh:PropertyShape ;
     sh:class sbol:Component ;
     sh:path sbol:template .
 
-sbol:CombinatorialDerivation-variableComponent a sh:PropertyShape ;
-    sh:class sbol:VariableComponent ;
-    sh:path sbol:variableComponent .
+sbol:CombinatorialDerivation-variableFeature a sh:PropertyShape ;
+    sh:class sbol:VariableFeature ;
+    sh:path sbol:variableFeature .
 
 sbol:Component-type a sh:PropertyShape ;
     sh:minCount 1 ;
@@ -189,31 +196,31 @@ sbol:Identified-name a sh:PropertyShape ;
     sh:maxCount 1 ;
     sh:path sbol:name .
 
-sbol:VariableComponent-variable a sh:PropertyShape ;
-    dash:hasValueWithClass sbol:Component ;
-    sh:class sbol:SubComponent ;
+sbol:VariableFeature-variable a sh:PropertyShape ;
+    sh:class sbol:Feature ;
     sh:minCount 1 ;
     sh:path sbol:variable .
 
-sbol:VariableComponent-variant a sh:PropertyShape ;
+sbol:VariableFeature-variant a sh:PropertyShape ;
     sh:class sbol:Component ;
     sh:path sbol:variant .
 
-sbol:VariableComponent-variantCollection a sh:PropertyShape ;
+sbol:VariableFeature-variantCollection a sh:PropertyShape ;
     sh:class sbol:Collection ;
     sh:path sbol:variantCollection .
 
-sbol:VariableComponent-variantDerivation a sh:PropertyShape ;
+sbol:VariableFeature-variantDerivation a sh:PropertyShape ;
     sh:class sbol:CombinatorialDerivation ;
     sh:path sbol:variantDerivation .
+
+sbol:VariableFeature-variantMeasure a sh:PropertyShape ;
+    sh:class om:Measure ;
+    sh:path sbol:variantMeasure .
 
 om:Measure-http___www.ontology-of-units-of-measure.org_resource_om-2_hasNumericalValue a sh:PropertyShape ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:path om:hasNumericalValue .
-
-sbol:SubComponent a owl:Class ;
-    rdfs:subClassOf sbol:Feature .
 
 sbol:hasFeature a owl:ObjectProperty ;
     rdfs:label "hasFeature" ;
@@ -238,29 +245,35 @@ sbol:type a owl:ObjectProperty ;
     tawny:name "type"@en ;
     rdfs:comment "Specifies the category of biochemical or physical entity. For example DNA, protein, or small molecule that a ComponentDefinition object abstracts for the purpose of engineering design. For DNA or RNA entities, additional types fields are used to describe nucleic acid topology (circular / linear) and strandedness (double- or single-stranded)."@en .
 
-sbol:variableComponent a owl:ObjectProperty ;
-    rdfs:label "variableComponent"@en ;
-    tawny:name "variableComponent"@en ;
+sbol:variableFeature a owl:ObjectProperty ;
+    rdfs:label "variableFeature"@en ;
+    tawny:name "variableFeature"@en ;
     rdfs:domain sbol:CombinatorialDerivation ;
-    rdfs:range sbol:VariableComponent .
+    rdfs:range sbol:VariableFeature .
 
 sbol:variant a owl:ObjectProperty ;
     rdfs:label "variant"@en ;
     tawny:name "variant"@en ;
-    rdfs:domain sbol:VariableComponent ;
+    rdfs:domain sbol:VariableFeature ;
     rdfs:range sbol:Component .
 
 sbol:variantCollection a owl:ObjectProperty ;
     rdfs:label "variantCollection"@en ;
     tawny:name "variantCollection"@en ;
-    rdfs:domain sbol:VariableComponent ;
+    rdfs:domain sbol:VariableFeature ;
     rdfs:range sbol:Collection .
 
 sbol:variantDerivation a owl:ObjectProperty ;
     rdfs:label "variantDerivation"@en ;
     tawny:name "variantDerivation"@en ;
-    rdfs:domain sbol:VariableComponent ;
+    rdfs:domain sbol:VariableFeature ;
     rdfs:range sbol:CombinatorialDerivation .
+
+sbol:variantMeasure a owl:ObjectProperty ;
+    rdfs:label "variantMeasure"@en ;
+    tawny:name "variantMeasure"@en ;
+    rdfs:domain sbol:VariableFeature ;
+    rdfs:range om:Measure .
 
 sbol:member a owl:ObjectProperty ;
     rdfs:label "member"@en ;
@@ -273,8 +286,8 @@ sbol:variable a owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "variable"@en ;
     tawny:name "variable"@en ;
-    rdfs:domain sbol:VariableComponent ;
-    rdfs:range sbol:SubComponent .
+    rdfs:domain sbol:VariableFeature ;
+    rdfs:range sbol:Feature .
 
 sbol:TopLevel a owl:Class ;
     rdfs:label "TopLevel"@en ;

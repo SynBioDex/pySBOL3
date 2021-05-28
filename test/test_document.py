@@ -350,6 +350,16 @@ class TestDocument(unittest.TestCase):
             # Reach behind the scenes to remove the registered builder
             del sbol3.Document._uri_type_map[ext_type_uri]
 
+    def test_variable_feature_shacl(self):
+        # See https://github.com/SynBioDex/sbol-shacl/issues/4
+        # This file should be valid. Ensure we are handling
+        # VariableFeature in the SHACL rules
+        test_file = os.path.join(TEST_RESOURCE_DIR, 'simple_library.nt')
+        doc = sbol3.Document()
+        doc.read(test_file)
+        report = doc.validate()
+        self.assertEqual(0, len(report))
+
 
 if __name__ == '__main__':
     unittest.main()
