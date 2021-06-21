@@ -1,300 +1,1847 @@
-@prefix om: <http://www.ontology-of-units-of-measure.org/resource/om-2/> .
+@prefix : <http://sbols.org/v3#> .
+@prefix dash: <http://datashapes.org/dash#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sbol: <http://sbols.org/v3#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix tawny: <http://www.purl.org/ontolink/tawny#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-sbol:Collection a rdfs:Class,
+:Attachment a rdfs:Class,
+        rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
-    rdfs:label "Collection"@en ;
-    tawny:name "Collection"@en ;
-    rdfs:comment "Groups together a set of TopLevel objects that have something in common."@en ;
-    rdfs:subClassOf sbol:TopLevel ;
-    sh:property sbol:Collection-member .
+    rdfs:label "Attachment"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :source ;
+            owl:someValuesFrom owl:Thing ],
+        _:Nf5a648d8783749c1aada31263f1ba447,
+        :Identified,
+        :TopLevel,
+        owl:Thing ;
+    sh:property :Attachment-format,
+        :Attachment-hasNamespace,
+        :Attachment-hash,
+        :Attachment-hashAlgorithm,
+        :Attachment-size,
+        :Attachment-source .
 
-sbol:CombinatorialDerivation a rdfs:Class,
+:Collection a rdfs:Class,
+        rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
-    rdfs:label "CombinatorialDerivation"@en ;
-    tawny:name "CombinatorialDerivation"@en ;
-    rdfs:comment "The purpose of the CombinatorialDerivation class is to specify combinatorial genetic designs without having to specify every possible design variant. For example, a CombinatorialDerivation can be used to specify a library of reporter gene variants that include different promoters and RBSs without having to specify a ComponentDefinition for every possible combination of promoter, RBS, and CDS in the library. ComponentDefinition objects that realize a CombinatorialDerivation can be derived in accordance with the class properties template, variableFeatures, and strategy."@en ;
-    rdfs:subClassOf sbol:TopLevel ;
-    sh:property sbol:CombinatorialDerivation-template,
-        sbol:CombinatorialDerivation-variableFeature .
+    rdfs:label "Collection"^^xsd:string ;
+    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
+        :Identified,
+        :TopLevel,
+        owl:Thing ;
+    sh:property :Collection-hasNamespace,
+        :Collection-member .
 
-sbol:Component a rdfs:Class,
+:CombinatorialDerivation a rdfs:Class,
+        rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
-    rdfs:label "Component"@en ;
-    tawny:name "Component"@en ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:minCardinality 1 ;
-            owl:onProperty sbol:type ],
-        sbol:TopLevel ;
-    sh:property sbol:Component-type .
+    rdfs:label "CombinatorialDerivation"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :template ;
+            owl:someValuesFrom :Component ],
+        _:Nf5a648d8783749c1aada31263f1ba447,
+        :Identified,
+        :TopLevel,
+        owl:Thing ;
+    sh:property :CombinatorialDerivation-hasNamespace,
+        :CombinatorialDerivation-hasVariableFeature,
+        :CombinatorialDerivation-strategy,
+        :CombinatorialDerivation-template .
 
-sbol:ComponentReference a rdfs:Class,
+:Component a rdfs:Class,
+        rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:cardinality 1 ;
-            owl:onProperty sbol:hasFeature ],
-        sbol:Feature ;
-    sh:property sbol:ComponentReference-hasFeature .
+    rdfs:label "Component"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :type ;
+            owl:someValuesFrom owl:Thing ],
+        _:Nf5a648d8783749c1aada31263f1ba447,
+        :Identified,
+        :TopLevel,
+        owl:Thing ;
+    sh:property :Component-hasConstraint,
+        :Component-hasFeature,
+        :Component-hasInteraction,
+        :Component-hasInterface,
+        :Component-hasModel,
+        :Component-hasNamespace,
+        :Component-hasSequence,
+        :Component-role,
+        :Component-type .
 
-sbol:Identified a rdfs:Class,
+:ComponentReference a rdfs:Class,
+        rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
-    rdfs:label "Identified"@en ;
-    tawny:name "Identified"@en ;
-    rdfs:comment "Represents SBOL objects that can be identified uniquely using URIs."@en ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty sbol:displayId ],
-        [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty sbol:name ],
-        [ a owl:Restriction ;
-            owl:maxCardinality 1 ;
-            owl:onProperty sbol:description ] ;
-    sh:property sbol:Identified-description,
-        sbol:Identified-displayId,
-        sbol:Identified-hasMeasure,
-        sbol:Identified-name .
+    rdfs:label "ComponentReference"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass :Feature ;
+            owl:onProperty :hasFeature ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :hasFeature ;
+            owl:someValuesFrom :Feature ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :inChildOf ;
+            owl:someValuesFrom :Component ],
+        :Feature,
+        :Identified,
+        owl:Thing ;
+    sh:property :ComponentReference-hasFeature,
+        :ComponentReference-inChildOf .
 
-sbol:VariableFeature a rdfs:Class,
+:Constraint a rdfs:Class,
+        rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
-    rdfs:label "VariableFeature"@en ;
-    tawny:name "VariableFeature"@en ;
-    rdfs:comment "The VariableFeature class can be used to specify a choice of ComponentDefinition objects for any new 35 Component derived from a template Component in the template ComponentDefinition."@en ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty sbol:variable ;
-            owl:someValuesFrom sbol:Feature ],
-        sbol:Identified ;
-    sh:property sbol:VariableFeature-variable,
-        sbol:VariableFeature-variant,
-        sbol:VariableFeature-variantCollection,
-        sbol:VariableFeature-variantDerivation,
-        sbol:VariableFeature-variantMeasure .
+    rdfs:label "Constraint"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :object ;
+            owl:someValuesFrom :Feature ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :restriction ;
+            owl:someValuesFrom owl:Thing ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :subject ;
+            owl:someValuesFrom :Feature ],
+        :Identified,
+        owl:Thing ;
+    sh:property :Constraint-object,
+        :Constraint-restriction,
+        :Constraint-subject .
 
-om:Measure a rdfs:Class,
+:Cut a rdfs:Class,
+        rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
-    rdf:subClassOf sbol:Identified ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:cardinality 1 ;
-            owl:onProperty om:hasNumericalValue ] ;
-    sh:property om:Measure-http___www.ontology-of-units-of-measure.org_resource_om-2_hasNumericalValue .
+    rdfs:label "Cut"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :at ;
+            owl:someValuesFrom [ a rdfs:Datatype,
+                        rdfs:Resource ;
+                    rdfs:subClassOf rdfs:Literal ;
+                    owl:onDatatype xsd:integer ;
+                    owl:withRestrictions [ a rdfs:Resource ;
+                            rdf:first [ a rdfs:Resource ;
+                                    xsd:minInclusive 0 ] ;
+                            rdf:rest () ] ] ],
+        _:N674a3e8a65b748698641587003887636,
+        _:Ne92c02da0b094e05a8af34ca7ae2baa2,
+        :Identified,
+        :Location,
+        owl:Thing ;
+    sh:property :Cut-at,
+        :Cut-hasSequence .
 
-<http://sbols.org/v3> a owl:Ontology ;
-    tawny:name "sbol"@en ;
-    rdfs:comment "This is a fragment of the anticipated OWL version of the SBOL data model v3. It is based on the SBOL 3.0 specification and the exisiting SBOL 2 ontology." ;
-    owl:imports <http://www.purl.org/ontolink/tawny> ;
-    owl:versionInfo "1.0"@en .
+:EntireSequence a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "EntireSequence"^^xsd:string ;
+    rdfs:subClassOf _:N674a3e8a65b748698641587003887636,
+        _:Ne92c02da0b094e05a8af34ca7ae2baa2,
+        :Identified,
+        :Location,
+        owl:Thing ;
+    sh:property :EntireSequence-hasSequence .
 
-sbol:ExternallyDefined a owl:Class ;
-    rdfs:subClassOf sbol:Feature,
-        sbol:Identified .
+:Experiment a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "Experiment"^^xsd:string ;
+    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
+        :Collection,
+        :Identified,
+        :TopLevel,
+        owl:Thing ;
+    sh:property :Experiment-hasNamespace .
 
-sbol:LocalSubComponent a owl:Class ;
-    rdfs:subClassOf sbol:Feature .
+:ExperimentalData a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "ExperimentalData"^^xsd:string ;
+    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
+        :Identified,
+        :TopLevel,
+        owl:Thing ;
+    sh:property :ExperimentalData-hasNamespace .
 
-sbol:SequenceFeature a owl:Class ;
-    rdfs:subClassOf sbol:Feature .
+:ExternallyDefined a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "ExternallyDefined"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :type ;
+            owl:someValuesFrom owl:Thing ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :definition ;
+            owl:someValuesFrom owl:Thing ],
+        :Feature,
+        :Identified,
+        owl:Thing ;
+    sh:property :ExternallyDefined-definition,
+        :ExternallyDefined-type .
 
-sbol:SubComponent a owl:Class ;
-    rdfs:subClassOf sbol:Feature .
+:Feature a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "Feature"^^xsd:string ;
+    rdfs:subClassOf :Identified,
+        owl:Thing ;
+    sh:property :Feature-orientation,
+        :Feature-role .
 
-sbol:hasMeasure-shape a sh:NodeShape ;
-    sh:class sbol:Identified ;
-    sh:targetSubjectsOf sbol:hasMeasure .
+:Identified a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "Identified"^^xsd:string ;
+    rdfs:subClassOf owl:Thing ;
+    sh:property :Identified-description,
+        :Identified-displayId,
+        :Identified-hasMeasure,
+        :Identified-name .
 
-sbol:hasVariableFeature a owl:ObjectProperty ;
-    rdfs:label "hasVariableFeature" ;
-    tawny:name "hasVariableFeature" .
+:Implementation a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "Implementation"^^xsd:string ;
+    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
+        :Identified,
+        :TopLevel,
+        owl:Thing ;
+    sh:property :Implementation-built,
+        :Implementation-hasNamespace .
 
-sbol:isMemberOf a owl:ObjectProperty ;
-    rdfs:label "isMemberOf"@en ;
-    tawny:name "isMemberOf"@en ;
-    rdfs:comment "Inverse of the member property."@en ;
-    owl:inverseOf sbol:member .
+:Interaction a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "Interaction"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :type ;
+            owl:someValuesFrom owl:Thing ],
+        :Identified,
+        owl:Thing ;
+    sh:property :Interaction-hasParticipation,
+        :Interaction-type .
 
-sbol:member-shape a sh:NodeShape ;
-    sh:class sbol:Collection ;
-    sh:targetSubjectsOf sbol:member .
+:Interface a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "Interface"^^xsd:string ;
+    rdfs:subClassOf :Identified,
+        owl:Thing ;
+    sh:property :Interface-input,
+        :Interface-nondirectional,
+        :Interface-output .
 
-sbol:template-shape a sh:NodeShape ;
-    sh:class sbol:CombinatorialDerivation ;
-    sh:targetSubjectsOf sbol:template .
+:LocalSubComponent a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "LocalSubComponent"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :type ;
+            owl:someValuesFrom owl:Thing ],
+        :Feature,
+        :Identified,
+        owl:Thing ;
+    sh:property :LocalSubComponent-hasLocation,
+        :LocalSubComponent-type .
 
-sbol:variable-shape a sh:NodeShape ;
-    sh:class sbol:VariableFeature ;
-    sh:targetSubjectsOf sbol:variable .
+:Location a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "Location"^^xsd:string ;
+    rdfs:subClassOf _:N674a3e8a65b748698641587003887636,
+        _:Ne92c02da0b094e05a8af34ca7ae2baa2,
+        :Identified,
+        owl:Thing ;
+    sh:property :Location-hasSequence,
+        :Location-order,
+        :Location-orientation .
 
-sbol:variableFeature-shape a sh:NodeShape ;
-    sh:class sbol:CombinatorialDerivation ;
-    sh:targetSubjectsOf sbol:variableFeature .
+:Model a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "Model"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :source ;
+            owl:someValuesFrom owl:Thing ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :framework ;
+            owl:someValuesFrom owl:Thing ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :language ;
+            owl:someValuesFrom owl:Thing ],
+        _:Nf5a648d8783749c1aada31263f1ba447,
+        :Identified,
+        :TopLevel,
+        owl:Thing ;
+    sh:property :Model-framework,
+        :Model-hasNamespace,
+        :Model-language,
+        :Model-source .
 
-sbol:variant-shape a sh:NodeShape ;
-    sh:class sbol:VariableFeature ;
-    sh:targetSubjectsOf sbol:variant .
+:Participation a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "Participation"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :role ;
+            owl:someValuesFrom owl:Thing ],
+        :Identified,
+        owl:Thing ;
+    sh:property :Participation-higherOrderParticipant,
+        :Participation-participant,
+        :Participation-role .
 
-sbol:variantCollection-shape a sh:NodeShape ;
-    sh:class sbol:VariableFeature ;
-    sh:targetSubjectsOf sbol:variantCollection .
+:Range a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "Range"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :end ;
+            owl:someValuesFrom [ a rdfs:Datatype,
+                        rdfs:Resource ;
+                    rdfs:subClassOf rdfs:Literal ;
+                    owl:onDatatype xsd:integer ;
+                    owl:withRestrictions [ a rdfs:Resource ;
+                            rdf:first [ a rdfs:Resource ;
+                                    xsd:minInclusive 1 ] ;
+                            rdf:rest () ] ] ],
+        _:N674a3e8a65b748698641587003887636,
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :start ;
+            owl:someValuesFrom [ a rdfs:Datatype,
+                        rdfs:Resource ;
+                    rdfs:subClassOf rdfs:Literal ;
+                    owl:onDatatype xsd:integer ;
+                    owl:withRestrictions [ a rdfs:Resource ;
+                            rdf:first [ a rdfs:Resource ;
+                                    xsd:minInclusive 1 ] ;
+                            rdf:rest () ] ] ],
+        _:Ne92c02da0b094e05a8af34ca7ae2baa2,
+        :Identified,
+        :Location,
+        owl:Thing ;
+    sh:property :Range-end,
+        :Range-hasSequence,
+        :Range-start .
 
-sbol:variantDerivation-shape a sh:NodeShape ;
-    sh:class sbol:VariableFeature ;
-    sh:targetSubjectsOf sbol:variantDerivation .
+:Sequence a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "Sequence"^^xsd:string ;
+    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
+        :Identified,
+        :TopLevel,
+        owl:Thing ;
+    sh:property :Sequence-elements,
+        :Sequence-encoding,
+        :Sequence-hasNamespace .
 
-sbol:variantMeasure-shape a sh:NodeShape ;
-    sh:class sbol:VariableFeature ;
-    sh:targetSubjectsOf sbol:variantMeasure .
+:SequenceFeature a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "SequenceFeature"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :hasLocation ;
+            owl:someValuesFrom :Location ],
+        :Feature,
+        :Identified,
+        owl:Thing ;
+    sh:property :SequenceFeature-hasLocation .
 
-tawny:name a owl:AnnotationProperty .
+:SubComponent a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "SubComponent"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :instanceOf ;
+            owl:someValuesFrom :Component ],
+        :Feature,
+        :Identified,
+        owl:Thing ;
+    sh:property :SubComponent-hasLocation,
+        :SubComponent-instanceOf,
+        :SubComponent-roleIntegration,
+        :SubComponent-sourceLocation .
 
-sbol:Collection-member a sh:PropertyShape ;
-    sh:class sbol:TopLevel ;
-    sh:path sbol:member .
+:TopLevel a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "TopLevel"^^xsd:string ;
+    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
+        :Identified,
+        owl:Thing ;
+    sh:property :TopLevel-hasAttachment,
+        :TopLevel-hasNamespace .
 
-sbol:CombinatorialDerivation-template a sh:PropertyShape ;
-    sh:class sbol:Component ;
-    sh:path sbol:template .
+:VariableFeature a rdfs:Class,
+        rdfs:Resource,
+        owl:Class,
+        sh:NodeShape ;
+    rdfs:label "VariableFeature"^^xsd:string ;
+    rdfs:subClassOf [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :variable ;
+            owl:someValuesFrom :Feature ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :cardinality ;
+            owl:someValuesFrom :Cardinality ],
+        :Identified,
+        owl:Thing ;
+    sh:property :VariableFeature-cardinality,
+        :VariableFeature-variable,
+        :VariableFeature-variant,
+        :VariableFeature-variantCollection,
+        :VariableFeature-variantDerivation,
+        :VariableFeature-variantMeasure .
 
-sbol:CombinatorialDerivation-variableFeature a sh:PropertyShape ;
-    sh:class sbol:VariableFeature ;
-    sh:path sbol:variableFeature .
+<http://sbols.org/v3> a rdfs:Resource,
+        owl:Ontology .
 
-sbol:Component-type a sh:PropertyShape ;
-    sh:minCount 1 ;
-    sh:path sbol:type .
+:at-shape a sh:NodeShape ;
+    sh:class :Cut ;
+    sh:targetSubjectsOf :at .
 
-sbol:ComponentReference-hasFeature a sh:PropertyShape ;
-    sh:class sbol:Feature ;
+:built-shape a sh:NodeShape ;
+    sh:class :Implementation ;
+    sh:targetSubjectsOf :built .
+
+:cardinality-shape a sh:NodeShape ;
+    sh:class :VariableFeature ;
+    sh:targetSubjectsOf :cardinality .
+
+:definition-shape a sh:NodeShape ;
+    sh:class :ExternallyDefined ;
+    sh:targetSubjectsOf :definition .
+
+:description-shape a sh:NodeShape ;
+    sh:class :Identified ;
+    sh:targetSubjectsOf :description .
+
+:displayId-shape a sh:NodeShape ;
+    sh:class :Identified ;
+    sh:targetSubjectsOf :displayId .
+
+:elements-shape a sh:NodeShape ;
+    sh:class :Sequence ;
+    sh:targetSubjectsOf :elements .
+
+:encoding-shape a sh:NodeShape ;
+    sh:class :Sequence ;
+    sh:targetSubjectsOf :encoding .
+
+:end-shape a sh:NodeShape ;
+    sh:class :Range ;
+    sh:targetSubjectsOf :end .
+
+:format-shape a sh:NodeShape ;
+    sh:class :Attachment ;
+    sh:targetSubjectsOf :format .
+
+:framework-shape a sh:NodeShape ;
+    sh:class :Model ;
+    sh:targetSubjectsOf :framework .
+
+:hasAttachment-shape a sh:NodeShape ;
+    sh:class :TopLevel ;
+    sh:targetSubjectsOf :hasAttachment .
+
+:hasConstraint-shape a sh:NodeShape ;
+    sh:class :Component ;
+    sh:targetSubjectsOf :hasConstraint .
+
+:hasInteraction-shape a sh:NodeShape ;
+    sh:class :Component ;
+    sh:targetSubjectsOf :hasInteraction .
+
+:hasInterface-shape a sh:NodeShape ;
+    sh:class :Component ;
+    sh:targetSubjectsOf :hasInterface .
+
+:hasMeasure-shape a sh:NodeShape ;
+    sh:class :Identified ;
+    sh:targetSubjectsOf :hasMeasure .
+
+:hasModel-shape a sh:NodeShape ;
+    sh:class :Component ;
+    sh:targetSubjectsOf :hasModel .
+
+:hasNamespace-shape a sh:NodeShape ;
+    sh:class :TopLevel ;
+    sh:targetSubjectsOf :hasNamespace .
+
+:hasParticipation-shape a sh:NodeShape ;
+    sh:class :Interaction ;
+    sh:targetSubjectsOf :hasParticipation .
+
+:hasVariableFeature-shape a sh:NodeShape ;
+    sh:class :CombinatorialDerivation ;
+    sh:targetSubjectsOf :hasVariableFeature .
+
+:hash-shape a sh:NodeShape ;
+    sh:class :Attachment ;
+    sh:targetSubjectsOf :hash .
+
+:hashAlgorithm-shape a sh:NodeShape ;
+    sh:class :Attachment ;
+    sh:targetSubjectsOf :hashAlgorithm .
+
+:higherOrderParticipant-shape a sh:NodeShape ;
+    sh:class :Participation ;
+    sh:targetSubjectsOf :higherOrderParticipant .
+
+:inChildOf-shape a sh:NodeShape ;
+    sh:class :ComponentReference ;
+    sh:targetSubjectsOf :inChildOf .
+
+:input-shape a sh:NodeShape ;
+    sh:class :Interface ;
+    sh:targetSubjectsOf :input .
+
+:instanceOf-shape a sh:NodeShape ;
+    sh:class :SubComponent ;
+    sh:targetSubjectsOf :instanceOf .
+
+:language-shape a sh:NodeShape ;
+    sh:class :Model ;
+    sh:targetSubjectsOf :language .
+
+:member-shape a sh:NodeShape ;
+    sh:class :Collection ;
+    sh:targetSubjectsOf :member .
+
+:name-shape a sh:NodeShape ;
+    sh:class :Identified ;
+    sh:targetSubjectsOf :name .
+
+:nondirectional-shape a sh:NodeShape ;
+    sh:class :Interface ;
+    sh:targetSubjectsOf :nondirectional .
+
+:object-shape a sh:NodeShape ;
+    sh:class :Constraint ;
+    sh:targetSubjectsOf :object .
+
+:order-shape a sh:NodeShape ;
+    sh:class :Location ;
+    sh:targetSubjectsOf :order .
+
+:output-shape a sh:NodeShape ;
+    sh:class :Interface ;
+    sh:targetSubjectsOf :output .
+
+:participant-shape a sh:NodeShape ;
+    sh:class :Participation ;
+    sh:targetSubjectsOf :participant .
+
+:restriction-shape a sh:NodeShape ;
+    sh:class :Constraint ;
+    sh:targetSubjectsOf :restriction .
+
+:roleIntegration-shape a sh:NodeShape ;
+    sh:class :SubComponent ;
+    sh:targetSubjectsOf :roleIntegration .
+
+:size-shape a sh:NodeShape ;
+    sh:class :Attachment ;
+    sh:targetSubjectsOf :size .
+
+:sourceLocation-shape a sh:NodeShape ;
+    sh:class :SubComponent ;
+    sh:targetSubjectsOf :sourceLocation .
+
+:start-shape a sh:NodeShape ;
+    sh:class :Range ;
+    sh:targetSubjectsOf :start .
+
+:strategy-shape a sh:NodeShape ;
+    sh:class :CombinatorialDerivation ;
+    sh:targetSubjectsOf :strategy .
+
+:subject-shape a sh:NodeShape ;
+    sh:class :Constraint ;
+    sh:targetSubjectsOf :subject .
+
+:template-shape a sh:NodeShape ;
+    sh:class :CombinatorialDerivation ;
+    sh:targetSubjectsOf :template .
+
+:variable-shape a sh:NodeShape ;
+    sh:class :VariableFeature ;
+    sh:targetSubjectsOf :variable .
+
+:variant-shape a sh:NodeShape ;
+    sh:class :VariableFeature ;
+    sh:targetSubjectsOf :variant .
+
+:variantCollection-shape a sh:NodeShape ;
+    sh:class :VariableFeature ;
+    sh:targetSubjectsOf :variantCollection .
+
+:variantDerivation-shape a sh:NodeShape ;
+    sh:class :VariableFeature ;
+    sh:targetSubjectsOf :variantDerivation .
+
+:variantMeasure-shape a sh:NodeShape ;
+    sh:class :VariableFeature ;
+    sh:targetSubjectsOf :variantMeasure .
+
+:Attachment-format a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:path :format .
+
+:Attachment-hasNamespace a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path sbol:hasFeature .
+    sh:path :hasNamespace .
 
-sbol:Identified-description a sh:PropertyShape ;
+:Attachment-hash a sh:PropertyShape ;
+    sh:datatype xsd:string ;
     sh:maxCount 1 ;
-    sh:path sbol:description .
+    sh:path :hash .
 
-sbol:Identified-displayId a sh:PropertyShape ;
+:Attachment-hashAlgorithm a sh:PropertyShape ;
+    sh:datatype xsd:string ;
     sh:maxCount 1 ;
-    sh:path sbol:displayId .
+    sh:path :hashAlgorithm .
 
-sbol:Identified-hasMeasure a sh:PropertyShape ;
-    sh:class om:Measure ;
-    sh:path sbol:hasMeasure .
-
-sbol:Identified-name a sh:PropertyShape ;
+:Attachment-size a sh:PropertyShape ;
     sh:maxCount 1 ;
-    sh:path sbol:name .
+    sh:path :size .
 
-sbol:VariableFeature-variable a sh:PropertyShape ;
-    sh:class sbol:Feature ;
-    sh:minCount 1 ;
-    sh:path sbol:variable .
-
-sbol:VariableFeature-variant a sh:PropertyShape ;
-    sh:class sbol:Component ;
-    sh:path sbol:variant .
-
-sbol:VariableFeature-variantCollection a sh:PropertyShape ;
-    sh:class sbol:Collection ;
-    sh:path sbol:variantCollection .
-
-sbol:VariableFeature-variantDerivation a sh:PropertyShape ;
-    sh:class sbol:CombinatorialDerivation ;
-    sh:path sbol:variantDerivation .
-
-sbol:VariableFeature-variantMeasure a sh:PropertyShape ;
-    sh:class om:Measure ;
-    sh:path sbol:variantMeasure .
-
-om:Measure-http___www.ontology-of-units-of-measure.org_resource_om-2_hasNumericalValue a sh:PropertyShape ;
+:Attachment-source a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path om:hasNumericalValue .
+    sh:path :source .
 
-sbol:hasFeature a owl:ObjectProperty ;
-    rdfs:label "hasFeature" ;
-    tawny:name "hasFeature" ;
-    rdfs:range sbol:Feature .
+:Collection-hasNamespace a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasNamespace .
 
-sbol:hasMeasure a owl:ObjectProperty ;
-    rdfs:label "hasMeasure" ;
-    tawny:name "hasMeasure" ;
-    rdfs:domain sbol:Identified ;
-    rdfs:range om:Measure .
+:Collection-member a sh:PropertyShape ;
+    sh:class :TopLevel ;
+    sh:path :member .
 
-sbol:template a owl:FunctionalProperty,
+:CombinatorialDerivation-hasNamespace a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasNamespace .
+
+:CombinatorialDerivation-hasVariableFeature a sh:PropertyShape ;
+    sh:class :VariableFeature ;
+    sh:path :hasVariableFeature .
+
+:CombinatorialDerivation-strategy a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:path :strategy .
+
+:CombinatorialDerivation-template a sh:PropertyShape ;
+    sh:class :Component ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :template .
+
+:Component-hasConstraint a sh:PropertyShape ;
+    sh:class :Constraint ;
+    sh:path :hasConstraint .
+
+:Component-hasFeature a sh:PropertyShape ;
+    sh:class :Feature ;
+    sh:path :hasFeature .
+
+:Component-hasInteraction a sh:PropertyShape ;
+    sh:class :Interaction ;
+    sh:path :hasInteraction .
+
+:Component-hasInterface a sh:PropertyShape ;
+    sh:class :Interface ;
+    sh:maxCount 1 ;
+    sh:path :hasInterface .
+
+:Component-hasModel a sh:PropertyShape ;
+    sh:class :Model ;
+    sh:path :hasModel .
+
+:Component-hasNamespace a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasNamespace .
+
+:Component-hasSequence a sh:PropertyShape ;
+    sh:class :Sequence ;
+    sh:path :hasSequence .
+
+:Component-role a sh:PropertyShape ;
+    sh:path :role .
+
+:Component-type a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:minCount 1 ;
+    sh:path :type .
+
+:ComponentReference-hasFeature a sh:PropertyShape ;
+    sh:class :Feature ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasFeature .
+
+:ComponentReference-inChildOf a sh:PropertyShape ;
+    dash:hasValueWithClass :Component ;
+    sh:class :SubComponent ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :inChildOf .
+
+:Constraint-object a sh:PropertyShape ;
+    sh:class :Feature ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :object .
+
+:Constraint-restriction a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :restriction .
+
+:Constraint-subject a sh:PropertyShape ;
+    sh:class :Feature ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :subject .
+
+:Cut-at a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :at .
+
+:Cut-hasSequence a sh:PropertyShape ;
+    sh:class :Sequence ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasSequence .
+
+:EntireSequence-hasSequence a sh:PropertyShape ;
+    sh:class :Sequence ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasSequence .
+
+:Experiment-hasNamespace a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasNamespace .
+
+:ExperimentalData-hasNamespace a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasNamespace .
+
+:ExternallyDefined-definition a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :definition .
+
+:ExternallyDefined-type a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:minCount 1 ;
+    sh:path :type .
+
+:Feature-orientation a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:path :orientation .
+
+:Feature-role a sh:PropertyShape ;
+    sh:path :role .
+
+:Identified-description a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:path :description .
+
+:Identified-displayId a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:path :displayId .
+
+:Identified-hasMeasure a sh:PropertyShape ;
+    sh:class <http://www.ontology-of-units-of-measure.org/resource/om-2/Measure> ;
+    sh:path :hasMeasure .
+
+:Identified-name a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:path :name .
+
+:Implementation-built a sh:PropertyShape ;
+    sh:class :Component ;
+    sh:maxCount 1 ;
+    sh:path :built .
+
+:Implementation-hasNamespace a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasNamespace .
+
+:Interaction-hasParticipation a sh:PropertyShape ;
+    sh:class :Participation ;
+    sh:path :hasParticipation .
+
+:Interaction-type a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:minCount 1 ;
+    sh:path :type .
+
+:Interface-input a sh:PropertyShape ;
+    sh:class :Feature ;
+    sh:path :input .
+
+:Interface-nondirectional a sh:PropertyShape ;
+    sh:class :Feature ;
+    sh:path :nondirectional .
+
+:Interface-output a sh:PropertyShape ;
+    sh:class :Feature ;
+    sh:path :output .
+
+:LocalSubComponent-hasLocation a sh:PropertyShape ;
+    sh:class :Location ;
+    sh:path :hasLocation .
+
+:LocalSubComponent-type a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:minCount 1 ;
+    sh:path :type .
+
+:Location-hasSequence a sh:PropertyShape ;
+    sh:class :Sequence ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasSequence .
+
+:Location-order a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:path :order .
+
+:Location-orientation a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:path :orientation .
+
+:Model-framework a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :framework .
+
+:Model-hasNamespace a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasNamespace .
+
+:Model-language a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :language .
+
+:Model-source a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :source .
+
+:Participation-higherOrderParticipant a sh:PropertyShape ;
+    sh:class :Interaction ;
+    sh:maxCount 1 ;
+    sh:path :higherOrderParticipant .
+
+:Participation-participant a sh:PropertyShape ;
+    sh:class :Feature ;
+    sh:maxCount 1 ;
+    sh:path :participant .
+
+:Participation-role a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:minCount 1 ;
+    sh:path :role .
+
+:Range-end a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :end .
+
+:Range-hasSequence a sh:PropertyShape ;
+    sh:class :Sequence ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasSequence .
+
+:Range-start a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :start .
+
+:Sequence-elements a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:path :elements .
+
+:Sequence-encoding a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:path :encoding .
+
+:Sequence-hasNamespace a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasNamespace .
+
+:SequenceFeature-hasLocation a sh:PropertyShape ;
+    sh:class :Location ;
+    sh:minCount 1 ;
+    sh:path :hasLocation .
+
+:SubComponent-hasLocation a sh:PropertyShape ;
+    sh:class :Location ;
+    sh:path :hasLocation .
+
+:SubComponent-instanceOf a sh:PropertyShape ;
+    sh:class :Component ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :instanceOf .
+
+:SubComponent-roleIntegration a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:path :roleIntegration .
+
+:SubComponent-sourceLocation a sh:PropertyShape ;
+    sh:class :Location ;
+    sh:path :sourceLocation .
+
+:TopLevel-hasAttachment a sh:PropertyShape ;
+    sh:class :Attachment ;
+    sh:path :hasAttachment .
+
+:TopLevel-hasNamespace a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasNamespace .
+
+:VariableFeature-cardinality a sh:PropertyShape ;
+    dash:hasValueWithClass :Cardinality ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :cardinality .
+
+:VariableFeature-variable a sh:PropertyShape ;
+    sh:class :Feature ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :variable .
+
+:VariableFeature-variant a sh:PropertyShape ;
+    sh:class :Component ;
+    sh:path :variant .
+
+:VariableFeature-variantCollection a sh:PropertyShape ;
+    sh:class :Collection ;
+    sh:path :variantCollection .
+
+:VariableFeature-variantDerivation a sh:PropertyShape ;
+    sh:class :CombinatorialDerivation ;
+    sh:path :variantDerivation .
+
+:VariableFeature-variantMeasure a sh:PropertyShape ;
+    sh:class <http://www.ontology-of-units-of-measure.org/resource/om-2/Measure> ;
+    sh:path :variantMeasure .
+
+rdf:first a rdf:Property ;
+    rdfs:subPropertyOf rdf:first .
+
+rdf:rest a rdf:Property ;
+    rdfs:subPropertyOf rdf:rest .
+
+rdf:type a rdf:Property ;
+    rdfs:subPropertyOf rdf:type .
+
+rdfs:domain a rdf:Property ;
+    rdfs:subPropertyOf rdfs:domain .
+
+rdfs:label a rdf:Property ;
+    rdfs:subPropertyOf rdfs:label .
+
+rdfs:range a rdf:Property ;
+    rdfs:subPropertyOf rdfs:range .
+
+rdfs:subClassOf a rdf:Property ;
+    rdfs:subPropertyOf rdfs:subClassOf .
+
+rdfs:subPropertyOf a rdf:Property ;
+    rdfs:subPropertyOf rdfs:subPropertyOf .
+
+xsd:minInclusive a rdf:Property ;
+    rdfs:subPropertyOf xsd:minInclusive .
+
+owl:Ontology a rdfs:Resource .
+
+owl:equivalentClass a rdf:Property ;
+    rdfs:subPropertyOf owl:equivalentClass .
+
+owl:maxQualifiedCardinality a rdf:Property ;
+    rdfs:subPropertyOf owl:maxQualifiedCardinality .
+
+owl:onClass a rdf:Property ;
+    rdfs:subPropertyOf owl:onClass .
+
+owl:onDatatype a rdf:Property ;
+    rdfs:subPropertyOf owl:onDatatype .
+
+owl:onProperty a rdf:Property ;
+    rdfs:subPropertyOf owl:onProperty .
+
+owl:someValuesFrom a rdf:Property ;
+    rdfs:subPropertyOf owl:someValuesFrom .
+
+owl:unionOf a rdf:Property ;
+    rdfs:subPropertyOf owl:unionOf .
+
+owl:withRestrictions a rdf:Property ;
+    rdfs:subPropertyOf owl:withRestrictions .
+
+"Attachment"^^xsd:string a rdfs:Resource .
+
+"Cardinality"^^xsd:string a rdfs:Resource .
+
+"Collection"^^xsd:string a rdfs:Resource .
+
+"CombinatorialDerivation"^^xsd:string a rdfs:Resource .
+
+"CombinatorialDerivationStrategy"^^xsd:string a rdfs:Resource .
+
+"Component"^^xsd:string a rdfs:Resource .
+
+"ComponentReference"^^xsd:string a rdfs:Resource .
+
+"Constraint"^^xsd:string a rdfs:Resource .
+
+"Cut"^^xsd:string a rdfs:Resource .
+
+"EntireSequence"^^xsd:string a rdfs:Resource .
+
+"Experiment"^^xsd:string a rdfs:Resource .
+
+"ExperimentalData"^^xsd:string a rdfs:Resource .
+
+"ExternallyDefined"^^xsd:string a rdfs:Resource .
+
+"Feature"^^xsd:string a rdfs:Resource .
+
+"Identified"^^xsd:string a rdfs:Resource .
+
+"Implementation"^^xsd:string a rdfs:Resource .
+
+"Interaction"^^xsd:string a rdfs:Resource .
+
+"Interface"^^xsd:string a rdfs:Resource .
+
+"LocalSubComponent"^^xsd:string a rdfs:Resource .
+
+"Location"^^xsd:string a rdfs:Resource .
+
+"Model"^^xsd:string a rdfs:Resource .
+
+"OneOrMore"^^xsd:string a rdfs:Resource .
+
+"Participation"^^xsd:string a rdfs:Resource .
+
+"Range"^^xsd:string a rdfs:Resource .
+
+"Sequence"^^xsd:string a rdfs:Resource .
+
+"SequenceFeature"^^xsd:string a rdfs:Resource .
+
+"SubComponent"^^xsd:string a rdfs:Resource .
+
+"TopLevel"^^xsd:string a rdfs:Resource .
+
+"VariableFeature"^^xsd:string a rdfs:Resource .
+
+"built"^^xsd:string a rdfs:Resource .
+
+"cardinality"^^xsd:string a rdfs:Resource .
+
+"definition"^^xsd:string a rdfs:Resource .
+
+"description"^^xsd:string a rdfs:Resource .
+
+"displayId"^^xsd:string a rdfs:Resource .
+
+"elements"^^xsd:string a rdfs:Resource .
+
+"encoding"^^xsd:string a rdfs:Resource .
+
+"end"^^xsd:string a rdfs:Resource .
+
+"enumerate"^^xsd:string a rdfs:Resource .
+
+"format"^^xsd:string a rdfs:Resource .
+
+"framework"^^xsd:string a rdfs:Resource .
+
+"hasAttachment"^^xsd:string a rdfs:Resource .
+
+"hasConstraint"^^xsd:string a rdfs:Resource .
+
+"hasFeature"^^xsd:string a rdfs:Resource .
+
+"hasInteraction"^^xsd:string a rdfs:Resource .
+
+"hasInterface"^^xsd:string a rdfs:Resource .
+
+"hasLocation"^^xsd:string a rdfs:Resource .
+
+"hasMeasure"^^xsd:string a rdfs:Resource .
+
+"hasModel"^^xsd:string a rdfs:Resource .
+
+"hasNamespace"^^xsd:string a rdfs:Resource .
+
+"hasParticipation"^^xsd:string a rdfs:Resource .
+
+"hasSequence"^^xsd:string a rdfs:Resource .
+
+"hash"^^xsd:string a rdfs:Resource .
+
+"hashAlgorithm"^^xsd:string a rdfs:Resource .
+
+"higherOrderParticipant"^^xsd:string a rdfs:Resource .
+
+"inChildOf"^^xsd:string a rdfs:Resource .
+
+"inline"^^xsd:string a rdfs:Resource .
+
+"input"^^xsd:string a rdfs:Resource .
+
+"instanceOf"^^xsd:string a rdfs:Resource .
+
+"language"^^xsd:string a rdfs:Resource .
+
+"member"^^xsd:string a rdfs:Resource .
+
+"name"^^xsd:string a rdfs:Resource .
+
+"nondirectional"^^xsd:string a rdfs:Resource .
+
+"object"^^xsd:string a rdfs:Resource .
+
+"one"^^xsd:string a rdfs:Resource .
+
+"order"^^xsd:string a rdfs:Resource .
+
+"orientation"^^xsd:string a rdfs:Resource .
+
+"output"^^xsd:string a rdfs:Resource .
+
+"restriction"^^xsd:string a rdfs:Resource .
+
+"reverseComplement"^^xsd:string a rdfs:Resource .
+
+"role"^^xsd:string a rdfs:Resource .
+
+"roleIntegration"^^xsd:string a rdfs:Resource .
+
+"sample"^^xsd:string a rdfs:Resource .
+
+"size"^^xsd:string a rdfs:Resource .
+
+"source"^^xsd:string a rdfs:Resource .
+
+"sourceLocation"^^xsd:string a rdfs:Resource .
+
+"strategy"^^xsd:string a rdfs:Resource .
+
+"subject"^^xsd:string a rdfs:Resource .
+
+"template"^^xsd:string a rdfs:Resource .
+
+"type"^^xsd:string a rdfs:Resource .
+
+"variable"^^xsd:string a rdfs:Resource .
+
+"variant"^^xsd:string a rdfs:Resource .
+
+"variantCollection"^^xsd:string a rdfs:Resource .
+
+"variantDerivation"^^xsd:string a rdfs:Resource .
+
+"variantMeasure"^^xsd:string a rdfs:Resource .
+
+"zeroOrMore"^^xsd:string a rdfs:Resource .
+
+"zeroOrOne"^^xsd:string a rdfs:Resource .
+
+:CombinatorialDerivationStrategy a rdfs:Resource,
+        owl:Class ;
+    rdfs:label "CombinatorialDerivationStrategy"^^xsd:string ;
+    rdfs:subClassOf :SBOLTerm,
+        owl:Thing ;
+    owl:equivalentClass [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :enumerate ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :sample ;
+                            rdf:rest () ] ] ] .
+
+:Orientation a rdfs:Resource,
+        owl:Class ;
+    rdfs:subClassOf :SBOLTerm,
+        owl:Thing ;
+    owl:equivalentClass [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :inline ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :reverseComplement ;
+                            rdf:rest () ] ] ] .
+
+:built a rdfs:Resource,
+        owl:FunctionalProperty,
         owl:ObjectProperty ;
-    rdfs:label "template"@en ;
-    tawny:name "template"@en ;
-    rdfs:domain sbol:CombinatorialDerivation ;
-    rdfs:range sbol:Component .
+    rdfs:label "built"^^xsd:string ;
+    rdfs:domain :Implementation ;
+    rdfs:range :Component .
 
-sbol:type a owl:ObjectProperty ;
-    rdfs:label "type"@en ;
-    tawny:name "type"@en ;
-    rdfs:comment "Specifies the category of biochemical or physical entity. For example DNA, protein, or small molecule that a ComponentDefinition object abstracts for the purpose of engineering design. For DNA or RNA entities, additional types fields are used to describe nucleic acid topology (circular / linear) and strandedness (double- or single-stranded)."@en .
+:description a rdfs:Resource,
+        owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "description"^^xsd:string ;
+    rdfs:domain :Identified ;
+    rdfs:range xsd:string .
 
-sbol:variableFeature a owl:ObjectProperty ;
-    rdfs:label "variableFeature"@en ;
-    tawny:name "variableFeature"@en ;
-    rdfs:domain sbol:CombinatorialDerivation ;
-    rdfs:range sbol:VariableFeature .
+:displayId a rdfs:Resource,
+        owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "displayId"^^xsd:string ;
+    rdfs:domain :Identified ;
+    rdfs:range xsd:string .
 
-sbol:variant a owl:ObjectProperty ;
-    rdfs:label "variant"@en ;
-    tawny:name "variant"@en ;
-    rdfs:domain sbol:VariableFeature ;
-    rdfs:range sbol:Component .
+:elements a rdfs:Resource,
+        owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "elements"^^xsd:string ;
+    rdfs:domain :Sequence ;
+    rdfs:range xsd:string .
 
-sbol:variantCollection a owl:ObjectProperty ;
-    rdfs:label "variantCollection"@en ;
-    tawny:name "variantCollection"@en ;
-    rdfs:domain sbol:VariableFeature ;
-    rdfs:range sbol:Collection .
-
-sbol:variantDerivation a owl:ObjectProperty ;
-    rdfs:label "variantDerivation"@en ;
-    tawny:name "variantDerivation"@en ;
-    rdfs:domain sbol:VariableFeature ;
-    rdfs:range sbol:CombinatorialDerivation .
-
-sbol:variantMeasure a owl:ObjectProperty ;
-    rdfs:label "variantMeasure"@en ;
-    tawny:name "variantMeasure"@en ;
-    rdfs:domain sbol:VariableFeature ;
-    rdfs:range om:Measure .
-
-sbol:member a owl:ObjectProperty ;
-    rdfs:label "member"@en ;
-    tawny:name "member"@en ;
-    rdfs:comment "Contains a reference to a top level entity."@en ;
-    rdfs:domain sbol:Collection ;
-    rdfs:range sbol:TopLevel .
-
-sbol:variable a owl:FunctionalProperty,
+:encoding a rdfs:Resource,
+        owl:FunctionalProperty,
         owl:ObjectProperty ;
-    rdfs:label "variable"@en ;
-    tawny:name "variable"@en ;
-    rdfs:domain sbol:VariableFeature ;
-    rdfs:range sbol:Feature .
+    rdfs:label "encoding"^^xsd:string ;
+    rdfs:domain :Sequence .
 
-sbol:TopLevel a owl:Class ;
-    rdfs:label "TopLevel"@en ;
-    tawny:name "TopLevel"@en ;
-    rdfs:comment "Can be used to represent biological design components such as DNA, RNA and small molecules."@en ;
-    rdfs:subClassOf sbol:Identified .
+:enumerate a rdfs:Resource,
+        owl:Class ;
+    rdfs:label "enumerate"^^xsd:string ;
+    rdfs:subClassOf :CombinatorialDerivationStrategy,
+        :SBOLTerm,
+        owl:Thing .
 
-sbol:Feature a owl:Class ;
-    rdfs:subClassOf sbol:Identified .
+:format a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "format"^^xsd:string ;
+    rdfs:domain :Attachment .
+
+:hasAttachment a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "hasAttachment"^^xsd:string ;
+    rdfs:domain :TopLevel ;
+    rdfs:range :Attachment .
+
+:hasConstraint a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "hasConstraint"^^xsd:string ;
+    rdfs:domain :Component ;
+    rdfs:range :Constraint .
+
+:hasInteraction a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "hasInteraction"^^xsd:string ;
+    rdfs:domain :Component ;
+    rdfs:range :Interaction .
+
+:hasInterface a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "hasInterface"^^xsd:string ;
+    rdfs:domain :Component ;
+    rdfs:range :Interface .
+
+:hasMeasure a rdfs:Resource,
+        owl:DatatypeProperty ;
+    rdfs:label "hasMeasure"^^xsd:string ;
+    rdfs:domain :Identified ;
+    rdfs:range <http://www.ontology-of-units-of-measure.org/resource/om-2/Measure> .
+
+:hasModel a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "hasModel"^^xsd:string ;
+    rdfs:domain :Component ;
+    rdfs:range :Model .
+
+:hasParticipation a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "hasParticipation"^^xsd:string ;
+    rdfs:domain :Interaction ;
+    rdfs:range :Participation .
+
+:hasVariableFeature a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "participant"^^xsd:string ;
+    rdfs:domain :CombinatorialDerivation ;
+    rdfs:range :VariableFeature .
+
+:hash a rdfs:Resource,
+        owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "hash"^^xsd:string ;
+    rdfs:domain :Attachment ;
+    rdfs:range xsd:string .
+
+:hashAlgorithm a rdfs:Resource,
+        owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "hashAlgorithm"^^xsd:string ;
+    rdfs:domain :Attachment ;
+    rdfs:range xsd:string .
+
+:higherOrderParticipant a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "higherOrderParticipant"^^xsd:string ;
+    rdfs:domain :Participation ;
+    rdfs:range :Interaction .
+
+:inline a rdfs:Resource,
+        owl:Class ;
+    rdfs:label "inline"^^xsd:string ;
+    rdfs:subClassOf :Orientation,
+        :SBOLTerm,
+        owl:Thing .
+
+:input a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "input"^^xsd:string ;
+    rdfs:domain :Interface ;
+    rdfs:range :Feature .
+
+:member a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "member"^^xsd:string ;
+    rdfs:domain :Collection ;
+    rdfs:range :TopLevel .
+
+:name a rdfs:Resource,
+        owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "name"^^xsd:string ;
+    rdfs:domain :Identified ;
+    rdfs:range xsd:string .
+
+:nondirectional a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "nondirectional"^^xsd:string ;
+    rdfs:domain :Interface ;
+    rdfs:range :Feature .
+
+:one a rdfs:Resource,
+        owl:Class ;
+    rdfs:label "one"^^xsd:string ;
+    rdfs:subClassOf :Cardinality,
+        :SBOLTerm,
+        owl:Thing .
+
+:oneOrMore a rdfs:Resource,
+        owl:Class ;
+    rdfs:label "OneOrMore"^^xsd:string ;
+    rdfs:subClassOf :Cardinality,
+        :SBOLTerm,
+        owl:Thing .
+
+:order a rdfs:Resource,
+        owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "order"^^xsd:string ;
+    rdfs:domain :Location ;
+    rdfs:range [ a rdfs:Datatype,
+                rdfs:Resource ;
+            rdfs:subClassOf rdfs:Literal ;
+            owl:onDatatype xsd:integer ;
+            owl:withRestrictions [ a rdfs:Resource ;
+                    rdf:first [ a rdfs:Resource ;
+                            xsd:minInclusive 1 ] ;
+                    rdf:rest () ] ] .
+
+:orientation a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "orientation"^^xsd:string ;
+    rdfs:domain [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :Feature ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :Location ;
+                            rdf:rest () ] ] ] ;
+    rdfs:range [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :inline ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :reverseComplement ;
+                            rdf:rest () ] ] ] .
+
+:output a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "output"^^xsd:string ;
+    rdfs:domain :Interface ;
+    rdfs:range :Feature .
+
+:participant a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "participant"^^xsd:string ;
+    rdfs:domain :Participation ;
+    rdfs:range :Feature .
+
+:reverseComplement a rdfs:Resource,
+        owl:Class ;
+    rdfs:label "reverseComplement"^^xsd:string ;
+    rdfs:subClassOf :Orientation,
+        :SBOLTerm,
+        owl:Thing .
+
+:roleIntegration a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "roleIntegration"^^xsd:string ;
+    rdfs:domain :SubComponent .
+
+:sample a rdfs:Resource,
+        owl:Class ;
+    rdfs:label "sample"^^xsd:string ;
+    rdfs:subClassOf :CombinatorialDerivationStrategy,
+        :SBOLTerm,
+        owl:Thing .
+
+:size a rdfs:Resource,
+        owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "size"^^xsd:string ;
+    rdfs:domain :Attachment ;
+    rdfs:range [ a rdfs:Datatype,
+                rdfs:Resource ;
+            rdfs:subClassOf rdfs:Literal ;
+            owl:onDatatype xsd:integer ;
+            owl:withRestrictions [ a rdfs:Resource ;
+                    rdf:first [ a rdfs:Resource ;
+                            xsd:minInclusive 0 ] ;
+                    rdf:rest () ] ] .
+
+:sourceLocation a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "sourceLocation"^^xsd:string ;
+    rdfs:domain :SubComponent ;
+    rdfs:range :Location .
+
+:strategy a rdfs:Resource,
+        owl:Class,
+        owl:FunctionalProperty ;
+    rdfs:label "strategy"^^xsd:string ;
+    rdfs:domain :CombinatorialDerivation ;
+    rdfs:range [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :enumerate ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :sample ;
+                            rdf:rest () ] ] ] .
+
+:variant a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "variant"^^xsd:string ;
+    rdfs:domain :VariableFeature ;
+    rdfs:range :Component .
+
+:variantCollection a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "variantCollection"^^xsd:string ;
+    rdfs:domain :VariableFeature ;
+    rdfs:range :Collection .
+
+:variantDerivation a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "variantDerivation"^^xsd:string ;
+    rdfs:domain :VariableFeature ;
+    rdfs:range :CombinatorialDerivation .
+
+:variantMeasure a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "variantMeasure"^^xsd:string ;
+    rdfs:domain :VariableFeature ;
+    rdfs:range <http://www.ontology-of-units-of-measure.org/resource/om-2/Measure> .
+
+:zeroOrMore a rdfs:Resource,
+        owl:Class ;
+    rdfs:label "zeroOrMore"^^xsd:string ;
+    rdfs:subClassOf :Cardinality,
+        :SBOLTerm,
+        owl:Thing .
+
+:zeroOrOne a rdfs:Resource,
+        owl:Class ;
+    rdfs:label "zeroOrOne"^^xsd:string ;
+    rdfs:subClassOf :Cardinality,
+        :SBOLTerm,
+        owl:Thing .
+
+"1"^^xsd:nonNegativeInteger a rdfs:Resource .
+
+"participant"^^xsd:string a rdfs:Resource .
+
+"start"^^xsd:string a rdfs:Resource .
+
+:at a rdfs:Resource,
+        owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "start"^^xsd:string ;
+    rdfs:domain :Cut ;
+    rdfs:range [ a rdfs:Datatype,
+                rdfs:Resource ;
+            rdfs:subClassOf rdfs:Literal ;
+            owl:onDatatype xsd:integer ;
+            owl:withRestrictions [ a rdfs:Resource ;
+                    rdf:first [ a rdfs:Resource ;
+                            xsd:minInclusive 0 ] ;
+                    rdf:rest () ] ] .
+
+:cardinality a rdfs:Resource,
+        owl:Class,
+        owl:FunctionalProperty ;
+    rdfs:label "cardinality"^^xsd:string ;
+    rdfs:domain :VariableFeature ;
+    rdfs:range [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :zeroOrOne ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :one ;
+                            rdf:rest [ a rdfs:Resource ;
+                                    rdf:first :zeroOrMore ;
+                                    rdf:rest [ a rdfs:Resource ;
+                                            rdf:first :oneOrMore ;
+                                            rdf:rest () ] ] ] ] ] .
+
+:definition a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "definition"^^xsd:string ;
+    rdfs:domain :ExternallyDefined .
+
+:end a rdfs:Resource,
+        owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "end"^^xsd:string ;
+    rdfs:domain :Range ;
+    rdfs:range [ a rdfs:Datatype,
+                rdfs:Resource ;
+            rdfs:subClassOf rdfs:Literal ;
+            owl:onDatatype xsd:integer ;
+            owl:withRestrictions [ a rdfs:Resource ;
+                    rdf:first [ a rdfs:Resource ;
+                            xsd:minInclusive 1 ] ;
+                    rdf:rest () ] ] .
+
+:framework a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "framework"^^xsd:string ;
+    rdfs:domain :Model .
+
+:inChildOf a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "inChildOf"^^xsd:string ;
+    rdfs:domain :ComponentReference ;
+    rdfs:range :SubComponent .
+
+:instanceOf a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "instanceOf"^^xsd:string ;
+    rdfs:domain :SubComponent ;
+    rdfs:range :Component .
+
+:language a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "language"^^xsd:string ;
+    rdfs:domain :Model .
+
+:object a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "object"^^xsd:string ;
+    rdfs:domain :Constraint ;
+    rdfs:range :Feature .
+
+:restriction a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "restriction"^^xsd:string ;
+    rdfs:domain :Constraint .
+
+:start a rdfs:Resource,
+        owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "start"^^xsd:string ;
+    rdfs:domain :Range ;
+    rdfs:range [ a rdfs:Datatype,
+                rdfs:Resource ;
+            rdfs:subClassOf rdfs:Literal ;
+            owl:onDatatype xsd:integer ;
+            owl:withRestrictions [ a rdfs:Resource ;
+                    rdf:first [ a rdfs:Resource ;
+                            xsd:minInclusive 1 ] ;
+                    rdf:rest () ] ] .
+
+:subject a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "subject"^^xsd:string ;
+    rdfs:domain :Constraint ;
+    rdfs:range :Feature .
+
+:template a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "template"^^xsd:string ;
+    rdfs:domain :CombinatorialDerivation ;
+    rdfs:range :Component .
+
+:variable a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "variable"^^xsd:string ;
+    rdfs:domain :VariableFeature ;
+    rdfs:range :Feature .
+
+0 a rdfs:Resource .
+
+:hasFeature a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "hasFeature"^^xsd:string ;
+    rdfs:domain [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :Component ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :ComponentReference ;
+                            rdf:rest () ] ] ] ;
+    rdfs:range :Feature .
+
+:hasLocation a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "hasLocation"^^xsd:string ;
+    rdfs:domain [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :SubComponent ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :LocalSubComponent ;
+                            rdf:rest [ a rdfs:Resource ;
+                                    rdf:first :SequenceFeature ;
+                                    rdf:rest () ] ] ] ] ;
+    rdfs:range :Location .
+
+:role a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "role"^^xsd:string ;
+    rdfs:domain [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :Component ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :Feature ;
+                            rdf:rest [ a rdfs:Resource ;
+                                    rdf:first :Participation ;
+                                    rdf:rest () ] ] ] ] .
+
+:source a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "source"^^xsd:string ;
+    rdfs:domain [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :Model ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :Attachment ;
+                            rdf:rest () ] ] ] .
+
+<http://www.ontology-of-units-of-measure.org/resource/om-2/Measure> a rdfs:Resource .
+
+:Cardinality a rdfs:Resource,
+        owl:Class ;
+    rdfs:label "Cardinality"^^xsd:string ;
+    rdfs:subClassOf :SBOLTerm,
+        owl:Thing ;
+    owl:equivalentClass [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :zeroOrOne ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :one ;
+                            rdf:rest [ a rdfs:Resource ;
+                                    rdf:first :zeroOrMore ;
+                                    rdf:rest [ a rdfs:Resource ;
+                                            rdf:first :oneOrMore ;
+                                            rdf:rest () ] ] ] ] ] .
+
+:hasSequence a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "hasSequence"^^xsd:string ;
+    rdfs:domain [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :Component ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :Location ;
+                            rdf:rest () ] ] ] ;
+    rdfs:range :Sequence .
+
+:type a rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "type"^^xsd:string ;
+    rdfs:domain [ a rdfs:Resource,
+                owl:Class ;
+            owl:unionOf [ a rdfs:Resource ;
+                    rdf:first :Component ;
+                    rdf:rest [ a rdfs:Resource ;
+                            rdf:first :LocalSubComponent ;
+                            rdf:rest [ a rdfs:Resource ;
+                                    rdf:first :ExternallyDefined ;
+                                    rdf:rest [ a rdfs:Resource ;
+                                            rdf:first :Interaction ;
+                                            rdf:rest () ] ] ] ] ] .
+
+rdfs:Datatype a rdfs:Resource .
+
+xsd:integer a rdfs:Resource .
+
+:SBOLTerm a rdfs:Resource,
+        owl:Class ;
+    rdfs:subClassOf owl:Thing .
+
+:hasNamespace a rdfs:Resource,
+        owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "hasNamespace"^^xsd:string ;
+    rdfs:domain :TopLevel .
+
+xsd:string a rdfs:Resource .
+
+owl:DatatypeProperty a rdfs:Resource .
+
+() a rdfs:Resource .
+
+owl:Restriction a rdfs:Resource .
+
+owl:FunctionalProperty a rdfs:Resource .
+
+owl:ObjectProperty a rdfs:Resource .
+
+owl:Class a rdfs:Resource .
+
+owl:Thing a rdfs:Resource .
+
+1 a rdfs:Resource .
+
+_:N674a3e8a65b748698641587003887636 a rdfs:Resource,
+        owl:Restriction ;
+    owl:onProperty :hasSequence ;
+    owl:someValuesFrom :Sequence .
+
+_:Ne92c02da0b094e05a8af34ca7ae2baa2 a rdfs:Resource,
+        owl:Restriction ;
+    owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass :Sequence ;
+    owl:onProperty :hasSequence .
+
+_:Nf5a648d8783749c1aada31263f1ba447 a rdfs:Resource,
+        owl:Restriction ;
+    owl:onProperty :hasNamespace ;
+    owl:someValuesFrom owl:Thing .
 
