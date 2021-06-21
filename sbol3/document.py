@@ -109,18 +109,26 @@ class Document:
             SBOL_TOP_LEVEL: CustomTopLevel
         }
         sbol_type = sbol_types[0]
+        result = None
         if sbol_type in extension_types:
             # Build an extension object
             types.remove(sbol_type)
-            return self._build_extension_object(identity, sbol_type, types)
+            result = self._build_extension_object(identity, sbol_type, types)
         else:
             try:
                 builder = self._uri_type_map[sbol_type]
             except KeyError:
                 logging.warning(f'No builder found for {sbol_type}')
                 raise SBOLError(f'Unknown type {sbol_type}')
-            obj = builder(identity=identity, type_uri=sbol_type)
-            return obj
+            result = builder(identity=identity, type_uri=sbol_type)
+        # Fix https://github.com/SynBioDex/pySBOL3/issues/264
+        if isinstance(result, TopLevel):
+            # Ensure namespace is not set. It should get set later in the
+            # build process. This avoids setting it when the file is invalid
+            # and the object has no namespace in the file.
+            result.clear_property(SBOL_NAMESPACE)
+        # End of fix for https://github.com/SynBioDex/pySBOL3/issues/264
+        return result
 
     def _parse_objects(self, graph: rdflib.Graph) -> Dict[str, SBOLObject]:
         # First extract the identities and their types. Each identity
