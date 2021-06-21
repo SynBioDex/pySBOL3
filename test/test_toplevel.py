@@ -3,6 +3,7 @@ import unittest
 
 import sbol3
 
+
 class MyTestCase(unittest.TestCase):
 
     def setUp(self) -> None:
