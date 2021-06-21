@@ -34,7 +34,7 @@ class TopLevel(Identified):
                          derived_from=derived_from, generated_by=generated_by,
                          measures=measures)
         if namespace is None:
-            namespace = TopLevel.default_namespace(namespace, identity)
+            namespace = TopLevel.default_namespace(namespace, self.identity)
         self.namespace = URIProperty(self, SBOL_NAMESPACE, 1, 1,
                                      initial_value=namespace)
         self.attachments = ReferencedObject(self, SBOL_HAS_ATTACHMENT, 0, math.inf,
