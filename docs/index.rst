@@ -14,6 +14,7 @@ and constructing genetic designs according to the standardized specifications of
    introduction
    installation
    extensions
+   validation
    visitor
    ontology
 ..   getting_started
