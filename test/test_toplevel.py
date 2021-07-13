@@ -26,7 +26,11 @@ class MyTestCase(unittest.TestCase):
     def test_default_namespace(self):
         # See https://github.com/SynBioDex/pySBOL3/issues/263
         display_id = 'foo'
-        c = sbol3.Component(display_id, sbol3.SBO_DNA)
+        with self.assertWarns(UserWarning) as cm:
+            c = sbol3.Component(display_id, sbol3.SBO_DNA)
+        # Verify that the generated warning says something about sbol3.set_namespace
+        self.assertIn('set_namespace', str(cm.warning))
+        # Ensure that the component has a namespace. This was bug 263, see link above
         self.assertIsNotNone(c.namespace)
         self.assertTrue(c.identity.endswith(display_id))
         self.assertEqual(c.identity, posixpath.join(c.namespace, display_id))
