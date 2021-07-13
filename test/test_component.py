@@ -1,7 +1,7 @@
 import os
 import posixpath
 import unittest
-from collections import Container
+from collections.abc import Container
 
 import sbol3
 
