@@ -1,6 +1,6 @@
 import abc
 import collections
-from collections import MutableSequence, Iterable
+from collections.abc import MutableSequence, Iterable
 from typing import Any, Optional, List, Dict, Union
 
 from sbol3 import ValidationReport
