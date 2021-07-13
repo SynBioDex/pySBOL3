@@ -127,7 +127,7 @@ class ListProperty(Property, MutableSequence, abc.ABC):
         value = self._storage()[self.property_uri].__getitem__(key)
         if isinstance(value, str):
             return self.to_user(value)
-        elif isinstance(value, collections.Iterable):
+        elif isinstance(value, collections.abc.Iterable):
             return [self.to_user(v) for v in value]
         else:
             # Not a string or an iterable, just convert

@@ -1,7 +1,7 @@
 import math
 import posixpath
 import unittest
-from collections import Iterable
+from collections.abc import Iterable
 
 import rdflib
 
