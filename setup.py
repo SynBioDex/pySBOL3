@@ -40,6 +40,7 @@ setup(name='sbol3',
             'rdflib-jsonld',
             'python-dateutil',
             'pyshacl==0.14',
+            'requests',
       ],
       test_suite='test',
       tests_require=[
