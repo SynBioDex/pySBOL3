@@ -236,7 +236,13 @@ class Document:
         self._other_rdf = graph
 
     def _guess_format(self, fpath: str):
-        return rdflib.util.guess_format(fpath)
+        rdf_format = rdflib.util.guess_format(fpath)
+        if rdf_format == 'nt':
+            # Use N-Triples 1.1 format
+            # See https://github.com/RDFLib/rdflib/issues/1376
+            # See https://github.com/RDFLib/rdflib/issues/1377
+            rdf_format = 'nt11'
+        return rdf_format
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, location: str, file_format: str = None) -> None:
@@ -306,7 +312,7 @@ class Document:
         graph = self.graph()
         if file_format == SORTED_NTRIPLES:
             # have RDFlib give us the ntriples as a string
-            nt_text = graph.serialize(format='nt')
+            nt_text = graph.serialize(format=NTRIPLES)
             # split it into lines
             lines = nt_text.splitlines(keepends=True)
             # sort those lines
