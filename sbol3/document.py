@@ -423,7 +423,7 @@ class Document:
                                         shacl_graph=shacl_graph,
                                         ont_graph=None,
                                         inference=None,
-                                        abort_on_error=False,
+                                        abort_on_first=False,
                                         meta_shacl=False,
                                         advanced=True,
                                         debug=False)
