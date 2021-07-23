@@ -1,7 +1,6 @@
 import collections
 import logging
 import os
-import warnings
 from typing import Dict, Callable, List, Optional, Any, Union
 
 import pyshacl
