@@ -2,7 +2,7 @@ import collections
 import logging
 import os
 import warnings
-from typing import Dict, Callable, List, Optional, Any
+from typing import Dict, Callable, List, Optional, Any, Union
 
 import pyshacl
 import rdflib
@@ -308,6 +308,21 @@ class Document:
                 return obj
         return self._find_in_objects(search_string)
 
+    def join_lines(self, lines: List[Union[bytes, str]]) -> Union[bytes, str]:
+        """Join lines for either bytes or strings. Joins a list of lines
+        together whether they are bytes or strings. Returns a bytes if the input was
+        a list of bytes, and a str if the input was a list of str.
+        """
+        if not lines:
+            return ''
+        lines_type = type(lines[0])
+        if lines_type is bytes:
+            # rdflib 5
+            return b''.join(lines)
+        elif lines_type is str:
+            # rdflib 6
+            return ''.join(lines)
+
     def write_string(self, file_format: str) -> str:
         graph = self.graph()
         if file_format == SORTED_NTRIPLES:
@@ -319,14 +334,16 @@ class Document:
             lines.sort()
             # write out the lines
             # RDFlib gives us bytes, so open file in binary mode
-            result = b''.join(lines)
+            result = self.join_lines(lines)
         elif file_format == JSONLD:
             context = {f'@{prefix}': uri for prefix, uri in self._namespaces.items()}
             context['@vocab'] = 'https://sbolstandard.org/examples/'
             result = graph.serialize(format=file_format, context=context)
         else:
             result = graph.serialize(format=file_format)
-        return result.decode()
+        if type(result) is bytes:
+            result = result.decode()
+        return result
 
     def write(self, fpath: str, file_format: str = None) -> None:
         """Write the document to file.
