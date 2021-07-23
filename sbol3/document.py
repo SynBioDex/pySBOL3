@@ -6,10 +6,6 @@ from typing import Dict, Callable, List, Optional, Any, Union
 
 import pyshacl
 import rdflib
-# Get the rdflib-jsonld capability initialized
-# Note: this is for side effect. The parser is not used.
-# The side effect is that the JSON-LD parser is registered in RDFlib.
-from rdflib_jsonld import parser as jsonld_parser
 
 from . import *
 from .object import BUILDER_REGISTER
