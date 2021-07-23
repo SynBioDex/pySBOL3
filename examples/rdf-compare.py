@@ -33,10 +33,10 @@ def init_logging(debug=False):
 def compare_files(file1, file2):
     # Now compare the graphs in RDF
     g1 = rdflib.Graph()
-    g1.load(file1.as_posix(), format=rdflib.util.guess_format(file1.as_posix()))
+    g1.parse(file1.as_posix(), format=rdflib.util.guess_format(file1.as_posix()))
     iso1 = rdflib.compare.to_isomorphic(g1)
     g2 = rdflib.Graph()
-    g2.load(file2.as_posix(), format=rdflib.util.guess_format(file2.as_posix()))
+    g2.parse(file2.as_posix(), format=rdflib.util.guess_format(file2.as_posix()))
     iso2 = rdflib.compare.to_isomorphic(g2)
     rdf_diff = rdflib.compare.graph_diff(iso1, iso2)
     if rdf_diff[1] or rdf_diff[2]:

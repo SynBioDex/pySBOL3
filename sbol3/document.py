@@ -253,7 +253,7 @@ class Document:
         if file_format == SORTED_NTRIPLES:
             file_format = NTRIPLES
         graph = rdflib.Graph()
-        graph.load(location, format=file_format)
+        graph.parse(location, format=file_format)
         return self._parse_graph(graph)
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
