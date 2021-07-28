@@ -2,7 +2,7 @@ name: Python package
 
 on:
   push:
-  pull:
+  pull_request:
   # Schedule a nightly build. Times are UTC
   # See https://docs.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events
   schedule:
