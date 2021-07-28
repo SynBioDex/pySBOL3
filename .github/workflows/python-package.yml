@@ -1,6 +1,13 @@
 name: Python package
 
-on: [push, pull_request]
+on:
+  push:
+  pull:
+  # Schedule a nightly build. Times are UTC
+  # See https://docs.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events
+  schedule:
+    # 5:15 am UTC (https://en.wikipedia.org/wiki/5:15)
+    - cron: '15 5 * * *'
 
 jobs:
   build:
