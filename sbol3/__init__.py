@@ -57,3 +57,4 @@ from .provenance import Activity, Agent, Association, Plan, Usage
 from .om_prefix import BinaryPrefix, SIPrefix
 from .om_unit import Measure, PrefixedUnit, SingularUnit
 from .om_compound import UnitDivision, UnitExponentiation, UnitMultiplication
+from .util import string_to_display_id
