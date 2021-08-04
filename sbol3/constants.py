@@ -255,7 +255,7 @@ SBO_MODIFIED = SBO_NS + '0000644'
 SBO_TEMPLATE = SBO_NS + '0000645'
 
 # RDF File Formats
-NTRIPLES = 'nt'
+NTRIPLES = 'nt11'
 RDF_XML = 'xml'
 TURTLE = 'ttl'
 JSONLD = 'json-ld'

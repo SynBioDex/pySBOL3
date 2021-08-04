@@ -36,12 +36,11 @@ setup(name='sbol3',
       packages=['sbol3'],
       package_data={'sbol3': ['rdf/sbol3-shapes.ttl']},
       install_requires=[
-            'rdflib>=5,<6',
-            'rdflib-jsonld',
-            'python-dateutil',
-            'pyshacl>=0.15,<=0.16',
+            'rdflib~=6.0',
+            'python-dateutil~=2.8',
+            'pyshacl~=0.15.0',
       ],
       test_suite='test',
       tests_require=[
-            'pycodestyle>=2.6.0'
+            'pycodestyle~=2.7.0'
       ])

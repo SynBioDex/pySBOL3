@@ -1,15 +1,10 @@
 import collections
 import logging
 import os
-import warnings
-from typing import Dict, Callable, List, Optional, Any
+from typing import Dict, Callable, List, Optional, Any, Union
 
 import pyshacl
 import rdflib
-# Get the rdflib-jsonld capability initialized
-# Note: this is for side effect. The parser is not used.
-# The side effect is that the JSON-LD parser is registered in RDFlib.
-from rdflib_jsonld import parser as jsonld_parser
 
 from . import *
 from .object import BUILDER_REGISTER
@@ -236,7 +231,13 @@ class Document:
         self._other_rdf = graph
 
     def _guess_format(self, fpath: str):
-        return rdflib.util.guess_format(fpath)
+        rdf_format = rdflib.util.guess_format(fpath)
+        if rdf_format == 'nt':
+            # Use N-Triples 1.1 format
+            # See https://github.com/RDFLib/rdflib/issues/1376
+            # See https://github.com/RDFLib/rdflib/issues/1377
+            rdf_format = 'nt11'
+        return rdf_format
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, location: str, file_format: str = None) -> None:
@@ -247,7 +248,7 @@ class Document:
         if file_format == SORTED_NTRIPLES:
             file_format = NTRIPLES
         graph = rdflib.Graph()
-        graph.load(location, format=file_format)
+        graph.parse(location, format=file_format)
         return self._parse_graph(graph)
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
@@ -302,25 +303,42 @@ class Document:
                 return obj
         return self._find_in_objects(search_string)
 
+    def join_lines(self, lines: List[Union[bytes, str]]) -> Union[bytes, str]:
+        """Join lines for either bytes or strings. Joins a list of lines
+        together whether they are bytes or strings. Returns a bytes if the input was
+        a list of bytes, and a str if the input was a list of str.
+        """
+        if not lines:
+            return ''
+        lines_type = type(lines[0])
+        if lines_type is bytes:
+            # rdflib 5
+            return b''.join(lines)
+        elif lines_type is str:
+            # rdflib 6
+            return ''.join(lines)
+
     def write_string(self, file_format: str) -> str:
         graph = self.graph()
         if file_format == SORTED_NTRIPLES:
             # have RDFlib give us the ntriples as a string
-            nt_text = graph.serialize(format='nt')
+            nt_text = graph.serialize(format=NTRIPLES)
             # split it into lines
             lines = nt_text.splitlines(keepends=True)
             # sort those lines
             lines.sort()
             # write out the lines
             # RDFlib gives us bytes, so open file in binary mode
-            result = b''.join(lines)
+            result = self.join_lines(lines)
         elif file_format == JSONLD:
             context = {f'@{prefix}': uri for prefix, uri in self._namespaces.items()}
             context['@vocab'] = 'https://sbolstandard.org/examples/'
             result = graph.serialize(format=file_format, context=context)
         else:
             result = graph.serialize(format=file_format)
-        return result.decode()
+        if type(result) is bytes:
+            result = result.decode()
+        return result
 
     def write(self, fpath: str, file_format: str = None) -> None:
         """Write the document to file.

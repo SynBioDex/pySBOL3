@@ -140,10 +140,10 @@ class TestRoundTrip(unittest.TestCase):
 
         # Now compare the graphs in RDF
         g1 = rdflib.Graph()
-        g1.load(test_path, format=file_format)
+        g1.parse(test_path, format=file_format)
         iso1 = rdflib.compare.to_isomorphic(g1)
         g2 = rdflib.Graph()
-        g2.load(test2_path, format=file_format)
+        g2.parse(test2_path, format=file_format)
         iso2 = rdflib.compare.to_isomorphic(g2)
         rdf_diff = rdflib.compare.graph_diff(iso1, iso2)
         if rdf_diff[1] or rdf_diff[2]:
