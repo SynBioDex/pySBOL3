@@ -9,8 +9,9 @@ class TestUtil(unittest.TestCase):
         data = (
             ('foo', 'foo'),
             ('12', '_12'),
-            ('世界', '世界'),  # Is this ok?
-            ('Épée', 'Épée'),  # Is this ok?
+            # Handle non-ASCII
+            ('世界', '世界'),
+            ('Épée', 'Épée'),
             # convert special characters
             ('a b', 'a_b'),
             ('a-b', 'a_b'),
@@ -20,7 +21,7 @@ class TestUtil(unittest.TestCase):
             ('a\\b', 'a_b'),
             ('a -.:/\\b', 'a______b'),
             # convert multiple special characters
-            ('this is-long.', 'this_is_long_'),
+            ('this is-long.display/id', 'this_is_long_display_id'),
         )
         for input_str, expected in data:
             actual = sbol3.string_to_display_id(input_str)

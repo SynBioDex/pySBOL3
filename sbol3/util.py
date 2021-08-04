@@ -10,18 +10,18 @@ def string_to_display_id(name: str) -> str:
     """
     # Contributed via https://github.com/SynBioDex/pySBOL3/issues/191
     def sanitize_character(c):
+        # Replace certain characters with underscore
+        # Feel free to expand this let
         replacements = {' ', '-', '.', ':', '/', '\\'}
-        # first, see if there is a wired replacement
         if c in replacements:
             c = '_'
-        # c = replacements.get(c, c)
+        # Keep all alphanumerics and underscores
         if c.isalnum() or c == '_':
             # keep allowed characters
             return c
-        else:
-            # all others are changed into a reduced & compatible form
-            # of their unicode name
-            return f'_{unicodedata.name(c).replace(" SIGN", "").replace(" ", "_")}'
+        # all others are changed into a reduced & compatible form
+        # of their unicode name
+        return f'_{unicodedata.name(c).replace(" SIGN", "").replace(" ", "_")}'
 
     # make replacements in order to get a compliant displayID
     display_id = ''.join([sanitize_character(c) for c in name.strip()])
