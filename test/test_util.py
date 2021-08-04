@@ -11,15 +11,16 @@ class TestUtil(unittest.TestCase):
             ('12', '_12'),
             ('世界', '世界'),  # Is this ok?
             ('Épée', 'Épée'),  # Is this ok?
-            ('a:b', 'a_COLONb'),
             # convert special characters
             ('a b', 'a_b'),
             ('a-b', 'a_b'),
             ('a.b', 'a_b'),
+            ('a:b', 'a_b'),
+            ('a/b', 'a_b'),
+            ('a\\b', 'a_b'),
+            ('a -.:/\\b', 'a______b'),
             # convert multiple special characters
             ('this is-long.', 'this_is_long_'),
-            ('a/b', 'a_SOLIDUSb'),
-            ('a\\b', 'a_REVERSE_SOLIDUSb'),
         )
         for input_str, expected in data:
             actual = sbol3.string_to_display_id(input_str)

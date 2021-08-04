@@ -10,9 +10,11 @@ def string_to_display_id(name: str) -> str:
     """
     # Contributed via https://github.com/SynBioDex/pySBOL3/issues/191
     def sanitize_character(c):
-        replacements = {' ': '_', '-': '_', '.': '_'}
+        replacements = {' ', '-', '.', ':', '/', '\\'}
         # first, see if there is a wired replacement
-        c = replacements.get(c, c)
+        if c in replacements:
+            c = '_'
+        # c = replacements.get(c, c)
         if c.isalnum() or c == '_':
             # keep allowed characters
             return c
