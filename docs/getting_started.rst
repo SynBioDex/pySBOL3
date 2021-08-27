@@ -2,8 +2,9 @@ Getting Started with pySBOL3
 =============================
 
 This beginner’s guide introduces the basic principles of pySBOL3 for
-new users. Most of the examples discussed in this guide are excerpted
-from the example script. The objective of this documentation is to
+new users. The examples discussed in this guide are excerpted
+from the Jupyter notebook (`pySBOL3/examples/getting_started.ipynb <https://github.com/SynBioDex/pySBOL3/tree/main/examples/getting_started.ipynb>`_). 
+The objective of this documentation is to
 familiarize users with the basic patterns of the API. For more
 comprehensive documentation about the API, refer to documentation
 about specific classes and methods.
