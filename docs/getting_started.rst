@@ -110,7 +110,10 @@ Each SBOL object in a Document is uniquely identified by a special string of cha
     `Document.models <autoapi/sbol2/document/index.html#sbol2.document.Document.getModel>`_,
     or any top level object. The last type of object, Annotation Objects is a special case which will be discussed later.
 
-These URIs are said to be **sbol-compliant**. An sbol-compliant URI consists of a scheme, a namespace, a local identifier (also called a ``displayId``), and a version number. In this tutorial, we use URIs of the type ``http://sbols.org/CRISPR_Example/my_obj/1.0.0``, where the scheme is indicated by ``http://``, the namespace is ``http://sbols.org/CRISPR_Example``, the local identifier is ``my_object``, and the version is ``1.0.0``. SBOL-compliant URIs enable shortcuts that make the pySBOL2 API easier to use and are enabled by default. However, users are not required to use sbol-compliant URIs if they don't want to, and this option can be turned off.
+These URIs are said to be **sbol-compliant**. An sbol-compliant URI consists of a namespace, an optional collection structure, and a local identifier (also called a ``displayId``). In this tutorial, we use URIs of the type ``http://sbolstandard.org/testfiles/my_obj``, where the namespace is ``http://sbolstandard.org/testfiles``, and the local identifier is ``my_object``. 
+
+.. TODO: delete or edit; I don't think this is completely correct with pySBOL3
+    SBOL-compliant URIs enable shortcuts that make the pySBOL3 API easier to use and are enabled by default. However, users are not required to use sbol-compliant URIs if they don't want to, and this option can be turned off.
 
 Based on our inspection of objects contained in the Document above, we can see that these objects were all created in the namespace ``http://sbols.org/CRISPR_Example``. Thus, in order to take advantage of SBOL-compliant URIs, we set an environment variable that configures this namespace as the default. In addition we set some other configuration options.
 
