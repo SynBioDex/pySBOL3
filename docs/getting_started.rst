@@ -13,7 +13,7 @@ The class structure and data model for the API is based on the
 Synthetic Biology Open Language. For more detail about the SBOL
 standard, visit `sbolstandard.org <https://sbolstandard.org>`_ or
 refer to the `specification document
-<https://sbolstandard.org/wp-content/uploads/2016/06/SBOL2.3.0.pdf>`_. This
+<https://sbolstandard.org/datamodel-specification/>`_. This
 document provides diagrams and description of all the standard classes
 and properties that comprise SBOL.
 
