@@ -185,6 +185,8 @@ The following example illustrates how the URIs for ontology terms can be easily 
 
 .. end
 
+For more information on using ontology terms with pySBOL3, see: :ref:`Using Ontology Terms`
+
 ------------------------------------------
 Adding and Getting Objects from a Document
 ------------------------------------------
