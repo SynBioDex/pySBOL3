@@ -42,12 +42,14 @@ methods are used for reading and writing files in SBOL format.
 .. end
 
 Reading a Document will wipe any existing contents clean before
-import. However, you can import objects from multiple files into a
-single Document object using `Document.append()
-<autoapi/sbol2/document/index.html#sbol2.document.Document.append>`_. This
-can be advantageous when you want to integrate multiple objects from
-different files into a single design. This kind of data integration is
-an important and useful feature of SBOL.
+import. 
+.. TODO: DJR, delete this block or edit to correspond to pySBOL3 equivalent of "append"; leave it commented out for now.
+    However, you can import objects from multiple files into a
+    single Document object using `Document.append()
+    <autoapi/sbol2/document/index.html#sbol2.document.Document.append>`_. This
+    can be advantageous when you want to integrate multiple objects from
+    different files into a single design. This kind of data integration is
+    an important and useful feature of SBOL.
 
 A Document may contain different types of SBOL objects, including
 ComponentDefinitions, ModuleDefinitions, Sequences, and Models. These
