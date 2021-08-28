@@ -91,22 +91,24 @@ Each SBOL object in a Document is uniquely identified by a special string of cha
 
 .. end
 
-.. 
-These objects are sorted into object stores based on the type of object. For example to view ``ComponentDefinition`` objects specifically, iterate through the `Document.componentDefinitions` store:
+.. TODO: delete or modify for pySBOL3
+    I don't think objects are sorted like this in pySBOL3, so comment out for now, and probably delete later
+    .. 
+    These objects are sorted into object stores based on the type of object. For example to view ``ComponentDefinition`` objects specifically, iterate through the `Document.componentDefinitions` store:
 
-.. code:: python
+    .. code:: python
 
-  >>> for cd in doc.componentDefinitions:
-  ...     print(cd)
-  ...
+      >>> for cd in doc.componentDefinitions:
+      ...     print(cd)
+      ...
 
-.. end
+    .. end
 
-Similarly, you can iterate through
-`Document.moduleDefinitions <autoapi/sbol2/document/index.html#sbol2.document.Document.getModuleDefinition>`_,
-`Document.sequences <autoapi/sbol2/document/index.html#sbol2.document.Document.getSequence>`_,
-`Document.models <autoapi/sbol2/document/index.html#sbol2.document.Document.getModel>`_,
-or any top level object. The last type of object, Annotation Objects is a special case which will be discussed later.
+    Similarly, you can iterate through
+    `Document.moduleDefinitions <autoapi/sbol2/document/index.html#sbol2.document.Document.getModuleDefinition>`_,
+    `Document.sequences <autoapi/sbol2/document/index.html#sbol2.document.Document.getSequence>`_,
+    `Document.models <autoapi/sbol2/document/index.html#sbol2.document.Document.getModel>`_,
+    or any top level object. The last type of object, Annotation Objects is a special case which will be discussed later.
 
 These URIs are said to be **sbol-compliant**. An sbol-compliant URI consists of a scheme, a namespace, a local identifier (also called a ``displayId``), and a version number. In this tutorial, we use URIs of the type ``http://sbols.org/CRISPR_Example/my_obj/1.0.0``, where the scheme is indicated by ``http://``, the namespace is ``http://sbols.org/CRISPR_Example``, the local identifier is ``my_object``, and the version is ``1.0.0``. SBOL-compliant URIs enable shortcuts that make the pySBOL2 API easier to use and are enabled by default. However, users are not required to use sbol-compliant URIs if they don't want to, and this option can be turned off.
 
