@@ -129,9 +129,14 @@ Setting the namespace has several advantages. It simplifies object creation and 
 Creating SBOL Data Objects
 --------------------------
 
-Biological designs can be described with SBOL data objects, including both structural and functional features.  The principle classes for describing the structure and primary sequence of a design are ComponentDefinitions, Components, Sequences, and SequenceAnnotations. The principle classes for describing the function of a design are ModuleDefinitions, Modules, Interactions, and Participations. Other classes such as Design, Build, Test, Analysis, Activity, and Plan are used for managing workflows.
+Biological designs can be described with SBOL data objects, including both structural and functional features.  
+The principle classes for describing the structure and primary sequence of a design are ``Component``, ``Sequence``, ``SequencFeature``, and ``SubComponent``. 
+The principle classes for describing the function of a design are ``Component``, ``SubComponent``, ``Interaction``, and ``Participation``. 
 
-In the official SBOL specification document, classes and their properties are represented as box diagrams. Each box represents an SBOL class and its attributes. Following is an example of the diagram for the ComponentDefinition class which will be referred to in later sections. These class diagrams follow conventions of the Unified Modeling Language.
+.. TODO: delete or edit; Is there a pySBOL3 equivalent to "Design, Build, Test, Analysis, Activity, and Plan"
+    Other classes such as Design, Build, Test, Analysis, Activity, and Plan are used for managing workflows.
+
+In the official SBOL specification document, classes and their properties are represented as box diagrams. Each box represents an SBOL class and its attributes. Following is an example of the diagram for the ``Component`` class which will be referred to in later sections. These class diagrams follow conventions of the Unified Modeling Language.
 
 .. figure:: component_definition_uml.png
     :align: center
