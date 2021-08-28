@@ -35,9 +35,10 @@ methods are used for reading and writing files in SBOL format.
 
 .. code:: python
 
-    >>> doc = Document()
-    >>> doc.read('crispr_example.xml')
-    >>> doc.write('crispr_example_out.xml')
+    >>> import sbol3 as sbol
+    >>> doc = sbol.Document()
+    >>> doc.read('simple_library.nt')
+    >>> doc.write('simple_library_out.nt')
 
 .. end
 
@@ -64,29 +65,14 @@ view an inventory of objects contained in the Document, simply
 .. code:: python
 
     >>> len(doc)
-    31
+    67
     >>> print(doc)
-    Design........................0
-    Build.........................0
-    Test..........................0
-    Analysis......................0
-    ComponentDefinition...........25
-    ModuleDefinition..............2
-    Model.........................0
-    Sequence......................4
-    Collection....................0
-    Activity......................0
-    Plan..........................0
-    Agent.........................0
-    Attachment....................0
-    CombinatorialDerivation.......0
-    Implementation................0
-    SampleRoster..................0
-    Experiment....................0
-    ExperimentalData..............0
-    Annotation Objects............0
+    Collection....................4
+    CombinatorialDerivation.......6
+    Component.....................33
+    Sequence......................24
     ---
-    Total: .........................31
+    Total: .........................67
 
 .. end
 
@@ -94,17 +80,18 @@ Each SBOL object in a Document is uniquely identified by a special string of cha
 
 .. code:: python
 
-    >>> for obj in doc:
-    ...     print(obj)
+    >>> for obj in doc.objects:
+    ...     print(obj.identity)
     ...
-    http://sbols.org/CRISPR_Example/mKate_seq/1.0.0
-    http://sbols.org/CRISPR_Example/gRNA_b_nc/1.0.0
-    http://sbols.org/CRISPR_Example/mKate_cds/1.0.0
+    http://sbolstandard.org/testfiles/All_FPs
+    http://sbolstandard.org/testfiles/FPs_small
+    http://sbolstandard.org/testfiles/FPs_small_ins
     .
     .
 
 .. end
 
+.. 
 These objects are sorted into object stores based on the type of object. For example to view ``ComponentDefinition`` objects specifically, iterate through the `Document.componentDefinitions` store:
 
 .. code:: python
