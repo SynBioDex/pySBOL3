@@ -166,20 +166,22 @@ The following code creates a DNA component (``types`` set to ``SBO_DNA``).
 Using Ontology Terms for Attribute Values
 -----------------------------------------
 
-Notice the ``ComponentDefinition.types`` attribute is specified using a predefined constant. The ``ComponentDefinition.types`` property is one of many SBOL attributes that uses ontology terms as property values.  The ``ComponentDefinition.types`` property uses the `BioPax ontology <https://bioportal.bioontology.org/ontologies/BP/?p=classes&conceptid=root>`_ to be specific. Ontologies are standardized, machine-readable vocabularies that categorize concepts within a domain of scientific study. The SBOL 2.0 standard unifies many different ontologies into a high-level, object-oriented model.
+Notice the ``Component.types`` attribute is specified using predefined constants (``sbol.SBO_PROTEIN`` and ``sbol.SBO_DNA`` in the examples above). The ``Component.types`` property is one of many SBOL attributes that uses ontology terms as property values.  The ``Component.types`` property uses the 
+`Systems Biology Ontology (SBO) <https://bioportal.bioontology.org/ontologies/SBO/>`_
+to be specific. Ontologies are standardized, machine-readable vocabularies that categorize concepts within a domain of scientific study. The SBOL 3.0 standard unifies many different ontologies into a high-level, object-oriented model.
 
-Ontology terms also take the form of Uniform Resource Identifiers. Many commonly used ontological terms are built-in to pySBOL2 as predefined constants. If an ontology term is not provided as a built-in constant, its URI can often be found by using an ontology browser tool online. `Browse Sequence Ontology terms here <http://www.sequenceontology.org/browser/obob.cgi>`_ and `Systems Biology Ontology terms here <http://www.ebi.ac.uk/sbo/main/tree>`_. While the SBOL specification often recommends particular ontologies and terms to be used for certain attributes, in many cases these are not rigid requirements. The advantage of using a recommended term is that it ensures your data can be interpreted or visualized by other applications that support SBOL. However in many cases an application developer may want to develop their own ontologies to support custom applications within their domain.
+Ontology terms also take the form of Uniform Resource Identifiers. Many commonly used ontological terms are built-in to pySBOL3 as predefined constants. If an ontology term is not provided as a built-in constant, its URI can often be found by using an ontology browser tool online. `Browse Sequence Ontology terms here <http://www.sequenceontology.org/browser/obob.cgi>`_ and `Systems Biology Ontology terms here <http://www.ebi.ac.uk/sbo/main/tree>`_. While the SBOL specification often recommends particular ontologies and terms to be used for certain attributes, in many cases these are not rigid requirements. The advantage of using a recommended term is that it ensures your data can be interpreted or visualized by other applications that support SBOL. However in many cases an application developer may want to develop their own ontologies to support custom applications within their domain.
 
-The following example illustrates how the URIs for ontology terms can be easily constructed, assuming they are not already part of pySBOL2's built-in ontology constants.
+The following example illustrates how the URIs for ontology terms can be easily constructed, assuming they are not already part of pySBOL3's built-in ontology constants.
 
 .. code:: python
 
-    >>> SO_ENGINEERED_FUSION_GENE = SO + '0000288'  # Sequence Ontology term
+    >>> SO_ENGINEERED_FUSION_GENE = sbol.SO_NS + '0000288'  # Sequence Ontology term
     >>> SO_ENGINEERED_FUSION_GENE
-    'http://identifiers.org/so/SO:0000288'
-    >>> SBO_DNA_REPLICATION = SBO + '0000204'  # Systems Biology Ontology term
+    'https://identifiers.org/SO:0000288'
+    >>> SBO_DNA_REPLICATION = sbol.SBO_NS + '0000204'  # Systems Biology Ontology term
     >>> SBO_DNA_REPLICATION
-    'http://identifiers.org/biomodels.sbo/SBO:0000204'
+    'https://identifiers.org/SBO:0000204'
 
 .. end
 
