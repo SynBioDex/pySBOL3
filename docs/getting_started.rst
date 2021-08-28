@@ -142,61 +142,7 @@ In the official SBOL specification document, classes and their properties are re
     :align: center
     :figclass: align-center
 
-As introduced in the previous section, SBOL objects are identified by a uniform resource identifier (URI). When a new object is constructed, the user must assign a unique identity. The identity is ALWAYS the first argument supplied to the constructor of an SBOL object. Depending on which configuration options for pySBOL2 are specified, different algorithms are applied to form the complete URI of the object. The following examples illustrate these different configuration options.
-
-The first set of configuration options demonstrates 'open-world' mode, which means that URIs are explicitly specified in full by the user, and the user is free to use whatever convention or conventions they want to form URIs. Open-world configuration can be useful sometimes when integrating data objects derived from multiple files or web resources, because it makes no assumptions about the format of URIs.
-
-.. code:: python
-
-   >>> setHomespace('')
-   >>> Config.setOption(ConfigOptions.SBOL_COMPLIANT_URIS, False)
-   >>> Config.setOption(ConfigOptions.SBOL_TYPED_URIS, False)
-   >>> crispr_template = ModuleDefinition('http://sbols.org/CRISPR_Example/CRISPR_Template')
-   >>> print(crispr_template)
-   http://sbols.org/CRISPR_Example/CRISPR_Template
-
-.. end
-
-The second set of configuration options demonstrates use of a default namespace for constructing URIs. The advantage of this approach is simply that it reduces repetitive typing. Instead of typing the full namespace for a URI every time an object is created, the user simply specifies the local identifier. The local identifier is appended to the namespace. This is a handy shortcut especially when working interactively in the Python interpreter.
-
-.. code:: python
-
-   >>> setHomespace('http://sbols.org/CRISPR_Example/')
-   >>> Config.setOption(ConfigOptions.SBOL_COMPLIANT_URIS, False)
-   >>> Config.setOption(ConfigOptions.SBOL_TYPED_URIS, False)
-   >>> crispr_template = ModuleDefinition('CRISPR_Template')
-   >>> print(crispr_template)
-   http://sbols.org/CRISPR_Example/CRISPR_Template
-
-.. end
-
-The third set of configuration options demonstrates SBOL-compliant mode. In this example, a version number is appended to the end of the URI. Additionally, when operating in SBOL-compliant mode, the URIs of child objects are algorithmically constructed according to automated rules (not shown here).
-
-.. code:: python
-
-   >>> setHomespace('http://sbols.org/CRISPR_Example/')
-   >>> Config.setOption(ConfigOptions.SBOL_COMPLIANT_URIS, True)
-   >>> Config.setOption(ConfigOptions.SBOL_TYPED_URIS, False)
-   >>> crispr_template = ModuleDefinition('CRISPR_Template')
-   >>> print(crispr_template)
-   http://sbols.org/CRISPR_Example/CRISPR_Template/1.0.0
-
-.. end
-
-The final example demonstrates typed URIs. When this option is enabled, the type of SBOL object is included in the URI. Typed URIs are useful because sometimes the user may want to re-use the same local identifier for multiple objects. Without typed URIs this may lead to collisions between non-unique URIs. This option is enabled by default, but the example file CRISPR_example.py does not use typed URIs, so for all the examples in this guide this option is assumed to be disabled.
-
-.. code:: python
-
-   >>> setHomespace('http://sbols.org/CRISPR_Example/')
-   >>> Config.setOption(ConfigOptions.SBOL_COMPLIANT_URIS, True)
-   >>> Config.setOption(ConfigOptions.SBOL_TYPED_URIS, True)
-   >>> crispr_template_md = ModuleDefinition('CRISPR_Template')
-   >>> print(crispr_template)
-   http://sbols.org/CRISPR_Example/ModuleDefinition/CRISPR_Template/1.0.0
-   >>> crispr_template_cd = ComponentDefinition('CRISPR_Template')
-   http://sbols.org/CRISPR_Example/ComponentDefinition/CRISPR_Template/1.0.0
-
-.. end
+As introduced in the previous section, SBOL objects are identified by a uniform resource identifier (URI). When a new object is constructed, the user must assign a unique identity. The identity is ALWAYS the first argument supplied to the constructor of an SBOL object. 
 
 Constructors for SBOL objects follow a fairly predictable pattern. The first argument is ALWAYS the identity of the object. Other arguments may follow, depending on in the SBOL class has required attributes. Attributes are required if the specification says they are. In a UML diagram, required fields are indicated as properties with a cardinality of 1 or more. For example, a ComponentDefinition (see the UML diagram above) has only one required field, ``types``, which specifies one or more molecular types for a component.  Required fields SHOULD be specified when calling a constructor. If they are not, they will be assigned default values.  The following creates a protein component. If the BioPAX term for protein were not specified, then the constructor would create a ComponentDefinition of type BIOPAX_DNA by default.
 
