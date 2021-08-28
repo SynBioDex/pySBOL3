@@ -28,9 +28,9 @@ SBOL data objects which represent elements of a biological
 design. Usually the first step is to construct a Document in which to
 put your objects. All file I/O operations are performed on the
 Document. The Document `read
-<autoapi/sbol2/document/index.html#sbol2.document.Document.read>`_ and
+<autoapi/sbol3/document/index.html#sbol3.document.Document.read>`_ and
 `write
-<autoapi/sbol2/document/index.html#sbol2.document.Document.write>`_
+<autoapi/sbol3/document/index.html#sbol3.document.Document.write>`_
 methods are used for reading and writing files in SBOL format.
 
 .. code:: python
