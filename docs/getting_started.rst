@@ -144,12 +144,21 @@ In the official SBOL specification document, classes and their properties are re
 
 As introduced in the previous section, SBOL objects are identified by a uniform resource identifier (URI). When a new object is constructed, the user must assign a unique identity. The identity is ALWAYS the first argument supplied to the constructor of an SBOL object. 
 
-Constructors for SBOL objects follow a fairly predictable pattern. The first argument is ALWAYS the identity of the object. Other arguments may follow, depending on in the SBOL class has required attributes. Attributes are required if the specification says they are. In a UML diagram, required fields are indicated as properties with a cardinality of 1 or more. For example, a ComponentDefinition (see the UML diagram above) has only one required field, ``types``, which specifies one or more molecular types for a component.  Required fields SHOULD be specified when calling a constructor. If they are not, they will be assigned default values.  The following creates a protein component. If the BioPAX term for protein were not specified, then the constructor would create a ComponentDefinition of type BIOPAX_DNA by default.
+Constructors for SBOL objects follow a fairly predictable pattern. The first argument is ALWAYS the identity of the object. Other arguments may follow, depending whether the SBOL class has required attributes. Attributes are required if the specification says they are. In a UML diagram, required attributes are indicated as properties with a cardinality of 1 or more. For example, a ``Component`` (see the UML diagram above) has only one required attribute, ``types``, which specifies one or more molecular types for a component.  Required attributes MUST be specified when calling a constructor. 
+
+The following code creates a protein component (``types`` set to ``SBO_PROTEIN``). 
 
 .. code:: python
 
-    >>> cas9 = ComponentDefinition('Cas9', BIOPAX_PROTEIN)  # Constructs a protein component
-    >>> target_promoter = ComponentDefinition('target_promoter')  # Constructs a DNA component by default
+    >>> cas9 = sbol.Component('Cas9', sbol.SBO_PROTEIN)
+
+.. end
+
+The following code creates a DNA component (``types`` set to ``SBO_DNA``). 
+
+.. code:: python
+
+    >>> target_promoter = sbol.Component('target_promoter', sbol.SBO_DNA)
 
 .. end
 
