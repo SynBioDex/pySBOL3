@@ -6,6 +6,8 @@ from typing import Dict, Callable, List, Optional, Any, Union
 import pyshacl
 import rdflib
 
+import numpy as np
+
 from . import *
 from .object import BUILDER_REGISTER
 
@@ -505,3 +507,57 @@ class Document:
             return self._uri_type_map[type_uri]
         except KeyError:
             raise ValueError(f'No builder for {type_uri}')
+    
+    def summary(self):
+        """
+        Produce a string representation of the Document.
+        :return: A string representation of the Document.
+        """
+        summary = ''
+        col_size = 30
+        total_core_objects = 0
+        
+        type_arr = np.array([obj.type_uri for obj in self.objects])
+        for obj_type in np.unique(type_arr):
+            property_name = obj_type[obj_type.rfind('#')+1:]
+            obj_count = len(type_arr[type_arr==obj_type])
+            total_core_objects += obj_count
+            summary += property_name
+            summary += '.' * (col_size-len(property_name))
+            summary += str(obj_count) + '\n'
+            
+        #TODO: Is there a pySBOL equivalent to Annotation Objects?
+        #summary += 'Annotation Objects'
+        #summary += '.' * (col_size-18)
+        #summary += str(self.size() - total_core_objects) + '\n'
+        summary += '---\n'
+        summary += 'Total: '
+        summary += '.' * (col_size-5)
+        summary += str(self.size()) + '\n'
+        return summary
+    
+    def __str__(self):
+        """
+        Produce a string representation of the Document.
+
+        :return: A string representation of the Document.
+        """
+        return self.summary()
+    
+    def size(self):
+        """
+        Get the total number of objects in the Document.
+
+        :return: The total number of objects in the Document.
+        """
+        return len(self.objects)
+
+    def __len__(self):
+        """
+        Get the total number of objects in the Document.
+
+        (Returns the same thing as size())
+
+        :return: The total number of objects in the Document.
+        """
+        return self.size()
