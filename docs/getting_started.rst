@@ -115,15 +115,15 @@ These URIs are said to be **sbol-compliant**. An sbol-compliant URI consists of 
 .. TODO: delete or edit; I don't think this is completely correct with pySBOL3
     SBOL-compliant URIs enable shortcuts that make the pySBOL3 API easier to use and are enabled by default. However, users are not required to use sbol-compliant URIs if they don't want to, and this option can be turned off.
 
-Based on our inspection of objects contained in the Document above, we can see that these objects were all created in the namespace ``http://sbols.org/CRISPR_Example``. Thus, in order to take advantage of SBOL-compliant URIs, we set an environment variable that configures this namespace as the default. In addition we set some other configuration options.
+Based on our inspection of objects contained in the Document above, we can see that these objects were all created in the namespace ``http://sbolstandard.org/testfiles``. Thus, in order to take advantage of SBOL-compliant URIs, we set an environment variable that configures this namespace as the default.
 
 .. code:: python
 
-    >>> setHomespace('http://sbols.org/CRISPR_Example')
+    >>> sbol.set_namespace('http://sbolstandard.org/testfiles')
 
 .. end
 
-Setting the Homespace has several advantages. It simplifies object creation and retrieval from Documents. In addition, it serves as a way for a user to claim ownership of new objects. Generally users will want to specify a Homespace that corresponds to their organization's web domain.
+Setting the namespace has several advantages. It simplifies object creation and retrieval from Documents. In addition, it serves as a way for a user to claim ownership of new objects. Generally users will want to specify a namespace that corresponds to their organization's web domain.
 
 --------------------------
 Creating SBOL Data Objects
