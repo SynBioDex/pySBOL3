@@ -43,7 +43,9 @@ methods are used for reading and writing files in SBOL format.
 
 Reading a Document will wipe any existing contents clean before
 import. 
-.. TODO: DJR, delete this block or edit to correspond to pySBOL3 equivalent of "append"; leave it commented out for now.
+
+.. 
+    TODO: DJR, delete this block or edit to correspond to pySBOL3 equivalent of "append"; leave it commented out for now.
     However, you can import objects from multiple files into a
     single Document object using `Document.append()
     <autoapi/sbol2/document/index.html#sbol2.document.Document.append>`_. This
