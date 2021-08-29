@@ -542,8 +542,10 @@ Numerical indexing of list properties works as well:
     `not been implemented in pySBOL2 <https://github.com/SynBioDex/pySBOL2/issues/329>`_
     yet.
 
-----------------------------------
-Creating Biological Designs
-----------------------------------
+.. TODO: Un-comment the next section (and edit?) when the page it links to is done.
 
-This concludes the basic methods for manipulating SBOL data structures. Now that you're familiar with these basic methods, you are ready to learn about libSBOL's high-level design interface for synthetic biology. See `SBOL Examples <sbol_examples.html>`_.
+    ----------------------------------
+    Creating Biological Designs
+    ----------------------------------
+
+    This concludes the basic methods for manipulating SBOL data structures. Now that you're familiar with these basic methods, you are ready to learn about libSBOL's high-level design interface for synthetic biology. See `SBOL Examples <sbol_examples.html>`_.
