@@ -191,32 +191,48 @@ For more information on using ontology terms with pySBOL3, see: `Using Ontology 
 Adding and Getting Objects from a Document
 ------------------------------------------
 
-In some cases a developer may want to use SBOL objects as intermediate data structures in a computational biology workflow. In this case the user is free to manipulate objects independently of a Document. However, if the user wishes to write out a file with all the information contained in their object, they must first add it to the Document. This is done using ``add`` methods. The names of these methods follow a simple pattern, simply "add" followed by the type of object.
+In some cases a developer may want to use SBOL objects as intermediate data structures in a computational biology workflow. In this case, the user is free to manipulate objects independently of a Document. However, if the user wishes to write out a file with all the information contained in their object, they must first add it to the Document. This is done using the ``add`` method.
 
 .. code:: python
 
-    >>> doc.addModuleDefinition(crispr_template)
-    >>> doc.addComponentDefinition(cas9)
+    >>> doc.add(target_promoter)
+    >>> doc.add(cas9)
 
 .. end
 
-Objects can be retrieved from a Document by using ``get`` methods. These methods ALWAYS take the object's full URI as an argument.
+Objects can be retrieved from a Document by using the ``find`` method. This method can take either the object's ``identity`` (i.e., full URI) or ``display_id`` (local identifier) as an argument.
 
 .. code:: python
 
-    >>> crispr_template = doc.getModuleDefinition('http://sbols.org/CRISPR_Example/CRISPR_Template/1.0.0')
-    >>> cas9 = doc.getComponentDefinition('http://sbols.org/CRISPR_Example/cas9_generic/1.0.0')
+    >>> cas9.identity
+    'http://sbolstandard.org/testfiles/Cas9'
+    >>> found_obj = doc.find('http://sbolstandard.org/testfiles/Cas9')
+    >>> found_obj.identity
+    'http://sbolstandard.org/testfiles/Cas9'
+    >>> cas9.display_id
+    'Cas9'
+    >>> found_obj = doc.find('Cas9')
+    >>> found_obj.identity
+    'http://sbolstandard.org/testfiles/Cas9'
 
 .. end
 
-When working interactively in a Python environment, typing long form URIs can be tedious. Operating in SBOL-compliant mode allows the user an alternative means to retrieve objects from a Document using local identifiers.
+It is possible to have multiple SBOL objects with the same ``display_id`` (but different ``identity``) in the same document. In that case, if the ``find`` method is called with the ``display_id`` as the argument, it will return the matching object that was added to the document first.
 
 .. code:: python
 
-    >>> Config.setOption(ConfigOptions.SBOL_COMPLIANT_URIS, True)
-    >>> Config.setOption(ConfigOptions.SBOL_TYPED_URIS, False)
-    >>> crispr_template = doc.moduleDefinitions['CRISPR_Template']
-    >>> cas9 = doc.componentDefinitions['cas9_generic']
+    >>> cas9a = sbol.Component('http://sbolstandard.org/other_namespace/Cas9', sbol.SBO_PROTEIN)
+    >>> cas9a.identity
+    'http://sbolstandard.org/other_namespace/Cas9'
+    >>> cas9a.display_id
+    'Cas9'
+    >>> doc.add(cas9a)
+    >>> found_obj = doc.find('Cas9')
+    >>> found_obj.identity
+    'http://sbolstandard.org/testfiles/Cas9'
+    >>> found_obj = doc.find('http://sbolstandard.org/other_namespace/Cas9')
+    >>> found_obj.identity
+    'http://sbolstandard.org/other_namespace/Cas9'
 
 .. end
 
