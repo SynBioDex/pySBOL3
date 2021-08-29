@@ -443,67 +443,69 @@ Numerical indexing of list properties works as well:
 
 .. end
 
-----------------------------------
-Copying Documents and Objects
-----------------------------------
+.. The code for Document.copy() and related methods is still under development, see issue #235; so I'm commenting out this section for now.
 
-Copying a ``Document`` can result in a few different ends, depending on the user's goal. The first option is to create a simple clone of the original ``Document``. This is shown below in which the user is assumed to have already created a ``Document`` with a single ``ComponentDefinition``. After copying, the object in the ``Document`` clone has the same identity as the object in the original ``Document``.
+    ----------------------------------
+    Copying Documents and Objects
+    ----------------------------------
 
-.. code:: python
+    Copying a ``Document`` can result in a few different ends, depending on the user's goal. The first option is to create a simple clone of the original ``Document``. This is shown below in which the user is assumed to have already created a ``Document`` with a single ``ComponentDefinition``. After copying, the object in the ``Document`` clone has the same identity as the object in the original ``Document``.
 
-    >>> for o in doc:
-    ...     print o
-    ... 
-    http://examples.org/ComponentDefinition/cd/1
-    >>> doc2 = doc.copy()
-    >>> for o in doc2:
-    ...     print o
-    ... 
-    http://examples.org/ComponentDefinition/cd/1
+    .. code:: python
 
-.. end
+        >>> for o in doc:
+        ...     print o
+        ... 
+        http://examples.org/ComponentDefinition/cd/1
+        >>> doc2 = doc.copy()
+        >>> for o in doc2:
+        ...     print o
+        ... 
+        http://examples.org/ComponentDefinition/cd/1
+
+    .. end
 
 
-More commonly a user wants to import objects from the target Document into their Homespace. In this case, the user can specify a target namespace for import. Objects in the original ``Document`` that belong to the target namespace are copied into the user's Homespace. Contrast the example above with the following.
+    More commonly a user wants to import objects from the target Document into their Homespace. In this case, the user can specify a target namespace for import. Objects in the original ``Document`` that belong to the target namespace are copied into the user's Homespace. Contrast the example above with the following.
 
-.. code:: python
+    .. code:: python
 
-  >>> setHomespace('http://sys-bio.org')
-  >>> doc2 = doc.copy('http://examples.org')
-  >>> for o in doc:
-  ...     print o
-  ... 
-  http://examples.org/ComponentDefinition/cd/1
-  >>> for o in doc2:
-  ...     print o
-  ... 
-  http://sys-bio.org/ComponentDefinition/cd/1
+      >>> setHomespace('http://sys-bio.org')
+      >>> doc2 = doc.copy('http://examples.org')
+      >>> for o in doc:
+      ...     print o
+      ... 
+      http://examples.org/ComponentDefinition/cd/1
+      >>> for o in doc2:
+      ...     print o
+      ... 
+      http://sys-bio.org/ComponentDefinition/cd/1
 
-.. end
+    .. end
 
-In the examples above, the ``copy`` method returns a new ``Document``. However, it is possible to integrate the result of multiple ``copy`` operations into an existing ``Document``. 
+    In the examples above, the ``copy`` method returns a new ``Document``. However, it is possible to integrate the result of multiple ``copy`` operations into an existing ``Document``. 
 
-.. code:: python
+    .. code:: python
 
-  >>> for o in doc1:
-         print o
-   
-  http://examples.org/ComponentDefinition/cd1/1
-  >>> for o in doc2:
-       print o
-  ... 
-  http://examples.org/ComponentDefinition/cd2/1
-  >>> doc1.copy('http://examples.org', doc3)
-  Document
-  >>> doc2.copy('http://examples.org', doc3)
-  Document
-  >>> for o in doc3:
-  ...     print o
-  ... 
-  http://examples.org/ComponentDefinition/cd2/1
-  http://examples.org/ComponentDefinition/cd1/1
+      >>> for o in doc1:
+             print o
 
-.. end
+      http://examples.org/ComponentDefinition/cd1/1
+      >>> for o in doc2:
+           print o
+      ... 
+      http://examples.org/ComponentDefinition/cd2/1
+      >>> doc1.copy('http://examples.org', doc3)
+      Document
+      >>> doc2.copy('http://examples.org', doc3)
+      Document
+      >>> for o in doc3:
+      ...     print o
+      ... 
+      http://examples.org/ComponentDefinition/cd2/1
+      http://examples.org/ComponentDefinition/cd1/1
+
+    .. end
 
 ---------------------------------------------
 Converting To and From Other Sequence Formats
