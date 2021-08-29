@@ -507,38 +507,40 @@ Numerical indexing of list properties works as well:
 
     .. end
 
----------------------------------------------
-Converting To and From Other Sequence Formats
----------------------------------------------
+.. Import and export from other formats is still under development, see issues #65 and #66; so I'm commenting out this section for now.
 
-It is possible to convert SBOL to and from other common sequence
-formats. Conversion is performed by calling the `online converter tool
-<https://validator.sbolstandard.org/>`_ , so an internet connection is
-required. Currently the supported formats are `SBOL2`, `SBOL1`,
-`FASTA`, `GenBank`, and `GFF3`. The following example illustrates how
-to export these different formats. Note that conversion can be lossy.
+    ---------------------------------------------
+    Converting To and From Other Sequence Formats
+    ---------------------------------------------
 
-.. TODO: Add example of importFromFormat. See Issue #329
-..   * Add "and import" to the sentence above
-..   * Add to the example below
-..  >>> doc.importFromFormat('GenBank', 'parts.gb')
+    It is possible to convert SBOL to and from other common sequence
+    formats. Conversion is performed by calling the `online converter tool
+    <https://validator.sbolstandard.org/>`_ , so an internet connection is
+    required. Currently the supported formats are `SBOL2`, `SBOL1`,
+    `FASTA`, `GenBank`, and `GFF3`. The following example illustrates how
+    to export these different formats. Note that conversion can be lossy.
 
-This example uses
-`parts.xml <https://raw.githubusercontent.com/SynBioDex/pySBOL2/master/test/resources/tutorial/parts.xml>`_
-from the pySBOL2 repository.
+    .. TODO: Add example of importFromFormat. See Issue #329
+    ..   * Add "and import" to the sentence above
+    ..   * Add to the example below
+    ..  >>> doc.importFromFormat('GenBank', 'parts.gb')
 
-.. code:: python
+    This example uses
+    `parts.xml <https://raw.githubusercontent.com/SynBioDex/pySBOL2/master/test/resources/tutorial/parts.xml>`_
+    from the pySBOL2 repository.
 
-  >>> from sbol2 import *
-  RDFLib Version: 5.0.0
-  >>> doc = Document('parts.xml')
-  >>> doc.exportToFormat('GenBank', 'parts.gb')
+    .. code:: python
 
-.. end
+      >>> from sbol2 import *
+      RDFLib Version: 5.0.0
+      >>> doc = Document('parts.xml')
+      >>> doc.exportToFormat('GenBank', 'parts.gb')
 
-N.B. Importing from other formats has
-`not been implemented in pySBOL2 <https://github.com/SynBioDex/pySBOL2/issues/329>`_
-yet.
+    .. end
+
+    N.B. Importing from other formats has
+    `not been implemented in pySBOL2 <https://github.com/SynBioDex/pySBOL2/issues/329>`_
+    yet.
 
 ----------------------------------
 Creating Biological Designs
