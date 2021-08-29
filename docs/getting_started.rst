@@ -35,8 +35,8 @@ methods are used for reading and writing files in SBOL format.
 
 .. code:: python
 
-    >>> import sbol3 as sbol
-    >>> doc = sbol.Document()
+    >>> import sbol3
+    >>> doc = sbol3.Document()
     >>> doc.read('simple_library.nt')
     >>> doc.write('simple_library_out.nt')
 
@@ -119,7 +119,7 @@ Based on our inspection of objects contained in the Document above, we can see t
 
 .. code:: python
 
-    >>> sbol.set_namespace('http://sbolstandard.org/testfiles')
+    >>> sbol3.set_namespace('http://sbolstandard.org/testfiles')
 
 .. end
 
@@ -144,14 +144,14 @@ In the official SBOL specification document, classes and their properties are re
 
 As introduced in the previous section, SBOL objects are identified by a uniform resource identifier (URI). When a new object is constructed, the user must assign a unique identity. The identity is ALWAYS the first argument supplied to the constructor of an SBOL object. 
 
-Constructors for SBOL objects follow a fairly predictable pattern. The first argument is ALWAYS an identifier, which can be either a full URI, a universally unique identifier (UUID), or a local identifier (possibly with collection structure). If the first argument to the constructor is a valid URI or UUID, the object is created with the URI or UUID as its ``identity``. Otherwise, the object is created with an ``identity`` composed of the first argument appended to the pySBOL namespace (set using ``sbol.set_namespace()``). 
+Constructors for SBOL objects follow a fairly predictable pattern. The first argument is ALWAYS an identifier, which can be either a full URI, a universally unique identifier (UUID), or a local identifier (possibly with collection structure). If the first argument to the constructor is a valid URI or UUID, the object is created with the URI or UUID as its ``identity``. Otherwise, the object is created with an ``identity`` composed of the first argument appended to the pySBOL namespace (set using ``sbol3.set_namespace()``). 
 Constructors can take additional arguments, depending on whether the SBOL class has required attributes. Attributes are required if the specification says they are. In a UML diagram, required attributes are indicated as properties with a cardinality of 1 or more. For example, a ``Component`` (see the UML diagram above) has only one required attribute, ``types``, which specifies one or more molecular types for a component.  Required attributes MUST be specified when calling a constructor. 
 
 The following code creates a protein component (``types`` set to ``SBO_PROTEIN``). 
 
 .. code:: python
 
-    >>> cas9 = sbol.Component('Cas9', sbol.SBO_PROTEIN)
+    >>> cas9 = sbol3.Component('Cas9', sbol3.SBO_PROTEIN)
 
 .. end
 
@@ -159,7 +159,7 @@ The following code creates a DNA component (``types`` set to ``SBO_DNA``).
 
 .. code:: python
 
-    >>> target_promoter = sbol.Component('target_promoter', sbol.SBO_DNA)
+    >>> target_promoter = sbol3.Component('target_promoter', sbol3.SBO_DNA)
 
 .. end
 
@@ -167,8 +167,8 @@ The following code creates a DNA component with a collection structure (``/promo
 
 .. code:: python
 
-    >>> second_promoter = sbol.Component('promoters/second_promoter', sbol.SBO_DNA)
-    >>> third_promoter = sbol.Component('http://sbolstandard.org/other_namespace/third_promoter', sbol.SBO_DNA)
+    >>> second_promoter = sbol3.Component('promoters/second_promoter', sbol3.SBO_DNA)
+    >>> third_promoter = sbol3.Component('http://sbolstandard.org/other_namespace/third_promoter', sbol3.SBO_DNA)
 
 .. end
 
@@ -195,7 +195,7 @@ For examples of how the first argument of the SBOL object constructor is used to
 Using Ontology Terms for Attribute Values
 -----------------------------------------
 
-Notice the ``Component.types`` attribute is specified using predefined constants (``sbol.SBO_PROTEIN`` and ``sbol.SBO_DNA`` in the examples above). The ``Component.types`` property is one of many SBOL attributes that uses ontology terms as property values.  The ``Component.types`` property uses the 
+Notice the ``Component.types`` attribute is specified using predefined constants (``sbol3.SBO_PROTEIN`` and ``sbol3.SBO_DNA`` in the examples above). The ``Component.types`` property is one of many SBOL attributes that uses ontology terms as property values.  The ``Component.types`` property uses the 
 `Systems Biology Ontology (SBO) <https://bioportal.bioontology.org/ontologies/SBO/>`_
 to be specific. Ontologies are standardized, machine-readable vocabularies that categorize concepts within a domain of scientific study. The SBOL 3.0 standard unifies many different ontologies into a high-level, object-oriented model.
 
@@ -205,10 +205,10 @@ The following example illustrates how the URIs for ontology terms can be easily 
 
 .. code:: python
 
-    >>> SO_ENGINEERED_FUSION_GENE = sbol.SO_NS + '0000288'  # Sequence Ontology term
+    >>> SO_ENGINEERED_FUSION_GENE = sbol3.SO_NS + '0000288'  # Sequence Ontology term
     >>> SO_ENGINEERED_FUSION_GENE
     'https://identifiers.org/SO:0000288'
-    >>> SBO_DNA_REPLICATION = sbol.SBO_NS + '0000204'  # Systems Biology Ontology term
+    >>> SBO_DNA_REPLICATION = sbol3.SBO_NS + '0000204'  # Systems Biology Ontology term
     >>> SBO_DNA_REPLICATION
     'https://identifiers.org/SBO:0000204'
 
@@ -250,7 +250,7 @@ It is possible to have multiple SBOL objects with the same ``display_id`` (but d
 
 .. code:: python
 
-    >>> cas9a = sbol.Component('http://sbolstandard.org/other_namespace/Cas9', sbol.SBO_PROTEIN)
+    >>> cas9a = sbol3.Component('http://sbolstandard.org/other_namespace/Cas9', sbol3.SBO_PROTEIN)
     >>> cas9a.identity
     'http://sbolstandard.org/other_namespace/Cas9'
     >>> cas9a.display_id
@@ -305,8 +305,8 @@ To set multiple values:
 
 .. code:: python
 
-    >>> plasmid = sbol.Component('pBB1', sbol.SBO_DNA)
-    >>> plasmid.roles = [ sbol.SO_DOUBLE_STRANDED, sbol.SO_CIRCULAR ]
+    >>> plasmid = sbol3.Component('pBB1', sbol3.SBO_DNA)
+    >>> plasmid.roles = [ sbol3.SO_DOUBLE_STRANDED, sbol3.SO_CIRCULAR ]
 
 .. end
 
@@ -314,14 +314,14 @@ Properties such as ``types`` and ``roles`` behave like Python lists, and list op
 
 .. code:: python
 
-    >>> plasmid.roles = [ sbol.SO_DOUBLE_STRANDED ]
-    >>> plasmid.roles.append( sbol.SO_CIRCULAR )
+    >>> plasmid.roles = [ sbol3.SO_DOUBLE_STRANDED ]
+    >>> plasmid.roles.append( sbol3.SO_CIRCULAR )
     
     >>> plasmid.roles = []
-    >>> plasmid.roles.extend( [sbol.SO_DOUBLE_STRANDED, sbol.SO_CIRCULAR] )
+    >>> plasmid.roles.extend( [sbol3.SO_DOUBLE_STRANDED, sbol3.SO_CIRCULAR] )
     
-    >>> plasmid.roles = [ sbol.SO_DOUBLE_STRANDED ]
-    >>> plasmid.roles += [ sbol.SO_CIRCULAR ]
+    >>> plasmid.roles = [ sbol3.SO_DOUBLE_STRANDED ]
+    >>> plasmid.roles += [ sbol3.SO_CIRCULAR ]
 
 .. end
 
