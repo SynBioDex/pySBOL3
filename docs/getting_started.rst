@@ -334,39 +334,32 @@ To clear all values from an attribute, set it to an empty list:
 .. end
 
 ------------------------------------------
-Creating, Adding and Getting Child Objects
+Creating and Adding Child Objects
 ------------------------------------------
 
-Some SBOL objects can be composed into hierarchical parent-child relationships.  In the specification diagrams, these relationships are indicated by black diamond arrows.  In the UML diagram above, the black diamond indicates that ComponentDefinitions are parents of SequenceAnnotations.  Properties of this type can be modified using the add method and passing the child object as the argument.
+Some SBOL objects can be composed into hierarchical parent-child relationships.  
+In the specification diagrams, these relationships are indicated by black diamond arrows.  
+In the UML diagram above, the black diamond indicates that Components are parents of Features.  
+In pySBOL3, properties of this type are created as subcomponents and then added to the appropriate 
+list attribute of the parent component. The constructor for the ``SubComponent`` class 
+takes a ``Component`` as its only required argument. In this usage, the ``Component`` is "... analogous 
+to a blueprint or specification sheet for a biological part..." Whereas the ``SubComponent`` "... represents 
+the specific occurrence of a part..." within a larger design 
+(`SBOL version 3.0.0 specification document <https://sbolstandard.org/docs/SBOL3.0specification.pdf>`_). 
+For example, to add a promoter to a circuit design, first define the promoter and circuit as SBOL 
+``Component`` objects, then define a ``SubComponent`` as an instance of the promoter and add that 
+``SubComponent`` to the circuit's ``features`` attribute:
 
 .. code:: python
 
-    >>> point_mutation = SequenceAnnotation('PointMutation')
-    >>> target_promoter.sequenceAnnotations.add(point_mutation)
-
-.. end
-
-Alternatively, the create method captures the construction and addition of the SequenceAnnotation in a single function call.  The create method ALWAYS takes one argument--the URI of the new object. All other values are initialized with default values. You can change these values after object creation, however.
-
-.. code:: python
-
-    >>> target_promoter.sequenceAnnotations.create('PointMutation')
-
-.. end
-
-Conversely, to obtain a Python reference to the SequenceAnnotation from its identity:
-
-.. code:: python
-
-   >>> point_mutation = target_promoter.sequenceAnnotations.get('PointMutation')
-
-.. end
-
-Or equivalently:
-
-.. code:: python
-
-   >>> point_mutation = target_promoter.sequenceAnnotations['PointMutation']
+    >>> ptet = sbol3.Component('pTetR', sbol3.SBO_DNA)
+    >>> ptet.roles = [sbol3.SO_PROMOTER]
+    
+    >>> circuit = sbol3.Component('circuit', sbol3.SBO_DNA)
+    >>> circuit.roles.append(sbol3.SO_ENGINEERED_REGION)
+    
+    >>> ptet_sc = sbol3.SubComponent(ptet)
+    >>> circuit.features += [ptet_sc]
 
 .. end
 
