@@ -367,28 +367,36 @@ For example, to add a promoter to a circuit design, first define the promoter an
 Creating and Editing Reference Properties
 -----------------------------------------
 
-Some SBOL objects point to other objects by way of URI references. For example, ComponentDefinitions point to their corresponding Sequences by way of a URI reference. These kind of properties correspond to white diamond arrows in UML diagrams, as shown in the figure above. Attributes of this type contain the URI of the related object.
+Some SBOL objects point to other objects by way of URI references. For example, Components point to their corresponding Sequences by way of a URI reference. These kind of properties correspond to white diamond arrows in UML diagrams, as shown in the figure above. Attributes of this type contain the URI of the related object.
 
 .. code:: python
 
-    >>> eyfp_gene = ComponentDefinition('EYFPGene', BIOPAX_DNA)
-    >>> seq = Sequence('EYFPSequence', 'atgnnntaa', SBOL_ENCODING_IUPAC)
-    >>> eyfp_gene.sequences = seq
-    >>> print(eyfp_gene.sequences)
-    ['http://examples.org/Sequence/EYFPSequence/1']
+    >>> gfp = sbol3.Component('GFP', sbol3.SBO_DNA)
+    >>> gfp_seq = sbol3.Sequence('GFPSequence', elements='atgnnntaa', encoding=sbol3.IUPAC_DNA_ENCODING)
+    >>> gfp.sequences = [ gfp_seq ]
+    >>> print(gfp.sequences)
+    ['http://sbolstandard.org/testfiles/GFPSequence']
 
 .. end
 
-Note that assigning the ``seq`` object to the ``eyfp_gene.sequences`` actually results in assignment of the object's URI. An equivalent assignment is as follows:
+Note that assigning the ``gfp_seq`` object to the ``gfp.sequences`` actually results in assignment of the object's URI. An equivalent assignment is as follows:
 
 .. code:: python
 
-    >>> eyfp_gene.sequences = seq.identity
-    >>> print (eyfp_gene.sequences)
-    ['http://examples.org/Sequence/EYFPSequence/1']
+    >>> gfp.sequences = [ gfp_seq.identity ]
+    >>> print(gfp.sequences)
+    ['http://sbolstandard.org/testfiles/GFPSequence']
 
 .. end
 
+Also note that the DNA sequence information is saved as the ``elements`` attribute of the ``Sequence`` object, as per the SBOL 3 specification:
+
+.. code:: python
+
+    >>> gfp_seq.elements
+    'atgnnntaa'
+
+.. end
 
 --------------------------------------
 Iterating and Indexing List Properties
