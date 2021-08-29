@@ -144,7 +144,8 @@ In the official SBOL specification document, classes and their properties are re
 
 As introduced in the previous section, SBOL objects are identified by a uniform resource identifier (URI). When a new object is constructed, the user must assign a unique identity. The identity is ALWAYS the first argument supplied to the constructor of an SBOL object. 
 
-Constructors for SBOL objects follow a fairly predictable pattern. The first argument is ALWAYS the identity of the object. Other arguments may follow, depending whether the SBOL class has required attributes. Attributes are required if the specification says they are. In a UML diagram, required attributes are indicated as properties with a cardinality of 1 or more. For example, a ``Component`` (see the UML diagram above) has only one required attribute, ``types``, which specifies one or more molecular types for a component.  Required attributes MUST be specified when calling a constructor. 
+Constructors for SBOL objects follow a fairly predictable pattern. The first argument is ALWAYS an identifier, which can be either a full URI, a universally unique identifier (UUID), or a local identifier (possibly with collection structure). If the first argument to the constructor is a valid URI or UUID, the object is created with the URI or UUID as its ``identity``. Otherwise, the object is created with an ``identity`` composed of the first argument appended to the pySBOL namespace (set using ``sbol.set_namespace()``). 
+Constructors can take additional arguments, depending on whether the SBOL class has required attributes. Attributes are required if the specification says they are. In a UML diagram, required attributes are indicated as properties with a cardinality of 1 or more. For example, a ``Component`` (see the UML diagram above) has only one required attribute, ``types``, which specifies one or more molecular types for a component.  Required attributes MUST be specified when calling a constructor. 
 
 The following code creates a protein component (``types`` set to ``SBO_PROTEIN``). 
 
@@ -159,6 +160,34 @@ The following code creates a DNA component (``types`` set to ``SBO_DNA``).
 .. code:: python
 
     >>> target_promoter = sbol.Component('target_promoter', sbol.SBO_DNA)
+
+.. end
+
+The following code creates a DNA component with a collection structure (``/promoters/``), and another DNA component with a different namespace. 
+
+.. code:: python
+
+    >>> second_promoter = sbol.Component('promoters/second_promoter', sbol.SBO_DNA)
+    >>> third_promoter = sbol.Component('http://sbolstandard.org/other_namespace/third_promoter', sbol.SBO_DNA)
+
+.. end
+
+For examples of how the first argument of the SBOL object constructor is used to assign the object's ``identity`` and ``display_id``, compare the following: 
+
+.. code:: python
+
+    >>> target_promoter.identity
+    'http://sbolstandard.org/testfiles/target_promoter'
+    >>> target_promoter.display_id
+    'target_promoter'
+    >>> second_promoter.identity
+    'http://sbolstandard.org/testfiles/promoters/second_promoter'
+    >>> second_promoter.display_id
+    'second_promoter'
+    >>> third_promoter.identity
+    'http://sbolstandard.org/other_namespace/third_promoter'
+    >>> third_promoter.display_id
+    'third_promoter'
 
 .. end
 
