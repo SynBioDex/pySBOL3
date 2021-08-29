@@ -269,23 +269,25 @@ It is possible to have multiple SBOL objects with the same ``display_id`` (but d
 Getting, Setting, and Editing Attributes
 ---------------------------------------------
 
-The attributes of an SBOL object can be accessed like other Python class objects, with a few special considerations. For example, to get the values of the ``displayId`` and ``identity`` properties of any object :
+The attributes of an SBOL object can be accessed like other Python class objects, with a few special considerations. For example, to get the values of the ``display_id`` and ``identity`` properties of any object :
 
 .. code:: python
 
-    >>> print(cas9.displayId)
+    >>> print(cas9.display_id)
+    Cas9
     >>> print(cas9.identity)
+    http://sbolstandard.org/testfiles/Cas9
 
 .. end
 
-Note that ``displayId`` gives only the shorthand, local identifier for the object, while the ``identity`` property gives the full URI.
+Note that ``display_id`` gives only the shorthand, local identifier for the object, while the ``identity`` property gives the full URI.
 
-The attributes above return singleton values. Some attributes, like ``ComponentDefinition.roles`` and ``ComponentDefinition.types`` support multiple values. Generally these attributes have plural names. If an attribute supports multiple values, then it will return a list. If the attribute has not been assigned any values, it will return an empty list.
+The attributes above return singleton values. Some attributes, like ``Component.roles`` and ``Component.types`` support multiple values. Generally these attributes have plural names. If an attribute supports multiple values, then it will return a list. If the attribute has not been assigned any values, it will return an empty list.
 
 .. code:: python
 
     >>> cas9.types
-    ['http://www.biopax.org/release/biopax-level3.owl#Protein']
+    ['https://identifiers.org/SBO:0000252']
     >>> cas9.roles
     []
 
@@ -295,7 +297,7 @@ Setting an attribute follows the ordinary convention for assigning attribute val
 
 .. code:: python
 
-   >>> crispr_template.description = 'This is an abstract, template module'
+   >>> cas9.description = 'This is a Cas9 protein'
 
 .. end
 
@@ -303,25 +305,28 @@ To set multiple values:
 
 .. code:: python
 
-    >>> plasmid = ComponentDefinition('pBB1', BIOPAX_DNA, '1.0.0')
-    >>> plasmid.roles = [ SO_PLASMID, SO_CIRCULAR ]
+    >>> plasmid = sbol.Component('pBB1', sbol.SBO_DNA)
+    >>> plasmid.roles = [ sbol.SO_DOUBLE_STRANDED, sbol.SO_CIRCULAR ]
 
 .. end
 
-Although properties such as ``types`` and ``roles`` behave like Python lists in some ways, beware that list operations like ``append`` and ``extend`` do not work directly on these kind of attributes, due to the data hiding nature of the bindings. If you need to append values to an attribute, use the following idiom:
+Properties such as ``types`` and ``roles`` behave like Python lists, and list operations like ``append`` and ``extend`` will work directly on these kind of attributes:
 
 .. code:: python
 
-    >>> plasmid.roles = [ SO_PLASMID ]
-    >>> plasmid.roles = plasmid.roles + [ SO_CIRCULAR ]
+    >>> plasmid.roles = [ sbol.SO_DOUBLE_STRANDED ]
+    >>> plasmid.roles.append( sbol.SO_CIRCULAR )
+    
+    >>> plasmid.roles = []
+    >>> plasmid.roles.extend( [sbol.SO_DOUBLE_STRANDED, sbol.SO_CIRCULAR] )
 
 .. end
 
-To clear all values from an attribute, set to None:
+To clear all values from an attribute, set it to an empty list:
 
 .. code:: python
 
-    >>> plasmid.roles = None
+    >>> plasmid.roles = []
 
 .. end
 
