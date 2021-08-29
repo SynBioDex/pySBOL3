@@ -217,7 +217,7 @@ The following example illustrates how the URIs for ontology terms can be easily 
 For more information on using ontology terms with pySBOL3, see: `Using Ontology Terms <ontology.html>`_.
 
 ------------------------------------------
-Adding and Getting Objects from a Document
+Adding, Finding, and Getting Objects from a Document
 ------------------------------------------
 
 In some cases a developer may want to use SBOL objects as intermediate data structures in a computational biology workflow. In this case, the user is free to manipulate objects independently of a Document. However, if the user wishes to write out a file with all the information contained in their object, they must first add it to the Document. This is done using the ``add`` method.
@@ -229,7 +229,7 @@ In some cases a developer may want to use SBOL objects as intermediate data stru
 
 .. end
 
-Objects can be retrieved from a Document by using the ``find`` method. This method can take either the object's ``identity`` (i.e., full URI) or ``display_id`` (local identifier) as an argument.
+Objects can be found and retrieved from a Document by using the ``find`` method. This method can take either the object's ``identity`` (i.e., full URI) or ``display_id`` (local identifier) as an argument.
 
 .. code:: python
 
@@ -440,39 +440,6 @@ Numerical indexing of list properties works as well:
     SubComponent3
     .
     .
-
-.. end
-
-----------------------------------
-Searching a Document
-----------------------------------
-
-To see if an object with a given URI is already contained in a Document or other parent object, use the ``find`` method. Note that ``find`` function returns the target object cast to its base type which is ``SBOLObject``, the generic base class for all SBOL objects. The actual SBOL type of this object, however is ``ComponentDefinition``. If necessary the base class can be downcast using the ``cast`` method.
-
-.. code:: python
-
-    >>> obj = doc.find('http://sbols.org/CRISPR_Example/mKate_gene/1.0.0')
-    >>> obj
-    SBOLObject
-    >>> parseClassName(obj.type)
-    'ComponentDefinition'
-    >>> cd = obj.cast(ComponentDefinition)
-    >>> cd
-    ComponentDefinition
-
-.. end
-
-The ``find`` method is probably more useful as a boolean conditional when the user wants to automatically construct URIs for objects and needs to check if the URI is unique or not. If the object is found,   ``find`` returns an object reference (True), and if the object is not found, it returns None (False). The following code snippet demonstrates a function that automatically generates ComponentDefinitions.
-
-.. code:: python
-
-    def createNextComponentDefinition(doc, local_id):
-        i_cdef = 0
-        cdef_uri = getHomespace() + '/%s_%d/1.0.0' %(local_id, i_cdef)
-        while doc.find(cdef_uri):
-            i_cdef += 1
-            cdef_uri = getHomespace() + '/%s_%d/1.0.0' %(local_id, i_cdef)
-        doc.componentDefinitions.create('%s_%d' %(local_id, i_cdef))
 
 .. end
 
