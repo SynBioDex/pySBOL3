@@ -6,8 +6,6 @@ from typing import Dict, Callable, List, Optional, Any, Union
 import pyshacl
 import rdflib
 
-import numpy as np
-
 from . import *
 from .object import BUILDER_REGISTER
 
@@ -517,10 +515,12 @@ class Document:
         col_size = 30
         total_core_objects = 0
         
-        type_arr = np.array([obj.type_uri for obj in self.objects])
-        for obj_type in np.unique(type_arr):
+        type_list = [obj.type_uri for obj in self.objects]
+        type_set = list(set(type_list))
+        type_set.sort()
+        for obj_type in type_set:
             property_name = obj_type[obj_type.rfind('#')+1:]
-            obj_count = len(type_arr[type_arr==obj_type])
+            obj_count = len([x for x in type_list if x==obj_type])
             total_core_objects += obj_count
             summary += property_name
             summary += '.' * (col_size-len(property_name))
