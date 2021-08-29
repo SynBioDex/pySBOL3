@@ -319,6 +319,9 @@ Properties such as ``types`` and ``roles`` behave like Python lists, and list op
     
     >>> plasmid.roles = []
     >>> plasmid.roles.extend( [sbol.SO_DOUBLE_STRANDED, sbol.SO_CIRCULAR] )
+    
+    >>> plasmid.roles = [ sbol.SO_DOUBLE_STRANDED ]
+    >>> plasmid.roles += [ sbol.SO_CIRCULAR ]
 
 .. end
 
