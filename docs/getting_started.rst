@@ -402,27 +402,44 @@ Also note that the DNA sequence information is saved as the ``elements`` attribu
 Iterating and Indexing List Properties
 --------------------------------------
 
-Some properties can contain multiple values or objects. Additional values can be specified with the add method.  In addition you may iterate over lists of objects or values.
+Some SBOL object properties can contain multiple values or objects. You may iterate over those list properties as with normal Python lists:
 
 .. code:: python
 
-    # Iterate through objects (black diamond properties in UML)
-    for p in cas9_complex_formation.participations:
-        print(p)
-        print(p.roles)
-
-    # Iterate through references (white diamond properties in UML)
-    for role in reaction_participant.roles:
-        print(role)
+    >>> # Iterate through objects (black diamond properties in UML)
+    >>> for feat in circuit.features:
+    ...     print(f'{feat.display_id}, {feat.identity}, {feat.instance_of}')
+    ...
+    SubComponent1, http://sbolstandard.org/testfiles/circuit/SubComponent1, http://sbolstandard.org/testfiles/pTetR
+    SubComponent2, http://sbolstandard.org/testfiles/circuit/SubComponent2, http://sbolstandard.org/testfiles/op1
+    SubComponent3, http://sbolstandard.org/testfiles/circuit/SubComponent3, http://sbolstandard.org/testfiles/RBS1
+    .
+    .
 
 .. end
 
-Numerical indexing of lists works as well:
+.. code:: python
+
+    >>> # Iterate through references (white diamond properties in UML)
+    >>> for seq in gfp.sequences:
+    ...     print(seq)
+    ...
+    http://sbolstandard.org/testfiles/GFPSequence
+
+.. end
+
+Numerical indexing of list properties works as well:
 
 .. code:: python
 
-    for i_p in range(0, len(cas9_complex_formation.participations)):
-        print(cas9_complex_formation.participations[i_p])
+    >>> for n in range(0, len(circuit.features)):
+    ...     print(circuit.features[n].display_id)
+    ...
+    SubComponent1
+    SubComponent2
+    SubComponent3
+    .
+    .
 
 .. end
 
