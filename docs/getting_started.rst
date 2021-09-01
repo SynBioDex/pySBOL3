@@ -45,15 +45,6 @@ methods are used for reading and writing files in SBOL format.
 Reading a Document will wipe any existing contents clean before
 import. 
 
-.. 
-    TODO: DJR, delete this block or edit to correspond to pySBOL3 equivalent of "append"; leave it commented out for now.
-    However, you can import objects from multiple files into a
-    single Document object using `Document.append()
-    <autoapi/sbol2/document/index.html#sbol2.document.Document.append>`_. This
-    can be advantageous when you want to integrate multiple objects from
-    different files into a single design. This kind of data integration is
-    an important and useful feature of SBOL.
-
 A Document may contain different types of SBOL objects, including
 ComponentDefinitions, ModuleDefinitions, Sequences, and Models. These
 objects are collectively referred to as TopLevel objects because they
@@ -91,29 +82,7 @@ Each SBOL object in a Document is uniquely identified by a special string of cha
 
 .. end
 
-.. TODO: delete or modify for pySBOL3
-    I don't think objects are sorted like this in pySBOL3, so comment out for now, and probably delete later
-    .. 
-    These objects are sorted into object stores based on the type of object. For example to view ``ComponentDefinition`` objects specifically, iterate through the `Document.componentDefinitions` store:
-
-    .. code:: python
-
-      >>> for cd in doc.componentDefinitions:
-      ...     print(cd)
-      ...
-
-    .. end
-
-    Similarly, you can iterate through
-    `Document.moduleDefinitions <autoapi/sbol2/document/index.html#sbol2.document.Document.getModuleDefinition>`_,
-    `Document.sequences <autoapi/sbol2/document/index.html#sbol2.document.Document.getSequence>`_,
-    `Document.models <autoapi/sbol2/document/index.html#sbol2.document.Document.getModel>`_,
-    or any top level object. The last type of object, Annotation Objects is a special case which will be discussed later.
-
 These URIs are said to be **sbol-compliant**. An sbol-compliant URI consists of a namespace, an optional collection structure, and a local identifier (also called a ``displayId``). In this tutorial, we use URIs of the type ``http://sbolstandard.org/testfiles/my_obj``, where the namespace is ``http://sbolstandard.org/testfiles``, and the local identifier is ``my_object``. 
-
-.. TODO: delete or edit; I don't think this is completely correct with pySBOL3
-    SBOL-compliant URIs enable shortcuts that make the pySBOL3 API easier to use and are enabled by default. However, users are not required to use sbol-compliant URIs if they don't want to, and this option can be turned off.
 
 Based on our inspection of objects contained in the Document above, we can see that these objects were all created in the namespace ``http://sbolstandard.org/testfiles``. Thus, in order to take advantage of SBOL-compliant URIs, we set an environment variable that configures this namespace as the default.
 
