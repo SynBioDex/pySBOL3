@@ -6,6 +6,11 @@ from typing import Dict, Callable, List, Optional, Any, Union
 import pyshacl
 import rdflib
 
+# We really shouldn't need to do this.
+# See https://github.com/RDFLib/rdflib/issues/1412
+# When this gets fixed we can remove the explicit import of rdflib.plugins.parsers.jsonld
+import rdflib.plugins.parsers.jsonld
+
 from . import *
 from .object import BUILDER_REGISTER
 
