@@ -13,6 +13,7 @@ and constructing genetic designs according to the standardized specifications of
 
    introduction
    installation
+   getting_started
    extensions
    validation
    visitor
