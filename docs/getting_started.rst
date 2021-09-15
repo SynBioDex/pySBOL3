@@ -99,11 +99,9 @@ Creating SBOL Data Objects
 --------------------------
 
 Biological designs can be described with SBOL data objects, including both structural and functional features.  
-The principle classes for describing the structure and primary sequence of a design are ``Component``, ``Sequence``, ``SequencFeature``, and ``SubComponent``. 
-The principle classes for describing the function of a design are ``Component``, ``SubComponent``, ``Interaction``, and ``Participation``. 
+The principle classes for describing the structure and primary sequence of a design are ``Component``, ``Sequence``, and ``Feature``. 
+The principle classes for describing the function of a design are ``Component``, ``Feature``, ``Interaction``, and ``Participation``. 
 
-.. TODO: delete or edit; Is there a pySBOL3 equivalent to "Design, Build, Test, Analysis, Activity, and Plan"
-    Other classes such as Design, Build, Test, Analysis, Activity, and Plan are used for managing workflows.
 
 In the official SBOL specification document, classes and their properties are represented as box diagrams. Each box represents an SBOL class and its attributes. Following is an example of the diagram for the ``Component`` class which will be referred to in later sections. These class diagrams follow conventions of the Unified Modeling Language.
 
@@ -128,7 +126,7 @@ The following code creates a DNA component (``types`` set to ``SBO_DNA``).
 
 .. code:: python
 
-    >>> target_promoter = sbol3.Component('target_promoter', sbol3.SBO_DNA)
+    >>> target_promoter = sbol3.Component('target_promoter', sbol3.SBO_DNA, roles=[sbol3.SO_PROMOTER])
 
 .. end
 
@@ -321,11 +319,9 @@ For example, to add a promoter to a circuit design, first define the promoter an
 
 .. code:: python
 
-    >>> ptet = sbol3.Component('pTetR', sbol3.SBO_DNA)
-    >>> ptet.roles = [sbol3.SO_PROMOTER]
+    >>> ptet = sbol3.Component('pTetR', sbol3.SBO_DNA, roles=[sbol3.SO_PROMOTER])
     
-    >>> circuit = sbol3.Component('circuit', sbol3.SBO_DNA)
-    >>> circuit.roles.append(sbol3.SO_ENGINEERED_REGION)
+    >>> circuit = sbol3.Component('circuit', sbol3.SBO_DNA, roles=[sbol3.SO_ENGINEERED_REGION])
     
     >>> ptet_sc = sbol3.SubComponent(ptet)
     >>> circuit.features += [ptet_sc]
