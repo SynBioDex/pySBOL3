@@ -172,10 +172,10 @@ The following example illustrates how the URIs for ontology terms can be easily 
 
 .. code:: python
 
-    >>> SO_ENGINEERED_FUSION_GENE = sbol3.SO_NS + '0000288'  # Sequence Ontology term
+    >>> SO_ENGINEERED_FUSION_GENE = tyto.SO.engineered_fusion_gene
     >>> SO_ENGINEERED_FUSION_GENE
     'https://identifiers.org/SO:0000288'
-    >>> SBO_DNA_REPLICATION = sbol3.SBO_NS + '0000204'  # Systems Biology Ontology term
+    >>> SBO_DNA_REPLICATION = tyto.SBO.DNA_replication
     >>> SBO_DNA_REPLICATION
     'https://identifiers.org/SBO:0000204'
 
