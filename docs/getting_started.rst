@@ -337,10 +337,16 @@ Some SBOL objects point to other objects by way of URI references. For example, 
 .. code:: python
 
     >>> gfp = sbol3.Component('GFP', sbol3.SBO_DNA)
+    >>> doc.add(gfp)
     >>> gfp_seq = sbol3.Sequence('GFPSequence', elements='atgnnntaa', encoding=sbol3.IUPAC_DNA_ENCODING)
+    >>> doc.add(gfp_seq)
     >>> gfp.sequences = [ gfp_seq ]
     >>> print(gfp.sequences)
     ['http://sbolstandard.org/testfiles/GFPSequence']
+    >>> # Look up the sequence via the document
+    >>> seq2 = gfp.sequences[0].lookup()
+    >>> seq2 == gfp_seq
+    True
 
 .. end
 
@@ -351,6 +357,9 @@ Note that assigning the ``gfp_seq`` object to the ``gfp.sequences`` actually res
     >>> gfp.sequences = [ gfp_seq.identity ]
     >>> print(gfp.sequences)
     ['http://sbolstandard.org/testfiles/GFPSequence']
+    >>> seq2 = gfp.sequences[0].lookup()
+    >>> seq2 == gfp_seq
+    True
 
 .. end
 
