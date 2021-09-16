@@ -119,7 +119,7 @@ class SBOLObject:
             # Map into new namespace
 
         # Assign the new object to the target Document
-        if target_doc:
+        if target_doc is not None:
             try:
                 target_doc.add(new_obj)
             except TypeError:

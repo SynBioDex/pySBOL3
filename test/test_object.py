@@ -44,6 +44,7 @@ class TestObject(unittest.TestCase):
 
         doc2 = sbol3.Document()
         root_copy = root.copy(target_doc=doc2)
+        self.assertIn(root_copy, doc2.objects)
         self.assertEqual([sc.identity for sc in root.features],
                          [sc.identity for sc in root_copy.features])
 
