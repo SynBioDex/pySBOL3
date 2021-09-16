@@ -1,4 +1,3 @@
-@prefix : <http://sbols.org/v3#> .
 @prefix dash: <http://datashapes.org/dash#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -6,134 +5,136 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-:Attachment a rdfs:Class,
+<http://sbols.org/v3#Attachment> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Attachment"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :source ;
+            owl:onProperty <http://sbols.org/v3#source> ;
             owl:someValuesFrom owl:Thing ],
-        _:Nf5a648d8783749c1aada31263f1ba447,
-        :Identified,
-        :TopLevel,
+        _:Nb31b8ad0714d498680441d7e8b1a63cc,
+        <http://sbols.org/v3#Identified>,
+        <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
-    sh:property :Attachment-format,
-        :Attachment-hasNamespace,
-        :Attachment-hash,
-        :Attachment-hashAlgorithm,
-        :Attachment-size,
-        :Attachment-source .
+    sh:property <http://sbols.org/v3#Attachment-format>,
+        <http://sbols.org/v3#Attachment-hasNamespace>,
+        <http://sbols.org/v3#Attachment-hash>,
+        <http://sbols.org/v3#Attachment-hashAlgorithm>,
+        <http://sbols.org/v3#Attachment-size>,
+        <http://sbols.org/v3#Attachment-source> .
 
-:Collection a rdfs:Class,
+<http://sbols.org/v3#Collection> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Collection"^^xsd:string ;
-    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
-        :Identified,
-        :TopLevel,
+    rdfs:subClassOf _:Nb31b8ad0714d498680441d7e8b1a63cc,
+        <http://sbols.org/v3#Identified>,
+        <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
-    sh:property :Collection-hasNamespace,
-        :Collection-member .
+    sh:property <http://sbols.org/v3#Collection-hasNamespace>,
+        <http://sbols.org/v3#Collection-member> .
 
-:CombinatorialDerivation a rdfs:Class,
+<http://sbols.org/v3#CombinatorialDerivation> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "CombinatorialDerivation"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :template ;
-            owl:someValuesFrom :Component ],
-        _:Nf5a648d8783749c1aada31263f1ba447,
-        :Identified,
-        :TopLevel,
+            owl:onProperty <http://sbols.org/v3#template> ;
+            owl:someValuesFrom <http://sbols.org/v3#Component> ],
+        _:Nb31b8ad0714d498680441d7e8b1a63cc,
+        <http://sbols.org/v3#Identified>,
+        <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
-    sh:property :CombinatorialDerivation-hasNamespace,
-        :CombinatorialDerivation-hasVariableFeature,
-        :CombinatorialDerivation-strategy,
-        :CombinatorialDerivation-template .
+    sh:property <http://sbols.org/v3#CombinatorialDerivation-hasNamespace>,
+        <http://sbols.org/v3#CombinatorialDerivation-hasVariableFeature>,
+        <http://sbols.org/v3#CombinatorialDerivation-strategy>,
+        <http://sbols.org/v3#CombinatorialDerivation-template> .
 
-:Component a rdfs:Class,
+<http://sbols.org/v3#Component> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Component"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :type ;
+            owl:onProperty <http://sbols.org/v3#type> ;
             owl:someValuesFrom owl:Thing ],
-        _:Nf5a648d8783749c1aada31263f1ba447,
-        :Identified,
-        :TopLevel,
+        _:Nb31b8ad0714d498680441d7e8b1a63cc,
+        <http://sbols.org/v3#Identified>,
+        <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
-    sh:property :Component-hasConstraint,
-        :Component-hasFeature,
-        :Component-hasInteraction,
-        :Component-hasInterface,
-        :Component-hasModel,
-        :Component-hasNamespace,
-        :Component-hasSequence,
-        :Component-role,
-        :Component-type .
+    sh:property <http://sbols.org/v3#Component-hasConstraint>,
+        <http://sbols.org/v3#Component-hasFeature>,
+        <http://sbols.org/v3#Component-hasInteraction>,
+        <http://sbols.org/v3#Component-hasInterface>,
+        <http://sbols.org/v3#Component-hasModel>,
+        <http://sbols.org/v3#Component-hasNamespace>,
+        <http://sbols.org/v3#Component-hasSequence>,
+        <http://sbols.org/v3#Component-role>,
+        <http://sbols.org/v3#Component-type> .
 
-:ComponentReference a rdfs:Class,
+<http://sbols.org/v3#ComponentReference> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "ComponentReference"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
+            owl:onProperty <http://sbols.org/v3#hasFeature> ;
+            owl:someValuesFrom <http://sbols.org/v3#Feature> ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty <http://sbols.org/v3#inChildOf> ;
+            owl:someValuesFrom <http://sbols.org/v3#Component> ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onClass :Feature ;
-            owl:onProperty :hasFeature ],
-        [ a rdfs:Resource,
-                owl:Restriction ;
-            owl:onProperty :hasFeature ;
-            owl:someValuesFrom :Feature ],
-        [ a rdfs:Resource,
-                owl:Restriction ;
-            owl:onProperty :inChildOf ;
-            owl:someValuesFrom :Component ],
-        :Feature,
-        :Identified,
+            owl:onClass <http://sbols.org/v3#Feature> ;
+            owl:onProperty <http://sbols.org/v3#hasFeature> ],
+        <http://sbols.org/v3#Feature>,
+        <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :ComponentReference-hasFeature,
-        :ComponentReference-inChildOf .
+    sh:property <http://sbols.org/v3#ComponentReference-hasFeature>,
+        <http://sbols.org/v3#ComponentReference-inChildOf> .
 
-:Constraint a rdfs:Class,
+<http://sbols.org/v3#Constraint> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Constraint"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :object ;
-            owl:someValuesFrom :Feature ],
+            owl:onProperty <http://sbols.org/v3#object> ;
+            owl:someValuesFrom <http://sbols.org/v3#Feature> ],
         [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :restriction ;
+            owl:onProperty <http://sbols.org/v3#restriction> ;
             owl:someValuesFrom owl:Thing ],
         [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :subject ;
-            owl:someValuesFrom :Feature ],
-        :Identified,
+            owl:onProperty <http://sbols.org/v3#subject> ;
+            owl:someValuesFrom <http://sbols.org/v3#Feature> ],
+        <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :Constraint-object,
-        :Constraint-restriction,
-        :Constraint-subject .
+    sh:property <http://sbols.org/v3#Constraint-object>,
+        <http://sbols.org/v3#Constraint-restriction>,
+        <http://sbols.org/v3#Constraint-subject> .
 
-:Cut a rdfs:Class,
+<http://sbols.org/v3#Cut> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Cut"^^xsd:string ;
-    rdfs:subClassOf [ a rdfs:Resource,
+    rdfs:subClassOf _:N9c29433e368f4ecaa0a2c6bcfced763b,
+        _:Naba636fce7cd4ffba64ee6c569f26409,
+        [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :at ;
+            owl:onProperty <http://sbols.org/v3#at> ;
             owl:someValuesFrom [ a rdfs:Datatype,
                         rdfs:Resource ;
                     rdfs:subClassOf rdfs:Literal ;
@@ -142,215 +143,203 @@
                             rdf:first [ a rdfs:Resource ;
                                     xsd:minInclusive 0 ] ;
                             rdf:rest () ] ] ],
-        _:N674a3e8a65b748698641587003887636,
-        _:Ne92c02da0b094e05a8af34ca7ae2baa2,
-        :Identified,
-        :Location,
+        <http://sbols.org/v3#Identified>,
+        <http://sbols.org/v3#Location>,
         owl:Thing ;
-    sh:property :Cut-at,
-        :Cut-hasSequence .
+    sh:property <http://sbols.org/v3#Cut-at>,
+        <http://sbols.org/v3#Cut-hasSequence> .
 
-:EntireSequence a rdfs:Class,
+<http://sbols.org/v3#EntireSequence> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "EntireSequence"^^xsd:string ;
-    rdfs:subClassOf _:N674a3e8a65b748698641587003887636,
-        _:Ne92c02da0b094e05a8af34ca7ae2baa2,
-        :Identified,
-        :Location,
+    rdfs:subClassOf _:N9c29433e368f4ecaa0a2c6bcfced763b,
+        _:Naba636fce7cd4ffba64ee6c569f26409,
+        <http://sbols.org/v3#Identified>,
+        <http://sbols.org/v3#Location>,
         owl:Thing ;
-    sh:property :EntireSequence-hasSequence .
+    sh:property <http://sbols.org/v3#EntireSequence-hasSequence> .
 
-:Experiment a rdfs:Class,
+<http://sbols.org/v3#Experiment> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Experiment"^^xsd:string ;
-    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
-        :Collection,
-        :Identified,
-        :TopLevel,
+    rdfs:subClassOf _:Nb31b8ad0714d498680441d7e8b1a63cc,
+        <http://sbols.org/v3#Collection>,
+        <http://sbols.org/v3#Identified>,
+        <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
-    sh:property :Experiment-hasNamespace .
+    sh:property <http://sbols.org/v3#Experiment-hasNamespace> .
 
-:ExperimentalData a rdfs:Class,
+<http://sbols.org/v3#ExperimentalData> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "ExperimentalData"^^xsd:string ;
-    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
-        :Identified,
-        :TopLevel,
+    rdfs:subClassOf _:Nb31b8ad0714d498680441d7e8b1a63cc,
+        <http://sbols.org/v3#Identified>,
+        <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
-    sh:property :ExperimentalData-hasNamespace .
+    sh:property <http://sbols.org/v3#ExperimentalData-hasNamespace> .
 
-:ExternallyDefined a rdfs:Class,
+<http://sbols.org/v3#ExternallyDefined> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "ExternallyDefined"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :type ;
+            owl:onProperty <http://sbols.org/v3#type> ;
             owl:someValuesFrom owl:Thing ],
         [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :definition ;
+            owl:onProperty <http://sbols.org/v3#definition> ;
             owl:someValuesFrom owl:Thing ],
-        :Feature,
-        :Identified,
+        <http://sbols.org/v3#Feature>,
+        <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :ExternallyDefined-definition,
-        :ExternallyDefined-type .
+    sh:property <http://sbols.org/v3#ExternallyDefined-definition>,
+        <http://sbols.org/v3#ExternallyDefined-type> .
 
-:Feature a rdfs:Class,
+<http://sbols.org/v3#Feature> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Feature"^^xsd:string ;
-    rdfs:subClassOf :Identified,
+    rdfs:subClassOf <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :Feature-orientation,
-        :Feature-role .
+    sh:property <http://sbols.org/v3#Feature-orientation>,
+        <http://sbols.org/v3#Feature-role> .
 
-:Identified a rdfs:Class,
+<http://sbols.org/v3#Identified> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Identified"^^xsd:string ;
     rdfs:subClassOf owl:Thing ;
-    sh:property :Identified-description,
-        :Identified-displayId,
-        :Identified-hasMeasure,
-        :Identified-name .
+    sh:property <http://sbols.org/v3#Identified-description>,
+        <http://sbols.org/v3#Identified-displayId>,
+        <http://sbols.org/v3#Identified-hasMeasure>,
+        <http://sbols.org/v3#Identified-name> .
 
-:Implementation a rdfs:Class,
+<http://sbols.org/v3#Implementation> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Implementation"^^xsd:string ;
-    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
-        :Identified,
-        :TopLevel,
+    rdfs:subClassOf _:Nb31b8ad0714d498680441d7e8b1a63cc,
+        <http://sbols.org/v3#Identified>,
+        <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
-    sh:property :Implementation-built,
-        :Implementation-hasNamespace .
+    sh:property <http://sbols.org/v3#Implementation-built>,
+        <http://sbols.org/v3#Implementation-hasNamespace> .
 
-:Interaction a rdfs:Class,
+<http://sbols.org/v3#Interaction> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Interaction"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :type ;
+            owl:onProperty <http://sbols.org/v3#type> ;
             owl:someValuesFrom owl:Thing ],
-        :Identified,
+        <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :Interaction-hasParticipation,
-        :Interaction-type .
+    sh:property <http://sbols.org/v3#Interaction-hasParticipation>,
+        <http://sbols.org/v3#Interaction-type> .
 
-:Interface a rdfs:Class,
+<http://sbols.org/v3#Interface> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Interface"^^xsd:string ;
-    rdfs:subClassOf :Identified,
+    rdfs:subClassOf <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :Interface-input,
-        :Interface-nondirectional,
-        :Interface-output .
+    sh:property <http://sbols.org/v3#Interface-input>,
+        <http://sbols.org/v3#Interface-nondirectional>,
+        <http://sbols.org/v3#Interface-output> .
 
-:LocalSubComponent a rdfs:Class,
+<http://sbols.org/v3#LocalSubComponent> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "LocalSubComponent"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :type ;
+            owl:onProperty <http://sbols.org/v3#type> ;
             owl:someValuesFrom owl:Thing ],
-        :Feature,
-        :Identified,
+        <http://sbols.org/v3#Feature>,
+        <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :LocalSubComponent-hasLocation,
-        :LocalSubComponent-type .
+    sh:property <http://sbols.org/v3#LocalSubComponent-hasLocation>,
+        <http://sbols.org/v3#LocalSubComponent-type> .
 
-:Location a rdfs:Class,
+<http://sbols.org/v3#Location> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Location"^^xsd:string ;
-    rdfs:subClassOf _:N674a3e8a65b748698641587003887636,
-        _:Ne92c02da0b094e05a8af34ca7ae2baa2,
-        :Identified,
+    rdfs:subClassOf _:N9c29433e368f4ecaa0a2c6bcfced763b,
+        _:Naba636fce7cd4ffba64ee6c569f26409,
+        <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :Location-hasSequence,
-        :Location-order,
-        :Location-orientation .
+    sh:property <http://sbols.org/v3#Location-hasSequence>,
+        <http://sbols.org/v3#Location-order>,
+        <http://sbols.org/v3#Location-orientation> .
 
-:Model a rdfs:Class,
+<http://sbols.org/v3#Model> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Model"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :source ;
+            owl:onProperty <http://sbols.org/v3#language> ;
             owl:someValuesFrom owl:Thing ],
         [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :framework ;
+            owl:onProperty <http://sbols.org/v3#framework> ;
             owl:someValuesFrom owl:Thing ],
         [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :language ;
+            owl:onProperty <http://sbols.org/v3#source> ;
             owl:someValuesFrom owl:Thing ],
-        _:Nf5a648d8783749c1aada31263f1ba447,
-        :Identified,
-        :TopLevel,
+        _:Nb31b8ad0714d498680441d7e8b1a63cc,
+        <http://sbols.org/v3#Identified>,
+        <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
-    sh:property :Model-framework,
-        :Model-hasNamespace,
-        :Model-language,
-        :Model-source .
+    sh:property <http://sbols.org/v3#Model-framework>,
+        <http://sbols.org/v3#Model-hasNamespace>,
+        <http://sbols.org/v3#Model-language>,
+        <http://sbols.org/v3#Model-source> .
 
-:Participation a rdfs:Class,
+<http://sbols.org/v3#Participation> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Participation"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :role ;
+            owl:onProperty <http://sbols.org/v3#role> ;
             owl:someValuesFrom owl:Thing ],
-        :Identified,
+        <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :Participation-higherOrderParticipant,
-        :Participation-participant,
-        :Participation-role .
+    sh:property <http://sbols.org/v3#Participation-higherOrderParticipant>,
+        <http://sbols.org/v3#Participation-participant>,
+        <http://sbols.org/v3#Participation-role> .
 
-:Range a rdfs:Class,
+<http://sbols.org/v3#Range> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Range"^^xsd:string ;
-    rdfs:subClassOf [ a rdfs:Resource,
-                owl:Restriction ;
-            owl:onProperty :end ;
-            owl:someValuesFrom [ a rdfs:Datatype,
-                        rdfs:Resource ;
-                    rdfs:subClassOf rdfs:Literal ;
-                    owl:onDatatype xsd:integer ;
-                    owl:withRestrictions [ a rdfs:Resource ;
-                            rdf:first [ a rdfs:Resource ;
-                                    xsd:minInclusive 1 ] ;
-                            rdf:rest () ] ] ],
-        _:N674a3e8a65b748698641587003887636,
+    rdfs:subClassOf _:N9c29433e368f4ecaa0a2c6bcfced763b,
+        _:Naba636fce7cd4ffba64ee6c569f26409,
         [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :start ;
+            owl:onProperty <http://sbols.org/v3#start> ;
             owl:someValuesFrom [ a rdfs:Datatype,
                         rdfs:Resource ;
                     rdfs:subClassOf rdfs:Literal ;
@@ -359,663 +348,673 @@
                             rdf:first [ a rdfs:Resource ;
                                     xsd:minInclusive 1 ] ;
                             rdf:rest () ] ] ],
-        _:Ne92c02da0b094e05a8af34ca7ae2baa2,
-        :Identified,
-        :Location,
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty <http://sbols.org/v3#end> ;
+            owl:someValuesFrom [ a rdfs:Datatype,
+                        rdfs:Resource ;
+                    rdfs:subClassOf rdfs:Literal ;
+                    owl:onDatatype xsd:integer ;
+                    owl:withRestrictions [ a rdfs:Resource ;
+                            rdf:first [ a rdfs:Resource ;
+                                    xsd:minInclusive 1 ] ;
+                            rdf:rest () ] ] ],
+        <http://sbols.org/v3#Identified>,
+        <http://sbols.org/v3#Location>,
         owl:Thing ;
-    sh:property :Range-end,
-        :Range-hasSequence,
-        :Range-start .
+    sh:property <http://sbols.org/v3#Range-end>,
+        <http://sbols.org/v3#Range-hasSequence>,
+        <http://sbols.org/v3#Range-start> .
 
-:Sequence a rdfs:Class,
+<http://sbols.org/v3#Sequence> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Sequence"^^xsd:string ;
-    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
-        :Identified,
-        :TopLevel,
+    rdfs:subClassOf _:Nb31b8ad0714d498680441d7e8b1a63cc,
+        <http://sbols.org/v3#Identified>,
+        <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
-    sh:property :Sequence-elements,
-        :Sequence-encoding,
-        :Sequence-hasNamespace .
+    sh:property <http://sbols.org/v3#Sequence-elements>,
+        <http://sbols.org/v3#Sequence-encoding>,
+        <http://sbols.org/v3#Sequence-hasNamespace> .
 
-:SequenceFeature a rdfs:Class,
+<http://sbols.org/v3#SequenceFeature> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "SequenceFeature"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :hasLocation ;
-            owl:someValuesFrom :Location ],
-        :Feature,
-        :Identified,
+            owl:onProperty <http://sbols.org/v3#hasLocation> ;
+            owl:someValuesFrom <http://sbols.org/v3#Location> ],
+        <http://sbols.org/v3#Feature>,
+        <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :SequenceFeature-hasLocation .
+    sh:property <http://sbols.org/v3#SequenceFeature-hasLocation> .
 
-:SubComponent a rdfs:Class,
+<http://sbols.org/v3#SubComponent> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "SubComponent"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :instanceOf ;
-            owl:someValuesFrom :Component ],
-        :Feature,
-        :Identified,
+            owl:onProperty <http://sbols.org/v3#instanceOf> ;
+            owl:someValuesFrom <http://sbols.org/v3#Component> ],
+        <http://sbols.org/v3#Feature>,
+        <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :SubComponent-hasLocation,
-        :SubComponent-instanceOf,
-        :SubComponent-roleIntegration,
-        :SubComponent-sourceLocation .
+    sh:property <http://sbols.org/v3#SubComponent-hasLocation>,
+        <http://sbols.org/v3#SubComponent-instanceOf>,
+        <http://sbols.org/v3#SubComponent-roleIntegration>,
+        <http://sbols.org/v3#SubComponent-sourceLocation> .
 
-:TopLevel a rdfs:Class,
+<http://sbols.org/v3#TopLevel> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "TopLevel"^^xsd:string ;
-    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
-        :Identified,
+    rdfs:subClassOf _:Nb31b8ad0714d498680441d7e8b1a63cc,
+        <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :TopLevel-hasAttachment,
-        :TopLevel-hasNamespace .
+    sh:property <http://sbols.org/v3#TopLevel-hasAttachment>,
+        <http://sbols.org/v3#TopLevel-hasNamespace> .
 
-:VariableFeature a rdfs:Class,
+<http://sbols.org/v3#VariableFeature> a rdfs:Class,
         rdfs:Resource,
         owl:Class,
         sh:NodeShape ;
     rdfs:label "VariableFeature"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :variable ;
-            owl:someValuesFrom :Feature ],
+            owl:onProperty <http://sbols.org/v3#cardinality> ;
+            owl:someValuesFrom <http://sbols.org/v3#Cardinality> ],
         [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :cardinality ;
-            owl:someValuesFrom :Cardinality ],
-        :Identified,
+            owl:onProperty <http://sbols.org/v3#variable> ;
+            owl:someValuesFrom <http://sbols.org/v3#Feature> ],
+        <http://sbols.org/v3#Identified>,
         owl:Thing ;
-    sh:property :VariableFeature-cardinality,
-        :VariableFeature-variable,
-        :VariableFeature-variant,
-        :VariableFeature-variantCollection,
-        :VariableFeature-variantDerivation,
-        :VariableFeature-variantMeasure .
+    sh:property <http://sbols.org/v3#VariableFeature-cardinality>,
+        <http://sbols.org/v3#VariableFeature-variable>,
+        <http://sbols.org/v3#VariableFeature-variant>,
+        <http://sbols.org/v3#VariableFeature-variantCollection>,
+        <http://sbols.org/v3#VariableFeature-variantDerivation>,
+        <http://sbols.org/v3#VariableFeature-variantMeasure> .
 
 <http://sbols.org/v3> a rdfs:Resource,
         owl:Ontology .
 
-:at-shape a sh:NodeShape ;
-    sh:class :Cut ;
-    sh:targetSubjectsOf :at .
+<http://sbols.org/v3#at-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Cut> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#at> .
 
-:built-shape a sh:NodeShape ;
-    sh:class :Implementation ;
-    sh:targetSubjectsOf :built .
+<http://sbols.org/v3#built-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Implementation> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#built> .
 
-:cardinality-shape a sh:NodeShape ;
-    sh:class :VariableFeature ;
-    sh:targetSubjectsOf :cardinality .
+<http://sbols.org/v3#cardinality-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#VariableFeature> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#cardinality> .
 
-:definition-shape a sh:NodeShape ;
-    sh:class :ExternallyDefined ;
-    sh:targetSubjectsOf :definition .
+<http://sbols.org/v3#definition-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#ExternallyDefined> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#definition> .
 
-:description-shape a sh:NodeShape ;
-    sh:class :Identified ;
-    sh:targetSubjectsOf :description .
+<http://sbols.org/v3#description-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Identified> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#description> .
 
-:displayId-shape a sh:NodeShape ;
-    sh:class :Identified ;
-    sh:targetSubjectsOf :displayId .
+<http://sbols.org/v3#displayId-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Identified> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#displayId> .
 
-:elements-shape a sh:NodeShape ;
-    sh:class :Sequence ;
-    sh:targetSubjectsOf :elements .
+<http://sbols.org/v3#elements-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Sequence> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#elements> .
 
-:encoding-shape a sh:NodeShape ;
-    sh:class :Sequence ;
-    sh:targetSubjectsOf :encoding .
+<http://sbols.org/v3#encoding-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Sequence> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#encoding> .
 
-:end-shape a sh:NodeShape ;
-    sh:class :Range ;
-    sh:targetSubjectsOf :end .
+<http://sbols.org/v3#end-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Range> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#end> .
 
-:format-shape a sh:NodeShape ;
-    sh:class :Attachment ;
-    sh:targetSubjectsOf :format .
+<http://sbols.org/v3#format-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Attachment> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#format> .
 
-:framework-shape a sh:NodeShape ;
-    sh:class :Model ;
-    sh:targetSubjectsOf :framework .
+<http://sbols.org/v3#framework-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Model> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#framework> .
 
-:hasAttachment-shape a sh:NodeShape ;
-    sh:class :TopLevel ;
-    sh:targetSubjectsOf :hasAttachment .
+<http://sbols.org/v3#hasAttachment-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#TopLevel> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#hasAttachment> .
 
-:hasConstraint-shape a sh:NodeShape ;
-    sh:class :Component ;
-    sh:targetSubjectsOf :hasConstraint .
+<http://sbols.org/v3#hasConstraint-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Component> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#hasConstraint> .
 
-:hasInteraction-shape a sh:NodeShape ;
-    sh:class :Component ;
-    sh:targetSubjectsOf :hasInteraction .
+<http://sbols.org/v3#hasInteraction-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Component> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#hasInteraction> .
 
-:hasInterface-shape a sh:NodeShape ;
-    sh:class :Component ;
-    sh:targetSubjectsOf :hasInterface .
+<http://sbols.org/v3#hasInterface-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Component> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#hasInterface> .
 
-:hasMeasure-shape a sh:NodeShape ;
-    sh:class :Identified ;
-    sh:targetSubjectsOf :hasMeasure .
+<http://sbols.org/v3#hasMeasure-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Identified> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#hasMeasure> .
 
-:hasModel-shape a sh:NodeShape ;
-    sh:class :Component ;
-    sh:targetSubjectsOf :hasModel .
+<http://sbols.org/v3#hasModel-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Component> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#hasModel> .
 
-:hasNamespace-shape a sh:NodeShape ;
-    sh:class :TopLevel ;
-    sh:targetSubjectsOf :hasNamespace .
+<http://sbols.org/v3#hasNamespace-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#TopLevel> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#hasNamespace> .
 
-:hasParticipation-shape a sh:NodeShape ;
-    sh:class :Interaction ;
-    sh:targetSubjectsOf :hasParticipation .
+<http://sbols.org/v3#hasParticipation-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Interaction> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#hasParticipation> .
 
-:hasVariableFeature-shape a sh:NodeShape ;
-    sh:class :CombinatorialDerivation ;
-    sh:targetSubjectsOf :hasVariableFeature .
+<http://sbols.org/v3#hasVariableFeature-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#CombinatorialDerivation> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#hasVariableFeature> .
 
-:hash-shape a sh:NodeShape ;
-    sh:class :Attachment ;
-    sh:targetSubjectsOf :hash .
+<http://sbols.org/v3#hash-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Attachment> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#hash> .
 
-:hashAlgorithm-shape a sh:NodeShape ;
-    sh:class :Attachment ;
-    sh:targetSubjectsOf :hashAlgorithm .
+<http://sbols.org/v3#hashAlgorithm-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Attachment> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#hashAlgorithm> .
 
-:higherOrderParticipant-shape a sh:NodeShape ;
-    sh:class :Participation ;
-    sh:targetSubjectsOf :higherOrderParticipant .
+<http://sbols.org/v3#higherOrderParticipant-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Participation> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#higherOrderParticipant> .
 
-:inChildOf-shape a sh:NodeShape ;
-    sh:class :ComponentReference ;
-    sh:targetSubjectsOf :inChildOf .
+<http://sbols.org/v3#inChildOf-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#ComponentReference> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#inChildOf> .
 
-:input-shape a sh:NodeShape ;
-    sh:class :Interface ;
-    sh:targetSubjectsOf :input .
+<http://sbols.org/v3#input-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Interface> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#input> .
 
-:instanceOf-shape a sh:NodeShape ;
-    sh:class :SubComponent ;
-    sh:targetSubjectsOf :instanceOf .
+<http://sbols.org/v3#instanceOf-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#SubComponent> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#instanceOf> .
 
-:language-shape a sh:NodeShape ;
-    sh:class :Model ;
-    sh:targetSubjectsOf :language .
+<http://sbols.org/v3#language-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Model> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#language> .
 
-:member-shape a sh:NodeShape ;
-    sh:class :Collection ;
-    sh:targetSubjectsOf :member .
+<http://sbols.org/v3#member-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Collection> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#member> .
 
-:name-shape a sh:NodeShape ;
-    sh:class :Identified ;
-    sh:targetSubjectsOf :name .
+<http://sbols.org/v3#name-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Identified> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#name> .
 
-:nondirectional-shape a sh:NodeShape ;
-    sh:class :Interface ;
-    sh:targetSubjectsOf :nondirectional .
+<http://sbols.org/v3#nondirectional-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Interface> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#nondirectional> .
 
-:object-shape a sh:NodeShape ;
-    sh:class :Constraint ;
-    sh:targetSubjectsOf :object .
+<http://sbols.org/v3#object-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Constraint> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#object> .
 
-:order-shape a sh:NodeShape ;
-    sh:class :Location ;
-    sh:targetSubjectsOf :order .
+<http://sbols.org/v3#order-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Location> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#order> .
 
-:output-shape a sh:NodeShape ;
-    sh:class :Interface ;
-    sh:targetSubjectsOf :output .
+<http://sbols.org/v3#output-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Interface> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#output> .
 
-:participant-shape a sh:NodeShape ;
-    sh:class :Participation ;
-    sh:targetSubjectsOf :participant .
+<http://sbols.org/v3#participant-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Participation> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#participant> .
 
-:restriction-shape a sh:NodeShape ;
-    sh:class :Constraint ;
-    sh:targetSubjectsOf :restriction .
+<http://sbols.org/v3#restriction-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Constraint> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#restriction> .
 
-:roleIntegration-shape a sh:NodeShape ;
-    sh:class :SubComponent ;
-    sh:targetSubjectsOf :roleIntegration .
+<http://sbols.org/v3#roleIntegration-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#SubComponent> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#roleIntegration> .
 
-:size-shape a sh:NodeShape ;
-    sh:class :Attachment ;
-    sh:targetSubjectsOf :size .
+<http://sbols.org/v3#size-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Attachment> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#size> .
 
-:sourceLocation-shape a sh:NodeShape ;
-    sh:class :SubComponent ;
-    sh:targetSubjectsOf :sourceLocation .
+<http://sbols.org/v3#sourceLocation-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#SubComponent> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#sourceLocation> .
 
-:start-shape a sh:NodeShape ;
-    sh:class :Range ;
-    sh:targetSubjectsOf :start .
+<http://sbols.org/v3#start-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Range> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#start> .
 
-:strategy-shape a sh:NodeShape ;
-    sh:class :CombinatorialDerivation ;
-    sh:targetSubjectsOf :strategy .
+<http://sbols.org/v3#strategy-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#CombinatorialDerivation> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#strategy> .
 
-:subject-shape a sh:NodeShape ;
-    sh:class :Constraint ;
-    sh:targetSubjectsOf :subject .
+<http://sbols.org/v3#subject-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#Constraint> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#subject> .
 
-:template-shape a sh:NodeShape ;
-    sh:class :CombinatorialDerivation ;
-    sh:targetSubjectsOf :template .
+<http://sbols.org/v3#template-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#CombinatorialDerivation> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#template> .
 
-:variable-shape a sh:NodeShape ;
-    sh:class :VariableFeature ;
-    sh:targetSubjectsOf :variable .
+<http://sbols.org/v3#variable-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#VariableFeature> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#variable> .
 
-:variant-shape a sh:NodeShape ;
-    sh:class :VariableFeature ;
-    sh:targetSubjectsOf :variant .
+<http://sbols.org/v3#variant-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#VariableFeature> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#variant> .
 
-:variantCollection-shape a sh:NodeShape ;
-    sh:class :VariableFeature ;
-    sh:targetSubjectsOf :variantCollection .
+<http://sbols.org/v3#variantCollection-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#VariableFeature> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#variantCollection> .
 
-:variantDerivation-shape a sh:NodeShape ;
-    sh:class :VariableFeature ;
-    sh:targetSubjectsOf :variantDerivation .
+<http://sbols.org/v3#variantDerivation-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#VariableFeature> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#variantDerivation> .
 
-:variantMeasure-shape a sh:NodeShape ;
-    sh:class :VariableFeature ;
-    sh:targetSubjectsOf :variantMeasure .
+<http://sbols.org/v3#variantMeasure-shape> a sh:NodeShape ;
+    sh:class <http://sbols.org/v3#VariableFeature> ;
+    sh:targetSubjectsOf <http://sbols.org/v3#variantMeasure> .
 
-:Attachment-format a sh:PropertyShape ;
+<http://sbols.org/v3#Attachment-format> a sh:PropertyShape ;
     sh:maxCount 1 ;
-    sh:path :format .
+    sh:path <http://sbols.org/v3#format> .
 
-:Attachment-hasNamespace a sh:PropertyShape ;
+<http://sbols.org/v3#Attachment-hasNamespace> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasNamespace .
+    sh:path <http://sbols.org/v3#hasNamespace> .
 
-:Attachment-hash a sh:PropertyShape ;
+<http://sbols.org/v3#Attachment-hash> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:maxCount 1 ;
-    sh:path :hash .
+    sh:path <http://sbols.org/v3#hash> .
 
-:Attachment-hashAlgorithm a sh:PropertyShape ;
+<http://sbols.org/v3#Attachment-hashAlgorithm> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:maxCount 1 ;
-    sh:path :hashAlgorithm .
+    sh:path <http://sbols.org/v3#hashAlgorithm> .
 
-:Attachment-size a sh:PropertyShape ;
+<http://sbols.org/v3#Attachment-size> a sh:PropertyShape ;
     sh:maxCount 1 ;
-    sh:path :size .
+    sh:path <http://sbols.org/v3#size> .
 
-:Attachment-source a sh:PropertyShape ;
+<http://sbols.org/v3#Attachment-source> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :source .
+    sh:path <http://sbols.org/v3#source> .
 
-:Collection-hasNamespace a sh:PropertyShape ;
+<http://sbols.org/v3#Collection-hasNamespace> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasNamespace .
+    sh:path <http://sbols.org/v3#hasNamespace> .
 
-:Collection-member a sh:PropertyShape ;
-    sh:class :TopLevel ;
-    sh:path :member .
+<http://sbols.org/v3#Collection-member> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#TopLevel> ;
+    sh:path <http://sbols.org/v3#member> .
 
-:CombinatorialDerivation-hasNamespace a sh:PropertyShape ;
+<http://sbols.org/v3#CombinatorialDerivation-hasNamespace> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasNamespace .
+    sh:path <http://sbols.org/v3#hasNamespace> .
 
-:CombinatorialDerivation-hasVariableFeature a sh:PropertyShape ;
-    sh:class :VariableFeature ;
-    sh:path :hasVariableFeature .
+<http://sbols.org/v3#CombinatorialDerivation-hasVariableFeature> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#VariableFeature> ;
+    sh:path <http://sbols.org/v3#hasVariableFeature> .
 
-:CombinatorialDerivation-strategy a sh:PropertyShape ;
+<http://sbols.org/v3#CombinatorialDerivation-strategy> a sh:PropertyShape ;
     sh:maxCount 1 ;
-    sh:path :strategy .
+    sh:path <http://sbols.org/v3#strategy> .
 
-:CombinatorialDerivation-template a sh:PropertyShape ;
-    sh:class :Component ;
+<http://sbols.org/v3#CombinatorialDerivation-template> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Component> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :template .
+    sh:path <http://sbols.org/v3#template> .
 
-:Component-hasConstraint a sh:PropertyShape ;
-    sh:class :Constraint ;
-    sh:path :hasConstraint .
+<http://sbols.org/v3#Component-hasConstraint> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Constraint> ;
+    sh:path <http://sbols.org/v3#hasConstraint> .
 
-:Component-hasFeature a sh:PropertyShape ;
-    sh:class :Feature ;
-    sh:path :hasFeature .
+<http://sbols.org/v3#Component-hasFeature> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Feature> ;
+    sh:path <http://sbols.org/v3#hasFeature> .
 
-:Component-hasInteraction a sh:PropertyShape ;
-    sh:class :Interaction ;
-    sh:path :hasInteraction .
+<http://sbols.org/v3#Component-hasInteraction> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Interaction> ;
+    sh:path <http://sbols.org/v3#hasInteraction> .
 
-:Component-hasInterface a sh:PropertyShape ;
-    sh:class :Interface ;
+<http://sbols.org/v3#Component-hasInterface> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Interface> ;
     sh:maxCount 1 ;
-    sh:path :hasInterface .
+    sh:path <http://sbols.org/v3#hasInterface> .
 
-:Component-hasModel a sh:PropertyShape ;
-    sh:class :Model ;
-    sh:path :hasModel .
+<http://sbols.org/v3#Component-hasModel> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Model> ;
+    sh:path <http://sbols.org/v3#hasModel> .
 
-:Component-hasNamespace a sh:PropertyShape ;
+<http://sbols.org/v3#Component-hasNamespace> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasNamespace .
+    sh:path <http://sbols.org/v3#hasNamespace> .
 
-:Component-hasSequence a sh:PropertyShape ;
-    sh:class :Sequence ;
-    sh:path :hasSequence .
+<http://sbols.org/v3#Component-hasSequence> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Sequence> ;
+    sh:path <http://sbols.org/v3#hasSequence> .
 
-:Component-role a sh:PropertyShape ;
-    sh:path :role .
+<http://sbols.org/v3#Component-role> a sh:PropertyShape ;
+    sh:path <http://sbols.org/v3#role> .
 
-:Component-type a sh:PropertyShape ;
+<http://sbols.org/v3#Component-type> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:minCount 1 ;
-    sh:path :type .
+    sh:path <http://sbols.org/v3#type> .
 
-:ComponentReference-hasFeature a sh:PropertyShape ;
-    sh:class :Feature ;
+<http://sbols.org/v3#ComponentReference-hasFeature> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Feature> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasFeature .
+    sh:path <http://sbols.org/v3#hasFeature> .
 
-:ComponentReference-inChildOf a sh:PropertyShape ;
-    dash:hasValueWithClass :Component ;
-    sh:class :SubComponent ;
+<http://sbols.org/v3#ComponentReference-inChildOf> a sh:PropertyShape ;
+    dash:hasValueWithClass <http://sbols.org/v3#Component> ;
+    sh:class <http://sbols.org/v3#SubComponent> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :inChildOf .
+    sh:path <http://sbols.org/v3#inChildOf> .
 
-:Constraint-object a sh:PropertyShape ;
-    sh:class :Feature ;
+<http://sbols.org/v3#Constraint-object> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Feature> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :object .
+    sh:path <http://sbols.org/v3#object> .
 
-:Constraint-restriction a sh:PropertyShape ;
-    dash:hasValueWithClass owl:Thing ;
-    sh:maxCount 1 ;
-    sh:minCount 1 ;
-    sh:path :restriction .
-
-:Constraint-subject a sh:PropertyShape ;
-    sh:class :Feature ;
-    sh:maxCount 1 ;
-    sh:minCount 1 ;
-    sh:path :subject .
-
-:Cut-at a sh:PropertyShape ;
-    sh:maxCount 1 ;
-    sh:minCount 1 ;
-    sh:path :at .
-
-:Cut-hasSequence a sh:PropertyShape ;
-    sh:class :Sequence ;
-    sh:maxCount 1 ;
-    sh:minCount 1 ;
-    sh:path :hasSequence .
-
-:EntireSequence-hasSequence a sh:PropertyShape ;
-    sh:class :Sequence ;
-    sh:maxCount 1 ;
-    sh:minCount 1 ;
-    sh:path :hasSequence .
-
-:Experiment-hasNamespace a sh:PropertyShape ;
+<http://sbols.org/v3#Constraint-restriction> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasNamespace .
+    sh:path <http://sbols.org/v3#restriction> .
 
-:ExperimentalData-hasNamespace a sh:PropertyShape ;
+<http://sbols.org/v3#Constraint-subject> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Feature> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path <http://sbols.org/v3#subject> .
+
+<http://sbols.org/v3#Cut-at> a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path <http://sbols.org/v3#at> .
+
+<http://sbols.org/v3#Cut-hasSequence> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Sequence> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path <http://sbols.org/v3#hasSequence> .
+
+<http://sbols.org/v3#EntireSequence-hasSequence> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Sequence> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path <http://sbols.org/v3#hasSequence> .
+
+<http://sbols.org/v3#Experiment-hasNamespace> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasNamespace .
+    sh:path <http://sbols.org/v3#hasNamespace> .
 
-:ExternallyDefined-definition a sh:PropertyShape ;
+<http://sbols.org/v3#ExperimentalData-hasNamespace> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :definition .
+    sh:path <http://sbols.org/v3#hasNamespace> .
 
-:ExternallyDefined-type a sh:PropertyShape ;
+<http://sbols.org/v3#ExternallyDefined-definition> a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path <http://sbols.org/v3#definition> .
+
+<http://sbols.org/v3#ExternallyDefined-type> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:minCount 1 ;
-    sh:path :type .
+    sh:path <http://sbols.org/v3#type> .
 
-:Feature-orientation a sh:PropertyShape ;
+<http://sbols.org/v3#Feature-orientation> a sh:PropertyShape ;
     sh:maxCount 1 ;
-    sh:path :orientation .
+    sh:path <http://sbols.org/v3#orientation> .
 
-:Feature-role a sh:PropertyShape ;
-    sh:path :role .
+<http://sbols.org/v3#Feature-role> a sh:PropertyShape ;
+    sh:path <http://sbols.org/v3#role> .
 
-:Identified-description a sh:PropertyShape ;
+<http://sbols.org/v3#Identified-description> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:maxCount 1 ;
-    sh:path :description .
+    sh:path <http://sbols.org/v3#description> .
 
-:Identified-displayId a sh:PropertyShape ;
+<http://sbols.org/v3#Identified-displayId> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:maxCount 1 ;
-    sh:path :displayId .
+    sh:path <http://sbols.org/v3#displayId> .
 
-:Identified-hasMeasure a sh:PropertyShape ;
+<http://sbols.org/v3#Identified-hasMeasure> a sh:PropertyShape ;
     sh:class <http://www.ontology-of-units-of-measure.org/resource/om-2/Measure> ;
-    sh:path :hasMeasure .
+    sh:path <http://sbols.org/v3#hasMeasure> .
 
-:Identified-name a sh:PropertyShape ;
+<http://sbols.org/v3#Identified-name> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:maxCount 1 ;
-    sh:path :name .
+    sh:path <http://sbols.org/v3#name> .
 
-:Implementation-built a sh:PropertyShape ;
-    sh:class :Component ;
+<http://sbols.org/v3#Implementation-built> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Component> ;
     sh:maxCount 1 ;
-    sh:path :built .
+    sh:path <http://sbols.org/v3#built> .
 
-:Implementation-hasNamespace a sh:PropertyShape ;
+<http://sbols.org/v3#Implementation-hasNamespace> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasNamespace .
+    sh:path <http://sbols.org/v3#hasNamespace> .
 
-:Interaction-hasParticipation a sh:PropertyShape ;
-    sh:class :Participation ;
-    sh:path :hasParticipation .
+<http://sbols.org/v3#Interaction-hasParticipation> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Participation> ;
+    sh:path <http://sbols.org/v3#hasParticipation> .
 
-:Interaction-type a sh:PropertyShape ;
+<http://sbols.org/v3#Interaction-type> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:minCount 1 ;
-    sh:path :type .
+    sh:path <http://sbols.org/v3#type> .
 
-:Interface-input a sh:PropertyShape ;
-    sh:class :Feature ;
-    sh:path :input .
+<http://sbols.org/v3#Interface-input> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Feature> ;
+    sh:path <http://sbols.org/v3#input> .
 
-:Interface-nondirectional a sh:PropertyShape ;
-    sh:class :Feature ;
-    sh:path :nondirectional .
+<http://sbols.org/v3#Interface-nondirectional> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Feature> ;
+    sh:path <http://sbols.org/v3#nondirectional> .
 
-:Interface-output a sh:PropertyShape ;
-    sh:class :Feature ;
-    sh:path :output .
+<http://sbols.org/v3#Interface-output> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Feature> ;
+    sh:path <http://sbols.org/v3#output> .
 
-:LocalSubComponent-hasLocation a sh:PropertyShape ;
-    sh:class :Location ;
-    sh:path :hasLocation .
+<http://sbols.org/v3#LocalSubComponent-hasLocation> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Location> ;
+    sh:path <http://sbols.org/v3#hasLocation> .
 
-:LocalSubComponent-type a sh:PropertyShape ;
+<http://sbols.org/v3#LocalSubComponent-type> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:minCount 1 ;
-    sh:path :type .
+    sh:path <http://sbols.org/v3#type> .
 
-:Location-hasSequence a sh:PropertyShape ;
-    sh:class :Sequence ;
+<http://sbols.org/v3#Location-hasSequence> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Sequence> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasSequence .
+    sh:path <http://sbols.org/v3#hasSequence> .
 
-:Location-order a sh:PropertyShape ;
+<http://sbols.org/v3#Location-order> a sh:PropertyShape ;
     sh:maxCount 1 ;
-    sh:path :order .
+    sh:path <http://sbols.org/v3#order> .
 
-:Location-orientation a sh:PropertyShape ;
+<http://sbols.org/v3#Location-orientation> a sh:PropertyShape ;
     sh:maxCount 1 ;
-    sh:path :orientation .
+    sh:path <http://sbols.org/v3#orientation> .
 
-:Model-framework a sh:PropertyShape ;
-    dash:hasValueWithClass owl:Thing ;
-    sh:maxCount 1 ;
-    sh:minCount 1 ;
-    sh:path :framework .
-
-:Model-hasNamespace a sh:PropertyShape ;
+<http://sbols.org/v3#Model-framework> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasNamespace .
+    sh:path <http://sbols.org/v3#framework> .
 
-:Model-language a sh:PropertyShape ;
+<http://sbols.org/v3#Model-hasNamespace> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :language .
+    sh:path <http://sbols.org/v3#hasNamespace> .
 
-:Model-source a sh:PropertyShape ;
+<http://sbols.org/v3#Model-language> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :source .
+    sh:path <http://sbols.org/v3#language> .
 
-:Participation-higherOrderParticipant a sh:PropertyShape ;
-    sh:class :Interaction ;
+<http://sbols.org/v3#Model-source> a sh:PropertyShape ;
+    dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
-    sh:path :higherOrderParticipant .
+    sh:minCount 1 ;
+    sh:path <http://sbols.org/v3#source> .
 
-:Participation-participant a sh:PropertyShape ;
-    sh:class :Feature ;
+<http://sbols.org/v3#Participation-higherOrderParticipant> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Interaction> ;
     sh:maxCount 1 ;
-    sh:path :participant .
+    sh:path <http://sbols.org/v3#higherOrderParticipant> .
 
-:Participation-role a sh:PropertyShape ;
+<http://sbols.org/v3#Participation-participant> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Feature> ;
+    sh:maxCount 1 ;
+    sh:path <http://sbols.org/v3#participant> .
+
+<http://sbols.org/v3#Participation-role> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:minCount 1 ;
-    sh:path :role .
+    sh:path <http://sbols.org/v3#role> .
 
-:Range-end a sh:PropertyShape ;
+<http://sbols.org/v3#Range-end> a sh:PropertyShape ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :end .
+    sh:path <http://sbols.org/v3#end> .
 
-:Range-hasSequence a sh:PropertyShape ;
-    sh:class :Sequence ;
+<http://sbols.org/v3#Range-hasSequence> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Sequence> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasSequence .
+    sh:path <http://sbols.org/v3#hasSequence> .
 
-:Range-start a sh:PropertyShape ;
+<http://sbols.org/v3#Range-start> a sh:PropertyShape ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :start .
+    sh:path <http://sbols.org/v3#start> .
 
-:Sequence-elements a sh:PropertyShape ;
+<http://sbols.org/v3#Sequence-elements> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:maxCount 1 ;
-    sh:path :elements .
+    sh:path <http://sbols.org/v3#elements> .
 
-:Sequence-encoding a sh:PropertyShape ;
+<http://sbols.org/v3#Sequence-encoding> a sh:PropertyShape ;
     sh:maxCount 1 ;
-    sh:path :encoding .
+    sh:path <http://sbols.org/v3#encoding> .
 
-:Sequence-hasNamespace a sh:PropertyShape ;
+<http://sbols.org/v3#Sequence-hasNamespace> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasNamespace .
+    sh:path <http://sbols.org/v3#hasNamespace> .
 
-:SequenceFeature-hasLocation a sh:PropertyShape ;
-    sh:class :Location ;
+<http://sbols.org/v3#SequenceFeature-hasLocation> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Location> ;
     sh:minCount 1 ;
-    sh:path :hasLocation .
+    sh:path <http://sbols.org/v3#hasLocation> .
 
-:SubComponent-hasLocation a sh:PropertyShape ;
-    sh:class :Location ;
-    sh:path :hasLocation .
+<http://sbols.org/v3#SubComponent-hasLocation> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Location> ;
+    sh:path <http://sbols.org/v3#hasLocation> .
 
-:SubComponent-instanceOf a sh:PropertyShape ;
-    sh:class :Component ;
+<http://sbols.org/v3#SubComponent-instanceOf> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Component> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :instanceOf .
+    sh:path <http://sbols.org/v3#instanceOf> .
 
-:SubComponent-roleIntegration a sh:PropertyShape ;
+<http://sbols.org/v3#SubComponent-roleIntegration> a sh:PropertyShape ;
     sh:maxCount 1 ;
-    sh:path :roleIntegration .
+    sh:path <http://sbols.org/v3#roleIntegration> .
 
-:SubComponent-sourceLocation a sh:PropertyShape ;
-    sh:class :Location ;
-    sh:path :sourceLocation .
+<http://sbols.org/v3#SubComponent-sourceLocation> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Location> ;
+    sh:path <http://sbols.org/v3#sourceLocation> .
 
-:TopLevel-hasAttachment a sh:PropertyShape ;
-    sh:class :Attachment ;
-    sh:path :hasAttachment .
+<http://sbols.org/v3#TopLevel-hasAttachment> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Attachment> ;
+    sh:path <http://sbols.org/v3#hasAttachment> .
 
-:TopLevel-hasNamespace a sh:PropertyShape ;
+<http://sbols.org/v3#TopLevel-hasNamespace> a sh:PropertyShape ;
     dash:hasValueWithClass owl:Thing ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :hasNamespace .
+    sh:path <http://sbols.org/v3#hasNamespace> .
 
-:VariableFeature-cardinality a sh:PropertyShape ;
-    dash:hasValueWithClass :Cardinality ;
+<http://sbols.org/v3#VariableFeature-cardinality> a sh:PropertyShape ;
+    dash:hasValueWithClass <http://sbols.org/v3#Cardinality> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :cardinality .
+    sh:path <http://sbols.org/v3#cardinality> .
 
-:VariableFeature-variable a sh:PropertyShape ;
-    sh:class :Feature ;
+<http://sbols.org/v3#VariableFeature-variable> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Feature> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:path :variable .
+    sh:path <http://sbols.org/v3#variable> .
 
-:VariableFeature-variant a sh:PropertyShape ;
-    sh:class :Component ;
-    sh:path :variant .
+<http://sbols.org/v3#VariableFeature-variant> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Component> ;
+    sh:path <http://sbols.org/v3#variant> .
 
-:VariableFeature-variantCollection a sh:PropertyShape ;
-    sh:class :Collection ;
-    sh:path :variantCollection .
+<http://sbols.org/v3#VariableFeature-variantCollection> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#Collection> ;
+    sh:path <http://sbols.org/v3#variantCollection> .
 
-:VariableFeature-variantDerivation a sh:PropertyShape ;
-    sh:class :CombinatorialDerivation ;
-    sh:path :variantDerivation .
+<http://sbols.org/v3#VariableFeature-variantDerivation> a sh:PropertyShape ;
+    sh:class <http://sbols.org/v3#CombinatorialDerivation> ;
+    sh:path <http://sbols.org/v3#variantDerivation> .
 
-:VariableFeature-variantMeasure a sh:PropertyShape ;
+<http://sbols.org/v3#VariableFeature-variantMeasure> a sh:PropertyShape ;
     sh:class <http://www.ontology-of-units-of-measure.org/resource/om-2/Measure> ;
-    sh:path :variantMeasure .
+    sh:path <http://sbols.org/v3#variantMeasure> .
 
 rdf:first a rdf:Property ;
     rdfs:subPropertyOf rdf:first .
@@ -1242,199 +1241,199 @@ owl:withRestrictions a rdf:Property ;
 
 "zeroOrOne"^^xsd:string a rdfs:Resource .
 
-:CombinatorialDerivationStrategy a rdfs:Resource,
+<http://sbols.org/v3#CombinatorialDerivationStrategy> a rdfs:Resource,
         owl:Class ;
     rdfs:label "CombinatorialDerivationStrategy"^^xsd:string ;
-    rdfs:subClassOf :SBOLTerm,
+    rdfs:subClassOf <http://sbols.org/v3#SBOLTerm>,
         owl:Thing ;
     owl:equivalentClass [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :enumerate ;
+                    rdf:first <http://sbols.org/v3#enumerate> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :sample ;
+                            rdf:first <http://sbols.org/v3#sample> ;
                             rdf:rest () ] ] ] .
 
-:Orientation a rdfs:Resource,
+<http://sbols.org/v3#Orientation> a rdfs:Resource,
         owl:Class ;
-    rdfs:subClassOf :SBOLTerm,
+    rdfs:subClassOf <http://sbols.org/v3#SBOLTerm>,
         owl:Thing ;
     owl:equivalentClass [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :inline ;
+                    rdf:first <http://sbols.org/v3#inline> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :reverseComplement ;
+                            rdf:first <http://sbols.org/v3#reverseComplement> ;
                             rdf:rest () ] ] ] .
 
-:built a rdfs:Resource,
+<http://sbols.org/v3#built> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "built"^^xsd:string ;
-    rdfs:domain :Implementation ;
-    rdfs:range :Component .
+    rdfs:domain <http://sbols.org/v3#Implementation> ;
+    rdfs:range <http://sbols.org/v3#Component> .
 
-:description a rdfs:Resource,
+<http://sbols.org/v3#description> a rdfs:Resource,
         owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "description"^^xsd:string ;
-    rdfs:domain :Identified ;
+    rdfs:domain <http://sbols.org/v3#Identified> ;
     rdfs:range xsd:string .
 
-:displayId a rdfs:Resource,
+<http://sbols.org/v3#displayId> a rdfs:Resource,
         owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "displayId"^^xsd:string ;
-    rdfs:domain :Identified ;
+    rdfs:domain <http://sbols.org/v3#Identified> ;
     rdfs:range xsd:string .
 
-:elements a rdfs:Resource,
+<http://sbols.org/v3#elements> a rdfs:Resource,
         owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "elements"^^xsd:string ;
-    rdfs:domain :Sequence ;
+    rdfs:domain <http://sbols.org/v3#Sequence> ;
     rdfs:range xsd:string .
 
-:encoding a rdfs:Resource,
+<http://sbols.org/v3#encoding> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "encoding"^^xsd:string ;
-    rdfs:domain :Sequence .
+    rdfs:domain <http://sbols.org/v3#Sequence> .
 
-:enumerate a rdfs:Resource,
+<http://sbols.org/v3#enumerate> a rdfs:Resource,
         owl:Class ;
     rdfs:label "enumerate"^^xsd:string ;
-    rdfs:subClassOf :CombinatorialDerivationStrategy,
-        :SBOLTerm,
+    rdfs:subClassOf <http://sbols.org/v3#CombinatorialDerivationStrategy>,
+        <http://sbols.org/v3#SBOLTerm>,
         owl:Thing .
 
-:format a rdfs:Resource,
+<http://sbols.org/v3#format> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "format"^^xsd:string ;
-    rdfs:domain :Attachment .
+    rdfs:domain <http://sbols.org/v3#Attachment> .
 
-:hasAttachment a rdfs:Resource,
+<http://sbols.org/v3#hasAttachment> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "hasAttachment"^^xsd:string ;
-    rdfs:domain :TopLevel ;
-    rdfs:range :Attachment .
+    rdfs:domain <http://sbols.org/v3#TopLevel> ;
+    rdfs:range <http://sbols.org/v3#Attachment> .
 
-:hasConstraint a rdfs:Resource,
+<http://sbols.org/v3#hasConstraint> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "hasConstraint"^^xsd:string ;
-    rdfs:domain :Component ;
-    rdfs:range :Constraint .
+    rdfs:domain <http://sbols.org/v3#Component> ;
+    rdfs:range <http://sbols.org/v3#Constraint> .
 
-:hasInteraction a rdfs:Resource,
+<http://sbols.org/v3#hasInteraction> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "hasInteraction"^^xsd:string ;
-    rdfs:domain :Component ;
-    rdfs:range :Interaction .
+    rdfs:domain <http://sbols.org/v3#Component> ;
+    rdfs:range <http://sbols.org/v3#Interaction> .
 
-:hasInterface a rdfs:Resource,
+<http://sbols.org/v3#hasInterface> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "hasInterface"^^xsd:string ;
-    rdfs:domain :Component ;
-    rdfs:range :Interface .
+    rdfs:domain <http://sbols.org/v3#Component> ;
+    rdfs:range <http://sbols.org/v3#Interface> .
 
-:hasMeasure a rdfs:Resource,
+<http://sbols.org/v3#hasMeasure> a rdfs:Resource,
         owl:DatatypeProperty ;
     rdfs:label "hasMeasure"^^xsd:string ;
-    rdfs:domain :Identified ;
+    rdfs:domain <http://sbols.org/v3#Identified> ;
     rdfs:range <http://www.ontology-of-units-of-measure.org/resource/om-2/Measure> .
 
-:hasModel a rdfs:Resource,
+<http://sbols.org/v3#hasModel> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "hasModel"^^xsd:string ;
-    rdfs:domain :Component ;
-    rdfs:range :Model .
+    rdfs:domain <http://sbols.org/v3#Component> ;
+    rdfs:range <http://sbols.org/v3#Model> .
 
-:hasParticipation a rdfs:Resource,
+<http://sbols.org/v3#hasParticipation> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "hasParticipation"^^xsd:string ;
-    rdfs:domain :Interaction ;
-    rdfs:range :Participation .
+    rdfs:domain <http://sbols.org/v3#Interaction> ;
+    rdfs:range <http://sbols.org/v3#Participation> .
 
-:hasVariableFeature a rdfs:Resource,
+<http://sbols.org/v3#hasVariableFeature> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "participant"^^xsd:string ;
-    rdfs:domain :CombinatorialDerivation ;
-    rdfs:range :VariableFeature .
+    rdfs:domain <http://sbols.org/v3#CombinatorialDerivation> ;
+    rdfs:range <http://sbols.org/v3#VariableFeature> .
 
-:hash a rdfs:Resource,
+<http://sbols.org/v3#hash> a rdfs:Resource,
         owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "hash"^^xsd:string ;
-    rdfs:domain :Attachment ;
+    rdfs:domain <http://sbols.org/v3#Attachment> ;
     rdfs:range xsd:string .
 
-:hashAlgorithm a rdfs:Resource,
+<http://sbols.org/v3#hashAlgorithm> a rdfs:Resource,
         owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "hashAlgorithm"^^xsd:string ;
-    rdfs:domain :Attachment ;
+    rdfs:domain <http://sbols.org/v3#Attachment> ;
     rdfs:range xsd:string .
 
-:higherOrderParticipant a rdfs:Resource,
+<http://sbols.org/v3#higherOrderParticipant> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "higherOrderParticipant"^^xsd:string ;
-    rdfs:domain :Participation ;
-    rdfs:range :Interaction .
+    rdfs:domain <http://sbols.org/v3#Participation> ;
+    rdfs:range <http://sbols.org/v3#Interaction> .
 
-:inline a rdfs:Resource,
+<http://sbols.org/v3#inline> a rdfs:Resource,
         owl:Class ;
     rdfs:label "inline"^^xsd:string ;
-    rdfs:subClassOf :Orientation,
-        :SBOLTerm,
+    rdfs:subClassOf <http://sbols.org/v3#Orientation>,
+        <http://sbols.org/v3#SBOLTerm>,
         owl:Thing .
 
-:input a rdfs:Resource,
+<http://sbols.org/v3#input> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "input"^^xsd:string ;
-    rdfs:domain :Interface ;
-    rdfs:range :Feature .
+    rdfs:domain <http://sbols.org/v3#Interface> ;
+    rdfs:range <http://sbols.org/v3#Feature> .
 
-:member a rdfs:Resource,
+<http://sbols.org/v3#member> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "member"^^xsd:string ;
-    rdfs:domain :Collection ;
-    rdfs:range :TopLevel .
+    rdfs:domain <http://sbols.org/v3#Collection> ;
+    rdfs:range <http://sbols.org/v3#TopLevel> .
 
-:name a rdfs:Resource,
+<http://sbols.org/v3#name> a rdfs:Resource,
         owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "name"^^xsd:string ;
-    rdfs:domain :Identified ;
+    rdfs:domain <http://sbols.org/v3#Identified> ;
     rdfs:range xsd:string .
 
-:nondirectional a rdfs:Resource,
+<http://sbols.org/v3#nondirectional> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "nondirectional"^^xsd:string ;
-    rdfs:domain :Interface ;
-    rdfs:range :Feature .
+    rdfs:domain <http://sbols.org/v3#Interface> ;
+    rdfs:range <http://sbols.org/v3#Feature> .
 
-:one a rdfs:Resource,
+<http://sbols.org/v3#one> a rdfs:Resource,
         owl:Class ;
     rdfs:label "one"^^xsd:string ;
-    rdfs:subClassOf :Cardinality,
-        :SBOLTerm,
+    rdfs:subClassOf <http://sbols.org/v3#Cardinality>,
+        <http://sbols.org/v3#SBOLTerm>,
         owl:Thing .
 
-:oneOrMore a rdfs:Resource,
+<http://sbols.org/v3#oneOrMore> a rdfs:Resource,
         owl:Class ;
     rdfs:label "OneOrMore"^^xsd:string ;
-    rdfs:subClassOf :Cardinality,
-        :SBOLTerm,
+    rdfs:subClassOf <http://sbols.org/v3#Cardinality>,
+        <http://sbols.org/v3#SBOLTerm>,
         owl:Thing .
 
-:order a rdfs:Resource,
+<http://sbols.org/v3#order> a rdfs:Resource,
         owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "order"^^xsd:string ;
-    rdfs:domain :Location ;
+    rdfs:domain <http://sbols.org/v3#Location> ;
     rdfs:range [ a rdfs:Datatype,
                 rdfs:Resource ;
             rdfs:subClassOf rdfs:Literal ;
@@ -1444,63 +1443,63 @@ owl:withRestrictions a rdf:Property ;
                             xsd:minInclusive 1 ] ;
                     rdf:rest () ] ] .
 
-:orientation a rdfs:Resource,
+<http://sbols.org/v3#orientation> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "orientation"^^xsd:string ;
     rdfs:domain [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :Feature ;
+                    rdf:first <http://sbols.org/v3#Feature> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :Location ;
+                            rdf:first <http://sbols.org/v3#Location> ;
                             rdf:rest () ] ] ] ;
     rdfs:range [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :inline ;
+                    rdf:first <http://sbols.org/v3#inline> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :reverseComplement ;
+                            rdf:first <http://sbols.org/v3#reverseComplement> ;
                             rdf:rest () ] ] ] .
 
-:output a rdfs:Resource,
+<http://sbols.org/v3#output> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "output"^^xsd:string ;
-    rdfs:domain :Interface ;
-    rdfs:range :Feature .
+    rdfs:domain <http://sbols.org/v3#Interface> ;
+    rdfs:range <http://sbols.org/v3#Feature> .
 
-:participant a rdfs:Resource,
+<http://sbols.org/v3#participant> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "participant"^^xsd:string ;
-    rdfs:domain :Participation ;
-    rdfs:range :Feature .
+    rdfs:domain <http://sbols.org/v3#Participation> ;
+    rdfs:range <http://sbols.org/v3#Feature> .
 
-:reverseComplement a rdfs:Resource,
+<http://sbols.org/v3#reverseComplement> a rdfs:Resource,
         owl:Class ;
     rdfs:label "reverseComplement"^^xsd:string ;
-    rdfs:subClassOf :Orientation,
-        :SBOLTerm,
+    rdfs:subClassOf <http://sbols.org/v3#Orientation>,
+        <http://sbols.org/v3#SBOLTerm>,
         owl:Thing .
 
-:roleIntegration a rdfs:Resource,
+<http://sbols.org/v3#roleIntegration> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "roleIntegration"^^xsd:string ;
-    rdfs:domain :SubComponent .
+    rdfs:domain <http://sbols.org/v3#SubComponent> .
 
-:sample a rdfs:Resource,
+<http://sbols.org/v3#sample> a rdfs:Resource,
         owl:Class ;
     rdfs:label "sample"^^xsd:string ;
-    rdfs:subClassOf :CombinatorialDerivationStrategy,
-        :SBOLTerm,
+    rdfs:subClassOf <http://sbols.org/v3#CombinatorialDerivationStrategy>,
+        <http://sbols.org/v3#SBOLTerm>,
         owl:Thing .
 
-:size a rdfs:Resource,
+<http://sbols.org/v3#size> a rdfs:Resource,
         owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "size"^^xsd:string ;
-    rdfs:domain :Attachment ;
+    rdfs:domain <http://sbols.org/v3#Attachment> ;
     rdfs:range [ a rdfs:Datatype,
                 rdfs:Resource ;
             rdfs:subClassOf rdfs:Literal ;
@@ -1510,61 +1509,61 @@ owl:withRestrictions a rdf:Property ;
                             xsd:minInclusive 0 ] ;
                     rdf:rest () ] ] .
 
-:sourceLocation a rdfs:Resource,
+<http://sbols.org/v3#sourceLocation> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "sourceLocation"^^xsd:string ;
-    rdfs:domain :SubComponent ;
-    rdfs:range :Location .
+    rdfs:domain <http://sbols.org/v3#SubComponent> ;
+    rdfs:range <http://sbols.org/v3#Location> .
 
-:strategy a rdfs:Resource,
+<http://sbols.org/v3#strategy> a rdfs:Resource,
         owl:Class,
         owl:FunctionalProperty ;
     rdfs:label "strategy"^^xsd:string ;
-    rdfs:domain :CombinatorialDerivation ;
+    rdfs:domain <http://sbols.org/v3#CombinatorialDerivation> ;
     rdfs:range [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :enumerate ;
+                    rdf:first <http://sbols.org/v3#enumerate> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :sample ;
+                            rdf:first <http://sbols.org/v3#sample> ;
                             rdf:rest () ] ] ] .
 
-:variant a rdfs:Resource,
+<http://sbols.org/v3#variant> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "variant"^^xsd:string ;
-    rdfs:domain :VariableFeature ;
-    rdfs:range :Component .
+    rdfs:domain <http://sbols.org/v3#VariableFeature> ;
+    rdfs:range <http://sbols.org/v3#Component> .
 
-:variantCollection a rdfs:Resource,
+<http://sbols.org/v3#variantCollection> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "variantCollection"^^xsd:string ;
-    rdfs:domain :VariableFeature ;
-    rdfs:range :Collection .
+    rdfs:domain <http://sbols.org/v3#VariableFeature> ;
+    rdfs:range <http://sbols.org/v3#Collection> .
 
-:variantDerivation a rdfs:Resource,
+<http://sbols.org/v3#variantDerivation> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "variantDerivation"^^xsd:string ;
-    rdfs:domain :VariableFeature ;
-    rdfs:range :CombinatorialDerivation .
+    rdfs:domain <http://sbols.org/v3#VariableFeature> ;
+    rdfs:range <http://sbols.org/v3#CombinatorialDerivation> .
 
-:variantMeasure a rdfs:Resource,
+<http://sbols.org/v3#variantMeasure> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "variantMeasure"^^xsd:string ;
-    rdfs:domain :VariableFeature ;
+    rdfs:domain <http://sbols.org/v3#VariableFeature> ;
     rdfs:range <http://www.ontology-of-units-of-measure.org/resource/om-2/Measure> .
 
-:zeroOrMore a rdfs:Resource,
+<http://sbols.org/v3#zeroOrMore> a rdfs:Resource,
         owl:Class ;
     rdfs:label "zeroOrMore"^^xsd:string ;
-    rdfs:subClassOf :Cardinality,
-        :SBOLTerm,
+    rdfs:subClassOf <http://sbols.org/v3#Cardinality>,
+        <http://sbols.org/v3#SBOLTerm>,
         owl:Thing .
 
-:zeroOrOne a rdfs:Resource,
+<http://sbols.org/v3#zeroOrOne> a rdfs:Resource,
         owl:Class ;
     rdfs:label "zeroOrOne"^^xsd:string ;
-    rdfs:subClassOf :Cardinality,
-        :SBOLTerm,
+    rdfs:subClassOf <http://sbols.org/v3#Cardinality>,
+        <http://sbols.org/v3#SBOLTerm>,
         owl:Thing .
 
 "1"^^xsd:nonNegativeInteger a rdfs:Resource .
@@ -1573,11 +1572,11 @@ owl:withRestrictions a rdf:Property ;
 
 "start"^^xsd:string a rdfs:Resource .
 
-:at a rdfs:Resource,
+<http://sbols.org/v3#at> a rdfs:Resource,
         owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "start"^^xsd:string ;
-    rdfs:domain :Cut ;
+    rdfs:domain <http://sbols.org/v3#Cut> ;
     rdfs:range [ a rdfs:Datatype,
                 rdfs:Resource ;
             rdfs:subClassOf rdfs:Literal ;
@@ -1587,34 +1586,34 @@ owl:withRestrictions a rdf:Property ;
                             xsd:minInclusive 0 ] ;
                     rdf:rest () ] ] .
 
-:cardinality a rdfs:Resource,
+<http://sbols.org/v3#cardinality> a rdfs:Resource,
         owl:Class,
         owl:FunctionalProperty ;
     rdfs:label "cardinality"^^xsd:string ;
-    rdfs:domain :VariableFeature ;
+    rdfs:domain <http://sbols.org/v3#VariableFeature> ;
     rdfs:range [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :zeroOrOne ;
+                    rdf:first <http://sbols.org/v3#zeroOrOne> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :one ;
+                            rdf:first <http://sbols.org/v3#one> ;
                             rdf:rest [ a rdfs:Resource ;
-                                    rdf:first :zeroOrMore ;
+                                    rdf:first <http://sbols.org/v3#zeroOrMore> ;
                                     rdf:rest [ a rdfs:Resource ;
-                                            rdf:first :oneOrMore ;
+                                            rdf:first <http://sbols.org/v3#oneOrMore> ;
                                             rdf:rest () ] ] ] ] ] .
 
-:definition a rdfs:Resource,
+<http://sbols.org/v3#definition> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "definition"^^xsd:string ;
-    rdfs:domain :ExternallyDefined .
+    rdfs:domain <http://sbols.org/v3#ExternallyDefined> .
 
-:end a rdfs:Resource,
+<http://sbols.org/v3#end> a rdfs:Resource,
         owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "end"^^xsd:string ;
-    rdfs:domain :Range ;
+    rdfs:domain <http://sbols.org/v3#Range> ;
     rdfs:range [ a rdfs:Datatype,
                 rdfs:Resource ;
             rdfs:subClassOf rdfs:Literal ;
@@ -1624,50 +1623,50 @@ owl:withRestrictions a rdf:Property ;
                             xsd:minInclusive 1 ] ;
                     rdf:rest () ] ] .
 
-:framework a rdfs:Resource,
+<http://sbols.org/v3#framework> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "framework"^^xsd:string ;
-    rdfs:domain :Model .
+    rdfs:domain <http://sbols.org/v3#Model> .
 
-:inChildOf a rdfs:Resource,
+<http://sbols.org/v3#inChildOf> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "inChildOf"^^xsd:string ;
-    rdfs:domain :ComponentReference ;
-    rdfs:range :SubComponent .
+    rdfs:domain <http://sbols.org/v3#ComponentReference> ;
+    rdfs:range <http://sbols.org/v3#SubComponent> .
 
-:instanceOf a rdfs:Resource,
+<http://sbols.org/v3#instanceOf> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "instanceOf"^^xsd:string ;
-    rdfs:domain :SubComponent ;
-    rdfs:range :Component .
+    rdfs:domain <http://sbols.org/v3#SubComponent> ;
+    rdfs:range <http://sbols.org/v3#Component> .
 
-:language a rdfs:Resource,
+<http://sbols.org/v3#language> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "language"^^xsd:string ;
-    rdfs:domain :Model .
+    rdfs:domain <http://sbols.org/v3#Model> .
 
-:object a rdfs:Resource,
+<http://sbols.org/v3#object> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "object"^^xsd:string ;
-    rdfs:domain :Constraint ;
-    rdfs:range :Feature .
+    rdfs:domain <http://sbols.org/v3#Constraint> ;
+    rdfs:range <http://sbols.org/v3#Feature> .
 
-:restriction a rdfs:Resource,
+<http://sbols.org/v3#restriction> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "restriction"^^xsd:string ;
-    rdfs:domain :Constraint .
+    rdfs:domain <http://sbols.org/v3#Constraint> .
 
-:start a rdfs:Resource,
+<http://sbols.org/v3#start> a rdfs:Resource,
         owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "start"^^xsd:string ;
-    rdfs:domain :Range ;
+    rdfs:domain <http://sbols.org/v3#Range> ;
     rdfs:range [ a rdfs:Datatype,
                 rdfs:Resource ;
             rdfs:subClassOf rdfs:Literal ;
@@ -1677,139 +1676,139 @@ owl:withRestrictions a rdf:Property ;
                             xsd:minInclusive 1 ] ;
                     rdf:rest () ] ] .
 
-:subject a rdfs:Resource,
+<http://sbols.org/v3#subject> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "subject"^^xsd:string ;
-    rdfs:domain :Constraint ;
-    rdfs:range :Feature .
+    rdfs:domain <http://sbols.org/v3#Constraint> ;
+    rdfs:range <http://sbols.org/v3#Feature> .
 
-:template a rdfs:Resource,
+<http://sbols.org/v3#template> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "template"^^xsd:string ;
-    rdfs:domain :CombinatorialDerivation ;
-    rdfs:range :Component .
+    rdfs:domain <http://sbols.org/v3#CombinatorialDerivation> ;
+    rdfs:range <http://sbols.org/v3#Component> .
 
-:variable a rdfs:Resource,
+<http://sbols.org/v3#variable> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "variable"^^xsd:string ;
-    rdfs:domain :VariableFeature ;
-    rdfs:range :Feature .
+    rdfs:domain <http://sbols.org/v3#VariableFeature> ;
+    rdfs:range <http://sbols.org/v3#Feature> .
 
 0 a rdfs:Resource .
 
-:hasFeature a rdfs:Resource,
+<http://sbols.org/v3#hasFeature> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "hasFeature"^^xsd:string ;
     rdfs:domain [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :Component ;
+                    rdf:first <http://sbols.org/v3#Component> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :ComponentReference ;
+                            rdf:first <http://sbols.org/v3#ComponentReference> ;
                             rdf:rest () ] ] ] ;
-    rdfs:range :Feature .
+    rdfs:range <http://sbols.org/v3#Feature> .
 
-:hasLocation a rdfs:Resource,
+<http://sbols.org/v3#hasLocation> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "hasLocation"^^xsd:string ;
     rdfs:domain [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :SubComponent ;
+                    rdf:first <http://sbols.org/v3#SubComponent> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :LocalSubComponent ;
+                            rdf:first <http://sbols.org/v3#LocalSubComponent> ;
                             rdf:rest [ a rdfs:Resource ;
-                                    rdf:first :SequenceFeature ;
+                                    rdf:first <http://sbols.org/v3#SequenceFeature> ;
                                     rdf:rest () ] ] ] ] ;
-    rdfs:range :Location .
+    rdfs:range <http://sbols.org/v3#Location> .
 
-:role a rdfs:Resource,
+<http://sbols.org/v3#role> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "role"^^xsd:string ;
     rdfs:domain [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :Component ;
+                    rdf:first <http://sbols.org/v3#Component> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :Feature ;
+                            rdf:first <http://sbols.org/v3#Feature> ;
                             rdf:rest [ a rdfs:Resource ;
-                                    rdf:first :Participation ;
+                                    rdf:first <http://sbols.org/v3#Participation> ;
                                     rdf:rest () ] ] ] ] .
 
-:source a rdfs:Resource,
+<http://sbols.org/v3#source> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "source"^^xsd:string ;
     rdfs:domain [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :Model ;
+                    rdf:first <http://sbols.org/v3#Model> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :Attachment ;
+                            rdf:first <http://sbols.org/v3#Attachment> ;
                             rdf:rest () ] ] ] .
 
 <http://www.ontology-of-units-of-measure.org/resource/om-2/Measure> a rdfs:Resource .
 
-:Cardinality a rdfs:Resource,
+<http://sbols.org/v3#Cardinality> a rdfs:Resource,
         owl:Class ;
     rdfs:label "Cardinality"^^xsd:string ;
-    rdfs:subClassOf :SBOLTerm,
+    rdfs:subClassOf <http://sbols.org/v3#SBOLTerm>,
         owl:Thing ;
     owl:equivalentClass [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :zeroOrOne ;
+                    rdf:first <http://sbols.org/v3#zeroOrOne> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :one ;
+                            rdf:first <http://sbols.org/v3#one> ;
                             rdf:rest [ a rdfs:Resource ;
-                                    rdf:first :zeroOrMore ;
+                                    rdf:first <http://sbols.org/v3#zeroOrMore> ;
                                     rdf:rest [ a rdfs:Resource ;
-                                            rdf:first :oneOrMore ;
+                                            rdf:first <http://sbols.org/v3#oneOrMore> ;
                                             rdf:rest () ] ] ] ] ] .
 
-:hasSequence a rdfs:Resource,
+<http://sbols.org/v3#hasSequence> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "hasSequence"^^xsd:string ;
     rdfs:domain [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :Component ;
+                    rdf:first <http://sbols.org/v3#Component> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :Location ;
+                            rdf:first <http://sbols.org/v3#Location> ;
                             rdf:rest () ] ] ] ;
-    rdfs:range :Sequence .
+    rdfs:range <http://sbols.org/v3#Sequence> .
 
-:type a rdfs:Resource,
+<http://sbols.org/v3#type> a rdfs:Resource,
         owl:ObjectProperty ;
     rdfs:label "type"^^xsd:string ;
     rdfs:domain [ a rdfs:Resource,
                 owl:Class ;
             owl:unionOf [ a rdfs:Resource ;
-                    rdf:first :Component ;
+                    rdf:first <http://sbols.org/v3#Component> ;
                     rdf:rest [ a rdfs:Resource ;
-                            rdf:first :LocalSubComponent ;
+                            rdf:first <http://sbols.org/v3#LocalSubComponent> ;
                             rdf:rest [ a rdfs:Resource ;
-                                    rdf:first :ExternallyDefined ;
+                                    rdf:first <http://sbols.org/v3#ExternallyDefined> ;
                                     rdf:rest [ a rdfs:Resource ;
-                                            rdf:first :Interaction ;
+                                            rdf:first <http://sbols.org/v3#Interaction> ;
                                             rdf:rest () ] ] ] ] ] .
 
 rdfs:Datatype a rdfs:Resource .
 
 xsd:integer a rdfs:Resource .
 
-:SBOLTerm a rdfs:Resource,
+<http://sbols.org/v3#SBOLTerm> a rdfs:Resource,
         owl:Class ;
     rdfs:subClassOf owl:Thing .
 
-:hasNamespace a rdfs:Resource,
+<http://sbols.org/v3#hasNamespace> a rdfs:Resource,
         owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "hasNamespace"^^xsd:string ;
-    rdfs:domain :TopLevel .
+    rdfs:domain <http://sbols.org/v3#TopLevel> .
 
 xsd:string a rdfs:Resource .
 
@@ -1829,19 +1828,19 @@ owl:Thing a rdfs:Resource .
 
 1 a rdfs:Resource .
 
-_:N674a3e8a65b748698641587003887636 a rdfs:Resource,
+_:N9c29433e368f4ecaa0a2c6bcfced763b a rdfs:Resource,
         owl:Restriction ;
-    owl:onProperty :hasSequence ;
-    owl:someValuesFrom :Sequence .
+    owl:onProperty <http://sbols.org/v3#hasSequence> ;
+    owl:someValuesFrom <http://sbols.org/v3#Sequence> .
 
-_:Ne92c02da0b094e05a8af34ca7ae2baa2 a rdfs:Resource,
+_:Naba636fce7cd4ffba64ee6c569f26409 a rdfs:Resource,
         owl:Restriction ;
     owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-    owl:onClass :Sequence ;
-    owl:onProperty :hasSequence .
+    owl:onClass <http://sbols.org/v3#Sequence> ;
+    owl:onProperty <http://sbols.org/v3#hasSequence> .
 
-_:Nf5a648d8783749c1aada31263f1ba447 a rdfs:Resource,
+_:Nb31b8ad0714d498680441d7e8b1a63cc a rdfs:Resource,
         owl:Restriction ;
-    owl:onProperty :hasNamespace ;
+    owl:onProperty <http://sbols.org/v3#hasNamespace> ;
     owl:someValuesFrom owl:Thing .
 
