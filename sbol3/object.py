@@ -1,9 +1,8 @@
 import posixpath
 import uuid
-import warnings
 from collections import defaultdict
 from urllib.parse import urlparse
-from typing import Dict, Callable, Optional
+from typing import Dict, Callable, Optional, Union
 
 from . import *
 
@@ -23,14 +22,14 @@ class SBOLObject:
             self.__dict__[name].set(value)
         except AttributeError:
             # Attribute set does not exist
-            object.__setattr__(self, name, value)
+            super().__setattr__(name, value)
         except KeyError:
             # property name does not exist
-            object.__setattr__(self, name, value)
+            super().__setattr__(name, value)
 
     def __getattribute__(self, name):
         # Call the default method
-        result = object.__getattribute__(self, name)
+        result = super().__getattribute__(name)
         if hasattr(result, '_sbol_singleton'):
             result = result.get()
         return result
@@ -41,7 +40,7 @@ class SBOLObject:
         return bool(parsed.scheme and parsed.netloc and parsed.path)
 
     @staticmethod
-    def _make_identity(name: str) -> str:
+    def _make_identity(name: str) -> Union[str, None]:
         """Make an identity from the given name.
 
         If the name is a URL, that can be the identity. Or perhaps it
@@ -108,15 +107,14 @@ class SBOLObject:
                 old_uri = self.identity
                 new_uri = replace_namespace(old_uri, target_namespace, self.getTypeURI())
 
-        new_obj = BUILDER_REGISTER[self.type_uri](identity=new_uri,
-                                                  type_uri=self.type_uri)
+        new_obj = BUILDER_REGISTER[self.type_uri](**dict(identity=new_uri,
+                                                         type_uri=self.type_uri))
 
         # Copy properties
         for property_uri, value_store in self._properties.items():
             new_obj._properties[property_uri] = value_store.copy()
 
-            # TODO:
-            # Map into new namespace
+            # TODO: Map into new namespace
 
         # Assign the new object to the target Document
         if target_doc is not None:
