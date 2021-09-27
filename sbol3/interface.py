@@ -10,8 +10,8 @@ class Interface(Identified):
 
     """
 
-    def __init__(self, *, input: str = None, output: str = None,
-                 nondirectional: str = None, name: str = None,
+    def __init__(self, *, inputs: List[str] = None, outputs: List[str] = None,
+                 nondirectionals: List[str] = None, name: str = None,
                  description: str = None,
                  derived_from: List[str] = None,
                  generated_by: List[str] = None,
@@ -22,13 +22,13 @@ class Interface(Identified):
                          name=name, description=description,
                          derived_from=derived_from, generated_by=generated_by,
                          measures=measures)
-        self.input = ReferencedObject(self, SBOL_INPUT, 0, math.inf,
-                                      initial_value=input)
-        self.output = ReferencedObject(self, SBOL_OUTPUT, 0, math.inf,
-                                       initial_value=output)
-        self.nondirectional = ReferencedObject(self, SBOL_NONDIRECTIONAL,
-                                               0, math.inf,
-                                               initial_value=nondirectional)
+        self.inputs = ReferencedObject(self, SBOL_INPUT, 0, math.inf,
+                                       initial_value=inputs)
+        self.outputs = ReferencedObject(self, SBOL_OUTPUT, 0, math.inf,
+                                        initial_value=outputs)
+        self.nondirectionals = ReferencedObject(self, SBOL_NONDIRECTIONAL,
+                                                0, math.inf,
+                                                initial_value=nondirectionals)
 
     def accept(self, visitor: Any) -> Any:
         """Invokes `visit_interface` on `visitor` with `self` as the only

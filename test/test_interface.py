@@ -33,11 +33,11 @@ class TestInterface(unittest.TestCase):
         laci_uri = 'https://sbolstandard.org/examples/LacI_producer/SubComponent1'
         atc_uri = 'https://sbolstandard.org/examples/LacI_producer/SubComponent3'
         iface_input = [tetr_uri, laci_uri]
-        self.assertCountEqual(iface_input, interface.input)
+        self.assertCountEqual(iface_input, interface.inputs)
         output = [laci_uri]
-        self.assertEqual(output, interface.output)
+        self.assertEqual(output, interface.outputs)
         nondirectional = [atc_uri]
-        self.assertEqual(nondirectional, interface.nondirectional)
+        self.assertEqual(nondirectional, interface.nondirectionals)
 
 
 if __name__ == '__main__':
