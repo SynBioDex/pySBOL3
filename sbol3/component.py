@@ -12,7 +12,7 @@ class Component(TopLevel):
                  features: List[Feature] = None,
                  constraints: List[Constraint] = None,
                  interactions: List[Interaction] = None,
-                 interfaces: List[Interface] = None,
+                 interface: Interface = None,
                  models: List[str] = None,
                  namespace: str = None,
                  attachments: List[str] = None,
@@ -41,9 +41,9 @@ class Component(TopLevel):
         self.constraints = OwnedObject(self, SBOL_CONSTRAINTS, 0, math.inf,
                                        initial_value=constraints,
                                        type_constraint=Constraint)
-        self.interfaces = OwnedObject(self, SBOL_INTERFACES, 0, 1,
-                                      initial_value=interfaces,
-                                      type_constraint=Interface)
+        self.interface = OwnedObject(self, SBOL_INTERFACES, 0, 1,
+                                     initial_value=interface,
+                                     type_constraint=Interface)
         self.models = ReferencedObject(self, SBOL_MODELS, 0, math.inf,
                                        initial_value=models)
 
