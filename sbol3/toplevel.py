@@ -111,6 +111,14 @@ class TopLevel(Identified):
         obj.traverse(make_update_references_traverser(identity_map))
         return obj
 
+    def copy(self, target_doc=None, target_namespace=None):
+        new_obj = super().copy(target_doc=target_doc, target_namespace=target_namespace)
+        # Need to set `document` on all children recursively. That's what happens when
+        # you assign to the `document` property of an Identified
+        new_obj.document = target_doc
+        # Comply with the contract of super.copy()
+        return new_obj
+
 
 def make_erase_identity_traverser(identity_map: Dict[str, Identified])\
         -> Callable[[Identified], None]:

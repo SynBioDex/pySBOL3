@@ -1,3 +1,4 @@
+import os
 import posixpath
 import unittest
 
@@ -14,8 +15,11 @@ TEST_DATA = """@prefix sbol: <http://sbols.org/v3#> .
     sbol:type <https://identifiers.org/SBO:0000251> .
 """
 
+MODULE_LOCATION = os.path.dirname(os.path.abspath(__file__))
+SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
 
-class MyTestCase(unittest.TestCase):
+
+class TestTopLevel(unittest.TestCase):
 
     def setUp(self) -> None:
         sbol3.set_defaults()
@@ -47,6 +51,29 @@ class MyTestCase(unittest.TestCase):
         # because the object lacks a namespace
         report = doc.validate()
         self.assertTrue(len(report) > 0)
+
+    def test_copy(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/176 reopened
+        # Copying a tree of objects to a new document left the document
+        # pointer of the child objects unset. This caused "lookup" to
+        # fail.
+        dest_doc = sbol3.Document()
+
+        def check_document(i: sbol3.Identified):
+            # Verify that the object has a document, and that it is the
+            # expected document.
+            self.assertIsNotNone(i.document)
+            self.assertEqual(dest_doc, i.document)
+
+        test_path = os.path.join(SBOL3_LOCATION, 'multicellular',
+                                 'multicellular.nt')
+        doc = sbol3.Document()
+        doc.read(test_path)
+        for obj in doc.objects:
+            obj.copy(target_doc=dest_doc)
+        self.assertEqual(len(doc), len(dest_doc))
+        for obj in dest_doc.objects:
+            obj.traverse(check_document)
 
 
 if __name__ == '__main__':
