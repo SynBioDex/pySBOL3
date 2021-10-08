@@ -38,11 +38,9 @@ jobs:
         python -m pip install .
         python -m pip install 'pycodestyle>=2.6.0'
     - name: Test with unittest
+      # pyshacl has a 3.10 deprecation warning in distutils
+      # disable warnings until we tune to ignore distutils deprecation warning
       run: |
         WARNINGS="-We"
-        if [ "${{ matrix.python-version }}" == "3.10 ]; then
-	    # pyshacl has a 3.10 deprecation warning in distutils
-	    # disable warnings until we tune to ignore distutils deprecation warning
-	    WARNINGS=""
-	fi
+        if [ "${{ matrix.python-version }}" == "3.10 ]; then WARNINGS="" fi
         python $WARNINGS -m unittest discover -s test
