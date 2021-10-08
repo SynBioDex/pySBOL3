@@ -42,5 +42,5 @@ jobs:
       # disable warnings until we tune to ignore distutils deprecation warning
       run: |
         WARNINGS="-We"
-        if [ "${{ matrix.python-version }}" == "3.10" ]; then WARNINGS=""; fi
+        if [ "${{ matrix.python-version }}" == "3.10" ]; then echo "Disabling warnings"; WARNINGS=""; fi
         python $WARNINGS -m unittest discover -s test
