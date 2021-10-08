@@ -159,7 +159,7 @@ class TestComponent(unittest.TestCase):
             self.assertIsInstance(s_clone, sbol3.ComponentReference)
             self.assertTrue(s_clone.identity.startswith(toggle_clone.identity))
             self.assertNotEqual(s.identity, s_clone.identity)
-            self.assertEqual(s.feature, s_clone.feature)
+            self.assertEqual(s.refers_to, s_clone.refers_to)
             o = c.object.lookup()
             self.assertIsInstance(o, sbol3.ComponentReference)
             self.assertTrue(o.identity.startswith(toggle.identity))
@@ -167,7 +167,7 @@ class TestComponent(unittest.TestCase):
             self.assertIsInstance(o_clone, sbol3.ComponentReference)
             self.assertTrue(o_clone.identity.startswith(toggle_clone.identity))
             self.assertNotEqual(o.identity, o_clone.identity)
-            self.assertEqual(o.feature, o_clone.feature)
+            self.assertEqual(o.refers_to, o_clone.refers_to)
 
 
 if __name__ == '__main__':

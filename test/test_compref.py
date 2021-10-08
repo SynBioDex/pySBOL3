@@ -21,7 +21,7 @@ class TestComponentReference(unittest.TestCase):
         comp_ref = sbol3.ComponentReference(in_child_of, feature)
         self.assertIsNotNone(comp_ref)
         self.assertEqual(in_child_of, comp_ref.in_child_of)
-        self.assertEqual(feature, comp_ref.feature)
+        self.assertEqual(feature, comp_ref.refers_to)
 
     def test_read_from_file(self):
         test_file = os.path.join(SBOL3_LOCATION, 'toggle_switch',
@@ -35,7 +35,7 @@ class TestComponentReference(unittest.TestCase):
         in_child_of = 'https://sbolstandard.org/examples/toggle_switch/SubComponent1'
         self.assertEqual(in_child_of, comp_ref.in_child_of)
         feature = 'https://sbolstandard.org/examples/LacI_producer/SubComponent7'
-        self.assertEqual(feature, comp_ref.feature)
+        self.assertEqual(feature, comp_ref.refers_to)
 
 
 if __name__ == '__main__':
