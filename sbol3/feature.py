@@ -26,7 +26,8 @@ class Feature(Identified, abc.ABC):
         report = super().validate(report)
         # If there is an orientation, it must be in the valid set
         if self.orientation is not None:
-            valid_orientations = [SBOL_INLINE, SBOL_REVERSE_COMPLEMENT]
+            valid_orientations = [SO_FORWARD, SO_REVERSE,
+                                  SBOL_INLINE, SBOL_REVERSE_COMPLEMENT]
             if self.orientation not in valid_orientations:
                 message = f'{self.orientation} is not a valid orientation'
                 report.addError(self.identity, None, message)

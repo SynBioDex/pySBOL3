@@ -25,7 +25,7 @@ class TestCombinatorialDerivation(unittest.TestCase):
         # Test with invalid strategy
         comp1 = sbol3.Component('comp1', sbol3.SBO_DNA)
         cd1 = sbol3.CombinatorialDerivation('cd1', comp1)
-        cd1.strategy = sbol3.SBOL_INLINE
+        cd1.strategy = sbol3.SO_FORWARD
         report = cd1.validate()
         self.assertIsNotNone(report)
         self.assertEqual(1, len(report.errors))

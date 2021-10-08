@@ -12,7 +12,7 @@ class ComponentReference(Feature):
     """
 
     def __init__(self, in_child_of: Union[SubComponent, str],
-                 feature: Union[Feature, str],
+                 refers_to: Union[Feature, str],
                  *, roles: List[str] = None, orientation: str = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -26,13 +26,13 @@ class ComponentReference(Feature):
                          generated_by=generated_by, measures=measures)
         self.in_child_of = ReferencedObject(self, SBOL_IN_CHILD_OF, 1, 1,
                                             initial_value=in_child_of)
-        self.feature = ReferencedObject(self, SBOL_FEATURES, 1, 1,
-                                        initial_value=feature)
+        self.refers_to = ReferencedObject(self, SBOL_REFERS_TO, 1, 1,
+                                          initial_value=refers_to)
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         report = super().validate(report)
-        # Must have 1 feature
-        if self.feature is None:
+        # Must have 1 refersTo
+        if self.refers_to is None:
             message = 'ComponentReference must have a feature'
             report.addError(self.identity, None, message)
         # Must have 1 in_child_of

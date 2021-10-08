@@ -90,6 +90,7 @@ SBOL_PARTICIPANT = SBOL3_NS + 'participant'
 SBOL_PARTCIPATION = SBOL3_NS + 'Participation'
 SBOL_PARTICIPATIONS = SBOL3_NS + 'hasParticipation'
 SBOL_RANGE = SBOL3_NS + 'Range'
+SBOL_REFERS_TO = SBOL3_NS + 'refersTo'
 SBOL_RESTRICTION = SBOL3_NS + 'restriction'
 SBOL_ROLE = SBOL3_NS + 'role'
 SBOL_SEQUENCE = SBOL3_NS + 'Sequence'
@@ -181,6 +182,10 @@ SO_ENGINEERED_REGION = SO_NS + '0000804'
 SO_MRNA = SO_NS + "0000234"
 CHEBI_EFFECTOR = CHEBI_NS + '35224'
 SO_TRANSCRIPTION_FACTOR = SO_NS + "0003700"
+
+# Feature Orientations
+SO_FORWARD = SO_NS + '0001030'
+SO_REVERSE = SO_NS + '0001031'
 
 # Component types
 # See the SBOL 3 spec, Section 6.4, Table 2
