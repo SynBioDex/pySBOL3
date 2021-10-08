@@ -16,13 +16,13 @@ jobs:
       matrix:
         # Default builds are on Ubuntu
         os: [ubuntu-latest]
-        python-version: [3.7, 3.8, 3.9, pypy-3.7]
+        python-version: ['3.7', '3.8', '3.9', '3.10', 'pypy-3.7']
         include:
           # Also test on macOS and Windows using latest Python 3
           - os: macos-latest
-            python-version: 3.x
+            python-version: '3.x'
           - os: windows-latest
-            python-version: 3.x
+            python-version: '3.x'
     steps:
     - uses: actions/checkout@v2
       with:
@@ -38,5 +38,9 @@ jobs:
         python -m pip install .
         python -m pip install 'pycodestyle>=2.6.0'
     - name: Test with unittest
+      # pyshacl has a 3.10 deprecation warning in distutils
+      # disable warnings until we tune to ignore distutils deprecation warning
       run: |
-        python -We -m unittest discover -s test
+        WARNINGS="-We"
+        if [ "${{ matrix.python-version }}" == "3.10" ]; then echo "Disabling warnings"; WARNINGS=""; fi
+        python $WARNINGS -m unittest discover -s test
