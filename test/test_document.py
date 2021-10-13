@@ -360,6 +360,29 @@ class TestDocument(unittest.TestCase):
         report = doc.validate()
         self.assertEqual(0, len(report))
 
+    @unittest.expectedFailure
+    def test_json_ld_parser_bug(self):
+        # See https://github.com/RDFLib/rdflib/issues/1443
+        # See https://github.com/SynBioDex/pySBOL3/issues/329
+        # The rdflib json-ld parser adds a trailing slash onto URLs that
+        # have no path. Add this test to notice when the bug eventually
+        # gets fixed.
+        test_dir = os.path.join(SBOL3_LOCATION, 'entity', 'model')
+        json_ld_path = os.path.join(test_dir, 'model.jsonld')
+        turtle_path = os.path.join(test_dir, 'model.ttl')
+        doc_json_ld = sbol3.Document()
+        doc_json_ld.read(json_ld_path)
+        doc_turtle = sbol3.Document()
+        doc_turtle.read(turtle_path)
+        # Find the target object in the documents
+        model_uri = 'https://sbolstandard.org/examples/model1'
+        m_json_ld = doc_json_ld.find(model_uri)
+        self.assertIsNotNone(m_json_ld)
+        m_turtle = doc_turtle.find(model_uri)
+        self.assertIsNotNone(m_turtle)
+        self.assertEqual(m_turtle.source, m_json_ld.source)
+        self.assertEqual(m_turtle.namespace, m_json_ld.namespace)
+
 
 if __name__ == '__main__':
     unittest.main()
