@@ -79,9 +79,9 @@ class TestTopLevel(unittest.TestCase):
     def test_namespace_mismatch(self):
         # See SBOL 3 rule sbol3-10301
         # See https://github.com/SynBioDex/pySBOL3/issues/278
-        sbol3.set_namespace('http://github.com/synbiodex/pysbol3')
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         c = sbol3.Component('foo', types=[sbol3.SBO_DNA])
-        c.namespace = 'http://example.com/mismatch'
+        c.namespace = 'https://example.com/mismatch'
         report = c.validate()
         self.assertIsNotNone(report)
         # Expecting at least one error
@@ -99,6 +99,14 @@ class TestTopLevel(unittest.TestCase):
         self.assertIsNotNone(report)
         # Expecting at least one error
         self.assertEqual(len(report), 0)
+
+    def test_creation_namespace_mismatch(self):
+        # Prevent an identity/namespace mismatch on object creation
+        # See https://github.com/SynBioDex/pySBOL3/issues/277
+        with self.assertRaises(ValueError):
+            sbol3.Component('https://example.com/mismatch/c1',
+                            types=[sbol3.SBO_DNA],
+                            namespace='https://example.com/different')
 
 
 if __name__ == '__main__':

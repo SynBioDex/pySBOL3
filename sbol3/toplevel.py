@@ -35,6 +35,10 @@ class TopLevel(Identified):
                          measures=measures)
         if namespace is None:
             namespace = TopLevel.default_namespace(namespace, self.identity)
+        if self._is_url(self.identity) and not self.identity.startswith(namespace):
+            msg = 'Namespace must be a prefix of identity.'
+            msg += f' Namespace {namespace} is not a prefix of {self.identity}.'
+            raise ValueError(msg)
         self.namespace = URIProperty(self, SBOL_NAMESPACE, 1, 1,
                                      initial_value=namespace)
         self.attachments = ReferencedObject(self, SBOL_HAS_ATTACHMENT, 0, math.inf,

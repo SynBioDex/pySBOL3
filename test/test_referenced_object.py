@@ -113,7 +113,7 @@ class TestReferencedObject(unittest.TestCase):
         sbol3.set_namespace('https://example.org')
         execution = sbol3.Activity('protocol_execution')
         doc.add(execution)
-        foo = sbol3.Collection('http://example.org/baz')
+        foo = sbol3.Collection('https://example.org/baz')
         foo.members.append(execution)
         # Verify that foo did not get document assigned
         self.assertIsNone(foo.document)
