@@ -70,8 +70,25 @@ class TopLevel(Identified):
         # TODO: See section 5.1 for rules about identity for TopLevel
         pass
 
+    def _validate_namespace(self, report: ValidationReport) -> None:
+        # Rule sbol3-10301: If the URI for the TopLevel object is a URL,
+        #   then the URI of the hasNamespace property MUST prefix match that URL.
+        #   Reference: Section 6.2
+        #
+        # See https://github.com/SynBioDex/pySBOL3/issues/277
+        # See https://github.com/SynBioDex/pySBOL3/issues/278
+        if not self.namespace:
+            # SHACL rules will handle a missing namespace
+            return
+        if self._is_url(self.identity):
+            if not self.identity.startswith(self.namespace):
+                msg = f'The namespace {self.namespace} is not a prefix'
+                msg += f' of the identity {self.identity}'
+                report.addError(self.identity, 'sbol3-10301', msg)
+
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         report = super().validate(report)
+        self._validate_namespace(report)
         return report
 
     def _reparent_child_objects(self) -> None:

@@ -1,6 +1,7 @@
 import os
 import posixpath
 import unittest
+import uuid
 
 import sbol3
 
@@ -74,6 +75,30 @@ class TestTopLevel(unittest.TestCase):
         self.assertEqual(len(doc), len(dest_doc))
         for obj in dest_doc.objects:
             obj.traverse(check_document)
+
+    def test_namespace_mismatch(self):
+        # See SBOL 3 rule sbol3-10301
+        # See https://github.com/SynBioDex/pySBOL3/issues/278
+        sbol3.set_namespace('http://github.com/synbiodex/pysbol3')
+        c = sbol3.Component('foo', types=[sbol3.SBO_DNA])
+        c.namespace = 'http://example.com/mismatch'
+        report = c.validate()
+        self.assertIsNotNone(report)
+        # Expecting at least one error
+        self.assertGreater(len(report), 0)
+
+        # If the namespace is a URN, it doesn't matter if it is a mismatch
+        c.namespace = uuid.uuid4().urn
+        report = c.validate()
+        self.assertIsNotNone(report)
+        self.assertGreater(len(report), 0)
+
+        # Now check a URN identity
+        c = sbol3.Component(uuid.uuid4().urn, types=[sbol3.SBO_DNA])
+        report = c.validate()
+        self.assertIsNotNone(report)
+        # Expecting at least one error
+        self.assertEqual(len(report), 0)
 
 
 if __name__ == '__main__':
