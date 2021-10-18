@@ -2,7 +2,6 @@ import logging
 import os
 import tempfile
 import unittest
-from typing import Iterable
 
 import rdflib
 

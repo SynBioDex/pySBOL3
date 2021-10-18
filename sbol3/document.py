@@ -1,7 +1,11 @@
 import collections
 import logging
 import os
-from typing import Dict, Callable, List, Optional, Any, Union, Iterable
+from typing import Dict, Callable, List, Optional, Any, Union
+
+# import typing for typing.Sequence, which we don't want to confuse
+# with sbol3.Sequence
+import typing
 
 import pyshacl
 import rdflib
@@ -280,7 +284,7 @@ class Document:
         obj.traverse(assign_document)
         return obj
 
-    def _add_all(self, objects: Iterable[TopLevel]) -> Iterable[TopLevel]:
+    def _add_all(self, objects: typing.Sequence[TopLevel]) -> typing.Sequence[TopLevel]:
         # Perform type check of all objects.
         # We do this to avoid finding out part way through that an
         # object can't be added. That would leave the document in an
@@ -298,7 +302,7 @@ class Document:
         # return the passed argument
         return objects
 
-    def add(self, objects: Union[TopLevel, Iterable[TopLevel]]) -> Union[TopLevel, Iterable[TopLevel]]:
+    def add(self, objects: Union[TopLevel, typing.Sequence[TopLevel]]) -> Union[TopLevel, typing.Sequence[TopLevel]]:
         # objects must be TopLevel or iterable. If neither, raise a TypeError.
         #
         # Note: Python documentation for collections.abc says "The only
