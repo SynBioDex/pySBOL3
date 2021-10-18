@@ -3,6 +3,10 @@ import logging
 import os
 from typing import Dict, Callable, List, Optional, Any, Union
 
+# import typing for typing.Sequence, which we don't want to confuse
+# with sbol3.Sequence
+import typing
+
 import pyshacl
 import rdflib
 
@@ -31,7 +35,7 @@ class Document:
 
     @staticmethod
     def register_builder(type_uri: str,
-                         builder: Callable[[str, str], SBOLObject]) -> None:
+                         builder: Callable[[str, str], Identified]) -> None:
         """A builder function will be called with an identity and a
         keyword argument type_uri.
 
@@ -104,7 +108,6 @@ class Document:
             SBOL_TOP_LEVEL: CustomTopLevel
         }
         sbol_type = sbol_types[0]
-        result = None
         if sbol_type in extension_types:
             # Build an extension object
             types.remove(sbol_type)
@@ -260,7 +263,7 @@ class Document:
         graph.parse(data=data, format=file_format)
         return self._parse_graph(graph)
 
-    def add(self, obj: TopLevel) -> None:
+    def _add(self, obj: TopLevel) -> TopLevel:
         """Add objects to the document.
         """
         if not isinstance(obj, TopLevel):
@@ -278,6 +281,43 @@ class Document:
         def assign_document(x: Identified):
             x.document = self
         obj.traverse(assign_document)
+        return obj
+
+    def _add_all(self, objects: typing.Sequence[TopLevel]) -> typing.Sequence[TopLevel]:
+        # Perform type check of all objects.
+        # We do this to avoid finding out part way through that an
+        # object can't be added. That would leave the document in an
+        # unknown state.
+        for obj in objects:
+            if not isinstance(obj, TopLevel):
+                if isinstance(obj, Identified):
+                    raise TypeError(f'{obj.identity} is not a TopLevel object')
+                else:
+                    raise TypeError(f'{repr(obj)} is not a TopLevel object')
+
+        # Dispatch to Document._add to add the individual objects
+        for obj in objects:
+            self._add(obj)
+        # return the passed argument
+        return objects
+
+    def add(self, objects: Union[TopLevel, typing.Sequence[TopLevel]]) -> Union[TopLevel, typing.Sequence[TopLevel]]:
+        # objects must be TopLevel or iterable. If neither, raise a TypeError.
+        #
+        # Note: Python documentation for collections.abc says "The only
+        # reliable way to determine whether an object is iterable is to
+        # call iter(obj)." `iter` will raise TypeError if the object is
+        # not iterable
+        if not isinstance(objects, TopLevel):
+            try:
+                iter(objects)
+            except TypeError:
+                raise TypeError('argument must be either TopLevel or Iterable')
+        # Now dispatch to the appropriate method
+        if isinstance(objects, TopLevel):
+            return self._add(objects)
+        else:
+            return self._add_all(objects)
 
     def _find_in_objects(self, search_string: str) -> Optional[Identified]:
         # TODO: implement recursive search

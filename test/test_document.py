@@ -75,7 +75,10 @@ class TestDocument(unittest.TestCase):
         with self.assertRaises(TypeError):
             doc.add(non_top_level)
         seq = sbol3.Sequence('seq1')
-        doc.add(seq)
+        added_seq = doc.add(seq)
+        # Document.add should return the object
+        # See https://github.com/SynBioDex/pySBOL3/issues/272
+        self.assertEqual(seq, added_seq)
         seq2 = doc.find(seq.identity)
         self.assertEqual(seq.identity, seq2.identity)
 
@@ -88,6 +91,24 @@ class TestDocument(unittest.TestCase):
         experiment2 = sbol3.Experiment(identity=sbol3.SBOL3_NS)
         with self.assertRaises(ValueError):
             document.add(experiment2)
+
+    def test_add_iterable(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/311
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        doc = sbol3.Document()
+        objects = [sbol3.Component(name, types=[sbol3.SBO_DNA])
+                   for name in ['foo', 'bar', 'baz' 'quux']]
+        result = doc.add(objects)
+        self.assertEqual(len(objects), len(result))
+        self.assertListEqual(objects, result)
+        #
+        # Test adding a non-TopLevel in a list
+        doc = sbol3.Document()
+        objects = [sbol3.Component(name, types=[sbol3.SBO_DNA])
+                   for name in ['foo', 'bar', 'baz' 'quux']]
+        objects.insert(2, 'non-TopLevel')
+        with self.assertRaises(TypeError):
+            doc.add(objects)
 
     def test_write(self):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
