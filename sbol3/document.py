@@ -108,7 +108,6 @@ class Document:
             SBOL_TOP_LEVEL: CustomTopLevel
         }
         sbol_type = sbol_types[0]
-        result = None
         if sbol_type in extension_types:
             # Build an extension object
             types.remove(sbol_type)
