@@ -35,7 +35,7 @@ class Document:
 
     @staticmethod
     def register_builder(type_uri: str,
-                         builder: Callable[[str, str], SBOLObject]) -> None:
+                         builder: Callable[[str, str], Identified]) -> None:
         """A builder function will be called with an identity and a
         keyword argument type_uri.
 
