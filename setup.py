@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='sbol3',
-      version='1.0b9',
+      version='1.0b10',
       description='Python implementation of SBOL 3 standard',
       python_requires='>=3.7',
       url='https://github.com/SynBioDex/pySBOL3',
