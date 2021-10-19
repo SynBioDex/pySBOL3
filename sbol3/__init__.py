@@ -1,18 +1,5 @@
 __version__ = '1.0b10'
 
-# ---------- BEGIN WARNING WORKAROUND ----------
-# Avoid unsightly warnings caused by rdflib 6, and manifested
-# during the import of owlrl either directly or via pyshacl.
-# See https://github.com/RDFLib/OWL-RL/issues/44
-#
-# TODO: Delete this workaround when owlrl handles these warnings
-#
-import warnings
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", category=UserWarning)
-    import owlrl
-# ---------- END WARNING WORKAROUND ----------
-
 from .constants import *
 from .config import set_defaults, get_namespace, set_namespace
 # get_homespace and set_homespace are deprecated and included for backward compatibility
