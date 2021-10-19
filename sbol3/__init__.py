@@ -1,4 +1,4 @@
-__version__ = '1.0b9'
+__version__ = '1.0b10'
 
 # ---------- BEGIN WARNING WORKAROUND ----------
 # Avoid unsightly warnings caused by rdflib 6, and manifested
