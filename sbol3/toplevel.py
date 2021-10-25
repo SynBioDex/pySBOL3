@@ -1,6 +1,7 @@
 import copy
 import math
 import posixpath
+import uuid
 from typing import List, Dict, Callable, Union
 from urllib.parse import urlparse
 
@@ -49,25 +50,25 @@ class TopLevel(Identified):
         # short circuit if a namespace is set
         if namespace is not None:
             return namespace
-        # Try using the default namespace if set
-        namespace = get_namespace()
-        if namespace is None:
-            # No default namespace was defined
-            # Try parsing the identity as a URL
-            parsed = urlparse(identity)
-            if parsed.scheme and parsed.netloc and parsed.path:
-                # This is a URL
-                # Reverse index to drop the displayId and use the rest
-                # for the namespace
-                delim = posixpath.sep
-                if '#' in identity:
-                    delim = '#'
-                namespace = identity[:identity.rindex(delim)]
-        if namespace is None:
-            # TODO: what should we do here? We haven't been able to determine
-            #       a namespace. But in the case where we're loading a file
-            #       that's probably ok. We don't want that loading to fail.
+        default_namespace = get_namespace()
+        # If identity is a uuid, don't bother with namespaces
+        try:
+            # If it is a UUID, accept it as the identity
+            uuid.UUID(identity)
+            return default_namespace or PYSBOL3_DEFAULT_NAMESPACE
+        except ValueError:
             pass
+        # If default namespace is a prefix of identity, use it for the namespace
+        if default_namespace and identity.startswith(default_namespace):
+            return default_namespace
+        # Identity does not start with the default namespace then
+        # heuristically determine the namespace. We use a greedy
+        # algorithm by assuming there is no local path, and that
+        # everything other than the display_id is the namespace.
+        delim = posixpath.sep
+        if '#' in identity:
+            delim = '#'
+        namespace = identity[:identity.rindex(delim)]
         return namespace
 
     def validate_identity(self, report: ValidationReport) -> None:

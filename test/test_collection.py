@@ -67,11 +67,12 @@ class TestCollection(unittest.TestCase):
         # Test the exception case when a namespace cannot be deduced
         identity = uuid.uuid4().urn
         collection = sbol3.Collection(identity)
-        # The namespace should be None in this case.
-        # We can't determine a namespace from a UUID and we don't
-        # want to error and break file loading if we can't
-        # determine a namespace.
-        self.assertIsNone(collection.namespace)
+        # The namespace should always be set per SBOL 3.0.1
+        #  "A TopLevel object MUST have precisely one hasNamespace property"
+        self.assertIsNotNone(collection.namespace)
+        # There should be no validation errors on this object
+        report = collection.validate()
+        self.assertEqual(0, len(report))
 
 
 class TestExperiment(unittest.TestCase):
