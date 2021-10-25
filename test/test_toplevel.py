@@ -100,6 +100,29 @@ class TestTopLevel(unittest.TestCase):
         # Expecting at least one error
         self.assertEqual(len(report), 0)
 
+    def test_namespace_mismatch_uuid(self):
+        # Now check a UUID with no default namespace set
+        # sbol3.set_namespace(None)
+        self.assertIsNone(sbol3.get_namespace())
+        c = sbol3.Component(uuid.uuid4().urn, types=[sbol3.SBO_DNA])
+        report = c.validate()
+        self.assertIsNotNone(report)
+        # Expecting at least one error
+        self.assertEqual(0, len(report))
+
+    def test_default_namespace_with_local_path(self):
+        # Make sure default namespace is honored when the identity has
+        # a local path included
+        test_namespace = 'https://github.com/synbiodex'
+        sbol3.set_namespace(test_namespace)
+        self.assertEqual(test_namespace, sbol3.get_namespace())
+        identity = posixpath.join(sbol3.get_namespace(), 'pysbol3', 'foo')
+        c = sbol3.Component(identity, types=[sbol3.SBO_DNA])
+        self.assertEqual(sbol3.get_namespace(), c.namespace)
+        self.assertEqual('foo', c.display_id)
+        self.assertEqual(identity, c.identity)
+        self.assertEqual(0, len(c.validate()))
+
     def test_creation_namespace_mismatch(self):
         # Prevent an identity/namespace mismatch on object creation
         # See https://github.com/SynBioDex/pySBOL3/issues/277

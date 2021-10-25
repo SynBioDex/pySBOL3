@@ -404,6 +404,32 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(m_turtle.source, m_json_ld.source)
         self.assertEqual(m_turtle.namespace, m_json_ld.namespace)
 
+    def test_read_with_default_namespace(self):
+        # Test reading a file when the default namespace is set
+        # See https://github.com/SynBioDex/pySBOL3/issues/337
+        sbol3.set_namespace('http://example.com')
+        test_path = os.path.join(SBOL3_LOCATION, 'toggle_switch',
+                                 'toggle_switch.ttl')
+        doc = sbol3.Document()
+        doc.read(test_path)
+
+    def test_read_default_namespace(self):
+        # This is a modified version of the initial bug report for
+        # https://github.com/SynBioDex/pySBOL3/issues/337
+        doc = sbol3.Document()
+        sbol3.set_namespace('http://foo.org')
+        doc.add(sbol3.Sequence('bar'))
+        self.assertEqual(0, len(doc.validate()))
+        file_format = sbol3.SORTED_NTRIPLES
+        data = doc.write_string(file_format=file_format)
+
+        doc2 = sbol3.Document()
+        doc2.read_string(data, file_format=file_format)  # Successful read
+
+        sbol3.set_namespace('http://baz.com/')
+        doc3 = sbol3.Document()
+        doc3.read_string(data, file_format=file_format)
+
 
 if __name__ == '__main__':
     unittest.main()
