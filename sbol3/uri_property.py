@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Union, Any, List, Optional
 
 import rdflib
@@ -35,10 +36,13 @@ class URIListProperty(URIPropertyMixin, ListProperty):
     def __init__(self, property_owner: Any, property_uri: str,
                  lower_bound: int, upper_bound: int,
                  validation_rules: Optional[List] = None,
-                 initial_value: Optional[str] = None):
+                 initial_value: Optional[Union[str, list[str]]] = None):
         super().__init__(property_owner, property_uri,
                          lower_bound, upper_bound, validation_rules)
         if initial_value is not None:
+            if isinstance(initial_value, str):
+                # Wrap the singleton in a list
+                initial_value = [initial_value]
             self.set(initial_value)
 
 

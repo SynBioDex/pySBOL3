@@ -1,5 +1,5 @@
 import math
-from typing import Union, List, Any
+from typing import Union, List, Any, Optional
 
 from . import *
 
@@ -18,7 +18,7 @@ class CombinatorialDerivation(TopLevel):
     """
 
     def __init__(self, identity: str, template: Union[Component, str],
-                 *, strategy: str = None,
+                 *, strategy: Optional[str] = None,
                  variable_features: List[str] = None,
                  namespace: str = None,
                  attachments: List[str] = None,

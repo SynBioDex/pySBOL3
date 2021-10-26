@@ -1,7 +1,9 @@
+from __future__ import annotations
 import math
 from typing import List, Any
 
 from . import *
+from .typing import *
 
 
 class Interaction(Identified):
@@ -19,7 +21,7 @@ class Interaction(Identified):
 
     """
 
-    def __init__(self, types: List[str],
+    def __init__(self, types: Union[str, list[str]],
                  *, participations: List[Participation] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
@@ -31,8 +33,8 @@ class Interaction(Identified):
                          name=name, description=description,
                          derived_from=derived_from, generated_by=generated_by,
                          measures=measures)
-        self.types = URIProperty(self, SBOL_TYPE, 1, math.inf,
-                                 initial_value=types)
+        self.types: uri_list = URIProperty(self, SBOL_TYPE, 1, math.inf,
+                                           initial_value=types)
         self.participations = OwnedObject(self, SBOL_PARTICIPATIONS, 0, math.inf,
                                           initial_value=participations,
                                           type_constraint=Participation)

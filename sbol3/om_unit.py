@@ -1,9 +1,11 @@
+from __future__ import annotations
 import abc
 import math
-from typing import Union, List, Any
+from typing import Union, List, Any, Optional
 
 from . import *
 from .om_prefix import Prefix
+from .typing import *
 
 
 class Unit(CustomTopLevel, abc.ABC):
@@ -55,7 +57,7 @@ class Measure(CustomIdentified):
     """
 
     def __init__(self, value: float, unit: str,
-                 *, types: List[str] = None,
+                 *, types: Optional[str, list[str]] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
                  generated_by: List[str] = None,
@@ -68,10 +70,10 @@ class Measure(CustomIdentified):
                          measures=measures)
         self.value = FloatProperty(self, OM_HAS_NUMERICAL_VALUE, 1, 1,
                                    initial_value=value)
-        self.types = URIProperty(self, SBOL_TYPE, 0, math.inf,
-                                 initial_value=types)
-        self.unit = URIProperty(self, OM_HAS_UNIT, 1, 1,
-                                initial_value=unit)
+        self.types: uri_list = URIProperty(self, SBOL_TYPE, 0, math.inf,
+                                           initial_value=types)
+        self.unit: uri_singleton = URIProperty(self, OM_HAS_UNIT, 1, 1,
+                                               initial_value=unit)
 
     def accept(self, visitor: Any) -> Any:
         """Invokes `visit_measure` on `visitor` with `self` as the only

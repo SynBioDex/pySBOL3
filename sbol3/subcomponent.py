@@ -1,9 +1,10 @@
 import math
-from typing import Union, List, Any
+from typing import Union, List, Any, Optional
 
 from . import *
 # Feature is not exported
 from .feature import Feature
+from .typing import uri_singleton
 
 
 class SubComponent(Feature):
@@ -17,7 +18,7 @@ class SubComponent(Feature):
     """
 
     def __init__(self, instance_of: Union[Identified, str],
-                 *, role_integration: str = None,
+                 *, role_integration: Optional[str] = None,
                  locations: List[Location] = None,
                  source_locations: List[Location] = None,
                  roles: List[str] = None, orientation: str = None,
@@ -31,8 +32,8 @@ class SubComponent(Feature):
                          roles=roles, orientation=orientation, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
-        self.role_integration = URIProperty(self, SBOL_ROLE, 0, 1,
-                                            initial_value=role_integration)
+        self.role_integration: uri_singleton = URIProperty(self, SBOL_ROLE, 0, 1,
+                                                           initial_value=role_integration)
         self.instance_of = ReferencedObject(self, SBOL_INSTANCE_OF, 1, 1,
                                             initial_value=instance_of)
         self.source_locations = OwnedObject(self, SBOL_SOURCE_LOCATION, 0, math.inf,

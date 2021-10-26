@@ -70,6 +70,14 @@ class TestIdentified(unittest.TestCase):
         # a triple for the namespace, and a triple for the component type
         self.assertEqual(4, len(triples))
 
+    def test_singleton_wrapping_urls(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        process1 = 'https://example.com/thing'
+        thing = sbol3.Sequence('thing1', derived_from=process1)
+        self.assertEqual(1, len(thing.derived_from))
+        self.assertEqual(process1, thing.derived_from[0])
+
 
 if __name__ == '__main__':
     unittest.main()

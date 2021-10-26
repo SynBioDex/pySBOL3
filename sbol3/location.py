@@ -1,7 +1,8 @@
 import abc
-from typing import Union, Any
+from typing import Union, Any, Optional
 
 from . import *
+from .typing import uri_singleton
 
 int_property = Union[IntProperty, int]
 
@@ -15,11 +16,11 @@ class Location(Identified, abc.ABC):
 
     def __init__(self, sequence: Union[Sequence, str],
                  identity: str, type_uri: str,
-                 *, orientation: str = None,
+                 *, orientation: Optional[str] = None,
                  order: int = None) -> None:
         super().__init__(identity, type_uri)
-        self.orientation = URIProperty(self, SBOL_ORIENTATION, 0, 1,
-                                       initial_value=orientation)
+        self.orientation: uri_singleton = URIProperty(self, SBOL_ORIENTATION, 0, 1,
+                                                      initial_value=orientation)
         self.order = IntProperty(self, SBOL_ORDER, 0, 1,
                                  initial_value=order)
         self.sequence = ReferencedObject(self, SBOL_SEQUENCES, 1, 1,

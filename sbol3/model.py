@@ -1,6 +1,7 @@
 from typing import List, Any
 
 from . import *
+from .typing import uri_singleton
 
 
 class Model(TopLevel):
@@ -27,12 +28,12 @@ class Model(TopLevel):
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
-        self.source = URIProperty(self, SBOL_SOURCE, 1, 1,
-                                  initial_value=source)
-        self.language = URIProperty(self, SBOL_LANGUAGE, 1, 1,
-                                    initial_value=language)
-        self.framework = URIProperty(self, SBOL_FRAMEWORK, 1, 1,
-                                     initial_value=framework)
+        self.source: uri_singleton = URIProperty(self, SBOL_SOURCE, 1, 1,
+                                                 initial_value=source)
+        self.language: uri_singleton = URIProperty(self, SBOL_LANGUAGE, 1, 1,
+                                                   initial_value=language)
+        self.framework: uri_singleton = URIProperty(self, SBOL_FRAMEWORK, 1, 1,
+                                                    initial_value=framework)
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         report = super().validate(report)

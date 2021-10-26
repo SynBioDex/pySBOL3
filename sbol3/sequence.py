@@ -1,12 +1,14 @@
-from typing import List, Any
+from typing import List, Any, Optional
 
 from . import *
+from .typing import uri_singleton
 
 
 class Sequence(TopLevel):
 
     def __init__(self, identity: str, *,
-                 elements: str = None, encoding: str = None,
+                 elements: str = None,
+                 encoding: Optional[str] = None,
                  namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
@@ -20,8 +22,8 @@ class Sequence(TopLevel):
                          generated_by=generated_by, measures=measures)
         self.elements = TextProperty(self, SBOL_ELEMENTS, 0, 1,
                                      initial_value=elements)
-        self.encoding = URIProperty(self, SBOL_ENCODING, 0, 1,
-                                    initial_value=encoding)
+        self.encoding: uri_singleton = URIProperty(self, SBOL_ENCODING, 0, 1,
+                                                   initial_value=encoding)
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         report = super().validate(report)

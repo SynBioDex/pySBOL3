@@ -1,13 +1,16 @@
+from __future__ import annotations
 import math
-from typing import List, Union, Any
+from typing import List, Union, Any, Optional
 
 from . import *
+
+from .typing import *
 
 
 class Component(TopLevel):
 
-    def __init__(self, identity: str, types: Union[List[str], str],
-                 *, roles: List[str] = None,
+    def __init__(self, identity: str, types: Union[str, list[str]],
+                 *, roles: Optional[Union[str, list[str]]] = None,
                  sequences: List[str] = None,
                  features: List[Feature] = None,
                  constraints: List[Constraint] = None,
@@ -24,12 +27,10 @@ class Component(TopLevel):
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
-        if isinstance(types, str):
-            types = [types]
-        self.types: Union[List, Property] = URIProperty(self, SBOL_TYPE, 1, math.inf,
-                                                        initial_value=types)
-        self.roles = URIProperty(self, SBOL_ROLE, 0, math.inf,
-                                 initial_value=roles)
+        self.types: uri_list = URIProperty(self, SBOL_TYPE, 1, math.inf,
+                                           initial_value=types)
+        self.roles: uri_list = URIProperty(self, SBOL_ROLE, 0, math.inf,
+                                           initial_value=roles)
         self.sequences = ReferencedObject(self, SBOL_SEQUENCES, 0, math.inf,
                                           initial_value=sequences)
         self.features = OwnedObject(self, SBOL_FEATURES, 0, math.inf,

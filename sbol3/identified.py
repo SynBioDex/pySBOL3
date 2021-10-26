@@ -1,11 +1,13 @@
+from __future__ import annotations
 import math
 import posixpath
-from typing import Union, List, Callable, Any
+from typing import Union, List, Callable, Any, Optional
 from urllib.parse import urlparse
 
 import rdflib
 
 from . import *
+from .typing import *
 from .utils import parse_class_name
 
 
@@ -20,7 +22,8 @@ class Identified(SBOLObject):
 
     def __init__(self, identity: str, type_uri: str,
                  *, name: str = None, description: str = None,
-                 derived_from: List[str] = None, generated_by: List[str] = None,
+                 derived_from: Optional[Union[str, list[str]]] = None,
+                 generated_by: List[str] = None,
                  measures: List[SBOLObject] = None) -> None:
         super().__init__(identity)
         self._document = None
@@ -28,8 +31,8 @@ class Identified(SBOLObject):
         self.name = TextProperty(self, SBOL_NAME, 0, 1, initial_value=name)
         self.description = TextProperty(self, SBOL_DESCRIPTION, 0, 1,
                                         initial_value=description)
-        self.derived_from = URIProperty(self, PROV_DERIVED_FROM, 0, math.inf,
-                                        initial_value=derived_from)
+        self.derived_from: uri_list = URIProperty(self, PROV_DERIVED_FROM, 0, math.inf,
+                                                  initial_value=derived_from)
         self.generated_by = ReferencedObject(self, PROV_GENERATED_BY, 0, math.inf,
                                              initial_value=generated_by)
         # The type_constraint for measures should really be Measure but
@@ -41,8 +44,8 @@ class Identified(SBOLObject):
                                     type_constraint=Identified)
         # Identity has been set by the SBOLObject constructor
         self._display_id = self._extract_display_id(self.identity)
-        self._rdf_types = URIProperty(self, RDF_TYPE, 1, math.inf,
-                                      initial_value=[type_uri])
+        self._rdf_types: uri_list = URIProperty(self, RDF_TYPE, 1, math.inf,
+                                                initial_value=[type_uri])
 
     @staticmethod
     def _is_valid_display_id(display_id: str) -> bool:
