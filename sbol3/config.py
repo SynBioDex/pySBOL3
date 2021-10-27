@@ -31,13 +31,3 @@ def set_defaults() -> None:
 
 
 set_defaults()
-
-
-def set_homespace(homespace: str) -> None:
-    warnings.warn('Use set_namespace instead', DeprecationWarning)
-    return set_namespace(homespace)
-
-
-def get_homespace() -> str:
-    warnings.warn('Use get_namespace instead', DeprecationWarning)
-    return get_namespace()
