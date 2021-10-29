@@ -3,12 +3,13 @@
 # pySBOL3
 
 This is a [Python](https://www.python.org/) implementation of the
-[SBOL 3 specification](https://sbolstandard.org/data-model-specification/).
+[SBOL 3 specification](https://sbolstandard.org/datamodel-specification/).
+pySBOL3 implements [SBOL 3.0.1](https://sbolstandard.org/docs/SBOL3.0.1.pdf).
 
-This library is at a pre-alpha stage. Intrepid pre-alpha users are
-welcome. Please file
-[issues](https://github.com/SynBioDex/pySBOL3/issues) about bugs and
-missing features.
+This library is in late beta stage. We encourage you to try it.
+Please file
+[issues](https://github.com/SynBioDex/pySBOL3/issues) if you find bugs
+or missing features.
 
 ## Installation
 
