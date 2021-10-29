@@ -18,9 +18,9 @@ and constructing genetic designs according to the standardized specifications of
    validation
    visitor
    ontology
-..   getting_started
 ..   repositories
 ..   sbol_examples
+..   dbtl
 
 
 Indices and tables
