@@ -1,3 +1,4 @@
+import abc
 import math
 import posixpath
 from typing import Union, List, Callable, Any
@@ -234,7 +235,16 @@ class Identified(SBOLObject):
                 graph.add((identity, rdf_prop, rdflib.URIRef(item.identity)))
                 item.serialize(graph)
 
+    @abc.abstractmethod
     def accept(self, visitor: Any) -> Any:
+        """
+        An abstract method for concrete classes to override. This
+        method is part of the visitor pattern implementation.
+
+        :param visitor: Ignored
+        :return: Unspecified
+        :raises: NotImplementedError if not overridden
+        """
         message = f'accept is not implemented for {type(self).__qualname__}'
         raise NotImplementedError(message)
 
