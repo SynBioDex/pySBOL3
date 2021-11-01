@@ -23,11 +23,6 @@ class Identified(SBOLObject):
                  derived_from: List[str] = None, generated_by: List[str] = None,
                  measures: List[SBOLObject] = None) -> None:
         """
-        Initialize the Identified class. All SBOL 3 classes extend this
-        base class. This is typically not a user-facing method. It
-        should be invoked by another concrete class, and is not
-        expected to be invoked directly.
-
         :param identity: this object's Uniform Resource Identifier (URI).
             this URI MUST be globally unique among all other Identified
             object URIs. See SBOL 3.0.1 specification section 5.1.
@@ -40,15 +35,16 @@ class Identified(SBOLObject):
             URI of an extension class.
         :param name: A human-readable name for this object, for display
             purposes.
-        :param description: Per the SBOL 3.0.1 specification, a "a more
-            thorough text description"
-        :param derived_from: A sequence of URIs from which this object
-            was derived. This property is defined by the PROV-O ontology.
+        :param description: Per the SBOL 3.0.1 specification, "a more
+            thorough text description" of this object.
+        :param derived_from: The URIs of one or more SBOL or non-SBOL
+            objects from which this object was derived. This property
+            is defined by the PROV-O ontology.
         :param generated_by: The URIs of one or more prov:Activity
             objects that describe how this object was generated. This
             property is defined by the PROV-O ontology.
         :param measures: The URIs of one or more om:Measure objects,
-            each of which refers to a om:Measure object that describe
+            each of which refers to a om:Measure object that describes
             measured parameters for this object. om:Measure objects are
             defined by the OM ontology
         """
