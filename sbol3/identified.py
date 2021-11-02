@@ -2,7 +2,7 @@ from __future__ import annotations
 import abc
 import math
 import posixpath
-from typing import Union, List, Callable, Any, Optional
+from typing import Callable, Any, Optional
 from urllib.parse import urlparse
 
 import rdflib
@@ -24,8 +24,8 @@ class Identified(SBOLObject):
     def __init__(self, identity: str, type_uri: str,
                  *, name: str = None, description: str = None,
                  derived_from: Optional[Union[str, list[str]]] = None,
-                 generated_by: List[str] = None,
-                 measures: List[SBOLObject] = None) -> None:
+                 generated_by: list[str] = None,
+                 measures: list[SBOLObject] = None) -> None:
         """
         :param identity: this object's Uniform Resource Identifier (URI).
             this URI MUST be globally unique among all other Identified
