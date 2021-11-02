@@ -8,15 +8,17 @@ from .typing import uri_singleton
 
 class Sequence(TopLevel):
 
-    def __init__(self, identity: str, *,
-                 elements: str = None,
+    def __init__(self, identity: str,
+                 *,  # Keywords only after this
+                 elements: Optional[str] = None,
                  encoding: Optional[str] = None,
-                 namespace: str = None,
-                 attachments: List[str] = None,
-                 name: str = None, description: str = None,
-                 derived_from: List[str] = None,
-                 generated_by: list[Union[Identified, str]] = None,
-                 measures: List[SBOLObject] = None,
+                 namespace: Optional[str] = None,
+                 attachments: Optional[list[Union[Identified, str]]] = None,
+                 name: Optional[str] = None,
+                 description: Optional[str] = None,
+                 derived_from: Optional[list[str]] = None,
+                 generated_by: Optional[list[Union[Identified, str]]] = None,
+                 measures: Optional[list[Identified]] = None,
                  type_uri: str = SBOL_SEQUENCE) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
                          namespace=namespace,
