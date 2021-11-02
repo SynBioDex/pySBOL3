@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import math
 import unittest
-from typing import Any, Optional
+from typing import Optional
 
 import sbol3
 
@@ -32,9 +32,6 @@ class TextPropertyExtension(sbol3.CustomTopLevel):
                                               TextPropertyExtension.TPE_INFO_URI,
                                               0, math.inf,
                                               initial_value=information)
-
-    def accept(self, visitor: Any) -> Any:
-        pass
 
 
 class TestTextProperty(unittest.TestCase):

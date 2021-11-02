@@ -4,10 +4,9 @@ import copy
 import math
 import posixpath
 import uuid
-from typing import List, Dict, Callable, Union, Optional
+from typing import Dict, Callable, Union, Optional
 
 from . import *
-from .typing import uri_singleton
 
 
 class TopLevel(Identified):
@@ -22,11 +21,12 @@ class TopLevel(Identified):
 
     def __init__(self, identity: str, type_uri: str,
                  *, namespace: Optional[str] = None,
-                 attachments: List[str] = None,
-                 name: str = None, description: str = None,
-                 derived_from: List[str] = None,
-                 generated_by: list[Union[Identified, str]] = None,
-                 measures: List[SBOLObject] = None) -> None:
+                 attachments: Optional[list[Union[Identified, str]]] = None,
+                 name: Optional[str] = None,
+                 description: Optional[str] = None,
+                 derived_from: Optional[list[str]] = None,
+                 generated_by: Optional[list[Union[Identified, str]]] = None,
+                 measures: Optional[list[Identified]] = None) -> None:
         # Check identity, which is required for a TopLevel
         # More checking on identity happens in Identified, but Identified
         # does not require an identity, only TopLevel does.
@@ -42,8 +42,8 @@ class TopLevel(Identified):
             msg = 'Namespace must be a prefix of identity.'
             msg += f' Namespace {namespace} is not a prefix of {self.identity}.'
             raise ValueError(msg)
-        self.namespace: uri_singleton = URIProperty(self, SBOL_NAMESPACE, 1, 1,
-                                                    initial_value=namespace)
+        self.namespace = URIProperty(self, SBOL_NAMESPACE, 1, 1,
+                                     initial_value=namespace)
         self.attachments = ReferencedObject(self, SBOL_HAS_ATTACHMENT, 0, math.inf,
                                             initial_value=attachments)
 
