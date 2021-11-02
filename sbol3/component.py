@@ -1,36 +1,39 @@
 from __future__ import annotations
+
 import math
 from typing import List, Union, Any, Optional
 
 from . import *
 
-from .typing import *
-
 
 class Component(TopLevel):
 
-    def __init__(self, identity: str, types: Union[str, list[str]],
-                 *, roles: Optional[Union[str, list[str]]] = None,
-                 sequences: List[str] = None,
+    def __init__(self, identity: str, types: list[str],
+                 *,  # Keywords only after this
+                 roles: Optional[list[str]] = None,
+                 sequences: Optional[list[Union[Identified, str]]] = None,
                  features: List[Feature] = None,
                  constraints: List[Constraint] = None,
                  interactions: List[Interaction] = None,
                  interface: Interface = None,
-                 models: List[str] = None,
-                 namespace: str = None,
-                 attachments: List[str] = None,
-                 name: str = None, description: str = None,
-                 derived_from: List[str] = None, generated_by: List[str] = None,
-                 measures: List[SBOLObject] = None, type_uri: str = SBOL_COMPONENT):
+                 models: Optional[list[Union[Identified, str]]] = None,
+                 namespace: Optional[str] = None,
+                 attachments: Optional[list[Union[Identified, str]]] = None,
+                 name: Optional[str] = None,
+                 description: Optional[str] = None,
+                 derived_from: Optional[list[str]] = None,
+                 generated_by: Optional[list[Union[Identified, str]]] = None,
+                 measures: Optional[list[Identified]] = None,
+                 type_uri: str = SBOL_COMPONENT) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
                          namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
-        self.types: uri_list = URIProperty(self, SBOL_TYPE, 1, math.inf,
-                                           initial_value=types)
-        self.roles: uri_list = URIProperty(self, SBOL_ROLE, 0, math.inf,
-                                           initial_value=roles)
+        self.types = URIProperty(self, SBOL_TYPE, 1, math.inf,
+                                 initial_value=types)
+        self.roles = URIProperty(self, SBOL_ROLE, 0, math.inf,
+                                 initial_value=roles)
         self.sequences = ReferencedObject(self, SBOL_SEQUENCES, 0, math.inf,
                                           initial_value=sequences)
         self.features = OwnedObject(self, SBOL_FEATURES, 0, math.inf,
