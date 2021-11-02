@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Union, Any, List, Optional
 
 import rdflib
@@ -52,7 +54,7 @@ class ReferencedObjectSingleton(ReferencedObjectMixin, SingletonProperty):
     def __init__(self, property_owner: Any, property_uri: str,
                  lower_bound: int, upper_bound: int,
                  validation_rules: Optional[List] = None,
-                 initial_value: Optional[str] = None):
+                 initial_value: Optional[Union[Identified, str]] = None) -> None:
         super().__init__(property_owner, property_uri,
                          lower_bound, upper_bound, validation_rules)
         if initial_value is not None:
@@ -69,10 +71,14 @@ class ReferencedObjectList(ReferencedObjectMixin, ListProperty):
     def __init__(self, property_owner: Any, property_uri: str,
                  lower_bound: int, upper_bound: int,
                  validation_rules: Optional[List] = None,
-                 initial_value: Optional[str] = None):
+                 initial_value: Optional[list[Union[Identified, str]]] = None) -> None:
         super().__init__(property_owner, property_uri,
                          lower_bound, upper_bound, validation_rules)
         if initial_value is not None:
+            # Cannot use 'Identified' here because it isn't defined yet
+            if isinstance(initial_value, (str, SBOLObject)):
+                # Wrap the singleton in a list
+                initial_value = [initial_value]
             self.set(initial_value)
 
     # See bug 184 - don't add to document
@@ -83,7 +89,9 @@ class ReferencedObjectList(ReferencedObjectMixin, ListProperty):
 def ReferencedObject(property_owner: Any, property_uri: str,
                      lower_bound: int, upper_bound: Union[int, float],
                      validation_rules: Optional[List] = None,
-                     initial_value: Optional[Union[str, List[str]]] = None) -> Property:
+                     initial_value: Optional[Union[Union[Identified, str],
+                                                   list[Union[Identified, str]]]] = None
+                     ) -> Union[ReferencedURI, list[ReferencedURI], Property]:
     if upper_bound == 1:
         return ReferencedObjectSingleton(property_owner, property_uri,
                                          lower_bound, upper_bound,

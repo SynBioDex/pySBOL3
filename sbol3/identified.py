@@ -24,8 +24,8 @@ class Identified(SBOLObject):
     def __init__(self, identity: str, type_uri: str,
                  *, name: str = None, description: str = None,
                  derived_from: Optional[Union[str, list[str]]] = None,
-                 generated_by: list[str] = None,
-                 measures: list[SBOLObject] = None) -> None:
+                 generated_by: list[Union[Identified, str]] = None,
+                 measures: list[Identified] = None) -> None:
         """
         :param identity: this object's Uniform Resource Identifier (URI).
             this URI MUST be globally unique among all other Identified

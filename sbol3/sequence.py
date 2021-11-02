@@ -1,4 +1,6 @@
-from typing import List, Any, Optional
+from __future__ import annotations
+
+from typing import List, Any, Optional, Union
 
 from . import *
 from .typing import uri_singleton
@@ -12,7 +14,8 @@ class Sequence(TopLevel):
                  namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
-                 derived_from: List[str] = None, generated_by: List[str] = None,
+                 derived_from: List[str] = None,
+                 generated_by: list[Union[Identified, str]] = None,
                  measures: List[SBOLObject] = None,
                  type_uri: str = SBOL_SEQUENCE) -> None:
         super().__init__(identity=identity, type_uri=type_uri,

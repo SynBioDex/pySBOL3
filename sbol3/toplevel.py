@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 import copy
 import math
 import posixpath
 import uuid
 from typing import List, Dict, Callable, Union, Optional
-from urllib.parse import urlparse
 
 from . import *
 from .typing import uri_singleton
@@ -24,7 +25,7 @@ class TopLevel(Identified):
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
-                 generated_by: List[str] = None,
+                 generated_by: list[Union[Identified, str]] = None,
                  measures: List[SBOLObject] = None) -> None:
         # Check identity, which is required for a TopLevel
         # More checking on identity happens in Identified, but Identified
