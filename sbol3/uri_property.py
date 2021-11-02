@@ -24,7 +24,8 @@ class URISingletonProperty(URIPropertyMixin, SingletonProperty):
     def __init__(self, property_owner: Any, property_uri: str,
                  lower_bound: int, upper_bound: int,
                  validation_rules: Optional[List] = None,
-                 initial_value: Optional[str] = None):
+                 initial_value: Optional[str] = None
+                 ) -> None:
         super().__init__(property_owner, property_uri,
                          lower_bound, upper_bound, validation_rules)
         if initial_value is not None:
@@ -36,7 +37,8 @@ class URIListProperty(URIPropertyMixin, ListProperty):
     def __init__(self, property_owner: Any, property_uri: str,
                  lower_bound: int, upper_bound: int,
                  validation_rules: Optional[List] = None,
-                 initial_value: Optional[Union[str, list[str]]] = None):
+                 initial_value: Optional[Union[str, list[str]]] = None
+                 ) -> None:
         super().__init__(property_owner, property_uri,
                          lower_bound, upper_bound, validation_rules)
         if initial_value is not None:
@@ -50,7 +52,8 @@ def URIProperty(property_owner: Any, property_uri: str,
                 lower_bound: int, upper_bound: Union[int, float],
                 *,  # require keywords from here
                 validation_rules: Optional[List] = None,
-                initial_value: Optional[Union[str, List[str]]] = None) -> Property:
+                initial_value: Optional[Union[str, List[str]]] = None
+                ) -> Union[str, list[str], Property]:
     if upper_bound == 1:
         return URISingletonProperty(property_owner, property_uri,
                                     lower_bound, upper_bound,
