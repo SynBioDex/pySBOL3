@@ -40,8 +40,7 @@ class TestValidationReport(unittest.TestCase):
         # a TopLevel object not contained in the Document
         doc = sbol3.Document()
         doc.read(os.path.join(TEST_DIR, 'resources', 'package.nt'))
-        self.assertEqual(len(doc.validate()), 0)
-        
+        self.assertEqual(len(doc.validate()), 0) 
         minidoc = sbol3.Document()
         c = doc.find('https://synbiohub.org/public/igem/BBa_I20270')
         c.copy(minidoc)
@@ -67,3 +66,4 @@ class TestValidationReport(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
