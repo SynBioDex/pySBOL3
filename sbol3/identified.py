@@ -2,6 +2,7 @@ from __future__ import annotations
 import math
 import posixpath
 from typing import Callable, Any, Optional
+import typing
 from urllib.parse import urlparse
 
 import rdflib
@@ -23,7 +24,7 @@ class Identified(SBOLObject):
     def __init__(self, identity: str, type_uri: str,
                  *, name: Optional[str] = None,
                  description: Optional[str] = None,
-                 derived_from: Optional[Union[str, list[str]]] = None,
+                 derived_from: Optional[Union[str, typing.Sequence[str]]] = None,
                  generated_by: Optional[refobj_list_arg] = None,
                  measures: Optional[ownedobj_list_arg] = None) -> None:
         """

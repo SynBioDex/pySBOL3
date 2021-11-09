@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from typing import List, Any, Optional, Union
+from typing import Any, Optional
+import typing
 
 from . import *
-from .typing import uri_singleton
+from .typing import *
 
 
 class Sequence(TopLevel):
@@ -13,12 +14,12 @@ class Sequence(TopLevel):
                  elements: Optional[str] = None,
                  encoding: Optional[str] = None,
                  namespace: Optional[str] = None,
-                 attachments: Optional[list[Union[Identified, str]]] = None,
+                 attachments: Optional[refobj_list_arg] = None,
                  name: Optional[str] = None,
                  description: Optional[str] = None,
-                 derived_from: Optional[list[str]] = None,
-                 generated_by: Optional[list[Union[Identified, str]]] = None,
-                 measures: Optional[list[Identified]] = None,
+                 derived_from: Optional[Union[str, typing.Sequence[str]]] = None,
+                 generated_by: Optional[refobj_list_arg] = None,
+                 measures: Optional[ownedobj_list_arg] = None,
                  type_uri: str = SBOL_SEQUENCE) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
                          namespace=namespace,
