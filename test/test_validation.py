@@ -1,6 +1,10 @@
 import unittest
+import os
 
 import sbol3
+
+
+TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class TestValidationReport(unittest.TestCase):
@@ -30,6 +34,21 @@ class TestValidationReport(unittest.TestCase):
         self.assertEqual(1, len(report))
         report.addWarning(None, None, 'Fake warning')
         self.assertEqual(2, len(report))
+
+    def test_shacl_closure(self):
+        doc = sbol3.Document()
+        doc.read(os.path.join(TEST_DIR, 'resources', 'package.nt'))
+        #for e in doc.validate():
+        #     print(e)
+        #self.assertEqual(len(doc.validate()), 0)
+        
+        minidoc = sbol3.Document()
+        c = doc.find('https://synbiohub.org/public/igem/BBa_I20270')
+        c.copy(minidoc)
+
+        for e in minidoc.validate():
+             print(e)
+        self.assertEqual(len(minidoc.validate()), 0)  # this assertion fails
 
 
 if __name__ == '__main__':
