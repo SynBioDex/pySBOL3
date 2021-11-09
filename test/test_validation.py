@@ -35,20 +35,34 @@ class TestValidationReport(unittest.TestCase):
         report.addWarning(None, None, 'Fake warning')
         self.assertEqual(2, len(report))
 
-    def test_shacl_closure(self):
+    def test_shacl_closure_with_toplevels(self):
+        # SBOL closure semantics should allow properties to reference
+        # a TopLevel object not contained in the Document
         doc = sbol3.Document()
         doc.read(os.path.join(TEST_DIR, 'resources', 'package.nt'))
-        #for e in doc.validate():
-        #     print(e)
-        #self.assertEqual(len(doc.validate()), 0)
+        self.assertEqual(len(doc.validate()), 0)
         
         minidoc = sbol3.Document()
         c = doc.find('https://synbiohub.org/public/igem/BBa_I20270')
         c.copy(minidoc)
-
-        for e in minidoc.validate():
-             print(e)
         self.assertEqual(len(minidoc.validate()), 0)  # this assertion fails
+
+    @unittest.expectedFailure
+    def test_shacl_closure_with_child_objects(self):
+        # See issue #348
+        sbol3.set_namespace('http://foo.org/')
+        doc = sbol3.Document()
+        c_top = sbol3.Component('top', sbol3.SBO_DNA)
+        c_middle = sbol3.Component('middle', sbol3.SBO_DNA)
+        c_bottom = sbol3.Component('bottom', sbol3.SBO_DNA)
+        subc_middle = sbol3.SubComponent(c_middle)
+        c_top.features = [subc_middle]
+        subc_bottom = sbol3.SubComponent(c_bottom)
+        c_middle.features = [subc_bottom]
+        subc_bottom_ref = sbol3.ComponentReference(in_child_of=subc_middle, refers_to=subc_bottom)
+        c_top.features.append(subc_bottom_ref)
+        doc.add(c_top)
+        self.assertFalse(len(doc.validate()))
 
 
 if __name__ == '__main__':
