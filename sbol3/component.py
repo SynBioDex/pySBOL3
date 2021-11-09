@@ -4,6 +4,7 @@ import math
 from typing import List, Union, Any, Optional
 
 from . import *
+from .typing import *
 
 
 class Component(TopLevel):
@@ -23,7 +24,7 @@ class Component(TopLevel):
                  description: Optional[str] = None,
                  derived_from: Optional[list[str]] = None,
                  generated_by: Optional[list[Union[Identified, str]]] = None,
-                 measures: Optional[list[Identified]] = None,
+                 measures: Optional[ownedobj_list_arg] = None,
                  type_uri: str = SBOL_COMPONENT) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
                          namespace=namespace,
