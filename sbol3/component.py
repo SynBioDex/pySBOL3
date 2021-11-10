@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import math
-from typing import List, Union, Any, Optional
+from typing import Any, Optional
+import typing
 
 from . import *
 from .typing import *
@@ -9,21 +10,21 @@ from .typing import *
 
 class Component(TopLevel):
 
-    def __init__(self, identity: str, types: list[str],
+    def __init__(self, identity: str, types: Optional[Union[str, typing.Sequence[str]]],
                  *,  # Keywords only after this
-                 roles: Optional[list[str]] = None,
-                 sequences: Optional[list[Union[Identified, str]]] = None,
-                 features: List[Feature] = None,
-                 constraints: List[Constraint] = None,
-                 interactions: List[Interaction] = None,
-                 interface: Interface = None,
-                 models: Optional[list[Union[Identified, str]]] = None,
+                 roles: Optional[Union[str, typing.Sequence[str]]] = None,
+                 sequences: Optional[refobj_list_arg] = None,
+                 features: Union[Feature, typing.Sequence[Feature]] = None,
+                 constraints: Union[Constraint, typing.Sequence[Constraint]] = None,
+                 interactions: Union[Interaction, typing.Sequence[Interaction]] = None,
+                 interface: Union[Interface, typing.Sequence[Interface]] = None,
+                 models: Optional[refobj_list_arg] = None,
                  namespace: Optional[str] = None,
-                 attachments: Optional[list[Union[Identified, str]]] = None,
+                 attachments: Optional[refobj_list_arg] = None,
                  name: Optional[str] = None,
                  description: Optional[str] = None,
-                 derived_from: Optional[list[str]] = None,
-                 generated_by: Optional[list[Union[Identified, str]]] = None,
+                 derived_from: Optional[Union[str, typing.Sequence[str]]] = None,
+                 generated_by: Optional[refobj_list_arg] = None,
                  measures: Optional[ownedobj_list_arg] = None,
                  type_uri: str = SBOL_COMPONENT) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
