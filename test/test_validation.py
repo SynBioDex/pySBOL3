@@ -38,13 +38,15 @@ class TestValidationReport(unittest.TestCase):
     def test_shacl_closure_with_toplevels(self):
         # SBOL closure semantics should allow properties to reference
         # a TopLevel object not contained in the Document
+        # This is the test case in https://github.com/SynBioDex/pySBOL3/issues/348
         doc = sbol3.Document()
         doc.read(os.path.join(TEST_DIR, 'resources', 'package.nt'))
         self.assertEqual(len(doc.validate()), 0)
         minidoc = sbol3.Document()
         c = doc.find('https://synbiohub.org/public/igem/BBa_I20270')
         c.copy(minidoc)
-        self.assertEqual(len(minidoc.validate()), 0)  # this assertion fails
+        # this assertion failed before the fix to the shacl rules
+        self.assertEqual(len(minidoc.validate()), 0)
 
     def test_shacl_closure_simple(self):
         # This is a very small test case to reproduce the issue at the
@@ -60,8 +62,9 @@ class TestValidationReport(unittest.TestCase):
 
     @unittest.expectedFailure
     def test_shacl_closure_with_child_objects(self):
-        # See issue #348
-        sbol3.set_namespace('http://foo.org/')
+        # See https://github.com/SynBioDex/pySBOL3/issues/348
+        # See https://github.com/SynBioDex/pySBOL3/issues/353
+        sbol3.set_namespace('https://github.com/SynBioDex/pySBOL3')
         doc = sbol3.Document()
         c_top = sbol3.Component('top', sbol3.SBO_DNA)
         c_middle = sbol3.Component('middle', sbol3.SBO_DNA)
