@@ -10,7 +10,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Attachment"^^xsd:string ;
-    rdfs:subClassOf _:Nbbe2110b34714c958d17607763905bd6,
+    rdfs:subClassOf _:Nb6e902de2b59489bb0b9aee3a3ebd9b2,
         [ a rdfs:Resource,
                 owl:Restriction ;
             owl:onProperty <http://sbols.org/v3#source> ;
@@ -30,7 +30,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Collection"^^xsd:string ;
-    rdfs:subClassOf _:Nbbe2110b34714c958d17607763905bd6,
+    rdfs:subClassOf _:Nb6e902de2b59489bb0b9aee3a3ebd9b2,
         <http://sbols.org/v3#Identified>,
         <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
@@ -46,7 +46,7 @@
                 owl:Restriction ;
             owl:onProperty <http://sbols.org/v3#template> ;
             owl:someValuesFrom <http://sbols.org/v3#Component> ],
-        _:Nbbe2110b34714c958d17607763905bd6,
+        _:Nb6e902de2b59489bb0b9aee3a3ebd9b2,
         <http://sbols.org/v3#Identified>,
         <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
@@ -64,7 +64,7 @@
                 owl:Restriction ;
             owl:onProperty <http://sbols.org/v3#type> ;
             owl:someValuesFrom owl:Thing ],
-        _:Nbbe2110b34714c958d17607763905bd6,
+        _:Nb6e902de2b59489bb0b9aee3a3ebd9b2,
         <http://sbols.org/v3#Identified>,
         <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
@@ -125,7 +125,9 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Cut"^^xsd:string ;
-    rdfs:subClassOf [ a rdfs:Resource,
+    rdfs:subClassOf _:N6189e0f22398445e931c2c641753305d,
+        _:N779aa91899e9496cb8527977d927da2a,
+        [ a rdfs:Resource,
                 owl:Restriction ;
             owl:onProperty <http://sbols.org/v3#at> ;
             owl:someValuesFrom [ a rdfs:Datatype,
@@ -136,8 +138,6 @@
                             rdf:first [ a rdfs:Resource ;
                                     xsd:minInclusive 0 ] ;
                             rdf:rest () ] ] ],
-        _:Nd1d56f7c8c8f48c3b688dc0d6efe4dc7,
-        _:Nf6ec36b498544b77a87b4a008105fb71,
         <http://sbols.org/v3#Identified>,
         <http://sbols.org/v3#Location>,
         owl:Thing ;
@@ -149,8 +149,8 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "EntireSequence"^^xsd:string ;
-    rdfs:subClassOf _:Nd1d56f7c8c8f48c3b688dc0d6efe4dc7,
-        _:Nf6ec36b498544b77a87b4a008105fb71,
+    rdfs:subClassOf _:N6189e0f22398445e931c2c641753305d,
+        _:N779aa91899e9496cb8527977d927da2a,
         <http://sbols.org/v3#Identified>,
         <http://sbols.org/v3#Location>,
         owl:Thing ;
@@ -161,7 +161,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Experiment"^^xsd:string ;
-    rdfs:subClassOf _:Nbbe2110b34714c958d17607763905bd6,
+    rdfs:subClassOf _:Nb6e902de2b59489bb0b9aee3a3ebd9b2,
         <http://sbols.org/v3#Collection>,
         <http://sbols.org/v3#Identified>,
         <http://sbols.org/v3#TopLevel>,
@@ -173,7 +173,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "ExperimentalData"^^xsd:string ;
-    rdfs:subClassOf _:Nbbe2110b34714c958d17607763905bd6,
+    rdfs:subClassOf _:Nb6e902de2b59489bb0b9aee3a3ebd9b2,
         <http://sbols.org/v3#Identified>,
         <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
@@ -224,7 +224,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Implementation"^^xsd:string ;
-    rdfs:subClassOf _:Nbbe2110b34714c958d17607763905bd6,
+    rdfs:subClassOf _:Nb6e902de2b59489bb0b9aee3a3ebd9b2,
         <http://sbols.org/v3#Identified>,
         <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
@@ -276,8 +276,8 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Location"^^xsd:string ;
-    rdfs:subClassOf _:Nd1d56f7c8c8f48c3b688dc0d6efe4dc7,
-        _:Nf6ec36b498544b77a87b4a008105fb71,
+    rdfs:subClassOf _:N6189e0f22398445e931c2c641753305d,
+        _:N779aa91899e9496cb8527977d927da2a,
         <http://sbols.org/v3#Identified>,
         owl:Thing ;
     sh:property <http://sbols.org/v3#Location-hasSequence>,
@@ -291,16 +291,16 @@
     rdfs:label "Model"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty <http://sbols.org/v3#source> ;
+            owl:onProperty <http://sbols.org/v3#language> ;
             owl:someValuesFrom owl:Thing ],
-        _:Nbbe2110b34714c958d17607763905bd6,
         [ a rdfs:Resource,
                 owl:Restriction ;
             owl:onProperty <http://sbols.org/v3#framework> ;
             owl:someValuesFrom owl:Thing ],
+        _:Nb6e902de2b59489bb0b9aee3a3ebd9b2,
         [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty <http://sbols.org/v3#language> ;
+            owl:onProperty <http://sbols.org/v3#source> ;
             owl:someValuesFrom owl:Thing ],
         <http://sbols.org/v3#Identified>,
         <http://sbols.org/v3#TopLevel>,
@@ -330,17 +330,8 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Range"^^xsd:string ;
-    rdfs:subClassOf [ a rdfs:Resource,
-                owl:Restriction ;
-            owl:onProperty <http://sbols.org/v3#start> ;
-            owl:someValuesFrom [ a rdfs:Datatype,
-                        rdfs:Resource ;
-                    rdfs:subClassOf rdfs:Literal ;
-                    owl:onDatatype xsd:integer ;
-                    owl:withRestrictions [ a rdfs:Resource ;
-                            rdf:first [ a rdfs:Resource ;
-                                    xsd:minInclusive 1 ] ;
-                            rdf:rest () ] ] ],
+    rdfs:subClassOf _:N6189e0f22398445e931c2c641753305d,
+        _:N779aa91899e9496cb8527977d927da2a,
         [ a rdfs:Resource,
                 owl:Restriction ;
             owl:onProperty <http://sbols.org/v3#end> ;
@@ -352,8 +343,17 @@
                             rdf:first [ a rdfs:Resource ;
                                     xsd:minInclusive 1 ] ;
                             rdf:rest () ] ] ],
-        _:Nd1d56f7c8c8f48c3b688dc0d6efe4dc7,
-        _:Nf6ec36b498544b77a87b4a008105fb71,
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty <http://sbols.org/v3#start> ;
+            owl:someValuesFrom [ a rdfs:Datatype,
+                        rdfs:Resource ;
+                    rdfs:subClassOf rdfs:Literal ;
+                    owl:onDatatype xsd:integer ;
+                    owl:withRestrictions [ a rdfs:Resource ;
+                            rdf:first [ a rdfs:Resource ;
+                                    xsd:minInclusive 1 ] ;
+                            rdf:rest () ] ] ],
         <http://sbols.org/v3#Identified>,
         <http://sbols.org/v3#Location>,
         owl:Thing ;
@@ -366,7 +366,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Sequence"^^xsd:string ;
-    rdfs:subClassOf _:Nbbe2110b34714c958d17607763905bd6,
+    rdfs:subClassOf _:Nb6e902de2b59489bb0b9aee3a3ebd9b2,
         <http://sbols.org/v3#Identified>,
         <http://sbols.org/v3#TopLevel>,
         owl:Thing ;
@@ -410,7 +410,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "TopLevel"^^xsd:string ;
-    rdfs:subClassOf _:Nbbe2110b34714c958d17607763905bd6,
+    rdfs:subClassOf _:Nb6e902de2b59489bb0b9aee3a3ebd9b2,
         <http://sbols.org/v3#Identified>,
         owl:Thing ;
     sh:property <http://sbols.org/v3#TopLevel-hasAttachment>,
@@ -423,12 +423,12 @@
     rdfs:label "VariableFeature"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty <http://sbols.org/v3#cardinality> ;
-            owl:someValuesFrom <http://sbols.org/v3#Cardinality> ],
-        [ a rdfs:Resource,
-                owl:Restriction ;
             owl:onProperty <http://sbols.org/v3#variable> ;
             owl:someValuesFrom <http://sbols.org/v3#Feature> ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty <http://sbols.org/v3#cardinality> ;
+            owl:someValuesFrom <http://sbols.org/v3#Cardinality> ],
         <http://sbols.org/v3#Identified>,
         owl:Thing ;
     sh:property <http://sbols.org/v3#VariableFeature-cardinality>,
@@ -674,7 +674,6 @@
     sh:path <http://sbols.org/v3#hasNamespace> .
 
 <http://sbols.org/v3#Collection-member> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#TopLevel> ;
     sh:path <http://sbols.org/v3#member> .
 
 <http://sbols.org/v3#CombinatorialDerivation-hasNamespace> a sh:PropertyShape ;
@@ -692,7 +691,6 @@
     sh:path <http://sbols.org/v3#strategy> .
 
 <http://sbols.org/v3#CombinatorialDerivation-template> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#Component> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:path <http://sbols.org/v3#template> .
@@ -715,7 +713,6 @@
     sh:path <http://sbols.org/v3#hasInterface> .
 
 <http://sbols.org/v3#Component-hasModel> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#Model> ;
     sh:path <http://sbols.org/v3#hasModel> .
 
 <http://sbols.org/v3#Component-hasNamespace> a sh:PropertyShape ;
@@ -725,7 +722,6 @@
     sh:path <http://sbols.org/v3#hasNamespace> .
 
 <http://sbols.org/v3#Component-hasSequence> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#Sequence> ;
     sh:path <http://sbols.org/v3#hasSequence> .
 
 <http://sbols.org/v3#Component-role> a sh:PropertyShape ;
@@ -773,13 +769,11 @@
     sh:path <http://sbols.org/v3#at> .
 
 <http://sbols.org/v3#Cut-hasSequence> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#Sequence> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:path <http://sbols.org/v3#hasSequence> .
 
 <http://sbols.org/v3#EntireSequence-hasSequence> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#Sequence> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:path <http://sbols.org/v3#hasSequence> .
@@ -834,7 +828,6 @@
     sh:path <http://sbols.org/v3#name> .
 
 <http://sbols.org/v3#Implementation-built> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#Component> ;
     sh:maxCount 1 ;
     sh:path <http://sbols.org/v3#built> .
 
@@ -875,7 +868,6 @@
     sh:path <http://sbols.org/v3#type> .
 
 <http://sbols.org/v3#Location-hasSequence> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#Sequence> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:path <http://sbols.org/v3#hasSequence> .
@@ -933,7 +925,6 @@
     sh:path <http://sbols.org/v3#end> .
 
 <http://sbols.org/v3#Range-hasSequence> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#Sequence> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:path <http://sbols.org/v3#hasSequence> .
@@ -968,7 +959,6 @@
     sh:path <http://sbols.org/v3#hasLocation> .
 
 <http://sbols.org/v3#SubComponent-instanceOf> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#Component> ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:path <http://sbols.org/v3#instanceOf> .
@@ -982,7 +972,6 @@
     sh:path <http://sbols.org/v3#sourceLocation> .
 
 <http://sbols.org/v3#TopLevel-hasAttachment> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#Attachment> ;
     sh:path <http://sbols.org/v3#hasAttachment> .
 
 <http://sbols.org/v3#TopLevel-hasNamespace> a sh:PropertyShape ;
@@ -1004,15 +993,12 @@
     sh:path <http://sbols.org/v3#variable> .
 
 <http://sbols.org/v3#VariableFeature-variant> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#Component> ;
     sh:path <http://sbols.org/v3#variant> .
 
 <http://sbols.org/v3#VariableFeature-variantCollection> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#Collection> ;
     sh:path <http://sbols.org/v3#variantCollection> .
 
 <http://sbols.org/v3#VariableFeature-variantDerivation> a sh:PropertyShape ;
-    sh:class <http://sbols.org/v3#CombinatorialDerivation> ;
     sh:path <http://sbols.org/v3#variantDerivation> .
 
 <http://sbols.org/v3#VariableFeature-variantMeasure> a sh:PropertyShape ;
@@ -1870,18 +1856,18 @@ owl:Thing a rdfs:Resource .
 
 1 a rdfs:Resource .
 
-_:Nd1d56f7c8c8f48c3b688dc0d6efe4dc7 a rdfs:Resource,
-        owl:Restriction ;
-    owl:onProperty <http://sbols.org/v3#hasSequence> ;
-    owl:someValuesFrom <http://sbols.org/v3#Sequence> .
-
-_:Nf6ec36b498544b77a87b4a008105fb71 a rdfs:Resource,
+_:N6189e0f22398445e931c2c641753305d a rdfs:Resource,
         owl:Restriction ;
     owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
     owl:onClass <http://sbols.org/v3#Sequence> ;
     owl:onProperty <http://sbols.org/v3#hasSequence> .
 
-_:Nbbe2110b34714c958d17607763905bd6 a rdfs:Resource,
+_:N779aa91899e9496cb8527977d927da2a a rdfs:Resource,
+        owl:Restriction ;
+    owl:onProperty <http://sbols.org/v3#hasSequence> ;
+    owl:someValuesFrom <http://sbols.org/v3#Sequence> .
+
+_:Nb6e902de2b59489bb0b9aee3a3ebd9b2 a rdfs:Resource,
         owl:Restriction ;
     owl:onProperty <http://sbols.org/v3#hasNamespace> ;
     owl:someValuesFrom owl:Thing .

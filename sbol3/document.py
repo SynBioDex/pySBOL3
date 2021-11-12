@@ -459,7 +459,9 @@ class Document:
                                                  shacl_ns.ValidationReport):
             for result in shacl_graph.objects(shacl_report, shacl_ns.result):
                 object_id = shacl_graph.value(result, shacl_ns.focusNode)
-                message = shacl_graph.value(result, shacl_ns.resultMessage)
+                result_path = shacl_graph.value(result, shacl_ns.resultPath)
+                result_message = shacl_graph.value(result, shacl_ns.resultMessage)
+                message = f'{result_path}: {result_message}'
                 severity = shacl_graph.value(result, sh_result_severity)
                 if severity == sh_violation:
                     report.addError(object_id, None, message)
