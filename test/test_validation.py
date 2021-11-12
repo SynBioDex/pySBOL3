@@ -46,6 +46,18 @@ class TestValidationReport(unittest.TestCase):
         c.copy(minidoc)
         self.assertEqual(len(minidoc.validate()), 0)  # this assertion fails
 
+    def test_shacl_closure_simple(self):
+        # This is a very small test case to reproduce the issue at the
+        # center of https://github.com/SynBioDex/pySBOL3/issues/348
+        sbol3.set_namespace('https://github.com/SynBioDex/pySBOL3')
+        other_component = 'https://github.com/SynBioDex/pySBOL3/other_c'
+        sc = sbol3.SubComponent(instance_of=other_component)
+        c = sbol3.Component('c1', types=[sbol3.SBO_DNA], features=[sc])
+        doc = sbol3.Document()
+        doc.add(c)
+        report = doc.validate()
+        self.assertEqual(0, len(report))
+
     @unittest.expectedFailure
     def test_shacl_closure_with_child_objects(self):
         # See issue #348
