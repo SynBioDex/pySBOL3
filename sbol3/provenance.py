@@ -1,8 +1,10 @@
+from __future__ import annotations
 import datetime
 import math
-from typing import Union, List, Any
+from typing import Union, List, Any, Optional
 
 from . import *
+from .typing import uri_list, uri_singleton
 
 
 class Usage(CustomIdentified):
@@ -18,7 +20,7 @@ class Usage(CustomIdentified):
     """
 
     def __init__(self, entity: str,
-                 *, roles: str = None,
+                 *, roles: Optional[str, list[str]] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
                  generated_by: List[str] = None,
@@ -29,10 +31,10 @@ class Usage(CustomIdentified):
                          name=name, description=description,
                          derived_from=derived_from, generated_by=generated_by,
                          measures=measures)
-        self.entity = URIProperty(self, PROV_ENTITY, 1, 1,
-                                  initial_value=entity)
-        self.roles = URIProperty(self, PROV_ROLES, 0, math.inf,
-                                 initial_value=roles)
+        self.entity: uri_singleton = URIProperty(self, PROV_ENTITY, 1, 1,
+                                                 initial_value=entity)
+        self.roles: uri_list = URIProperty(self, PROV_ROLES, 0, math.inf,
+                                           initial_value=roles)
 
     def accept(self, visitor: Any) -> Any:
         """Invokes `visit_usage` on `visitor` with `self` as the only
@@ -142,7 +144,8 @@ class Association(CustomIdentified):
     """
 
     def __init__(self, agent: Union[str, Identified],
-                 *, roles: str = None, plan: Union[Identified, str] = None,
+                 *, roles: Optional[str, list[str]] = None,
+                 plan: Union[Identified, str] = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,
                  generated_by: List[str] = None,
@@ -153,8 +156,8 @@ class Association(CustomIdentified):
                          name=name, description=description,
                          derived_from=derived_from, generated_by=generated_by,
                          measures=measures)
-        self.roles = URIProperty(self, PROV_ROLES, 0, math.inf,
-                                 initial_value=roles)
+        self.roles: uri_list = URIProperty(self, PROV_ROLES, 0, math.inf,
+                                           initial_value=roles)
         self.plan = ReferencedObject(self, PROV_PLANS, 0, 1,
                                      initial_value=plan)
         self.agent = ReferencedObject(self, PROV_AGENTS, 1, 1,
@@ -206,7 +209,7 @@ class Activity(CustomTopLevel):
     """
 
     def __init__(self, identity: str,
-                 *, types: List[str] = None,
+                 *, types: Optional[str, list[str]] = None,
                  start_time: Union[str, datetime.datetime] = None,
                  end_time: Union[str, datetime.datetime] = None,
                  usage: List[Identified] = None,
@@ -223,8 +226,8 @@ class Activity(CustomTopLevel):
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
-        self.types = URIProperty(self, SBOL_TYPE, 0, math.inf,
-                                 initial_value=types)
+        self.types: uri_list = URIProperty(self, SBOL_TYPE, 0, math.inf,
+                                           initial_value=types)
         self.start_time = DateTimeProperty(self, PROV_STARTED_AT_TIME, 0, 1,
                                            initial_value=start_time)
         self.end_time = DateTimeProperty(self, PROV_ENDED_AT_TIME, 0, 1,

@@ -1,3 +1,4 @@
+from __future__ import annotations
 import math
 from typing import Any
 
@@ -15,7 +16,7 @@ class LocalSubComponent(Feature):
 
     """
 
-    def __init__(self, types: List[str],
+    def __init__(self, types: Union[str, list[str]],
                  *, locations: List[Location] = None,
                  roles: List[str] = None, orientation: str = None,
                  name: str = None, description: str = None,

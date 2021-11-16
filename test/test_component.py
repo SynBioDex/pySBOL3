@@ -169,6 +169,20 @@ class TestComponent(unittest.TestCase):
             self.assertNotEqual(o.identity, o_clone.identity)
             self.assertEqual(o.refers_to, o_clone.refers_to)
 
+    def test_measures_initial_value(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        metre = 'http://www.ontology-of-units-of-measure.org/resource/om-2/metre'
+        one_metre = sbol3.Measure(1, unit=metre)
+        two_metres = sbol3.Measure(2, unit=metre)
+        # Test passing a list of measures
+        c1 = sbol3.Component('c1', types=[sbol3.SBO_DNA], measures=[one_metre, two_metres])
+        self.assertListEqual([one_metre, two_metres], list(c1.measures))
+        # test passing a singleton measure
+        three_metres = sbol3.Measure(3, unit=metre)
+        c2 = sbol3.Component('c2', types=[sbol3.SBO_DNA], measures=three_metres)
+        self.assertListEqual([three_metres], list(c2.measures))
+
 
 if __name__ == '__main__':
     unittest.main()

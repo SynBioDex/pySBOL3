@@ -2,6 +2,7 @@ import math
 from typing import List, Union, Any
 
 from . import *
+from .typing import uri_singleton
 
 
 class VariableFeature(Identified):
@@ -36,8 +37,8 @@ class VariableFeature(Identified):
         if variable is None:
             variable = PYSBOL3_MISSING
         # Create properties
-        self.cardinality = URIProperty(self, SBOL_CARDINALITY, 1, 1,
-                                       initial_value=cardinality)
+        self.cardinality: uri_singleton = URIProperty(self, SBOL_CARDINALITY, 1, 1,
+                                                      initial_value=cardinality)
         self.variable = ReferencedObject(self, SBOL_VARIABLE, 1, 1,
                                          initial_value=variable)
         self.variants = ReferencedObject(self, SBOL_VARIANT, 0, math.inf,

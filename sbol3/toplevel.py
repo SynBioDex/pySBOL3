@@ -1,11 +1,14 @@
+from __future__ import annotations
+
 import copy
 import math
 import posixpath
 import uuid
-from typing import List, Dict, Callable, Union
-from urllib.parse import urlparse
+from typing import Dict, Callable, Optional
+import typing
 
 from . import *
+from .typing import *
 
 
 class TopLevel(Identified):
@@ -19,12 +22,13 @@ class TopLevel(Identified):
     """
 
     def __init__(self, identity: str, type_uri: str,
-                 *, namespace: str = None,
-                 attachments: List[str] = None,
-                 name: str = None, description: str = None,
-                 derived_from: List[str] = None,
-                 generated_by: List[str] = None,
-                 measures: List[SBOLObject] = None) -> None:
+                 *, namespace: Optional[str] = None,
+                 attachments: Optional[refobj_list_arg] = None,
+                 name: Optional[str] = None,
+                 description: Optional[str] = None,
+                 derived_from: Optional[Union[str, typing.Sequence[str]]] = None,
+                 generated_by: Optional[refobj_list_arg] = None,
+                 measures: Optional[ownedobj_list_arg] = None) -> None:
         # Check identity, which is required for a TopLevel
         # More checking on identity happens in Identified, but Identified
         # does not require an identity, only TopLevel does.

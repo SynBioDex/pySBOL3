@@ -1,4 +1,4 @@
-from typing import List, Any
+from typing import List, Any, Optional
 
 from . import *
 
@@ -11,7 +11,8 @@ class Attachment(TopLevel):
     """
 
     def __init__(self, identity: str, source: str,
-                 *, format: str = None, size: int = None,
+                 *, format: Optional[str] = None,
+                 size: int = None,
                  hash: str = None, hash_algorithm: str = None,
                  namespace: str = None,
                  attachments: List[str] = None,

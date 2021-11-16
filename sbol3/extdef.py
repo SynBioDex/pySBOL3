@@ -1,3 +1,4 @@
+from __future__ import annotations
 import math
 from typing import Any
 
@@ -15,7 +16,7 @@ class ExternallyDefined(Feature):
 
     """
 
-    def __init__(self, types: List[str], definition: str,
+    def __init__(self, types: Union[str, list[str]], definition: str,
                  *, roles: List[str] = None, orientation: str = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,

@@ -1,12 +1,14 @@
-import abc
+from __future__ import annotations
 import math
 import posixpath
-from typing import Union, List, Callable, Any
+from typing import Callable, Any, Optional
+import typing
 from urllib.parse import urlparse
 
 import rdflib
 
 from . import *
+from .typing import *
 from .utils import parse_class_name
 
 
@@ -20,9 +22,11 @@ class Identified(SBOLObject):
     """
 
     def __init__(self, identity: str, type_uri: str,
-                 *, name: str = None, description: str = None,
-                 derived_from: List[str] = None, generated_by: List[str] = None,
-                 measures: List[SBOLObject] = None) -> None:
+                 *, name: Optional[str] = None,
+                 description: Optional[str] = None,
+                 derived_from: Optional[Union[str, typing.Sequence[str]]] = None,
+                 generated_by: Optional[refobj_list_arg] = None,
+                 measures: Optional[ownedobj_list_arg] = None) -> None:
         """
         :param identity: this object's Uniform Resource Identifier (URI).
             this URI MUST be globally unique among all other Identified
@@ -235,7 +239,6 @@ class Identified(SBOLObject):
                 graph.add((identity, rdf_prop, rdflib.URIRef(item.identity)))
                 item.serialize(graph)
 
-    @abc.abstractmethod
     def accept(self, visitor: Any) -> Any:
         """
         An abstract method for concrete classes to override. This

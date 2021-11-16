@@ -1,17 +1,25 @@
-from typing import List, Any
+from __future__ import annotations
+
+from typing import Any, Optional
+import typing
 
 from . import *
+from .typing import *
 
 
 class Sequence(TopLevel):
 
-    def __init__(self, identity: str, *,
-                 elements: str = None, encoding: str = None,
-                 namespace: str = None,
-                 attachments: List[str] = None,
-                 name: str = None, description: str = None,
-                 derived_from: List[str] = None, generated_by: List[str] = None,
-                 measures: List[SBOLObject] = None,
+    def __init__(self, identity: str,
+                 *,  # Keywords only after this
+                 elements: Optional[str] = None,
+                 encoding: Optional[str] = None,
+                 namespace: Optional[str] = None,
+                 attachments: Optional[refobj_list_arg] = None,
+                 name: Optional[str] = None,
+                 description: Optional[str] = None,
+                 derived_from: Optional[Union[str, typing.Sequence[str]]] = None,
+                 generated_by: Optional[refobj_list_arg] = None,
+                 measures: Optional[ownedobj_list_arg] = None,
                  type_uri: str = SBOL_SEQUENCE) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
                          namespace=namespace,
@@ -20,8 +28,8 @@ class Sequence(TopLevel):
                          generated_by=generated_by, measures=measures)
         self.elements = TextProperty(self, SBOL_ELEMENTS, 0, 1,
                                      initial_value=elements)
-        self.encoding = URIProperty(self, SBOL_ENCODING, 0, 1,
-                                    initial_value=encoding)
+        self.encoding: uri_singleton = URIProperty(self, SBOL_ENCODING, 0, 1,
+                                                   initial_value=encoding)
 
     def validate(self, report: ValidationReport = None) -> ValidationReport:
         report = super().validate(report)

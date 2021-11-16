@@ -1,3 +1,4 @@
+from __future__ import annotations
 import math
 from typing import Any
 
@@ -11,7 +12,7 @@ class Participation(Identified):
 
     """
 
-    def __init__(self, roles: List[str],
+    def __init__(self, roles: Union[str, list[str]],
                  participant: Union[SBOLObject, str],
                  *, name: str = None, description: str = None,
                  derived_from: List[str] = None,

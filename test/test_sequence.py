@@ -97,6 +97,30 @@ class TestSequence(unittest.TestCase):
         self.assertEqual(elements, s1.elements)
         # self.assertEqual(encoding, s1.encoding)
 
+    def test_generated_by(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        act1 = sbol3.Activity('act1')
+        act2 = sbol3.Activity('act2')
+        elements = 'acgt'
+        seq1 = sbol3.Sequence(identity='seq1',
+                              elements=elements)
+        self.assertListEqual([], list(seq1.generated_by))
+        # test a list of items
+        activities = [act1, act2]
+        seq2 = sbol3.Sequence(identity='seq2',
+                              elements=elements,
+                              generated_by=activities)
+        self.assertListEqual([a.identity for a in activities],
+                             list(seq2.generated_by))
+        # test a singleton, which should gracefully be marshalled into a list
+        activity = act1
+        seq3 = sbol3.Sequence(identity='seq3',
+                              elements=elements,
+                              generated_by=activity)
+        self.assertListEqual([activity.identity],
+                             list(seq3.generated_by))
+
 
 if __name__ == '__main__':
     unittest.main()

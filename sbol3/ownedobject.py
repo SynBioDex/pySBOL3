@@ -98,6 +98,10 @@ class OwnedObjectListProperty(OwnedObjectPropertyMixin, ListProperty):
         # to accept unknown keyword arguments.
         self.type_constraint = type_constraint
         if initial_value is not None:
+            if isinstance(initial_value, SBOLObject):
+                # coerce the singleton into a list
+                # see https://github.com/SynBioDex/pySBOL3/issues/301
+                initial_value = [initial_value]
             self.set(initial_value)
 
     def validate(self, name: str, report: ValidationReport):

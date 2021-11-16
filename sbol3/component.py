@@ -1,33 +1,39 @@
+from __future__ import annotations
+
 import math
-from typing import List, Union, Any
+from typing import Any, Optional
+import typing
 
 from . import *
+from .typing import *
 
 
 class Component(TopLevel):
 
-    def __init__(self, identity: str, types: Union[List[str], str],
-                 *, roles: List[str] = None,
-                 sequences: List[str] = None,
-                 features: List[Feature] = None,
-                 constraints: List[Constraint] = None,
-                 interactions: List[Interaction] = None,
-                 interface: Interface = None,
-                 models: List[str] = None,
-                 namespace: str = None,
-                 attachments: List[str] = None,
-                 name: str = None, description: str = None,
-                 derived_from: List[str] = None, generated_by: List[str] = None,
-                 measures: List[SBOLObject] = None, type_uri: str = SBOL_COMPONENT):
+    def __init__(self, identity: str, types: Optional[Union[str, typing.Sequence[str]]],
+                 *,  # Keywords only after this
+                 roles: Optional[Union[str, typing.Sequence[str]]] = None,
+                 sequences: Optional[refobj_list_arg] = None,
+                 features: Union[Feature, typing.Sequence[Feature]] = None,
+                 constraints: Union[Constraint, typing.Sequence[Constraint]] = None,
+                 interactions: Union[Interaction, typing.Sequence[Interaction]] = None,
+                 interface: Union[Interface, typing.Sequence[Interface]] = None,
+                 models: Optional[refobj_list_arg] = None,
+                 namespace: Optional[str] = None,
+                 attachments: Optional[refobj_list_arg] = None,
+                 name: Optional[str] = None,
+                 description: Optional[str] = None,
+                 derived_from: Optional[Union[str, typing.Sequence[str]]] = None,
+                 generated_by: Optional[refobj_list_arg] = None,
+                 measures: Optional[ownedobj_list_arg] = None,
+                 type_uri: str = SBOL_COMPONENT) -> None:
         super().__init__(identity=identity, type_uri=type_uri,
                          namespace=namespace,
                          attachments=attachments, name=name,
                          description=description, derived_from=derived_from,
                          generated_by=generated_by, measures=measures)
-        if isinstance(types, str):
-            types = [types]
-        self.types: Union[List, Property] = URIProperty(self, SBOL_TYPE, 1, math.inf,
-                                                        initial_value=types)
+        self.types = URIProperty(self, SBOL_TYPE, 1, math.inf,
+                                 initial_value=types)
         self.roles = URIProperty(self, SBOL_ROLE, 0, math.inf,
                                  initial_value=roles)
         self.sequences = ReferencedObject(self, SBOL_SEQUENCES, 0, math.inf,
