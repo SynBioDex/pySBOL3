@@ -374,7 +374,6 @@ class Document:
             result = self.join_lines(lines)
         elif file_format == JSONLD:
             context = {f'@{prefix}': uri for prefix, uri in self._namespaces.items()}
-            context['@vocab'] = 'https://sbolstandard.org/examples/'
             result = graph.serialize(format=file_format, context=context)
         else:
             result = graph.serialize(format=file_format)
