@@ -32,6 +32,12 @@ class ReferencedObjectMixin:
     @staticmethod
     def from_user(value: Any) -> rdflib.URIRef:
         if isinstance(value, SBOLObject):
+            # see https://github.com/SynBioDex/pySBOL3/issues/357
+            if value.identity is None:
+                # The SBOLObject has an uninitialized identity
+                msg = f'Cannot set reference to {value}.'
+                msg += ' Object identity is uninitialized.'
+                raise ValueError(msg)
             value = value.identity
         if not isinstance(value, str):
             raise TypeError(f'Expecting string, got {type(value)}')

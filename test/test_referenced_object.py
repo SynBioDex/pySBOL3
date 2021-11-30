@@ -125,6 +125,15 @@ class TestReferencedObject(unittest.TestCase):
         # to get back to the original instance via document lookup
         self.assertEqual(execution.identity, foo.members[0].lookup().identity)
 
+    def test_no_identity_exception(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/357
+        sbol3.set_namespace('https://github.com/SynBioDex/pySBOL3')
+        collection = sbol3.Collection('foo_collection')
+        subc = sbol3.SubComponent(instance_of='https://github.com/SynBioDex/pySBOL3/c1')
+        exc_regex = r'Object identity is uninitialized\.$'
+        with self.assertRaisesRegex(ValueError, exc_regex):
+            collection.members.append(subc)
+
 
 if __name__ == '__main__':
     unittest.main()
