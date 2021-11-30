@@ -430,6 +430,12 @@ class TestDocument(unittest.TestCase):
         doc3 = sbol3.Document()
         doc3.read_string(data, file_format=file_format)
 
+    def test_jsonld_no_vocab(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/349
+        doc = sbol3.Document()
+        doc_string = doc.write_string(file_format=sbol3.JSONLD)
+        self.assertNotIn('@vocab', doc_string)
+
 
 if __name__ == '__main__':
     unittest.main()
