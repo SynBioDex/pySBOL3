@@ -381,7 +381,6 @@ class TestDocument(unittest.TestCase):
         report = doc.validate()
         self.assertEqual(0, len(report))
 
-    @unittest.expectedFailure
     def test_json_ld_parser_bug(self):
         # See https://github.com/RDFLib/rdflib/issues/1443
         # See https://github.com/SynBioDex/pySBOL3/issues/329

@@ -38,7 +38,7 @@ setup(name='sbol3',
       install_requires=[
             # Require at least rdflib 6.0.1, and allow newer versions
             # of rdflib 6.x
-            'rdflib>=6.0.2,==6.*',
+            'rdflib>=6.1.1,==6.*',
             'python-dateutil~=2.8.2',
             'pyshacl~=0.17.2',
       ],
