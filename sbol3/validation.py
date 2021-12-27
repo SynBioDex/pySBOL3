@@ -50,6 +50,10 @@ class ValidationReport:
         for warning in self._warnings:
             yield warning
 
+    def __str__(self):
+        xs = self._errors + self._warnings
+        return '\n'.join([e.__str__() for e in xs])
+        
     @property
     def warnings(self) -> Sequence[ValidationWarning]:
         return tuple(self._warnings)
