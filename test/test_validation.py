@@ -39,13 +39,13 @@ class TestValidationReport(unittest.TestCase):
         # str representation should consist of errors and warnings
         # all errors precede any warning
         report = sbol3.ValidationReport()
-        self.assertEqual('', report.__str__())
+        self.assertEqual('', str(report))
         report.addError(None, None, 'Fake error')
-        self.assertEqual('Fake error', report.__str__())
+        self.assertEqual('Fake error', str(report))
         report.addWarning(None, None, 'Fake warning')
-        self.assertEqual('Fake error\nFake warning', report.__str__())
+        self.assertEqual('Fake error\nFake warning', str(report))
         report.addError(None, None, 'Fake error')
-        self.assertEqual('Fake error\nFake error\nFake warning', report.__str__())
+        self.assertEqual('Fake error\nFake error\nFake warning', str(report))
 
     def test_shacl_closure_with_toplevels(self):
         # SBOL closure semantics should allow properties to reference
