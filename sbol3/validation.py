@@ -51,8 +51,8 @@ class ValidationReport:
             yield warning
 
     def __str__(self):
-        xs = self._errors + self._warnings
-        return '\n'.join([str(e) for e in xs])
+        issues = self._errors + self._warnings
+        return '\n'.join([str(i) for i in issues])
 
     @property
     def warnings(self) -> Sequence[ValidationWarning]:
