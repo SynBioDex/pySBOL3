@@ -75,6 +75,9 @@ class Identified(SBOLObject):
         self._rdf_types = URIProperty(self, RDF_TYPE, 1, math.inf,
                                       initial_value=[type_uri])
 
+    def __str__(self):
+        return '<%s %s>' % (self.__class__.__name__, self.identity)
+
     @staticmethod
     def _is_valid_display_id(display_id: str) -> bool:
         if display_id is None:
@@ -114,7 +117,7 @@ class Identified(SBOLObject):
         return self._rdf_types[0]
 
     @property
-    def document(self):
+    def document(self) -> Union[Document, None]:
         return self._document
 
     @document.setter
@@ -260,3 +263,11 @@ class Identified(SBOLObject):
             for obj in object_list:
                 obj.traverse(func)
         func(self)
+
+    def remove_from_document(self):
+        if self._document is None:
+            return
+        for children in self._owned_objects.values():
+            for child in children:
+                child.remove_from_document()
+        self._document = None

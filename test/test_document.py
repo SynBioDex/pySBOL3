@@ -435,6 +435,78 @@ class TestDocument(unittest.TestCase):
         doc_string = doc.write_string(file_format=sbol3.JSONLD)
         self.assertNotIn('@vocab', doc_string)
 
+    def test_remove_from_document(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        doc = sbol3.Document()
+        c1 = sbol3.Component('c1', types=[sbol3.SBO_DNA])
+        doc.add(c1)
+        self.assertIn(c1, doc)
+        self.assertEqual(doc, c1.document)
+        doc.remove_object(c1)
+        # Now c1 should not be in the document, but c1 should still
+        # have the document pointer. Document.remove_object does not
+        # update the object's document pointer.
+        self.assertNotIn(c1, doc)
+        self.assertEqual(doc, c1.document)
+
+    def test_remove_from_document_identified(self):
+        # Test removing a non-TopLevel from the document. This should
+        # not give an error
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        doc = sbol3.Document()
+        # This should quietly succeed because the string is not in the
+        # document
+        doc.remove_object('foo')
+        lsc = sbol3.LocalSubComponent(types=[sbol3.SBO_DNA])
+        # This should also quietly succeed because the local subcomponent
+        # is also not in the document
+        doc.remove_object(lsc)
+
+    def test_remove(self):
+        # Test removing some objects, and verify that the document
+        # pointers are gone
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        # test_path = os.path.join(SBOL3_LOCATION, 'toggle_switch',
+        #                          'toggle_switch.ttl')
+        # test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
+        #                          'model.ttl')
+        test_path = os.path.join(SBOL3_LOCATION, 'measurement_entity', 'measurement',
+                                 'measurement.ttl')
+        test_path = os.path.join(SBOL3_LOCATION, 'multicellular',
+                                 'multicellular.ttl')
+        doc = sbol3.Document()
+        doc.read(test_path)
+        obj1_uri = 'https://sbolstandard.org/examples/MulticellularSystem'
+        obj2_uri = 'https://sbolstandard.org/examples/SenderSystem'
+        obj1 = doc.find(obj1_uri)
+        self.assertIsInstance(obj1, sbol3.TopLevel)
+        self.assertIsNotNone(obj1)
+        self.assertIn(obj1, doc)
+        self.assertEqual(doc, obj1.document)
+        for feature in obj1.features:
+            self.assertEqual(doc, feature.document)
+        for constraint in obj1.constraints:
+            self.assertEqual(doc, constraint.document)
+        obj2 = doc.find(obj2_uri)
+        self.assertIsInstance(obj2, sbol3.TopLevel)
+        self.assertIsNotNone(obj2)
+        self.assertIn(obj2, doc)
+        doc.remove([obj1, obj2])
+        self.assertNotIn(obj1, doc)
+        self.assertIsNone(obj1.document)
+        # Verify that obj1's children have no document pointer
+        for feature in obj1.features:
+            self.assertIsNone(feature.document)
+        for constraint in obj1.constraints:
+            self.assertIsNone(constraint.document)
+        self.assertNotIn(obj2, doc)
+        self.assertIsNone(obj2.document)
+        # Verify that obj2's children have no document pointer
+        for feature in obj2.features:
+            self.assertIsNone(feature.document)
+        for constraint in obj2.constraints:
+            self.assertIsNone(constraint.document)
+
 
 if __name__ == '__main__':
     unittest.main()
