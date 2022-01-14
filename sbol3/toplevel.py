@@ -100,6 +100,12 @@ class TopLevel(Identified):
         self._validate_namespace(report)
         return report
 
+    def remove_from_document(self):
+        my_doc = self.document
+        super().remove_from_document()
+        if my_doc is not None:
+            my_doc.remove_object(self)
+
     def _reparent_child_objects(self) -> None:
         for k, v in self.__dict__.items():
             if not isinstance(v, Property):

@@ -2,7 +2,7 @@ import collections
 import logging
 import os
 import warnings
-from typing import Dict, Callable, List, Optional, Any, Union
+from typing import Dict, Callable, List, Optional, Any, Union, Iterable
 
 # import typing for typing.Sequence, which we don't want to confuse
 # with sbol3.Sequence
@@ -604,3 +604,34 @@ class Document:
         :return: The total number of objects in the Document.
         """
         return self.size()
+
+    def __contains__(self, item):
+        return item in self.objects
+
+    def remove(self, objects: Iterable[TopLevel]):
+        objects_to_remove = []
+        for obj in objects:
+            if not isinstance(obj, TopLevel):
+                raise ValueError('')
+            if obj not in self.objects:
+                raise ValueError('')
+            objects_to_remove.append(obj)
+        # Now do the removal of each top level object and all of its children
+        for obj in objects_to_remove:
+            obj.remove_from_document()
+
+    def remove_object(self, top_level: TopLevel):
+        """Removes the given TopLevel from this document. No referential
+        integrity is updated, and the TopLevel object is not informed
+        that it has been removed, so it may still have a pointer to this
+        document. No errors are raised and no value is returned.
+
+        N.B. You probably want to use `remove` instead of `remove_object`.
+
+        :param top_level: An object to remove
+        :return: Nothing
+        """
+        try:
+            self.objects.remove(top_level)
+        except ValueError:
+            pass
