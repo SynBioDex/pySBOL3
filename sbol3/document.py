@@ -649,3 +649,24 @@ class Document:
             self.objects.remove(top_level)
         except ValueError:
             pass
+
+    def migrate(self, top_levels: Iterable[TopLevel]) -> Any:
+        """Migrate objects to this document.
+
+        No effort is made to maintain referential integrity. The
+        burden of referential integrity lies with the caller of this
+        method.
+
+        :param top_levels: The top levels to migrate to this document
+        :return: Nothing
+        """
+        objects = []
+        for top_level in top_levels:
+            if not isinstance(top_level, TopLevel):
+                raise ValueError(f"Object {top_level.identity} is not a TopLevel object")
+            objects.append(top_level)
+        # Remove each object from its former document if it has one
+        for obj in objects:
+            obj.remove_from_document()
+        # Add each document to this document
+        self.add(objects)

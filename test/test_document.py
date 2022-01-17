@@ -514,6 +514,18 @@ class TestDocument(unittest.TestCase):
         # level objects in the document
         self.assertListEqual(doc.objects, all_objs)
 
+    def test_migrate(self):
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        test_path = os.path.join(SBOL3_LOCATION, 'multicellular',
+                                 'multicellular.ttl')
+        doc = sbol3.Document()
+        doc.read(test_path)
+        orig_len = len(doc)
+        doc2 = sbol3.Document()
+        doc2.migrate(doc)
+        self.assertEqual(orig_len, len(doc2))
+        self.assertEqual(0, len(doc))
+
 
 if __name__ == '__main__':
     unittest.main()
