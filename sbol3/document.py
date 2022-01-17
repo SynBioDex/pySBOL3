@@ -59,6 +59,27 @@ class Document:
         # SBOL. They are stored in _other_rdf for round-tripping purposes.
         self._other_rdf = rdflib.Graph()
 
+    def __str__(self):
+        """
+        Produce a string representation of the Document.
+
+        :return: A string representation of the Document.
+        """
+        return self.summary()
+
+    def __len__(self):
+        """
+        Get the total number of objects in the Document.
+
+        (Returns the same thing as size())
+
+        :return: The total number of objects in the Document.
+        """
+        return self.size()
+
+    def __contains__(self, item):
+        return item in self.objects
+
     def _build_extension_object(self, identity: str, sbol_type: str,
                                 types: List[str]) -> Optional[Identified]:
         custom_types = {
@@ -579,14 +600,6 @@ class Document:
         summary += str(self.size()) + '\n'
         return summary
 
-    def __str__(self):
-        """
-        Produce a string representation of the Document.
-
-        :return: A string representation of the Document.
-        """
-        return self.summary()
-
     def size(self):
         """
         Get the total number of objects in the Document.
@@ -594,19 +607,6 @@ class Document:
         :return: The total number of objects in the Document.
         """
         return len(self.objects)
-
-    def __len__(self):
-        """
-        Get the total number of objects in the Document.
-
-        (Returns the same thing as size())
-
-        :return: The total number of objects in the Document.
-        """
-        return self.size()
-
-    def __contains__(self, item):
-        return item in self.objects
 
     def remove(self, objects: Iterable[TopLevel]):
         objects_to_remove = []
