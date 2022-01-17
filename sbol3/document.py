@@ -80,6 +80,20 @@ class Document:
     def __contains__(self, item):
         return item in self.objects
 
+    def __iter__(self):
+        """Iterate over the top level objects in this document.
+
+        >>> import sbol3
+        >>> doc = sbol3.Document()
+        >>> doc.read('some_path.ttl')
+        >>> for top_level in doc:
+        >>>     print(top_level.identity)
+
+        :return: An iterator over the top level objects
+        """
+        tmp_list = list(self.objects)
+        return iter(tmp_list)
+
     def _build_extension_object(self, identity: str, sbol_type: str,
                                 types: List[str]) -> Optional[Identified]:
         custom_types = {
