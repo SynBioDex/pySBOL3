@@ -59,6 +59,41 @@ class Document:
         # SBOL. They are stored in _other_rdf for round-tripping purposes.
         self._other_rdf = rdflib.Graph()
 
+    def __str__(self):
+        """
+        Produce a string representation of the Document.
+
+        :return: A string representation of the Document.
+        """
+        return self.summary()
+
+    def __len__(self):
+        """
+        Get the total number of objects in the Document.
+
+        (Returns the same thing as size())
+
+        :return: The total number of objects in the Document.
+        """
+        return self.size()
+
+    def __contains__(self, item):
+        return item in self.objects
+
+    def __iter__(self):
+        """Iterate over the top level objects in this document.
+
+        >>> import sbol3
+        >>> doc = sbol3.Document()
+        >>> doc.read('some_path.ttl')
+        >>> for top_level in doc:
+        >>>     print(top_level.identity)
+
+        :return: An iterator over the top level objects
+        """
+        tmp_list = list(self.objects)
+        return iter(tmp_list)
+
     def _build_extension_object(self, identity: str, sbol_type: str,
                                 types: List[str]) -> Optional[Identified]:
         custom_types = {
@@ -579,14 +614,6 @@ class Document:
         summary += str(self.size()) + '\n'
         return summary
 
-    def __str__(self):
-        """
-        Produce a string representation of the Document.
-
-        :return: A string representation of the Document.
-        """
-        return self.summary()
-
     def size(self):
         """
         Get the total number of objects in the Document.
@@ -594,19 +621,6 @@ class Document:
         :return: The total number of objects in the Document.
         """
         return len(self.objects)
-
-    def __len__(self):
-        """
-        Get the total number of objects in the Document.
-
-        (Returns the same thing as size())
-
-        :return: The total number of objects in the Document.
-        """
-        return self.size()
-
-    def __contains__(self, item):
-        return item in self.objects
 
     def remove(self, objects: Iterable[TopLevel]):
         objects_to_remove = []
@@ -635,3 +649,24 @@ class Document:
             self.objects.remove(top_level)
         except ValueError:
             pass
+
+    def migrate(self, top_levels: Iterable[TopLevel]) -> Any:
+        """Migrate objects to this document.
+
+        No effort is made to maintain referential integrity. The
+        burden of referential integrity lies with the caller of this
+        method.
+
+        :param top_levels: The top levels to migrate to this document
+        :return: Nothing
+        """
+        objects = []
+        for top_level in top_levels:
+            if not isinstance(top_level, TopLevel):
+                raise ValueError(f"Object {top_level.identity} is not a TopLevel object")
+            objects.append(top_level)
+        # Remove each object from its former document if it has one
+        for obj in objects:
+            obj.remove_from_document()
+        # Add each document to this document
+        self.add(objects)
