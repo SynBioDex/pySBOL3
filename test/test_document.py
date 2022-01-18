@@ -526,6 +526,21 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(orig_len, len(doc2))
         self.assertEqual(0, len(doc))
 
+    def test_change_object_namespace(self):
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        test_path = os.path.join(SBOL3_LOCATION, 'multicellular',
+                                 'multicellular.ttl')
+        doc = sbol3.Document()
+        doc.read(test_path)
+        obj = doc.objects[0]
+        old_identity = obj.identity
+        doc.change_object_namespace([obj], namespace)
+        self.assertEqual(namespace, obj.namespace)
+        self.assertNotEqual(old_identity, obj.identity)
+        # TODO: test with a referenced object, like  component with a sequence
+        # TODO: test with a full document of objects, changing the entire document
+
 
 if __name__ == '__main__':
     unittest.main()
