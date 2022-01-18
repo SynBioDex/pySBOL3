@@ -131,6 +131,28 @@ class TestTopLevel(unittest.TestCase):
                             types=[sbol3.SBO_DNA],
                             namespace='https://example.com/different')
 
+    def test_split_identity(self):
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        name = 'c1'
+        c1 = sbol3.Component(name, types=[sbol3.SBO_DNA])
+        expected = namespace, '', name
+        self.assertEqual(expected, c1.split_identity())
+        # Test with an intermediate path
+        name = 'c2'
+        path = 'foo'
+        c2_identity = posixpath.join(namespace, path, name)
+        c2 = sbol3.Component(c2_identity, types=[sbol3.SBO_DNA])
+        expected = namespace, path, name
+        self.assertEqual(expected, c2.split_identity())
+        # Test with a longer intermediate path
+        name = 'c3'
+        path = 'foo/bar/baz'
+        c3_identity = posixpath.join(namespace, path, name)
+        c3 = sbol3.Component(c3_identity, types=[sbol3.SBO_DNA])
+        expected = namespace, path, name
+        self.assertEqual(expected, c3.split_identity())
+
 
 if __name__ == '__main__':
     unittest.main()

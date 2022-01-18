@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import math
 import posixpath
+import urllib.parse
 import uuid
 from typing import Dict, Callable, Optional
 import typing
@@ -150,6 +151,34 @@ class TopLevel(Identified):
         new_obj.document = target_doc
         # Comply with the contract of super.copy()
         return new_obj
+
+    def split_identity(self) -> tuple[str, str, str]:
+        """Split this object's identity into three components:
+        namespace, path, and display_id.
+
+        :return: A tuple of namespace, path, and display_id
+        """
+        parsed = urllib.parse.urlparse(self.identity)
+        path_elements = parsed.path.split('/')
+        if path_elements[-1] != self.display_id:
+            msg = f'Mismatch between identity {self.identity}'
+            msg += f' and display_id {self.display_id}'
+            raise ValueError(msg)
+        # pop the display_id off the end
+        path_elements.pop()
+        # Make the parsed URL elements into a list so we can use urlunparse
+        url_elements = list(parsed)
+        path_idx = 2
+        # Start with an empty path
+        url_elements[path_idx] = ''
+        while urllib.parse.urlunparse(url_elements) != self.namespace:
+            url_elements[path_idx] = posixpath.join(url_elements[path_idx],
+                                                    path_elements.pop(0))
+        if path_elements:
+            path = posixpath.join(*path_elements)
+        else:
+            path = ''
+        return self.namespace, path, self.display_id
 
 
 def make_erase_identity_traverser(identity_map: Dict[str, Identified])\
