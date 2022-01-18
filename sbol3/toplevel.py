@@ -5,7 +5,7 @@ import math
 import posixpath
 import urllib.parse
 import uuid
-from typing import Dict, Callable, Optional
+from typing import Dict, Callable, Optional, Any
 import typing
 
 from . import *
@@ -122,27 +122,52 @@ class TopLevel(Identified):
             else:
                 setattr(self, k, old_list[0])
 
+    def set_identity(self, new_identity: str) -> Any:
+        """Sets the identity of the object.
+
+        USE WITH EXTREME CAUTION!
+
+        This method can break a tree of objects, and invalid a document.
+        Only use this method if you understand the ramifications of
+        changing the identity of a top level object.
+
+        :param new_identity: the new identity
+        :return: Nothing
+        """
+        self._identity = self._make_identity(new_identity)
+        # Set display_id of new object
+        self._display_id = self._extract_display_id(self._identity)
+
     def clone(self, new_identity: str) -> 'TopLevel':
         obj = copy.deepcopy(self)
         identity_map = {self.identity: obj}
         # Set identity of new object
-        obj._identity = obj._make_identity(new_identity)
-        # Set display_id of new object
-        obj._display_id = obj._extract_display_id(obj._identity)
+        obj.set_identity(new_identity)
         # Drop the document pointer
         obj.document = None
 
-        # Erase the identity and display_id of the entire tree
-        obj.traverse(make_erase_identity_traverser(identity_map))
+        obj.update_all_dependents(identity_map)
+        return obj
 
+    def update_all_dependents(self, identity_map: dict[str, Identified]) -> Any:
+        """Update all dependent objects based on the provided identity map.
+
+        Dependent objects are reparented and references are updated according
+        to the identities and objects in `identity_map`.
+
+        USE WITH CAUTION!
+
+        :param identity_map: map of identity to Identified
+        :return: Nothing
+        """
+        # Erase the identity and display_id of the entire tree
+        self.traverse(make_erase_identity_traverser(identity_map))
         # Now remove and re-add all child objects to update
         # their identities
-        obj._reparent_child_objects()
-
-        # TODO: Now remap any properties that reference old
-        #       identities in the identity_map
-        obj.traverse(make_update_references_traverser(identity_map))
-        return obj
+        self._reparent_child_objects()
+        # Now remap any properties that reference old identities in the
+        # identity_map
+        self.traverse(make_update_references_traverser(identity_map))
 
     def copy(self, target_doc=None, target_namespace=None):
         new_obj = super().copy(target_doc=target_doc, target_namespace=target_namespace)
