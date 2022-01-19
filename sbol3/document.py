@@ -1,6 +1,7 @@
 import collections
 import logging
 import os
+import posixpath
 import warnings
 from typing import Dict, Callable, List, Optional, Any, Union, Iterable
 
@@ -50,7 +51,7 @@ class Document:
 
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)
-        self.objects: List[Identified] = []
+        self.objects: List[TopLevel] = []
         # Orphans are non-TopLevel objects that are not otherwise linked
         # into the object hierarchy.
         self.orphans: List[Identified] = []
@@ -670,3 +671,41 @@ class Document:
             obj.remove_from_document()
         # Add each document to this document
         self.add(objects)
+
+    def change_object_namespace(self, top_levels: Iterable[TopLevel],
+                                new_namespace: str) -> Any:
+        """Change the namespace of all TopLevel objects in `top_levels` to
+        new_namespace, regardless of the previous value, while
+        maintaining referential integrity among all the top level
+        objects in top_levels, including their dependents. The
+        namespace change is "in place". No new objects are allocated.
+
+        Note: this operation can result in an invalid Document if the
+        change in namespace creates a naming collision. This method
+        does not check for this case either before or after the
+        operation. It is up to the caller to decide whether this
+        operation is safe.
+
+        :param top_levels: objects to change
+        :param new_namespace: new namespace for objects
+        :return: Nothing
+        """
+        # Validate the objects and build a map of old name to new name
+        objects = []
+        identity_map = {}
+        for top_level in top_levels:
+            if not isinstance(top_level, TopLevel):
+                raise ValueError(f'{top_level.identity} is not a TopLevel')
+            if top_level not in self:
+                raise ValueError(f'{top_level.identity} not in this document')
+            # Formulate the new identity
+            _, path, display_id = top_level.split_identity()
+            new_identity = posixpath.join(new_namespace, path, display_id)
+            identity_map[top_level.identity] = top_level
+            objects.append((top_level, new_identity))
+        # Now change the object identities, and then remap the referenced objects
+        for top_level, new_identity in objects:
+            top_level.namespace = new_namespace
+            top_level.set_identity(new_identity)
+            top_level.update_all_dependents(identity_map)
+        return None

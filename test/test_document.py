@@ -526,6 +526,76 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(orig_len, len(doc2))
         self.assertEqual(0, len(doc))
 
+    def test_change_object_namespace(self):
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        test_path = os.path.join(SBOL3_LOCATION, 'multicellular',
+                                 'multicellular.ttl')
+        doc = sbol3.Document()
+        doc.read(test_path)
+        obj = doc.objects[0]
+        old_identity = obj.identity
+        doc.change_object_namespace([obj], namespace)
+        self.assertEqual(namespace, obj.namespace)
+        self.assertNotEqual(old_identity, obj.identity)
+        self.assertTrue(obj.identity.startswith(namespace))
+
+    def test_change_object_namespace_ref(self):
+        # test with a referenced object, like a component with a sequence
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        doc = sbol3.Document()
+        s1 = sbol3.Sequence('s1')
+        c1 = sbol3.Component('c1', types=[sbol3.SBO_DNA], sequences=[s1])
+        doc.add([s1, c1])
+        self.assertEqual(2, len(doc))
+        self.assertEqual(s1.identity, c1.sequences[0])
+        ns2 = 'https://example.com/test_ns'
+        s1_identity = s1.identity
+        c1_identity = c1.identity
+        doc.change_object_namespace([s1, c1], ns2)
+        self.assertEqual(ns2, s1.namespace)
+        self.assertEqual(ns2, c1.namespace)
+        self.assertTrue(s1.identity.startswith(ns2))
+        self.assertTrue(c1.identity.startswith(ns2))
+        self.assertNotEqual(s1_identity, s1.identity)
+        self.assertNotEqual(c1_identity, c1.identity)
+        self.assertEqual(s1.identity, c1.sequences[0])
+
+    def test_change_object_namespace_doc(self):
+        # test with a full document of objects, changing the entire document
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        test_path = os.path.join(SBOL3_LOCATION, 'multicellular',
+                                 'multicellular.ttl')
+        doc = sbol3.Document()
+        doc.read(test_path)
+        doc.change_object_namespace(doc.objects, namespace)
+
+        # Make sure every object has the new namespace
+        def identity_checker(thing: sbol3.Identified):
+            # TopLevel has namespace, Identified does not
+            if hasattr(thing, 'namespace'):
+                self.assertEqual(namespace, thing.namespace)
+            self.assertTrue(thing.identity.startswith(namespace))
+        for obj in doc.objects:
+            obj.traverse(identity_checker)
+
+    def test_change_object_namespace_errors(self):
+        # Test bad arguments, like non-top-levels
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        new_namespace = 'https://example.com/test_ns'
+        sbol3.set_namespace(namespace)
+        doc = sbol3.Document()
+        # Object not in document should raise ValueError
+        c1 = sbol3.Component('c1', types=[sbol3.SBO_DNA])
+        with self.assertRaises(ValueError):
+            doc.change_object_namespace([c1], new_namespace)
+        # Non-TopLevel should raise ValueError
+        i1 = sbol3.Interaction([sbol3.SBO_INHIBITION])
+        with self.assertRaises(ValueError):
+            doc.change_object_namespace([i1], new_namespace)
+
 
 if __name__ == '__main__':
     unittest.main()
