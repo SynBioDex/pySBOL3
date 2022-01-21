@@ -213,7 +213,7 @@ def make_erase_identity_traverser(identity_map: Dict[str, Identified])\
             return
         identity_map[x.identity] = x
         x._identity = None
-        x._display_id = None
+        # x._display_id = None
         x.document = None
     return erase_identity_traverser
 

@@ -153,6 +153,25 @@ class TestTopLevel(unittest.TestCase):
         expected = namespace, path, name
         self.assertEqual(expected, c3.split_identity())
 
+    def test_clone_bad_rename(self):
+        # Tests that the dependent objects have consistent renaming
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        name = 'c1'
+        c1 = sbol3.Component(name, types=[sbol3.SBO_DNA])
+        lsc1 = sbol3.LocalSubComponent(types=[sbol3.SBO_DNA])
+        lsc2 = sbol3.LocalSubComponent(types=[sbol3.SBO_DNA])
+        c1.features = [lsc1, lsc2]
+        self.assertEqual('LocalSubComponent1', lsc1.display_id)
+        self.assertEqual('LocalSubComponent2', lsc2.display_id)
+        c1.features.remove(lsc1)
+        self.assertListEqual([lsc2], list(c1.features))
+        self.assertEqual('LocalSubComponent2', lsc2.display_id)
+        self.assertIsNotNone(c1.find('LocalSubComponent2'))
+        clone_name = 'c1_prime'
+        c1_prime = c1.clone(posixpath.join(namespace, clone_name))
+        self.assertIsNotNone(c1_prime.find('LocalSubComponent2'))
+
 
 if __name__ == '__main__':
     unittest.main()

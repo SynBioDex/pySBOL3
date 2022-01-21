@@ -37,7 +37,12 @@ class OwnedObjectPropertyMixin:
         #     raise ValueError(f'Item {item} does not have a display_id')
         type_name = parse_class_name(item.type_uri)
         counter_value = self.property_owner.counter_value(type_name)
-        new_display_id = f'{type_name}{counter_value}'
+        # Provide stability across clone and copy
+        # If an item already has a display_id, use it, otherwise mint a new one
+        if item.display_id:
+            new_display_id = item.display_id
+        else:
+            new_display_id = f'{type_name}{counter_value}'
         new_url = posixpath.join(self.property_owner.identity, new_display_id)
         for sibling in self._storage()[self.property_uri]:
             if sibling == item:

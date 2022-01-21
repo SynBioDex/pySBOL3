@@ -170,7 +170,7 @@ class Identified(SBOLObject):
                 new_identity = posixpath.join(self.identity, new_display_id)
                 child._update_identity(new_identity, new_display_id)
 
-    def counter_value(self, type_name: str):
+    def counter_value(self, type_name: str) -> int:
         result = 0
         for _, objects in self._owned_objects.items():
             for sibling in objects:
