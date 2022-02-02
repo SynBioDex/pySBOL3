@@ -138,11 +138,12 @@ class TopLevel(Identified):
         # Set display_id of new object
         self._display_id = self._extract_display_id(self._identity)
 
-    def clone(self, new_identity: str) -> 'TopLevel':
+    def clone(self, new_identity: str = None) -> 'TopLevel':
         obj = copy.deepcopy(self)
         identity_map = {self.identity: obj}
         # Set identity of new object
-        obj.set_identity(new_identity)
+        if new_identity is not None:
+            obj.set_identity(new_identity)
         # Drop the document pointer
         obj.document = None
 
