@@ -596,6 +596,33 @@ class TestDocument(unittest.TestCase):
         with self.assertRaises(ValueError):
             doc.change_object_namespace([i1], new_namespace)
 
+    def test_clone(self):
+        # Test bad arguments, like non-top-levels
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        test_path = os.path.join(SBOL3_LOCATION, 'multicellular',
+                                 'multicellular.ttl')
+        doc = sbol3.Document()
+        doc.read(test_path)
+        # Clone the document
+        clones = doc.clone()
+        # We should have the same number of objects in the clone list
+        self.assertEqual(len(doc), len(clones))
+        # Now spot check the features of an object
+        target_identity = 'https://sbolstandard.org/examples/MulticellularSystem'
+        orig = doc.find(target_identity)
+        clone = None
+        for c in clones:
+            if c.identity == target_identity:
+                clone = c
+                break
+        # Be sure we found the target clone
+        self.assertIsNotNone(clone)
+        orig_feature_identities = [f.identity for f in orig.features]
+        clone_feature_identities = [f.identity for f in clone.features]
+        self.assertEqual(orig_feature_identities, clone_feature_identities)
+        # There are probably more tests we can do...
+
 
 if __name__ == '__main__':
     unittest.main()

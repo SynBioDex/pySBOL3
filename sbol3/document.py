@@ -709,3 +709,10 @@ class Document:
             top_level.set_identity(new_identity)
             top_level.update_all_dependents(identity_map)
         return None
+
+    def clone(self) -> List[TopLevel]:
+        """Clone the top level objects in this document.
+
+        :return: A list of cloned TopLevel objects
+        """
+        return [tl.clone() for tl in self]
