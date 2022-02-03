@@ -587,10 +587,6 @@ class TestDocument(unittest.TestCase):
         new_namespace = 'https://example.com/test_ns'
         sbol3.set_namespace(namespace)
         doc = sbol3.Document()
-        # Object not in document should raise ValueError
-        c1 = sbol3.Component('c1', types=[sbol3.SBO_DNA])
-        with self.assertRaises(ValueError):
-            doc.change_object_namespace([c1], new_namespace)
         # Non-TopLevel should raise ValueError
         i1 = sbol3.Interaction([sbol3.SBO_INHIBITION])
         with self.assertRaises(ValueError):

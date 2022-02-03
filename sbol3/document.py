@@ -672,7 +672,8 @@ class Document:
         # Add each document to this document
         self.add(objects)
 
-    def change_object_namespace(self, top_levels: Iterable[TopLevel],
+    @staticmethod
+    def change_object_namespace(top_levels: Iterable[TopLevel],
                                 new_namespace: str) -> Any:
         """Change the namespace of all TopLevel objects in `top_levels` to
         new_namespace, regardless of the previous value, while
@@ -696,8 +697,8 @@ class Document:
         for top_level in top_levels:
             if not isinstance(top_level, TopLevel):
                 raise ValueError(f'{top_level.identity} is not a TopLevel')
-            if top_level not in self:
-                raise ValueError(f'{top_level.identity} not in this document')
+            # if top_level not in self:
+            #     raise ValueError(f'{top_level.identity} not in this document')
             # Formulate the new identity
             _, path, display_id = top_level.split_identity()
             new_identity = posixpath.join(new_namespace, path, display_id)
