@@ -2,6 +2,7 @@ import logging
 import os
 import tempfile
 import unittest
+from typing import Optional
 
 import rdflib
 
@@ -23,6 +24,19 @@ class TestDocument(unittest.TestCase):
 
     def tearDown(self) -> None:
         sbol3.set_defaults()
+
+    def make_namespace_checker(self, namespace: str):
+        def namespace_checker(thing: sbol3.Identified):
+            # TopLevel has namespace, Identified does not
+            if hasattr(thing, 'namespace'):
+                self.assertEqual(namespace, thing.namespace)
+            self.assertTrue(thing.identity.startswith(namespace))
+        return namespace_checker
+
+    def make_document_checker(self, document: Optional[sbol3.Document]):
+        def document_checker(thing: sbol3.Identified):
+            self.assertEqual(document, thing.document)
+        return document_checker
 
     def test_read_ntriples(self):
         # Initial test of Document.read
@@ -573,13 +587,9 @@ class TestDocument(unittest.TestCase):
         doc.change_object_namespace(doc.objects, namespace)
 
         # Make sure every object has the new namespace
-        def identity_checker(thing: sbol3.Identified):
-            # TopLevel has namespace, Identified does not
-            if hasattr(thing, 'namespace'):
-                self.assertEqual(namespace, thing.namespace)
-            self.assertTrue(thing.identity.startswith(namespace))
+        namespace_checker = self.make_namespace_checker(namespace)
         for obj in doc.objects:
-            obj.traverse(identity_checker)
+            obj.traverse(namespace_checker)
 
     def test_change_object_namespace_errors(self):
         # Test bad arguments, like non-top-levels
@@ -587,17 +597,12 @@ class TestDocument(unittest.TestCase):
         new_namespace = 'https://example.com/test_ns'
         sbol3.set_namespace(namespace)
         doc = sbol3.Document()
-        # Object not in document should raise ValueError
-        c1 = sbol3.Component('c1', types=[sbol3.SBO_DNA])
-        with self.assertRaises(ValueError):
-            doc.change_object_namespace([c1], new_namespace)
         # Non-TopLevel should raise ValueError
         i1 = sbol3.Interaction([sbol3.SBO_INHIBITION])
         with self.assertRaises(ValueError):
             doc.change_object_namespace([i1], new_namespace)
 
     def test_clone(self):
-        # Test bad arguments, like non-top-levels
         namespace = 'https://github.com/synbiodex/pysbol3'
         sbol3.set_namespace(namespace)
         test_path = os.path.join(SBOL3_LOCATION, 'multicellular',
@@ -622,6 +627,35 @@ class TestDocument(unittest.TestCase):
         clone_feature_identities = [f.identity for f in clone.features]
         self.assertEqual(orig_feature_identities, clone_feature_identities)
         # There are probably more tests we can do...
+
+    def test_copy(self):
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        test_path = os.path.join(SBOL3_LOCATION, 'multicellular',
+                                 'multicellular.ttl')
+        doc = sbol3.Document()
+        doc.read(test_path)
+        copies1 = sbol3.copy(doc)
+        self.assertEqual(len(doc), len(copies1))
+        document_checker = self.make_document_checker(None)
+        for obj in copies1:
+            obj.traverse(document_checker)
+        # Verify that the copies get the new namespace
+        copies2 = sbol3.copy(doc, new_namespace=namespace)
+        document_checker = self.make_document_checker(None)
+        namespace_checker = self.make_namespace_checker(namespace)
+        for obj in copies2:
+            obj.traverse(document_checker)
+            obj.traverse(namespace_checker)
+        # Verify new namespace AND new document
+        namespace3 = 'https://github.com/synbiodex/pysbol3/copytest'
+        doc3 = sbol3.Document()
+        copies3 = sbol3.copy(doc, new_namespace=namespace3, new_document=doc3)
+        document_checker = self.make_document_checker(doc3)
+        namespace_checker = self.make_namespace_checker(namespace3)
+        for obj in copies3:
+            obj.traverse(document_checker)
+            obj.traverse(namespace_checker)
 
 
 if __name__ == '__main__':
