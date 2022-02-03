@@ -24,6 +24,19 @@ class TestDocument(unittest.TestCase):
     def tearDown(self) -> None:
         sbol3.set_defaults()
 
+    def make_namespace_checker(self, namespace: str):
+        def namespace_checker(thing: sbol3.Identified):
+            # TopLevel has namespace, Identified does not
+            if hasattr(thing, 'namespace'):
+                self.assertEqual(namespace, thing.namespace)
+            self.assertTrue(thing.identity.startswith(namespace))
+        return namespace_checker
+
+    def make_document_checker(self, document: Optional[sbol3.Document]):
+        def document_checker(thing: sbol3.Identified):
+            self.assertEqual(document, thing.document)
+        return document_checker
+
     def test_read_ntriples(self):
         # Initial test of Document.read
         filename = 'model.nt'
@@ -573,13 +586,9 @@ class TestDocument(unittest.TestCase):
         doc.change_object_namespace(doc.objects, namespace)
 
         # Make sure every object has the new namespace
-        def identity_checker(thing: sbol3.Identified):
-            # TopLevel has namespace, Identified does not
-            if hasattr(thing, 'namespace'):
-                self.assertEqual(namespace, thing.namespace)
-            self.assertTrue(thing.identity.startswith(namespace))
+        namespace_checker = self.make_namespace_checker(namespace)
         for obj in doc.objects:
-            obj.traverse(identity_checker)
+            obj.traverse(namespace_checker)
 
     def test_change_object_namespace_errors(self):
         # Test bad arguments, like non-top-levels
