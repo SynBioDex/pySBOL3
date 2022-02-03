@@ -603,7 +603,6 @@ class TestDocument(unittest.TestCase):
             doc.change_object_namespace([i1], new_namespace)
 
     def test_clone(self):
-        # Test bad arguments, like non-top-levels
         namespace = 'https://github.com/synbiodex/pysbol3'
         sbol3.set_namespace(namespace)
         test_path = os.path.join(SBOL3_LOCATION, 'multicellular',
