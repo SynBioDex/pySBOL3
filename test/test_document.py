@@ -629,6 +629,35 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(orig_feature_identities, clone_feature_identities)
         # There are probably more tests we can do...
 
+    def test_copy(self):
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        test_path = os.path.join(SBOL3_LOCATION, 'multicellular',
+                                 'multicellular.ttl')
+        doc = sbol3.Document()
+        doc.read(test_path)
+        copies1 = sbol3.copy(doc)
+        self.assertEqual(len(doc), len(copies1))
+        document_checker = self.make_document_checker(None)
+        for obj in copies1:
+            obj.traverse(document_checker)
+        # Verify that the copies get the new namespace
+        copies2 = sbol3.copy(doc, new_namespace=namespace)
+        document_checker = self.make_document_checker(None)
+        namespace_checker = self.make_namespace_checker(namespace)
+        for obj in copies2:
+            obj.traverse(document_checker)
+            obj.traverse(namespace_checker)
+        # Verify new namespace AND new document
+        namespace3 = 'https://github.com/synbiodex/pysbol3/copytest'
+        doc3 = sbol3.Document()
+        copies3 = sbol3.copy(doc, new_namespace=namespace3, new_document=doc3)
+        document_checker = self.make_document_checker(doc3)
+        namespace_checker = self.make_namespace_checker(namespace3)
+        for obj in copies3:
+            obj.traverse(document_checker)
+            obj.traverse(namespace_checker)
+
 
 if __name__ == '__main__':
     unittest.main()

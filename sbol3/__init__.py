@@ -17,7 +17,7 @@ from .refobj_property import ReferencedObject
 from .identified import Identified
 from .toplevel import TopLevel
 from .custom import CustomIdentified, CustomTopLevel
-from .document import Document
+from .document import Document, copy
 from .constraint import Constraint
 from .sequence import Sequence
 from .feature import Feature

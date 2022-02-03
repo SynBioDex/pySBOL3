@@ -717,3 +717,19 @@ class Document:
         :return: A list of cloned TopLevel objects
         """
         return [tl.clone() for tl in self]
+
+
+def copy(top_levels: Iterable[TopLevel],
+         new_namespace: Optional[str] = None,
+         new_document: Optional['Document'] = None) -> List[TopLevel]:
+    objects = []
+    for top_level in top_levels:
+        if not isinstance(top_level, TopLevel):
+            raise ValueError(f"Object {top_level.identity} is not a TopLevel object")
+        objects.append(top_level)
+    clones = [tl.clone() for tl in objects]
+    if new_namespace is not None:
+        Document.change_object_namespace(clones, new_namespace)
+    if new_document is not None:
+        new_document.add(clones)
+    return clones
