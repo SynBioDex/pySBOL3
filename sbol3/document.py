@@ -718,10 +718,37 @@ class Document:
         """
         return [tl.clone() for tl in self]
 
+    def copy(self) -> 'Document':
+        """Make a copy of this document.
+
+        :return: A new document containing a new set of objects
+                 that are identical to the original objects.
+        """
+        result = Document()
+        copy(self, new_document=result)
+        return result
+
 
 def copy(top_levels: Iterable[TopLevel],
          new_namespace: Optional[str] = None,
-         new_document: Optional['Document'] = None) -> List[TopLevel]:
+         new_document: Optional[Document] = None) -> List[TopLevel]:
+    """Copy SBOL objects, optionally changing their namespace and
+    optionally adding them to a document. Referential integrity among
+    the group of provided TopLevel objects is maintained.
+
+    If `new_namespace` is provided, the newly created objects will have
+    the provided namespace and will maintain the rest of their
+    identities, including the local path and diplay ID.
+
+    If `new_document` is provided, the newly created objects will be
+    added to the provided Document.
+
+    :param top_levels: Top Level objects to be copied
+    :param new_namespace: A namespace to be given to the new objects
+    :param new_document: A document to which the newly created objects
+                         will be added
+    :return: A list of the newly created objects
+    """
     objects = []
     for top_level in top_levels:
         if not isinstance(top_level, TopLevel):
