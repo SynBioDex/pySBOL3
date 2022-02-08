@@ -5,6 +5,7 @@ import math
 import posixpath
 import urllib.parse
 import uuid
+import warnings
 from typing import Dict, Callable, Optional, Any
 import typing
 
@@ -171,6 +172,8 @@ class TopLevel(Identified):
         self.traverse(make_update_references_traverser(identity_map))
 
     def copy(self, target_doc=None, target_namespace=None):
+        # Delete this method in v1.1
+        warnings.warn('Use sbol3.copy() instead', DeprecationWarning)
         new_obj = super().copy(target_doc=target_doc, target_namespace=target_namespace)
         # Need to set `document` on all children recursively. That's what happens when
         # you assign to the `document` property of an Identified
