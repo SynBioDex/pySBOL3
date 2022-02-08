@@ -97,6 +97,9 @@ class SBOLObject:
 
     def copy(self, target_doc=None, target_namespace=None):
 
+        # Delete this method in v1.1
+        warnings.warn('Use sbol3.copy() instead', DeprecationWarning)
+
         new_uri = self.identity
 
         # If caller specified a target_namespace argument, then copy the object into this
@@ -143,41 +146,11 @@ class SBOLObject:
 
 
 def replace_namespace(old_uri, target_namespace, rdf_type):
-    """
-    Utility function for mapping an SBOL object's identity into a new namespace. The
-    rdf_type is used to map to and from sbol-typed namespaces.
-    """
 
     # Flag as not working to ensure nobody calls this function thinking
     # it might do something.
     # See https://github.com/SynBioDex/pySBOL3/issues/132
     raise NotImplementedError()
-
-    # Work around an issue where the Document itself is being copied and
-    # doesn't have its own URI, so old_uri is None. Return empty string
-    # because the identity is not allowed to be None.
-    if old_uri is None:
-        return ''
-
-    # If the value is an SBOL-typed URI, replace both the namespace and class name
-    class_name = parseClassName(rdf_type)
-    replacement_target = target_namespace + '/' + class_name
-
-    # If not an sbol typed URI, then just replace the namespace
-    if replacement_target not in old_uri:
-        replacement_target = target_namespace
-
-    if Config.getOption(ConfigOptions.SBOL_TYPED_URIS):
-        # Map into a typed namespace
-        replacement = getHomespace() + '/' + class_name
-    else:
-        # Map into a non-typed namespace
-        replacement = getHomespace()
-
-    new_uri = old_uri.replace(replacement_target, replacement)
-    if type(old_uri) is URIRef:
-        return URIRef(new_uri)
-    return new_uri
 
 
 # Global store for builder methods. Custom SBOL classes

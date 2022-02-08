@@ -25,7 +25,8 @@ class TestObject(unittest.TestCase):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         root = sbol3.Component('root', sbol3.SBO_DNA)
         root.name = 'foo'
-        root_copy = root.copy()
+        objects = sbol3.copy([root])
+        root_copy = objects[0]
         self.assertEqual(root_copy.name, 'foo')
 
     def test_copy_child_objects(self):
@@ -43,7 +44,8 @@ class TestObject(unittest.TestCase):
         doc.add(sub2)
 
         doc2 = sbol3.Document()
-        root_copy = root.copy(target_doc=doc2)
+        objects = sbol3.copy([root], into_document=doc2)
+        root_copy = objects[0]
         self.assertIn(root_copy, doc2.objects)
         self.assertEqual([sc.identity for sc in root.features],
                          [sc.identity for sc in root_copy.features])
@@ -56,6 +58,15 @@ class TestObject(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             from sbol3.object import replace_namespace
             replace_namespace(None, None, None)
+
+    def test_copy_is_deprecated(self):
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        name = 'ed1'
+        ed1 = sbol3.ExternallyDefined(types=[sbol3.SBO_DNA],
+                                      definition='https://example.org/other')
+        with self.assertWarns(DeprecationWarning):
+            ed1.copy()
 
 
 if __name__ == '__main__':

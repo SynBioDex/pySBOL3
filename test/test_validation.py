@@ -56,7 +56,8 @@ class TestValidationReport(unittest.TestCase):
         self.assertEqual(len(doc.validate()), 0)
         minidoc = sbol3.Document()
         c = doc.find('https://synbiohub.org/public/igem/BBa_I20270')
-        c.copy(minidoc)
+        self.assertIsInstance(c, sbol3.TopLevel)
+        sbol3.copy([c], into_document=minidoc)
         # this assertion failed before the fix to the shacl rules
         self.assertEqual(len(minidoc.validate()), 0)
 

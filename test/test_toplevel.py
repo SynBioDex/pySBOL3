@@ -70,8 +70,7 @@ class TestTopLevel(unittest.TestCase):
                                  'multicellular.nt')
         doc = sbol3.Document()
         doc.read(test_path)
-        for obj in doc.objects:
-            obj.copy(target_doc=dest_doc)
+        sbol3.copy(doc, into_document=dest_doc)
         self.assertEqual(len(doc), len(dest_doc))
         for obj in dest_doc.objects:
             obj.traverse(check_document)
@@ -171,6 +170,14 @@ class TestTopLevel(unittest.TestCase):
         clone_name = 'c1_prime'
         c1_prime = c1.clone(posixpath.join(namespace, clone_name))
         self.assertIsNotNone(c1_prime.find('LocalSubComponent2'))
+
+    def test_copy_is_deprecated(self):
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        name = 'c1'
+        c1 = sbol3.Component(name, types=[sbol3.SBO_DNA])
+        with self.assertWarns(DeprecationWarning):
+            c1.copy()
 
 
 if __name__ == '__main__':
