@@ -725,13 +725,13 @@ class Document:
                  that are identical to the original objects.
         """
         result = Document()
-        copy(self, new_document=result)
+        copy(self, into_document=result)
         return result
 
 
 def copy(top_levels: Iterable[TopLevel],
-         new_namespace: Optional[str] = None,
-         new_document: Optional[Document] = None) -> List[TopLevel]:
+         into_namespace: Optional[str] = None,
+         into_document: Optional[Document] = None) -> List[TopLevel]:
     """Copy SBOL objects, optionally changing their namespace and
     optionally adding them to a document. Referential integrity among
     the group of provided TopLevel objects is maintained.
@@ -744,8 +744,8 @@ def copy(top_levels: Iterable[TopLevel],
     added to the provided Document.
 
     :param top_levels: Top Level objects to be copied
-    :param new_namespace: A namespace to be given to the new objects
-    :param new_document: A document to which the newly created objects
+    :param into_namespace: A namespace to be given to the new objects
+    :param into_document: A document to which the newly created objects
                          will be added
     :return: A list of the newly created objects
     """
@@ -755,8 +755,8 @@ def copy(top_levels: Iterable[TopLevel],
             raise ValueError(f"Object {top_level.identity} is not a TopLevel object")
         objects.append(top_level)
     clones = [tl.clone() for tl in objects]
-    if new_namespace is not None:
-        Document.change_object_namespace(clones, new_namespace)
-    if new_document is not None:
-        new_document.add(clones)
+    if into_namespace is not None:
+        Document.change_object_namespace(clones, into_namespace)
+    if into_document is not None:
+        into_document.add(clones)
     return clones
