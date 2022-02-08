@@ -59,6 +59,15 @@ class TestObject(unittest.TestCase):
             from sbol3.object import replace_namespace
             replace_namespace(None, None, None)
 
+    def test_copy_is_deprecated(self):
+        namespace = 'https://github.com/synbiodex/pysbol3'
+        sbol3.set_namespace(namespace)
+        name = 'ed1'
+        ed1 = sbol3.ExternallyDefined(types=[sbol3.SBO_DNA],
+                                      definition='https://example.org/other')
+        with self.assertWarns(DeprecationWarning):
+            ed1.copy()
+
 
 if __name__ == '__main__':
     unittest.main()
