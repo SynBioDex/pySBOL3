@@ -490,7 +490,8 @@ the example above:
     >>> doc3 = sbol3.Document()
     >>> len(doc3)
     0
-    >>> sbol3.copy(doc, into_namespace='https://example.org/bar', into_document=doc3)
+    >>> # Any iterable of TopLevel can be passed to sbol3.copy:
+    >>> sbol3.copy([cd1], into_namespace='https://example.org/bar', into_document=doc3)
     [<sbol3.component.Component object at 0x7fb7d844aa60>]
     >>> len(doc3)
     1
