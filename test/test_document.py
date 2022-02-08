@@ -641,7 +641,7 @@ class TestDocument(unittest.TestCase):
         for obj in copies1:
             obj.traverse(document_checker)
         # Verify that the copies get the new namespace
-        copies2 = sbol3.copy(doc, new_namespace=namespace)
+        copies2 = sbol3.copy(doc, into_namespace=namespace)
         document_checker = self.make_document_checker(None)
         namespace_checker = self.make_namespace_checker(namespace)
         for obj in copies2:
@@ -650,7 +650,7 @@ class TestDocument(unittest.TestCase):
         # Verify new namespace AND new document
         namespace3 = 'https://github.com/synbiodex/pysbol3/copytest'
         doc3 = sbol3.Document()
-        copies3 = sbol3.copy(doc, new_namespace=namespace3, new_document=doc3)
+        copies3 = sbol3.copy(doc, into_namespace=namespace3, into_document=doc3)
         document_checker = self.make_document_checker(doc3)
         namespace_checker = self.make_namespace_checker(namespace3)
         for obj in copies3:

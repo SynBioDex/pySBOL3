@@ -424,9 +424,9 @@ Copying Documents and Objects
 
 Copying a ``Document`` can result in a few different ends, depending
 on the user's goal. The first option is to create a simple copy of the
-original ``Document``. After copying, the object in the ``Document``
-clone has the same identity as the object in the original
-``Document``.
+original ``Document`` with ``Document.copy``. After copying, the
+object in the ``Document`` clone has the same identity as the object
+in the original ``Document``.
 
 .. code:: python
 
@@ -457,18 +457,19 @@ clone has the same identity as the object in the original
 .. end
 
 
-The ``copy`` function is a more powerful way to copy or clone
-objects. ``Document.copy`` is built on ``copy``. The ``copy`` function
-lets a user copy objects as above. It also lets the user change object
-namespaces and add the new documents to an existing ``Document``.
+The ``sbol3.copy`` function is a more powerful way to copy or clone
+objects. ``Document.copy`` is built on ``sbol3.copy``. The
+``sbol3.copy`` function lets a user copy objects as above. It also
+lets the user change object namespaces and add the new documents to an
+existing ``Document``.
 
 For example, if a user wants to copy objects and change the namespace
-of those objects, a user can use the ``new_namespace`` argument to
-``copy``. Following on from the example above:
+of those objects, a user can use the ``into_namespace`` argument to
+``sbol3.copy``. Following on from the example above:
 
 .. code:: python
 
-    >>> objects = sbol3.copy(doc, new_namespace='https://example.org/foo')
+    >>> objects = sbol3.copy(doc, into_namespace='https://example.org/foo')
     >>> len(objects)
     1
     >>> for o in objects:
@@ -481,15 +482,16 @@ of those objects, a user can use the ``new_namespace`` argument to
 
 Finally, if a user wants to construct a new set of objects and add
 them to an existing ``Document`` they can do so using the
-``new_document`` argument to ``copy``. Again, following on from the
-example above:
+``into_document`` argument to ``sbol3.copy``. Again, following on from
+the example above:
 
 .. code:: python
 
     >>> doc3 = sbol3.Document()
     >>> len(doc3)
     0
-    >>> sbol3.copy(doc, new_namespace='https://example.org/bar', new_document=doc3)
+    >>> # Any iterable of TopLevel can be passed to sbol3.copy:
+    >>> sbol3.copy([cd1], into_namespace='https://example.org/bar', into_document=doc3)
     [<sbol3.component.Component object at 0x7fb7d844aa60>]
     >>> len(doc3)
     1
