@@ -417,69 +417,89 @@ Numerical indexing of list properties works as well:
 
 .. end
 
-.. The code for Document.copy() and related methods is still under development, see issue #235; so I'm commenting out this section for now.
 
-    ----------------------------------
-    Copying Documents and Objects
-    ----------------------------------
+----------------------------------
+Copying Documents and Objects
+----------------------------------
 
-    Copying a ``Document`` can result in a few different ends, depending on the user's goal. The first option is to create a simple clone of the original ``Document``. This is shown below in which the user is assumed to have already created a ``Document`` with a single ``ComponentDefinition``. After copying, the object in the ``Document`` clone has the same identity as the object in the original ``Document``.
+Copying a ``Document`` can result in a few different ends, depending
+on the user's goal. The first option is to create a simple copy of the
+original ``Document``. After copying, the object in the ``Document``
+clone has the same identity as the object in the original
+``Document``.
 
-    .. code:: python
+.. code:: python
 
-        >>> for o in doc:
-        ...     print o
-        ... 
-        http://examples.org/ComponentDefinition/cd/1
-        >>> doc2 = doc.copy()
-        >>> for o in doc2:
-        ...     print o
-        ... 
-        http://examples.org/ComponentDefinition/cd/1
+    >>> import sbol3
+    >>> sbol3.set_namespace('https://example.org/pysbol3')
+    >>> doc = sbol3.Document()
+    >>> cd1 = sbol3.Component('cd1', types=[sbol3.SBO_DNA])
+    >>> doc.add(cd1)
+    <sbol3.component.Component object at 0x7fb7d805b9a0>
+    >>> for o in doc:
+    ...     print(o)
+    ... 
+    <Component https://example.org/pysbol3/cd1>
+    >>> doc2 = doc.copy()
+    >>> for o in doc2:
+    ...     print(o)
+    ... 
+    <Component https://example.org/pysbol3/cd1>
+    >>> cd1a = doc2.find('cd1')
+    >>> 
+    >>> # The two objects point to different locations in memory, they are different objects with the same name.
+    >>> 
+    >>> cd1a
+    <sbol3.component.Component object at 0x7fb7c83e7c40>
+    >>> cd1
+    <sbol3.component.Component object at 0x7fb7d805b9a0>
 
-    .. end
+.. end
 
 
-    More commonly a user wants to import objects from the target Document into their Homespace. In this case, the user can specify a target namespace for import. Objects in the original ``Document`` that belong to the target namespace are copied into the user's Homespace. Contrast the example above with the following.
+The ``copy`` function is a more powerful way to copy or clone
+objects. ``Document.copy`` is built on ``copy``. The ``copy`` function
+lets a user copy objects as above. It also lets the user change object
+namespaces and add the new documents to an existing ``Document``.
 
-    .. code:: python
+For example, if a user wants to copy objects and change the namespace
+of those objects, a user can use the ``new_namespace`` argument to
+``copy``. Following on from the example above:
 
-      >>> setHomespace('http://sys-bio.org')
-      >>> doc2 = doc.copy('http://examples.org')
-      >>> for o in doc:
-      ...     print o
-      ... 
-      http://examples.org/ComponentDefinition/cd/1
-      >>> for o in doc2:
-      ...     print o
-      ... 
-      http://sys-bio.org/ComponentDefinition/cd/1
+.. code:: python
 
-    .. end
+    >>> objects = sbol3.copy(doc, new_namespace='https://example.org/foo')
+    >>> len(objects)
+    1
+    >>> for o in objects:
+    ...     print(o)
+    ... 
+    <Component https://example.org/foo/cd1>
+    >>> 
 
-    In the examples above, the ``copy`` method returns a new ``Document``. However, it is possible to integrate the result of multiple ``copy`` operations into an existing ``Document``. 
+.. end
 
-    .. code:: python
+Finally, if a user wants to construct a new set of objects and add
+them to an existing ``Document`` they can do so using the
+``new_document`` argument to ``copy``. Again, following on from the
+example above:
 
-      >>> for o in doc1:
-             print o
+.. code:: python
 
-      http://examples.org/ComponentDefinition/cd1/1
-      >>> for o in doc2:
-           print o
-      ... 
-      http://examples.org/ComponentDefinition/cd2/1
-      >>> doc1.copy('http://examples.org', doc3)
-      Document
-      >>> doc2.copy('http://examples.org', doc3)
-      Document
-      >>> for o in doc3:
-      ...     print o
-      ... 
-      http://examples.org/ComponentDefinition/cd2/1
-      http://examples.org/ComponentDefinition/cd1/1
+    >>> doc3 = sbol3.Document()
+    >>> len(doc3)
+    0
+    >>> sbol3.copy(doc, new_namespace='https://example.org/bar', new_document=doc3)
+    [<sbol3.component.Component object at 0x7fb7d844aa60>]
+    >>> len(doc3)
+    1
+    >>> for o in doc3:
+    ...     print(o)
+    ... 
+    <Component https://example.org/bar/cd1>
+    >>> 
 
-    .. end
+.. end
 
 .. Import and export from other formats is still under development, see issues #65 and #66; so I'm commenting out this section for now.
 
