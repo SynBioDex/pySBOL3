@@ -25,7 +25,8 @@ class TestObject(unittest.TestCase):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         root = sbol3.Component('root', sbol3.SBO_DNA)
         root.name = 'foo'
-        root_copy = root.copy()
+        objects = sbol3.copy([root])
+        root_copy = objects[0]
         self.assertEqual(root_copy.name, 'foo')
 
     def test_copy_child_objects(self):
@@ -43,7 +44,8 @@ class TestObject(unittest.TestCase):
         doc.add(sub2)
 
         doc2 = sbol3.Document()
-        root_copy = root.copy(target_doc=doc2)
+        objects = sbol3.copy([root], into_document=doc2)
+        root_copy = objects[0]
         self.assertIn(root_copy, doc2.objects)
         self.assertEqual([sc.identity for sc in root.features],
                          [sc.identity for sc in root_copy.features])

@@ -70,8 +70,7 @@ class TestTopLevel(unittest.TestCase):
                                  'multicellular.nt')
         doc = sbol3.Document()
         doc.read(test_path)
-        for obj in doc.objects:
-            obj.copy(target_doc=dest_doc)
+        sbol3.copy(doc, into_document=dest_doc)
         self.assertEqual(len(doc), len(dest_doc))
         for obj in dest_doc.objects:
             obj.traverse(check_document)
