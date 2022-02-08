@@ -422,13 +422,11 @@ Numerical indexing of list properties works as well:
 Copying Documents and Objects
 ----------------------------------
 
-Copying a ``Document`` can result in a few different ends,
-depending on the user's goal. The first option is to create a
-simple clone of the original ``Document``. This is shown below in
-which the user is assumed to have already created a ``Document``
-with a single ``ComponentDefinition``. After copying, the object
-in the ``Document`` clone has the same identity as the object in
-the original ``Document``.
+Copying a ``Document`` can result in a few different ends, depending
+on the user's goal. The first option is to create a simple copy of the
+original ``Document``. After copying, the object in the ``Document``
+clone has the same identity as the object in the original
+``Document``.
 
 .. code:: python
 
