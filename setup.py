@@ -40,7 +40,7 @@ setup(name='sbol3',
             # of rdflib 6.x
             'rdflib>=6.1.1,==6.*',
             'python-dateutil~=2.8.2',
-            'pyshacl~=0.17.2',
+            'pyshacl~=0.18.1',
       ],
       test_suite='test',
       tests_require=[
