@@ -75,6 +75,11 @@ class Identified(SBOLObject):
         self._rdf_types = URIProperty(self, RDF_TYPE, 1, math.inf,
                                       initial_value=[type_uri])
 
+    # gets used when object is called through repr() or just "looked at" in a python prompt
+    def __repr__(self) -> str:
+        return '<%s %s>' % (self.__class__.__name__, self.identity)
+
+    # gets used when object is explicity printed
     def __str__(self):
         return '<%s %s>' % (self.__class__.__name__, self.identity)
 
