@@ -281,7 +281,8 @@ class Document:
 
     # Return standard extensions when provided the document's file format
     def file_extension(self, file_format: str) -> str:
-        # dictionary having keys as valid file formats and their standard extensions as value
+        # dictionary having keys as valid file formats,
+        # and their standard extensions as value
         types_with_standard_extension = {
             SORTED_NTRIPLES: '.nt',
             NTRIPLES: '.nt',
@@ -291,7 +292,7 @@ class Document:
         }
         if file_format in types_with_standard_extension:
             return types_with_standard_extension[file_format]
-        else: 
+        else:
             raise ValueError('Provided file format is not a valid one.')
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
