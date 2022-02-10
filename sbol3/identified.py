@@ -113,6 +113,10 @@ class Identified(SBOLObject):
             raise ValueError(msg)
 
     @property
+    def display_name(self):
+        return self.name if self.name else self._display_id
+
+    @property
     def type_uri(self):
         return self._rdf_types[0]
 
