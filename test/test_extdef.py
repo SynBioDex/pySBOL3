@@ -47,10 +47,13 @@ class TestExternallyDefined(unittest.TestCase):
         # See https://github.com/SynBioDex/pySBOL3/issues/301
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         test_type = sbol3.SBO_DNA
+        test_role = sbol3.SO_PROMOTER
         definition_uri = 'https://example.org/definition'
         ed1 = sbol3.ExternallyDefined(types=test_type,
-                                      definition=definition_uri)
+                                      definition=definition_uri,
+                                      roles=test_role)
         self.assertEqual([test_type], ed1.types)
+        self.assertEqual([test_role], ed1.roles)
 
 
 if __name__ == '__main__':
