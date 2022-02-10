@@ -183,6 +183,26 @@ class TestComponent(unittest.TestCase):
         c2 = sbol3.Component('c2', types=[sbol3.SBO_DNA], measures=three_metres)
         self.assertListEqual([three_metres], list(c2.measures))
 
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        comp1_type = sbol3.SBO_DNA
+        comp1_role = sbol3.SO_PROMOTER
+        comp1_seq1 = sbol3.Sequence('seq1')
+        comp1_model = sbol3.Model('model1',
+                                  source='https://example.org/source',
+                                  language='https://example.org/language',
+                                  framework='https://example.org/framework')
+        comp1 = sbol3.Component('comp1', types=comp1_type,
+                                sequences=comp1_seq1, roles=comp1_role,
+                                models=comp1_model)
+        self.assertEqual([comp1_type], comp1.types)
+        self.assertEqual([comp1_seq1.identity], comp1.sequences)
+        self.assertEqual([comp1_role], comp1.roles)
+        self.assertEqual([comp1_model.identity], comp1.models)
+
 
 if __name__ == '__main__':
     unittest.main()
