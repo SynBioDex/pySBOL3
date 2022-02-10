@@ -40,3 +40,18 @@ class TestExternallyDefined(unittest.TestCase):
         measure = ext_def.measures[0]
         measure_uri = posixpath.join(uri, 'measure1')
         self.assertEqual(measure_uri, measure.identity)
+
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        test_type = sbol3.SBO_DNA
+        definition_uri = 'https://example.org/definition'
+        ed1 = sbol3.ExternallyDefined(types=test_type,
+                                      definition=definition_uri)
+        self.assertEqual([test_type], ed1.types)
+
+
+if __name__ == '__main__':
+    unittest.main()
