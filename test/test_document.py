@@ -45,11 +45,9 @@ class TestDocument(unittest.TestCase):
         file_format_3 = 'Test_Format'
         # 1. testing for sorted ntriples
         extension_1 = sbol3.Document.file_extension(file_format_1)
-        print("1: " + file_format_1 + "Val: "+ extension_1)
         self.assertEqual(extension_1, '.nt')
         # 2. testing for rdf xml
         extension_2 = sbol3.Document.file_extension(file_format_2)
-        print("2: " + file_format_2 + "Val: "+ extension_2)
         self.assertEqual(extension_2, '.xml')
         # 3. for invalid file formats, valueError must be raised
         with self.assertRaises(ValueError):
