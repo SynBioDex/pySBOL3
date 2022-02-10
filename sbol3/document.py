@@ -280,7 +280,13 @@ class Document:
         return rdf_format
 
     # Return standard extensions when provided the document's file format
-    def file_extension(self, file_format: str) -> str:
+    @staticmethod
+    def file_extension(file_format: str) -> str:
+        """Return standard extensions when provided the document's file format
+
+        :param file_format: The format of the file
+        :return: A file extension, including the leading '.'
+        """
         # dictionary having keys as valid file formats,
         # and their standard extensions as value
         types_with_standard_extension = {
