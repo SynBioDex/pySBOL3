@@ -38,6 +38,21 @@ class TestDocument(unittest.TestCase):
             self.assertEqual(document, thing.document)
         return document_checker
 
+    def test_file_extension(self):
+        """ Test obtaining standard extensions from file format"""
+        file_format_1 = sbol3.SORTED_NTRIPLES
+        file_format_2 = sbol3.RDF_XML
+        file_format_3 = 'Test_Format'
+        # 1. testing for sorted ntriples
+        extension_1 = sbol3.Document.file_extension(file_format_1)
+        self.assertEqual(extension_1, '.nt')
+        # 2. testing for rdf xml
+        extension_2 = sbol3.Document.file_extension(file_format_2)
+        self.assertEqual(extension_2, '.xml')
+        # 3. for invalid file formats, valueError must be raised
+        with self.assertRaises(ValueError):
+            extension_3 = sbol3.Document.file_extension(file_format_3)
+
     def test_read_ntriples(self):
         # Initial test of Document.read
         filename = 'model.nt'

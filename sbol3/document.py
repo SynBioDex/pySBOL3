@@ -279,6 +279,27 @@ class Document:
             rdf_format = 'nt11'
         return rdf_format
 
+    @staticmethod
+    def file_extension(file_format: str) -> str:
+        """Return standard extensions when provided the document's file format
+
+        :param file_format: The format of the file
+        :return: A file extension, including the leading '.'
+        """
+        # dictionary having keys as valid file formats,
+        # and their standard extensions as value
+        types_with_standard_extension = {
+            SORTED_NTRIPLES: '.nt',
+            NTRIPLES: '.nt',
+            JSONLD: '.json',
+            RDF_XML: '.xml',
+            TURTLE: '.ttl'
+        }
+        if file_format in types_with_standard_extension:
+            return types_with_standard_extension[file_format]
+        else:
+            raise ValueError('Provided file format is not a valid one.')
+
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, location: str, file_format: str = None) -> None:
         if file_format is None:
