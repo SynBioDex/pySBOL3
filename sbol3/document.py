@@ -279,7 +279,6 @@ class Document:
             rdf_format = 'nt11'
         return rdf_format
 
-    # Return standard extensions when provided the document's file format
     @staticmethod
     def file_extension(file_format: str) -> str:
         """Return standard extensions when provided the document's file format
