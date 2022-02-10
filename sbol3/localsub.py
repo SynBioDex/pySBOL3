@@ -17,7 +17,7 @@ class LocalSubComponent(Feature):
     """
 
     def __init__(self, types: Union[str, list[str]],
-                 *, locations: List[Location] = None,
+                 *, locations: Union[Location, List[Location]] = None,
                  roles: List[str] = None, orientation: str = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,

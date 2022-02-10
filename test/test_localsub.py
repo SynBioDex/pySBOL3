@@ -25,6 +25,19 @@ class TestLocalSubComponent(unittest.TestCase):
         self.assertIsNotNone(report)
         self.assertEqual(1, len(report.errors))
 
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        test_type = sbol3.SBO_DNA
+        seq = sbol3.Sequence('seq1')
+        test_loc = sbol3.EntireSequence(seq)
+        lsc = sbol3.LocalSubComponent(types=test_type,
+                                      locations=test_loc)
+        self.assertEqual([test_type], lsc.types)
+        self.assertEqual([test_loc], lsc.locations)
+
 
 if __name__ == '__main__':
     unittest.main()
