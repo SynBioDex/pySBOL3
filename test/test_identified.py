@@ -15,6 +15,23 @@ class TestIdentified(unittest.TestCase):
     def tearDown(self) -> None:
         sbol3.set_defaults()
 
+    def test_display_name(self):
+        """Tests display_name property which must return display_id
+        if name doesn't exist, else return name of the identified object
+        """
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        test_name = 'Test_name'
+        test_display_id = 'Test_display_id'
+        # case 1. only identity provided
+        obj_without_name = sbol3.Component(test_display_id, sbol3.SBO_DNA)
+        display_name = obj_without_name.display_name
+        self.assertEqual(display_name, test_display_id)
+        # case 2. both name and identity provided
+        obj_with_name = sbol3.Component(
+            test_display_id, sbol3.SBO_DNA, name=test_name)
+        display_name = obj_with_name.display_name
+        self.assertEqual(display_name, test_name)
+
     def test_display_id(self):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         c1_display_id = 'c1'
