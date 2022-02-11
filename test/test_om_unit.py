@@ -47,6 +47,17 @@ class TestMeasure(unittest.TestCase):
                          measure.unit)
         self.assertEqual('measure1', measure.display_id)
 
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        unit_uri = 'http://www.ontology-of-units-of-measure.org/resource/om-2/gramPerLitre'
+        # SBO:0000612 is from the SBOL 3.0.1 specification.
+        test_type = 'https://identifiers.org/SBO:0000612'
+        measure1 = sbol3.Measure(value=1.0, unit=unit_uri, types=test_type)
+        self.assertEqual([test_type], measure1.types)
+
 
 class TestPrefixedUnit(unittest.TestCase):
 
