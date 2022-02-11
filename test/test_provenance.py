@@ -115,6 +115,16 @@ class TestUsage(unittest.TestCase):
         self.assertEqual(agent.identity, usage.entity)
         self.assertEqual([], usage.roles)
 
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        entity_uri = 'https://example.org/entity'
+        role_uri = 'https://example.org/entity_usage'
+        usage1 = sbol3.Usage(entity=entity_uri, roles=role_uri)
+        self.assertEqual([role_uri], usage1.roles)
+
 
 if __name__ == '__main__':
     unittest.main()
