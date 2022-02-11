@@ -19,8 +19,8 @@ class SubComponent(Feature):
 
     def __init__(self, instance_of: Union[Identified, str],
                  *, role_integration: Optional[str] = None,
-                 locations: List[Location] = None,
-                 source_locations: List[Location] = None,
+                 locations: Union[Location, List[Location]] = None,
+                 source_locations: Union[Location, List[Location]] = None,
                  roles: List[str] = None, orientation: str = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,

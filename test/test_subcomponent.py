@@ -48,6 +48,22 @@ class TestSubComponent(unittest.TestCase):
         self.assertCountEqual([m9_media, e_coli],
                               [sc.instance_of for sc in c2.features])
 
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        instance_uri = 'https://example.org/instance'
+        seq1 = sbol3.Sequence('seq1')
+        test_loc = sbol3.EntireSequence(seq1)
+        seq2 = sbol3.Sequence('seq2')
+        test_source_loc = sbol3.EntireSequence(seq1)
+        subcomp1 = sbol3.SubComponent(instance_of=instance_uri,
+                                      locations=test_loc,
+                                      source_locations=test_source_loc)
+        self.assertEqual([test_loc], subcomp1.locations)
+        self.assertEqual([test_source_loc], subcomp1.source_locations)
+
 
 if __name__ == '__main__':
     unittest.main()
