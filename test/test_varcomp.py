@@ -3,7 +3,7 @@ import unittest
 import sbol3
 
 
-class TestVariableComponent(unittest.TestCase):
+class TestVariableFeature(unittest.TestCase):
 
     def setUp(self) -> None:
         sbol3.set_defaults()
@@ -71,6 +71,20 @@ class TestVariableComponent(unittest.TestCase):
         # had been assigned an invalid displayId.
         report = m1.validate()
         self.assertEqual(0, len(report.errors))
+
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        seq = sbol3.Sequence('seq1')
+        test_loc = sbol3.EntireSequence(seq)
+        variable_uri = 'https://example.org/variable'
+        var_coll_uri = 'https://example.org/collection'
+        var_feat1 = sbol3.VariableFeature(cardinality=sbol3.SBOL_ZERO_OR_MORE,
+                                          variable=variable_uri,
+                                          variant_collections=var_coll_uri)
+        self.assertEqual([var_coll_uri], var_feat1.variant_collections)
 
 
 if __name__ == '__main__':

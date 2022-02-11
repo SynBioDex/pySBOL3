@@ -10,7 +10,7 @@ from .typing import *
 
 class SequenceFeature(Feature):
 
-    def __init__(self, locations: List[Location],
+    def __init__(self, locations: Union[Location, List[Location]],
                  *, roles: List[str] = None, orientation: str = None,
                  name: str = None, description: str = None,
                  derived_from: List[str] = None,

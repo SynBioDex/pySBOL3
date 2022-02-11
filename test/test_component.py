@@ -183,6 +183,40 @@ class TestComponent(unittest.TestCase):
         c2 = sbol3.Component('c2', types=[sbol3.SBO_DNA], measures=three_metres)
         self.assertListEqual([three_metres], list(c2.measures))
 
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        source_uri = 'https://example.org/source'
+        derived_from_uri = 'https://example.org/derived_from'
+        statute_mile = sbol3.OM_NS + 'mile-Statute'
+        comp1_type = sbol3.SBO_DNA
+        comp1_role = sbol3.SO_PROMOTER
+        comp1_seq1 = sbol3.Sequence('seq1')
+        comp1_model = sbol3.Model('model1',
+                                  source=source_uri,
+                                  language='https://example.org/language',
+                                  framework='https://example.org/framework')
+        comp1_attachment = sbol3.Attachment('att1', source=source_uri)
+        comp1_measure = sbol3.Measure(value=26.2, unit=statute_mile)
+        comp1_activity = sbol3.Activity('activity1')
+        comp1 = sbol3.Component('comp1', types=comp1_type,
+                                sequences=comp1_seq1, roles=comp1_role,
+                                models=comp1_model,
+                                attachments=comp1_attachment,
+                                derived_from=derived_from_uri,
+                                measures=comp1_measure,
+                                generated_by=comp1_activity)
+        self.assertEqual([comp1_type], comp1.types)
+        self.assertEqual([comp1_seq1.identity], comp1.sequences)
+        self.assertEqual([comp1_role], comp1.roles)
+        self.assertEqual([comp1_model.identity], comp1.models)
+        self.assertEqual([comp1_attachment.identity], comp1.attachments)
+        self.assertEqual([derived_from_uri], comp1.derived_from)
+        self.assertEqual([comp1_measure], comp1.measures)
+        self.assertEqual([comp1_activity.identity], comp1.generated_by)
+
 
 if __name__ == '__main__':
     unittest.main()

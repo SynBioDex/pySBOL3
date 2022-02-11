@@ -37,6 +37,17 @@ class TestParticipation(unittest.TestCase):
         roles = [sbol3.SBO_TEMPLATE]
         self.assertEqual(roles, participation.roles)
 
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        test_role = sbol3.SBO_INHIBITOR
+        participant_uri = 'https://example.org/participant'
+        participation1 = sbol3.Participation(roles=test_role,
+                                             participant=participant_uri)
+        self.assertEqual([test_role], participation1.roles)
+
 
 if __name__ == '__main__':
     unittest.main()

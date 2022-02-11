@@ -25,6 +25,15 @@ class TestActivity(unittest.TestCase):
         self.assertEqual([], activity.usage)
         self.assertEqual([], activity.association)
 
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        test_type = sbol3.SBOL_DESIGN
+        activity1 = sbol3.Activity('activity1', types=test_type)
+        self.assertEqual([test_type], activity1.types)
+
 
 class TestAgent(unittest.TestCase):
 
@@ -61,6 +70,16 @@ class TestAssociation(unittest.TestCase):
         self.assertEqual(None, association.plan)
         self.assertEqual(agent.identity, association.agent)
 
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        agent_uri = 'https://example.org/agent'
+        role_uri = 'https://example.org/agent_role'
+        assoc1 = sbol3.Association(agent=agent_uri, roles=role_uri)
+        self.assertEqual([role_uri], assoc1.roles)
+
 
 class TestPlan(unittest.TestCase):
 
@@ -95,6 +114,16 @@ class TestUsage(unittest.TestCase):
         self.assertIsNotNone(usage)
         self.assertEqual(agent.identity, usage.entity)
         self.assertEqual([], usage.roles)
+
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        entity_uri = 'https://example.org/entity'
+        role_uri = 'https://example.org/entity_usage'
+        usage1 = sbol3.Usage(entity=entity_uri, roles=role_uri)
+        self.assertEqual([role_uri], usage1.roles)
 
 
 if __name__ == '__main__':

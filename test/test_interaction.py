@@ -37,6 +37,15 @@ class TestInteraction(unittest.TestCase):
         self.assertEqual(interaction_id, interaction.identity)
         self.assertEqual([sbol3.SBO_INHIBITION], interaction.types)
 
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        test_type = sbol3.SBO_INHIBITION
+        int1 = sbol3.Interaction(types=test_type)
+        self.assertEqual([test_type], int1.types)
+
 
 if __name__ == '__main__':
     unittest.main()

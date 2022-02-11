@@ -18,7 +18,9 @@ class VariableFeature(Identified):
 
     def __init__(self, cardinality: str, variable: Union[Identified, str],
                  *, variants: List[Union[Identified, str]] = None,
-                 variant_collections: List[Union[Identified, str]] = None,
+                 # We really need to define our own types...
+                 variant_collections: Union[Union[Identified, str],
+                                            List[Union[Identified, str]]] = None,
                  variant_derivations: List[Union[Identified, str]] = None,
                  variant_measures: List[Union[Identified, str]] = None,
                  name: str = None, description: str = None,
