@@ -25,6 +25,15 @@ class TestActivity(unittest.TestCase):
         self.assertEqual([], activity.usage)
         self.assertEqual([], activity.association)
 
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        test_type = sbol3.SBOL_DESIGN
+        activity1 = sbol3.Activity('activity1', types=test_type)
+        self.assertEqual([test_type], activity1.types)
+
 
 class TestAgent(unittest.TestCase):
 
