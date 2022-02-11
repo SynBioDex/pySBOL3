@@ -40,6 +40,16 @@ class TestSequenceFeature(unittest.TestCase):
         # object (the range).
         self.assertEqual(1, len(report.errors))
 
+    def test_list_wrapping(self):
+        # Ensure that at least certain properties handle automatic list
+        # wrapping and are typed to do so.
+        # See https://github.com/SynBioDex/pySBOL3/issues/301
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        seq = sbol3.Sequence('seq1')
+        test_loc = sbol3.EntireSequence(seq)
+        seq_feat1 = sbol3.SequenceFeature(locations=test_loc)
+        self.assertEqual([test_loc], seq_feat1.locations)
+
 
 if __name__ == '__main__':
     unittest.main()
