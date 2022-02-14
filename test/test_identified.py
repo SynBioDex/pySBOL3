@@ -95,6 +95,13 @@ class TestIdentified(unittest.TestCase):
         self.assertEqual(1, len(thing.derived_from))
         self.assertEqual(process1, thing.derived_from[0])
 
+    def test_extract_display_id(self):
+        # See https://github.com/SynBioDex/pySBOL3/issues/310
+        # Ensure that extract_display_id is a public function
+        self.assertIn('extract_display_id', dir(sbol3))
+        # Ensure that is_valid_display_id is a public function
+        self.assertIn('is_valid_display_id', dir(sbol3))
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -14,7 +14,7 @@ from .datetime_property import DateTimeProperty
 from .uri_property import URIProperty
 from .ownedobject import OwnedObject
 from .refobj_property import ReferencedObject
-from .identified import Identified
+from .identified import Identified, extract_display_id, is_valid_display_id
 from .toplevel import TopLevel
 from .custom import CustomIdentified, CustomTopLevel
 from .document import Document, copy

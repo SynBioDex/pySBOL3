@@ -12,6 +12,54 @@ from .typing import *
 from .utils import parse_class_name
 
 
+def is_valid_display_id(display_id: str) -> bool:
+    """Determine if a given display ID is valid according to the SBOL specification.
+
+    The SBOL3 specification states, "A display id [...] value MUST be
+    composed of only alphanumeric or underscore characters and MUST NOT
+    begin with a digit." (Section 6.1)
+
+    :param display_id: The display ID to check for validity
+    :return: True if the display ID is valid, False otherwise.
+    """
+    if display_id is None:
+        return True
+    # Make sure everything other than underscores are alphanumeric, and
+    # make sure the first character is not a digit.
+    #
+    # Note: This implies that '_' is not a valid displayId because `isalnum()`
+    # will return false if the string is empty, which it will be after we filter
+    # out the lone underscore.
+    return display_id.replace('_', '').isalnum() and not display_id[0].isdigit()
+
+
+def extract_display_id(identity: str) -> Union[None, str]:
+    """Determine the display ID for an object with the given identity.
+
+    The display ID is the final component of the path of a URL. If the
+    provided identity is not a URL, then no display ID can be
+    determined and None is returned.
+
+    :param identity: An identity for an SBOL object
+    :return: a valid display id or None of no display ID can be extracted
+    """
+    if not identity:
+        return None
+    parsed = urlparse(identity)
+    if not (parsed.scheme and parsed.netloc and parsed.path):
+        # if the identity is not a URL, we cannot extract a display id
+        # and display id is optional in this case
+        return None
+    display_id = parsed.path.split('/')[-1]
+    if is_valid_display_id(display_id):
+        return display_id
+    else:
+        msg = f'"{display_id}" is not a valid displayId.'
+        msg += ' A displayId MUST be composed of only alphanumeric'
+        msg += ' or underscore characters and MUST NOT begin with a digit.'
+        raise ValueError(msg)
+
+
 class Identified(SBOLObject):
     """All SBOL-defined classes are directly or indirectly derived from
     the Identified abstract class. This inheritance means that all
@@ -80,37 +128,20 @@ class Identified(SBOLObject):
 
     @staticmethod
     def _is_valid_display_id(display_id: str) -> bool:
-        if display_id is None:
-            return True
-        # A display id [...] value MUST be composed of only alphanumeric
-        # or underscore characters and MUST NOT begin with a digit.
-        # (Section 6.1)
-        #
-        # Make sure everything other than underscores are alphanumeric, and
-        # make sure the first character is not a digit.
-        #
-        # Note: This implies that '_' is not a valid displayId because `isalnum()`
-        # will return false if the string is empty, which it will be after we filter
-        # out the lone underscore.
-        return display_id.replace('_', '').isalnum() and not display_id[0].isdigit()
+        # is_valid_display_id was made public to support the public
+        # version of extract_display_id. There might be some callers of
+        # this method, so it is here for backward compatibility. At
+        # some point in the future we can deprecate this method and
+        # move towards deleting it.
+        return is_valid_display_id(display_id)
 
     @staticmethod
     def _extract_display_id(identity: str) -> Union[None, str]:
-        if not identity:
-            return None
-        parsed = urlparse(identity)
-        if not (parsed.scheme and parsed.netloc and parsed.path):
-            # if the identity is not a URL, we cannot extract a display id
-            # and display id is optional in this case
-            return None
-        display_id = parsed.path.split('/')[-1]
-        if Identified._is_valid_display_id(display_id):
-            return display_id
-        else:
-            msg = f'"{display_id}" is not a valid displayId.'
-            msg += ' A displayId MUST be composed of only alphanumeric'
-            msg += ' or underscore characters and MUST NOT begin with a digit.'
-            raise ValueError(msg)
+        # extract_display_id was made public and there might be some
+        # callers of this method, so it is here for backward
+        # compatibility. At some point in the future we can deprecate
+        # this method and move towards deleting it.
+        return extract_display_id(identity)
 
     @property
     def display_name(self):
