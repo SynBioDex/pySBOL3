@@ -672,6 +672,42 @@ class TestDocument(unittest.TestCase):
             obj.traverse(document_checker)
             obj.traverse(namespace_checker)
 
+    def test_copy_stability(self):
+        # Test the stability of naming of objects across copies.
+        # See https://github.com/SynBioDex/pySBOL3/issues/231
+        #
+        # Strategy: create an object with 10+ children of the same
+        # type. Add to a document and serialize the document. Load the
+        # serialized document. Copy the object to a new document.
+        # Serialize the new document. Compare the serializations. If we
+        # use sorted ntriples, the serializations should be the same.
+        # This will demonstrate that we maintain names properly despite
+        # the inherently unordered nature of SBOL.
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        c1 = sbol3.Component('c1', types=[sbol3.SBO_DNA])
+        # Create a double-digit number of children to test sort of 10, 11, 1, etc.
+        for i in range(12):
+            instance_of_uri = f'https://example.com/instance/i{i}'
+            c1.features.append(sbol3.SubComponent(instance_of=instance_of_uri))
+        doc1 = sbol3.Document()
+        doc1.add(c1)
+        # Serialize to string
+        doc1_string = doc1.write_string(sbol3.SORTED_NTRIPLES)
+        self.assertIsNotNone(doc1_string)
+        # Load the serialized document into a new document
+        tmp_doc = sbol3.Document()
+        tmp_doc.read_string(doc1_string, sbol3.SORTED_NTRIPLES)
+        # Locate the top level to copy
+        tmp_c1 = tmp_doc.find('c1')
+        self.assertIsNotNone(tmp_c1)
+        self.assertIsInstance(tmp_c1, sbol3.TopLevel)
+        # Copy the top level into a new document
+        doc2 = sbol3.Document()
+        sbol3.copy([tmp_c1], into_document=doc2)
+        doc2_string = doc2.write_string(sbol3.SORTED_NTRIPLES)
+        # Verify that the serializations are identical
+        self.assertEqual(doc1_string, doc2_string)
+
 
 if __name__ == '__main__':
     unittest.main()
