@@ -82,7 +82,7 @@ Each SBOL object in a Document is uniquely identified by a special string of cha
 
 .. end
 
-These URIs are said to be **sbol-compliant**. An sbol-compliant URI consists of a namespace, an optional collection structure, and a local identifier (also called a ``displayId``). In this tutorial, we use URIs of the type ``http://sbolstandard.org/testfiles/my_obj``, where the namespace is ``http://sbolstandard.org/testfiles``, and the local identifier is ``my_object``. 
+These URIs are said to be **sbol-compliant**. An sbol-compliant URI consists of a namespace, an optional local path, and a display ID (``display_id``). In this tutorial, we use URIs of the type ``http://sbolstandard.org/testfiles/my_obj``, where the namespace is ``http://sbolstandard.org/testfiles``, and the display ID is ``my_object``.
 
 Based on our inspection of objects contained in the Document above, we can see that these objects were all created in the namespace ``http://sbolstandard.org/testfiles``. Thus, in order to take advantage of SBOL-compliant URIs, we set an environment variable that configures this namespace as the default.
 
@@ -111,7 +111,7 @@ In the official SBOL specification document, classes and their properties are re
 
 As introduced in the previous section, SBOL objects are identified by a uniform resource identifier (URI). When a new object is constructed, the user must assign a unique identity. The identity is ALWAYS the first argument supplied to the constructor of an SBOL object. 
 
-Constructors for SBOL objects follow a fairly predictable pattern. The first argument is ALWAYS an identifier, which can be either a full URI, a universally unique identifier (UUID), or a local identifier (possibly with collection structure). If the first argument to the constructor is a valid URI or UUID, the object is created with the URI or UUID as its ``identity``. Otherwise, the object is created with an ``identity`` composed of the first argument appended to the pySBOL namespace (set using ``sbol3.set_namespace()``). 
+Constructors for SBOL objects follow a predictable pattern. The first argument is an identifier, which can be either a full URI, a universally unique identifier (UUID), or a display ID (possibly with a local path). If the first argument to the constructor is a valid URI or UUID, the object is created with the URI or UUID as its ``identity``. Otherwise, the object is created with an ``identity`` composed of the first argument appended to the configured namespace (set using ``sbol3.set_namespace()``).
 Constructors can take additional arguments, depending on whether the SBOL class has required attributes. Attributes are required if the specification says they are. In a UML diagram, required attributes are indicated as properties with a cardinality of 1 or more. For example, a ``Component`` (see the UML diagram above) has only one required attribute, ``types``, which specifies one or more molecular types for a component.  Required attributes MUST be specified when calling a constructor. 
 
 The following code creates a protein component (``types`` set to ``SBO_PROTEIN``). 
@@ -130,11 +130,14 @@ The following code creates a DNA component (``types`` set to ``SBO_DNA``).
 
 .. end
 
-The following code creates a DNA component with a collection structure (``/promoters/``), and another DNA component with a different namespace. 
+The following code creates a DNA component with a local path (``/promoters/``), and another DNA component with a different namespace.
 
 .. code:: python
 
+    >>> # Include a local path in addition to a display_id
     >>> second_promoter = sbol3.Component('promoters/second_promoter', sbol3.SBO_DNA)
+    >>>
+    >>> # Use a namespace different from the configured default namespace
     >>> third_promoter = sbol3.Component('http://sbolstandard.org/other_namespace/third_promoter', sbol3.SBO_DNA)
 
 .. end
@@ -183,9 +186,9 @@ The following example illustrates how the URIs for ontology terms can be easily 
 
 For more information on using ontology terms with pySBOL3, see: `Using Ontology Terms <ontology.html>`_.
 
-------------------------------------------
+----------------------------------------------------
 Adding, Finding, and Getting Objects from a Document
-------------------------------------------
+----------------------------------------------------
 
 In some cases a developer may want to use SBOL objects as intermediate data structures in a computational biology workflow. In this case, the user is free to manipulate objects independently of a Document. However, if the user wishes to write out a file with all the information contained in their object, they must first add it to the Document. This is done using the ``add`` method.
 
