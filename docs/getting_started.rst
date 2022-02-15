@@ -103,7 +103,7 @@ The principle classes for describing the structure and primary sequence of a des
 The principle classes for describing the function of a design are ``Component``, ``Feature``, ``Interaction``, and ``Participation``. 
 
 
-In the official SBOL specification document, classes and their properties are represented as box diagrams. Each box represents an SBOL class and its attributes. Following is an example of the diagram for the ``Component`` class which will be referred to in later sections. These class diagrams follow conventions of the Unified Modeling Language.
+In the `SBOL specification document <https://sbolstandard.org/datamodel-specification/>`_, classes and their properties are represented as box diagrams. Each box represents an SBOL class and its attributes. Following is an example of the diagram for the ``Component`` class which will be referred to in later sections. These class diagrams follow conventions of the Unified Modeling Language.
 
 .. figure:: component_uml.png
     :align: center
