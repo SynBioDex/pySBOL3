@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='sbol3',
-      version='1.0rc1',
+      version='1.0',
       description='Python implementation of SBOL 3 standard',
       python_requires='>=3.7',
       url='https://github.com/SynBioDex/pySBOL3',
@@ -14,7 +14,7 @@ setup(name='sbol3',
             #   3 - Alpha
             #   4 - Beta
             #   5 - Production/Stable
-            'Development Status :: 4 - Beta',
+            'Development Status :: 5 - Production/Stable',
 
             # Indicate who your project is intended for
             'Intended Audience :: Developers',
@@ -36,7 +36,7 @@ setup(name='sbol3',
       packages=['sbol3'],
       package_data={'sbol3': ['rdf/sbol3-shapes.ttl']},
       install_requires=[
-            # Require at least rdflib 6.0.1, and allow newer versions
+            # Require at least rdflib 6.1.1, and allow newer versions
             # of rdflib 6.x
             'rdflib>=6.1.1,==6.*',
             'python-dateutil~=2.8.2',
