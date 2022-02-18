@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import collections
 import logging
 import os
@@ -186,7 +188,10 @@ class Document:
         return result
 
     @staticmethod
-    def _parse_attributes(objects, graph):
+    def _parse_attributes(objects, graph) -> dict[str, Identified]:
+        # Track the child objects that get assigned to optimize the
+        # search for orphans later in the loading process.
+        child_objects = dict()
         for s, p, o in graph.triples((None, None, None)):
             str_s = str(s)
             str_p = str(p)
@@ -199,6 +204,8 @@ class Document:
                 other_identity = str(o)
                 other = objects[other_identity]
                 obj._owned_objects[str_p].append(other)
+                # Record the assigned object as a child
+                child_objects[other_identity] = other
             elif str_p == RDF_TYPE:
                 # Handle rdf:type specially because the main type(s)
                 # will already be in the list from the build_object
@@ -208,6 +215,7 @@ class Document:
                     obj._properties[str_p].append(o)
             else:
                 obj._properties[str_p].append(o)
+        return child_objects
 
     @staticmethod
     def _clean_up_singletons(objects: Dict[str, SBOLObject]):
@@ -237,23 +245,27 @@ class Document:
 
     def _parse_graph(self, graph) -> None:
         objects = self._parse_objects(graph)
-        self._parse_attributes(objects, graph)
+        child_objects = self._parse_attributes(objects, graph)
         self._clean_up_singletons(objects)
         # Validate all the objects
         # TODO: Where does this belong? Is this automatic?
         #       Or should a user invoke validate?
         # for obj in objects.values():
         #     obj.validate()
+
+        # Extract the top_levels to a dictionary to speed up the search
+        # for orphans below.
+        top_levels = {uri: obj for uri, obj in objects.items()
+                      if isinstance(obj, TopLevel)}
         # Store the TopLevel objects in the Document
-        self.objects = [obj for uri, obj in objects.items()
-                        if isinstance(obj, TopLevel)]
+        self.objects = list(top_levels.values())
         # Gather Orphans for future writing.
         # These are expected to be non-TopLevel annotation objects whose owners
         # have no custom implementation (i.e. no builder registered). These objects
         # will be written out as part of Document.write_string()
         self.orphans = []
         for uri, obj in objects.items():
-            if obj in self.objects:
+            if uri in top_levels or uri in child_objects:
                 continue
             found = self.find(uri)
             if found:
