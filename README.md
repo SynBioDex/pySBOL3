@@ -1,10 +1,13 @@
+![pySBOL3 logo](logos/pySBOL3-logo-small.jpeg)
+# pySBOL3
 ![gh-action badge](https://github.com/SynBioDex/pySBOL3/workflows/Python%20package/badge.svg)
 ![readthedocs badge](https://readthedocs.org/projects/pysbol3/badge/)
-# pySBOL3
 
-This is a [Python](https://www.python.org/) implementation of the
-[SBOL 3 specification](https://sbolstandard.org/datamodel-specification/).
-pySBOL3 implements [SBOL 3.0.1](https://sbolstandard.org/docs/SBOL3.0.1.pdf).
+pySBOL3 is a
+[Python](https://www.python.org/) implementation of the [SBOL 3
+specification](https://sbolstandard.org/datamodel-specification/).
+pySBOL3 implements [SBOL
+3.0.1](https://sbolstandard.org/docs/SBOL3.0.1.pdf).
 
 ## Installation
 
