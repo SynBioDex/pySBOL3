@@ -7,7 +7,7 @@ are many online resources for learning about the visitor pattern.
 
 The implementation of the Visitor Pattern in pySBOL3 is very
 simple. When a pySBOL3 object's `accept` method is called, a visitor
-is passed as the only arugment. The `accept` method, in turn, invokes
+is passed as the only argument. The `accept` method, in turn, invokes
 `visit_type` on the visitor, passing the pySBOL3 object as the only
 argument.
 
