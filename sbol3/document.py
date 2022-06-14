@@ -424,22 +424,25 @@ class Document:
         lines_type = type(lines[0])
         if lines_type is bytes:
             # rdflib 5
-            return b''.join(lines)
+            return b'\n'.join(lines) + b'\n'
         elif lines_type is str:
             # rdflib 6
-            return ''.join(lines)
+            return '\n'.join(lines) + '\n'
 
     def write_string(self, file_format: str) -> str:
         graph = self.graph()
-        if file_format == SORTED_NTRIPLES:
-            # have RDFlib give us the ntriples as a string
+        if file_format in (NTRIPLES, SORTED_NTRIPLES):
+            # RDFlib puts in an extra blank line so we handle N-Triples
+            # in a special way to get rid of the extra line.
+
+            # Have RDFlib give us the n-triples as a string
             nt_text = graph.serialize(format=NTRIPLES)
-            # split it into lines
-            lines = nt_text.splitlines(keepends=True)
-            # sort those lines
-            lines.sort()
-            # write out the lines
-            # RDFlib gives us bytes, so open file in binary mode
+            # Split it into lines and filter out the blank lines
+            lines = [line for line in nt_text.splitlines() if line]
+            if file_format == SORTED_NTRIPLES:
+                # sort the lines
+                lines.sort()
+            # Join the lines together
             result = self.join_lines(lines)
         elif file_format == JSONLD:
             context = {f'@{prefix}': uri for prefix, uri in self._namespaces.items()}

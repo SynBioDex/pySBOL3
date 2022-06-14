@@ -708,6 +708,29 @@ class TestDocument(unittest.TestCase):
         # Verify that the serializations are identical
         self.assertEqual(doc1_string, doc2_string)
 
+    def test_ntriples_blank_line(self):
+        """Test that ntriples output does not contain an extra blank
+        line due to RDFlib.
+
+        See https://github.com/SynBioDex/pySBOL3/issues/404
+        """
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        c1 = sbol3.Component('c1', types=[sbol3.SBO_DNA])
+        doc = sbol3.Document()
+        doc.add(c1)
+        output = doc.write_string(file_format=sbol3.NTRIPLES)
+        lines = output.splitlines()
+        num_blanks = sum([1 for line in lines if not line])
+        # Expecting no blank lines
+        self.assertEqual(0, num_blanks)
+
+        # Now test sorted n-triples
+        sorted_output = doc.write_string(file_format=sbol3.SORTED_NTRIPLES)
+        sorted_lines = sorted_output.splitlines()
+        num_blanks = sum([1 for line in sorted_lines if not line])
+        # Expecting no blank lines
+        self.assertEqual(0, num_blanks)
+
 
 if __name__ == '__main__':
     unittest.main()
