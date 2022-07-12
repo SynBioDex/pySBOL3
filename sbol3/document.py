@@ -5,6 +5,7 @@ import logging
 import os
 import posixpath
 import warnings
+from pathlib import Path
 from typing import Dict, Callable, List, Optional, Any, Union, Iterable
 
 # import typing for typing.Sequence, which we don't want to confuse
@@ -50,6 +51,12 @@ class Document:
     # Map type URIs to a builder function to construct entities from
     # RDF triples.
     _uri_type_map: Dict[str, Callable[[str, str], Identified]] = BUILDER_REGISTER
+
+    @staticmethod
+    def open(location: Union[Path, str], file_format: str = None) -> Document:
+        doc = Document()
+        doc.read(location, file_format=file_format)
+        return doc
 
     def __init__(self):
         self.logger = logging.getLogger(SBOL_LOGGER_NAME)
@@ -313,15 +320,16 @@ class Document:
             raise ValueError('Provided file format is not a valid one.')
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
-    def read(self, location: str, file_format: str = None) -> None:
+    def read(self, location: Union[Path, str], file_format: str = None) -> None:
+        _location = str(location)  # normalize location to a string
         if file_format is None:
-            file_format = self._guess_format(location)
+            file_format = self._guess_format(_location)
         if file_format is None:
             raise ValueError('Unable to determine file format')
         if file_format == SORTED_NTRIPLES:
             file_format = NTRIPLES
         graph = rdflib.Graph()
-        graph.parse(location, format=file_format)
+        graph.parse(_location, format=file_format)
         return self._parse_graph(graph)
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
@@ -453,18 +461,19 @@ class Document:
             result = result.decode()
         return result
 
-    def write(self, fpath: str, file_format: str = None) -> None:
+    def write(self, fpath: Union[Path, str], file_format: str = None) -> None:
         """Write the document to file.
 
         If file_format is None the desired format is guessed from the
         extension of fpath. If file_format cannot be guessed a ValueError
         is raised.
         """
+        _fpath = str(fpath)  # normalize fpath to a string
         if file_format is None:
-            file_format = self._guess_format(fpath)
+            file_format = self._guess_format(_fpath)
         if file_format is None:
             raise ValueError('Unable to determine file format')
-        with open(fpath, 'w') as outfile:
+        with open(_fpath, 'w') as outfile:
             outfile.write(self.write_string(file_format))
 
     def graph(self) -> rdflib.Graph:
