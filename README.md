@@ -33,6 +33,11 @@ for development.
 
 ## Acknowledgements
 
+If you use pySBOL3 please cite:
+> Tom Mitchell, Jacob Beal, and Bryan Bartley.
+> [pySBOL3: SBOL3 for Python Programmers](https://doi.org/10.1021/acssynbio.2c00249).
+> ACS Synthetic Biology, available online June 29, 2022. PMID: 35767721.
+
 Development of this library has been supported by the 
 [DARPA Synergistic Discovery and Design (SD2)](https://www.darpa.mil/program/synergistic-discovery-and-design)
 program and [Raytheon BBN Technologies](http://bbn.com/).
