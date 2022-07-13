@@ -2,6 +2,7 @@ import logging
 import os
 import tempfile
 import unittest
+from pathlib import Path
 from typing import Optional
 
 import rdflib
@@ -56,12 +57,10 @@ class TestDocument(unittest.TestCase):
     def test_read_ntriples(self):
         # Initial test of Document.read
         filename = 'model.nt'
-        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model',
-                                 filename)
-        doc = sbol3.Document()
-        doc.read(test_path)
+        test_path = Path(SBOL3_LOCATION) / 'entity' / 'model' / filename
+        doc = sbol3.Document.open(test_path)
         with tempfile.TemporaryDirectory() as tmpdirname:
-            test_file = os.path.join(tmpdirname, filename)
+            test_file = Path(tmpdirname) / filename
             doc.write(test_file, sbol3.NTRIPLES)
 
     def test_read_turtle(self):
