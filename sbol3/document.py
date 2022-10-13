@@ -719,7 +719,9 @@ class Document:
 
     @staticmethod
     def change_object_namespace(top_levels: Iterable[TopLevel],
-                                new_namespace: str) -> Any:
+                                new_namespace: str,
+                                update_references: Iterable[TopLevel] = None
+                                ) -> Any:
         """Change the namespace of all TopLevel objects in `top_levels` to
         new_namespace, regardless of the previous value, while
         maintaining referential integrity among all the top level
@@ -734,6 +736,8 @@ class Document:
 
         :param top_levels: objects to change
         :param new_namespace: new namespace for objects
+        :param update_references: objects that should have their references
+                                  updated without changing their namespace
         :return: Nothing
         """
         # Validate the objects and build a map of old name to new name
@@ -754,6 +758,12 @@ class Document:
             top_level.namespace = new_namespace
             top_level.set_identity(new_identity)
             top_level.update_all_dependents(identity_map)
+        # Now update any TopLevels in the update_references group. These are
+        # objects that may have references to the objects that had their
+        # namespace changed.
+        if update_references is not None:
+            for top_level in update_references:
+                top_level.update_all_dependents(identity_map)
         return None
 
     def clone(self) -> List[TopLevel]:
