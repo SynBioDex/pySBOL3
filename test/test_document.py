@@ -616,6 +616,22 @@ class TestDocument(unittest.TestCase):
         with self.assertRaises(ValueError):
             doc.change_object_namespace([i1], new_namespace)
 
+    def test_change_object_namespace_with_references(self):
+        """Test Document.change_object_namespace with outside references.
+
+        See https://github.com/SynBioDex/pySBOL3/issues/412
+        """
+        doc = sbol3.Document()
+        comp = sbol3.Component('http://sbolstandard.org/testfiles/hello',
+                               sbol3.SBO_DNA)
+        seq = sbol3.Sequence('http://sbolstandard.org/testfiles/hello_sequence',
+                             elements='ATGC')
+        doc.add(comp)
+        doc.add(seq)
+        comp.sequences = [seq]
+        doc.change_object_namespace([seq], 'http://parts.igem.org', doc)
+        self.assertEqual(seq.identity, comp.sequences[0])
+
     def test_clone(self):
         namespace = 'https://github.com/synbiodex/pysbol3'
         sbol3.set_namespace(namespace)
