@@ -18,7 +18,7 @@ class Location(Identified, abc.ABC):
                  identity: str, type_uri: str,
                  *, orientation: Optional[str] = None,
                  order: int = None) -> None:
-        super().__init__(identity, type_uri)
+        super().__init__(identity=identity, type_uri=type_uri)
         self.orientation: uri_singleton = URIProperty(self, SBOL_ORIENTATION, 0, 1,
                                                       initial_value=orientation)
         self.order = IntProperty(self, SBOL_ORDER, 0, 1,

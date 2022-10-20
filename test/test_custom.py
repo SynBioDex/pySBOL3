@@ -2,6 +2,7 @@ import math
 import os
 import tempfile
 import unittest
+from typing import Union
 
 import rdflib
 
@@ -13,6 +14,7 @@ PYSBOL3_CUSTOM_BOOL = 'https://github.com/synbiodex/pysbol3#customBool'
 PYSBOL3_CUSTOM_CHILD = 'https://github.com/synbiodex/pysbol3#customChildren'
 PYSBOL3_CUSTOM_IDENTIFIED = 'https://github.com/synbiodex/pysbol3#customIdentified'
 PYSBOL3_CUSTOM_INT = 'https://github.com/synbiodex/pysbol3#customInt'
+PYSBOL3_CUSTOM_LOCATION = 'https://github.com/synbiodex/pysbol3#customLocation'
 
 
 class CustomTopClass(sbol3.CustomTopLevel):
@@ -27,6 +29,15 @@ class CustomTopClass(sbol3.CustomTopLevel):
 class CustomIdentifiedClass(sbol3.CustomIdentified):
     def __init__(self, type_uri=PYSBOL3_CUSTOM_IDENTIFIED, identity=None):
         super().__init__(type_uri, identity=identity)
+        # Also test the int list while we're here
+        self.foo_int = sbol3.IntProperty(self, PYSBOL3_CUSTOM_INT,
+                                         0, math.inf)
+
+
+class CustomLocationClass(sbol3.Location, sbol3.CustomIdentified):
+    def __init__(self, sequence: Union[sbol3.Sequence, str],
+                 *, type_uri=PYSBOL3_CUSTOM_LOCATION, identity=None):
+        super().__init__(sequence=sequence, type_uri=type_uri, identity=identity)
         # Also test the int list while we're here
         self.foo_int = sbol3.IntProperty(self, PYSBOL3_CUSTOM_INT,
                                          0, math.inf)
@@ -161,6 +172,20 @@ class TestCustomIdentified(unittest.TestCase):
         # The lists are necessarily unordered because of RDF
         # Compare specially
         self.assertCountEqual([7, 14], obj2.foo_int)
+
+
+class TestCustomLocation(unittest.TestCase):
+
+    def test_constructor(self):
+        """Test construction of a custom `Location`.
+
+        See https://github.com/SynBioDex/pySBOL3/issues/414
+        """
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        seq = sbol3.Sequence('my_seq', elements='atcg')
+        custom_loc = CustomLocationClass(sequence=seq)
+        # Simply creating the above class indicates that this fixes bug 414
+        self.assertIsInstance(custom_loc, CustomLocationClass)
 
 
 if __name__ == '__main__':
