@@ -1,7 +1,7 @@
 # --------------------------------------------------
 # Constants to support SBOL 3
 #
-# See https://sbolstandard.org/data-model-specification/ for the latest version.
+# See https://sbolstandard.org/datamodel-specification/ for the latest version.
 # --------------------------------------------------
 
 SBOL_LOGGER_NAME = 'sbol3'
