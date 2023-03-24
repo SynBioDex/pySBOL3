@@ -6,4 +6,4 @@ build/
 dist/
 # Emacs backup files
 *~
-test/SBOLTestSuite
+
