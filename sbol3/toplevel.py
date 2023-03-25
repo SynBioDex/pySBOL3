@@ -173,7 +173,7 @@ class TopLevel(Identified):
 
     def copy(self, target_doc=None, target_namespace=None):
         # Delete this method in v1.1
-        warnings.warn('Use sbol3.copy() instead', DeprecationWarning)
+        warnings.warn('Toplevel.copy() is deprecated; use sbol3.copy() instead', DeprecationWarning)
         new_obj = super().copy(target_doc=target_doc, target_namespace=target_namespace)
         # Need to set `document` on all children recursively. That's what happens when
         # you assign to the `document` property of an Identified
