@@ -4,6 +4,8 @@ from typing import Union, Any, List, Optional
 
 import rdflib
 
+import sbol3
+
 from . import *
 
 
@@ -35,8 +37,10 @@ class ReferencedObjectMixin:
             # see https://github.com/SynBioDex/pySBOL3/issues/357
             if value.identity is None:
                 # The SBOLObject has an uninitialized identity
-                msg = f'Cannot set reference to {value}.'
+                msg = f'\n Cannot set reference to {value}.'
                 msg += ' Object identity is uninitialized.'
+                if isinstance(value, sbol3.Identified) and not isinstance(value, sbol3.TopLevel):
+                    msg += f'\n Child object {value} needs to be added to a parent object before being used'
                 raise ValueError(msg)
             value = value.identity
         if not isinstance(value, str):
