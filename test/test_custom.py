@@ -10,6 +10,7 @@ import sbol3
 
 
 PYSBOL3_CUSTOM_TOP = 'https://github.com/synbiodex/pysbol3#customTop'
+PYSBOL3_CUSTOM_UNREGISTERED_TOP = 'https://github.com/synbiodex/pysbol3#customUnregisteredTop'
 PYSBOL3_CUSTOM_BOOL = 'https://github.com/synbiodex/pysbol3#customBool'
 PYSBOL3_CUSTOM_CHILD = 'https://github.com/synbiodex/pysbol3#customChildren'
 PYSBOL3_CUSTOM_IDENTIFIED = 'https://github.com/synbiodex/pysbol3#customIdentified'
@@ -25,6 +26,13 @@ class CustomTopClass(sbol3.CustomTopLevel):
                                               0, math.inf)
         self.children = sbol3.OwnedObject(self, PYSBOL3_CUSTOM_CHILD, 0, math.inf)
 
+class CustomUnregisteredTopClass(sbol3.CustomTopLevel):
+    def __init__(self, identity, type_uri=PYSBOL3_CUSTOM_UNREGISTERED_TOP):
+        super().__init__(identity, type_uri)
+        # Also test the boolean list while we're here
+        self.foo_bool = sbol3.BooleanProperty(self, PYSBOL3_CUSTOM_BOOL,
+                                              0, math.inf)
+        self.children = sbol3.OwnedObject(self, PYSBOL3_CUSTOM_CHILD, 0, math.inf)
 
 class CustomIdentifiedClass(sbol3.CustomIdentified):
     def __init__(self, type_uri=PYSBOL3_CUSTOM_IDENTIFIED, identity=None):
@@ -85,8 +93,13 @@ class TestCustomTopLevel(unittest.TestCase):
         obj.foo_bool.append(True)
         obj.foo_bool.append(False)
         self.assertEqual([True, False], obj.foo_bool)
+        obj_unregistered_name = 'bool_test_unregistered'
+        obj_u = CustomUnregisteredTopClass(obj_unregistered_name)
+        obj_u.foo_bool.append(True)
+        self.assertEqual([True], obj_u.foo_bool)
         doc = sbol3.Document()
         doc.add(obj)
+        doc.add(obj_u)
         doc2 = sbol3.Document()
         # Round trip the document
         with tempfile.TemporaryDirectory() as tmpdirname:
@@ -94,9 +107,22 @@ class TestCustomTopLevel(unittest.TestCase):
             doc.write(test_file, sbol3.NTRIPLES)
             doc2.read(test_file, sbol3.NTRIPLES)
         obj2 = doc2.find(obj_name)
+        obj_u2 = doc2.find(obj_unregistered_name)
         # The lists are necessarily unordered because of RDF
-        # Compare specially
-        self.assertCountEqual([True, False], obj2.foo_bool)
+        self.assertEqual([False, True], sorted(obj2.foo_bool))
+        unregistered_values = obj_u2._properties['https://github.com/synbiodex/pysbol3#customBool']
+        self.assertEqual(['true'], [str(x) for x in unregistered_values])
+
+        # Finally, make sure the objects can be copied into a new document
+        doc3 = sbol3.Document()
+        obj2.copy(doc3)
+        obj_u2.copy(doc3)
+        obj3 = doc3.find(obj_name)
+        obj_u3 = doc3.find(obj_unregistered_name)
+        # The lists are necessarily unordered because of RDF
+        self.assertEqual([False, True], sorted(obj3.foo_bool))
+        unregistered_values = obj_u3._properties['https://github.com/synbiodex/pysbol3#customBool']
+        self.assertEqual(['true'], [str(x) for x in unregistered_values])
 
     def test_none_identity(self):
         # Make sure a ValueError is raised if None is passed

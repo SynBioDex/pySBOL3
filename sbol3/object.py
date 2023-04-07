@@ -1,3 +1,4 @@
+import logging
 import posixpath
 import uuid
 import warnings
@@ -111,8 +112,12 @@ class SBOLObject:
                 old_uri = self.identity
                 new_uri = replace_namespace(old_uri, target_namespace, self.getTypeURI())
 
-        new_obj = BUILDER_REGISTER[self.type_uri](**dict(identity=new_uri,
-                                                         type_uri=self.type_uri))
+        try:
+            builder = BUILDER_REGISTER[self.type_uri]
+        except KeyError:
+            logging.warning(f'No builder found for {self.type_uri}; assuming {self.__class__.__name__}')
+            builder = self.__class__
+        new_obj = builder(**dict(identity=new_uri, type_uri=self.type_uri))
 
         # Copy properties
         for property_uri, value_store in self._properties.items():
