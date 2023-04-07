@@ -4,8 +4,6 @@ import tempfile
 import unittest
 from typing import Union
 
-import rdflib
-
 import sbol3
 
 
@@ -26,6 +24,7 @@ class CustomTopClass(sbol3.CustomTopLevel):
                                               0, math.inf)
         self.children = sbol3.OwnedObject(self, PYSBOL3_CUSTOM_CHILD, 0, math.inf)
 
+
 class CustomUnregisteredTopClass(sbol3.CustomTopLevel):
     def __init__(self, identity, type_uri=PYSBOL3_CUSTOM_UNREGISTERED_TOP):
         super().__init__(identity, type_uri)
@@ -33,6 +32,7 @@ class CustomUnregisteredTopClass(sbol3.CustomTopLevel):
         self.foo_bool = sbol3.BooleanProperty(self, PYSBOL3_CUSTOM_BOOL,
                                               0, math.inf)
         self.children = sbol3.OwnedObject(self, PYSBOL3_CUSTOM_CHILD, 0, math.inf)
+
 
 class CustomIdentifiedClass(sbol3.CustomIdentified):
     def __init__(self, type_uri=PYSBOL3_CUSTOM_IDENTIFIED, identity=None):
