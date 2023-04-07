@@ -2,6 +2,7 @@ import math
 import os
 import tempfile
 import unittest
+import warnings
 from typing import Union
 
 import sbol3
@@ -115,8 +116,11 @@ class TestCustomTopLevel(unittest.TestCase):
 
         # Finally, make sure the objects can be copied into a new document
         doc3 = sbol3.Document()
-        obj2.copy(doc3)
-        obj_u2.copy(doc3)
+        # This test deliberately uses the old copy function, as that was where an error previously occurred
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            obj2.copy(doc3)
+            obj_u2.copy(doc3)
         obj3 = doc3.find(obj_name)
         obj_u3 = doc3.find(obj_unregistered_name)
         # The lists are necessarily unordered because of RDF
