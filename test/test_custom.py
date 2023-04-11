@@ -110,7 +110,7 @@ class TestCustomTopLevel(unittest.TestCase):
         obj2 = doc2.find(obj_name)
         obj_u2 = doc2.find(obj_unregistered_name)
         # The lists are necessarily unordered because of RDF
-        self.assertEqual([False, True], sorted(obj2.foo_bool))
+        self.assertCountEqual([False, True], obj2.foo_bool)
         unregistered_values = obj_u2._properties['https://github.com/synbiodex/pysbol3#customBool']
         self.assertEqual(['true'], [str(x) for x in unregistered_values])
 
@@ -124,7 +124,7 @@ class TestCustomTopLevel(unittest.TestCase):
         obj3 = doc3.find(obj_name)
         obj_u3 = doc3.find(obj_unregistered_name)
         # The lists are necessarily unordered because of RDF
-        self.assertEqual([False, True], sorted(obj3.foo_bool))
+        self.assertCountEqual([False, True], obj3.foo_bool)
         unregistered_values = obj_u3._properties['https://github.com/synbiodex/pysbol3#customBool']
         self.assertEqual(['true'], [str(x) for x in unregistered_values])
 
