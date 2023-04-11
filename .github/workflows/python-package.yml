@@ -47,3 +47,5 @@ jobs:
         PY_VERSION=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
         if [ "${PY_VERSION}" == "3.10" ]; then echo "Disabling warnings"; WARNINGS=""; fi
         python $WARNINGS -m unittest discover -s test
+        pycodestyle sbol3 test
+        pylint sbol3 test
