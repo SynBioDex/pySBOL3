@@ -23,25 +23,37 @@ class ReferencedURI(str):
 class ReferencedObjectMixin:
 
     def to_user(self, value: Any) -> str:
-        result = ReferencedURI(str(value))
         if hasattr(self, 'property_owner'):
             parent = self.property_owner
-            result.parent = parent
-        return result
+            value.parent = parent
+        # Should we check to see if value has a document as well?
+        return value
 
-    @staticmethod
-    def from_user(value: Any) -> rdflib.URIRef:
-        if isinstance(value, SBOLObject):
-            # see https://github.com/SynBioDex/pySBOL3/issues/357
-            if value.identity is None:
-                # The SBOLObject has an uninitialized identity
-                msg = f'Cannot set reference to {value}.'
-                msg += ' Object identity is uninitialized.'
-                raise ValueError(msg)
-            value = value.identity
-        if not isinstance(value, str):
-            raise TypeError(f'Expecting string, got {type(value)}')
-        return rdflib.URIRef(value)
+    #@staticmethod
+    def from_user(self, value: Any) -> rdflib.URIRef:
+        #if isinstance(value, SBOLObject):
+        #    # see https://github.com/SynBioDex/pySBOL3/issues/357
+        #    if value.identity is None:
+        #        # The SBOLObject has an uninitialized identity
+        #        msg = f'Cannot set reference to {value}.'
+        #        msg += ' Object identity is uninitialized.'
+        #        raise ValueError(msg)
+        #    value = value.identity
+        #if not isinstance(value, str):
+        #    raise TypeError(f'Expecting string, got {type(value)}')
+
+        # TODO: what is value is empty string?
+        if type(value) is str:
+            if self.property_owner.document:
+                value = self.property_owner.document.find(value)
+                # TODO: warn user referenced object is not in document
+                if value is not None:
+                    return value
+            # If not found in Document
+            value = SBOLObject(value)
+        if not isinstance(value, SBOLObject):
+            raise TypeError('Cannot set property, the value must be str or instance of SBOLObect')
+        return value
 
     def maybe_add_to_document(self, value: Any) -> None:
         # if not isinstance(value, TopLevel):

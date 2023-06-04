@@ -149,6 +149,8 @@ class SBOLObject:
 
         return new_obj
 
+    def lookup(self):
+        return self
 
 def replace_namespace(old_uri, target_namespace, rdf_type):
 

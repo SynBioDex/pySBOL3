@@ -221,6 +221,12 @@ class Document:
                 if o not in obj._properties[str_p]:
                     obj._properties[str_p].append(o)
             else:
+                # check for referenced objects
+                if type(o) is rdflib.URIRef:
+                    print(obj._properties[str_p])
+                    other_identity = str(o)
+                    if other_identity in objects:
+                        o = objects[other_identity]
                 obj._properties[str_p].append(o)
         return child_objects
 

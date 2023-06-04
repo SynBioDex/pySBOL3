@@ -2,6 +2,8 @@ import os
 import unittest
 
 import sbol3
+import rdflib
+
 
 MODULE_LOCATION = os.path.dirname(os.path.abspath(__file__))
 SBOL3_LOCATION = os.path.join(MODULE_LOCATION, 'SBOLTestSuite', 'SBOL3')
@@ -25,7 +27,7 @@ class TestReferencedObject(unittest.TestCase):
     def tearDown(self) -> None:
         sbol3.set_defaults()
 
-    def test_lookup(self):
+    def test_parse_refobj(self):
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.ttl')
         test_format = sbol3.TURTLE
 
@@ -33,14 +35,17 @@ class TestReferencedObject(unittest.TestCase):
         doc.read(test_path, test_format)
         component = doc.find('toggle_switch')
         self.assertIsNotNone(component)
-        model_uri = component.models[0]
-        self.assertTrue(isinstance(model_uri, str))
-        self.assertTrue(hasattr(model_uri, 'lookup'))
-        self.assertEqual('https://sbolstandard.org/examples/model1', model_uri)
-        model = model_uri.lookup()
+        model = component.models[0]
+        print('Model:', model)
+        print(type(model))
+        self.assertFalse(type(model) is rdflib.URIRef)
+        self.assertTrue(type(model) is sbol3.Model)
+        self.assertTrue(hasattr(model, 'lookup'), f'{model}')
+        self.assertEqual('https://sbolstandard.org/examples/model1', model.identity)
+        model = model.lookup()
         self.assertIsNotNone(model)
 
-    def test_uri_assignment(self):
+    def test_uri_assignment_and_resolution(self):
         # Test assignment to a ReferencedObject attribute with a URI string
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
@@ -49,11 +54,22 @@ class TestReferencedObject(unittest.TestCase):
         doc.add(component)
         doc.add(sequence)
         component.sequences.append(sequence.identity)
-        seq2_uri = component.sequences[0]
-        self.assertEqual(sequence.identity, seq2_uri)
-        seq = seq2_uri.lookup()
-        self.assertIsNotNone(seq)
-        self.assertEqual(sequence, seq)
+        self.assertEqual(sequence, component.sequences[0])
+
+    def test_uri_assignment_not_resolved(self):
+        # Test assignment to a ReferencedObject attribute with a URI string
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        doc = sbol3.Document()
+        component = sbol3.Component('c1', sbol3.SBO_DNA)
+        sequence = sbol3.Sequence('seq1')
+        doc.add(component)
+
+        # Because the Sequence is not contained in the Document,
+        # we can't resolve the reference
+        component.sequences.append(sequence.identity)
+        self.assertNotEqual(sequence, component.sequences[0])
+        self.assertTrue(type(component.sequences[0]) is sbol3.SBOLObject)
+ 
 
     def test_instance_append(self):
         # Test assignment to a ReferencedObject attribute with an
@@ -65,11 +81,7 @@ class TestReferencedObject(unittest.TestCase):
         doc.add(component)
         doc.add(sequence)
         component.sequences.append(sequence)
-        seq2_uri = component.sequences[0]
-        self.assertEqual(sequence.identity, seq2_uri)
-        seq = seq2_uri.lookup()
-        self.assertIsNotNone(seq)
-        self.assertEqual(sequence, seq)
+        self.assertEqual(sequence, component.sequences[0])
 
     def test_instance_assignment(self):
         # Test assignment to a ReferencedObject attribute with an
@@ -81,11 +93,10 @@ class TestReferencedObject(unittest.TestCase):
         doc.add(component)
         doc.add(sequence)
         component.sequences = [sequence]
-        seq2_uri = component.sequences[0]
-        self.assertEqual(sequence.identity, seq2_uri)
-        seq = seq2_uri.lookup()
-        self.assertIsNotNone(seq)
-        self.assertEqual(sequence, seq)
+        self.assertEqual(component.sequences[0], sequence)
+
+    def test_lookup_reverse_compatible(self):
+        pass
 
     def test_singleton_assignment(self):
         # Test assignment to a ReferencedObject attribute with an
@@ -97,11 +108,7 @@ class TestReferencedObject(unittest.TestCase):
         doc.add(test_parent)
         doc.add(sequence)
         test_parent.sequence = sequence
-        seq2_uri = test_parent.sequence
-        self.assertEqual(sequence.identity, seq2_uri)
-        seq = seq2_uri.lookup()
-        self.assertIsNotNone(seq)
-        self.assertEqual(sequence, seq)
+        self.assertEqual(test_parent.sequence, sequence)
 
     def test_adding_referenced_objects(self):
         # Verify that sbol3 does not try to add objects
@@ -120,10 +127,32 @@ class TestReferencedObject(unittest.TestCase):
         # Now explicitly add foo to the document and ensure
         # everything works as expected
         doc.add(foo)
-        self.assertEqual(execution.identity, foo.members[0])
-        # Also verify that we can use lookup on the object
-        # to get back to the original instance via document lookup
-        self.assertEqual(execution.identity, foo.members[0].lookup().identity)
+        self.assertEqual(execution, foo.members[0])
+
+    def test_adding_referenced_objects(self):
+        # Verify that sbol3 does not try to add objects
+        # to the document when they are added to a referenced
+        # object property.
+        #
+        # See https://github.com/SynBioDex/pySBOL3/issues/184
+        # Test assignment to a ReferencedObject attribute with a URI string
+        doc = sbol3.Document()
+        sbol3.set_namespace('https://example.org')
+        foo = sbol3.Collection('https://example.org/baz')
+        doc.add(foo)
+
+        execution = sbol3.Activity('protocol_execution')
+        foo.members.append(execution)
+        # Verify that execution did not get document assigned
+        self.assertIsNone(execution.document)
+        self.assertNotIn(execution, doc.objects)
+
+        # Now explicitly add foo to the document and ensure
+        # everything works as expected
+        doc.add(execution)
+        foo.members.append(execution)
+        self.assertEqual(execution, foo.members[0])
+        
 
     def test_no_identity_exception(self):
         # See https://github.com/SynBioDex/pySBOL3/issues/357
