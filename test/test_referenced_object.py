@@ -36,25 +36,110 @@ class TestReferencedObject(unittest.TestCase):
         component = doc.find('toggle_switch')
         self.assertIsNotNone(component)
         model = component.models[0]
-        print('Model:', model)
-        print(type(model))
         self.assertFalse(type(model) is rdflib.URIRef)
         self.assertTrue(type(model) is sbol3.Model)
         self.assertTrue(hasattr(model, 'lookup'), f'{model}')
         self.assertEqual('https://sbolstandard.org/examples/model1', model.identity)
-        model = model.lookup()
-        self.assertIsNotNone(model)
+
+        # Test reverse compatibility with lookup
+        model_lookup = model.lookup()
+        self.assertTrue(model_lookup is model)
+
+    def test_parse_external_reference(self):
+        # When parsing a document, if we encounter a reference to an object 
+        # not in this document, create a stub object using SBOLObject
+        test_sbol='''
+@base          <https://sbolstandard.org/examples/> .
+@prefix :      <https://sbolstandard.org/examples/> .
+@prefix sbol:  <http://sbols.org/v3#> .
+@prefix SBO:   <https://identifiers.org/SBO:> .
+
+:toggle_switch  a          sbol:Component ;
+        sbol:description   "Toggle Switch genetic circuit" ;
+        sbol:displayId     "toggle_switch" ;
+        sbol:hasModel      :model1 ;
+        sbol:hasNamespace  <https://sbolstandard.org/examples> ;
+        sbol:name          "Toggle Switch" ;
+        sbol:type          SBO:0000241 .
+'''
+        test_format = sbol3.TURTLE
+
+        doc = sbol3.Document()
+        doc.read_string(test_sbol, file_format=test_format)
+        component = doc.find('toggle_switch')
+        model = component.models[0]
+        self.assertTrue(type(model) is sbol3.SBOLObject)
+        self.assertEqual(model.identity, 'https://sbolstandard.org/examples/model1')
+
+    def test_serialize_external_reference(self):
+        # When serializing a document, if we encounter a reference to an object 
+        # not in this document, serialize it as a URI
+        test_sbol='''
+@base          <https://sbolstandard.org/examples/> .
+@prefix :      <https://sbolstandard.org/examples/> .
+@prefix sbol:  <http://sbols.org/v3#> .
+@prefix SBO:   <https://identifiers.org/SBO:> .
+
+:toggle_switch  a          sbol:Component ;
+        sbol:description   "Toggle Switch genetic circuit" ;
+        sbol:displayId     "toggle_switch" ;
+        sbol:hasModel      :model1 ;
+        sbol:hasNamespace  <https://sbolstandard.org/examples> ;
+        sbol:name          "Toggle Switch" ;
+        sbol:type          SBO:0000241 .
+'''
+        test_format = sbol3.TURTLE
+
+        doc = sbol3.Document()
+        doc2 = sbol3.Document()
+
+        doc.read_string(test_sbol, file_format=test_format)
+        component = doc.find('toggle_switch')
+        model = component.models[0]
+        self.assertTrue(type(model) is sbol3.SBOLObject)
+        self.assertEqual(model.identity, 'https://sbolstandard.org/examples/model1')
+
+        doc2.read_string(doc.write_string(file_format=test_format), file_format=test_format)
+        component = doc2.find('toggle_switch')
+        model = component.models[0]
+
+
+    def test_copy(self):
+        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.ttl')
+        test_format = sbol3.TURTLE
+
+        doc = sbol3.Document()
+        doc2 = sbol3.Document()
+
+        doc.read(test_path, test_format)
+        component = doc.find('toggle_switch')
+        model = component.models[0]
+        self.assertTrue(type(model) is sbol3.Model)
+
+        # When the Component is copied to a new document,
+        # its reference to the Sequence should be treated as an external reference
+        component_copy = component.copy(target_doc=doc2)
+        model = component_copy.models[0]
+        self.assertTrue(type(model) is sbol3.SBOLObject)
+
 
     def test_uri_assignment_and_resolution(self):
         # Test assignment to a ReferencedObject attribute with a URI string
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         component = sbol3.Component('c1', sbol3.SBO_DNA)
-        sequence = sbol3.Sequence('seq1')
+        seq1 = sbol3.Sequence('seq1')
+        seq2 = sbol3.Sequence('seq2')
         doc.add(component)
-        doc.add(sequence)
-        component.sequences.append(sequence.identity)
-        self.assertEqual(sequence, component.sequences[0])
+        doc.add(seq1)
+        doc.add(seq2)
+        component.sequences.append(seq1.identity)
+        self.assertEqual(seq1, component.sequences[0])
+        component.sequences = [seq1.identity]
+        self.assertEqual(seq1, component.sequences[0])
+        component.sequences = [seq1.identity, seq2.identity]
+        self.assertEqual(seq1, component.sequences[0])
+        self.assertEqual(seq2, component.sequences[1])
 
     def test_uri_assignment_not_resolved(self):
         # Test assignment to a ReferencedObject attribute with a URI string
@@ -116,25 +201,6 @@ class TestReferencedObject(unittest.TestCase):
         # object property.
         #
         # See https://github.com/SynBioDex/pySBOL3/issues/184
-        doc = sbol3.Document()
-        sbol3.set_namespace('https://example.org')
-        execution = sbol3.Activity('protocol_execution')
-        doc.add(execution)
-        foo = sbol3.Collection('https://example.org/baz')
-        foo.members.append(execution)
-        # Verify that foo did not get document assigned
-        self.assertIsNone(foo.document)
-        # Now explicitly add foo to the document and ensure
-        # everything works as expected
-        doc.add(foo)
-        self.assertEqual(execution, foo.members[0])
-
-    def test_adding_referenced_objects(self):
-        # Verify that sbol3 does not try to add objects
-        # to the document when they are added to a referenced
-        # object property.
-        #
-        # See https://github.com/SynBioDex/pySBOL3/issues/184
         # Test assignment to a ReferencedObject attribute with a URI string
         doc = sbol3.Document()
         sbol3.set_namespace('https://example.org')
@@ -142,7 +208,11 @@ class TestReferencedObject(unittest.TestCase):
         doc.add(foo)
 
         execution = sbol3.Activity('protocol_execution')
+        self.assertFalse(execution in foo._owned_objects[sbol3.SBOL_MEMBER])
         foo.members.append(execution)
+        self.assertTrue(execution in foo._referenced_objects[sbol3.SBOL_MEMBER])
+        self.assertFalse(execution in foo._owned_objects[sbol3.SBOL_MEMBER])
+
         # Verify that execution did not get document assigned
         self.assertIsNone(execution.document)
         self.assertNotIn(execution, doc.objects)

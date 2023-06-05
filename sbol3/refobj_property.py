@@ -22,6 +22,9 @@ class ReferencedURI(str):
 
 class ReferencedObjectMixin:
 
+    def _storage(self) -> Dict[str, list]:
+        return self.property_owner._referenced_objects
+
     def to_user(self, value: Any) -> str:
         if hasattr(self, 'property_owner'):
             parent = self.property_owner
@@ -45,14 +48,19 @@ class ReferencedObjectMixin:
         # TODO: what is value is empty string?
         if type(value) is str:
             if self.property_owner.document:
-                value = self.property_owner.document.find(value)
+                referenced_obj = self.property_owner.document.find(value)
                 # TODO: warn user referenced object is not in document
-                if value is not None:
-                    return value
+                if referenced_obj is not None:
+                    return referenced_obj
             # If not found in Document
             value = SBOLObject(value)
         if not isinstance(value, SBOLObject):
             raise TypeError('Cannot set property, the value must be str or instance of SBOLObect')
+        if value.identity is None:
+            # The SBOLObject has an uninitialized identity
+            msg = f'Cannot set reference to {value}.'
+            msg += ' Object identity is uninitialized.'
+            raise ValueError(msg)
         return value
 
     def maybe_add_to_document(self, value: Any) -> None:

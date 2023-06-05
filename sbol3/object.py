@@ -14,6 +14,7 @@ class SBOLObject:
     def __init__(self, name: str) -> None:
         self._properties = defaultdict(list)
         self._owned_objects = defaultdict(list)
+        self._referenced_objects = defaultdict(list)
         # Does this need to be a property? It does not get serialized to the RDF file.
         # Could it be an attribute that gets composed on the fly? Keep it simple for
         # now, and change to a property in the future if needed.
@@ -146,6 +147,23 @@ class SBOLObject:
                 o_copy = o.copy(target_doc, target_namespace)
                 new_obj._owned_objects[property_uri].append(o_copy)
                 o_copy.parent = self
+
+        # After we have copied all the owned objects, copy the referenced objects
+        # and attempt to resolve the references
+        if target_doc:
+            for property_uri, object_store in self._referenced_objects.items():
+                for o in object_store:
+                    referenced_obj = target_doc.find(o.identity)
+                    if referenced_obj:
+                        new_obj._referenced_objects[property_uri].append(referenced_obj)
+                    else:
+                        new_obj._referenced_objects[property_uri].append(SBOLObject(o.identity)) 
+        else:
+            # If the copy does not belong to a Document, then treat all references
+            # like external references
+            for property_uri, object_store in self._referenced_objects.items():
+                for o in object_store:
+                    new_obj._referenced_objects[property_uri].append(SBOLObject(o.identity))             
 
         return new_obj
 

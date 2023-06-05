@@ -213,6 +213,17 @@ class Document:
                 obj._owned_objects[str_p].append(other)
                 # Record the assigned object as a child
                 child_objects[other_identity] = other
+            elif str_p in obj._referenced_objects:
+                reference = str(o)
+                # A reference may refer to another object
+                # in the current document, or it may be
+                # an external reference to another RDF entity
+                if reference in objects:
+                    other = objects[reference]
+                    obj._referenced_objects[str_p].append(other)
+                else:
+                    # If an external reference, create a base SBOLObject to represent it
+                    obj._referenced_objects[str_p].append(SBOLObject(reference))
             elif str_p == RDF_TYPE:
                 # Handle rdf:type specially because the main type(s)
                 # will already be in the list from the build_object
@@ -221,12 +232,6 @@ class Document:
                 if o not in obj._properties[str_p]:
                     obj._properties[str_p].append(o)
             else:
-                # check for referenced objects
-                if type(o) is rdflib.URIRef:
-                    print(obj._properties[str_p])
-                    other_identity = str(o)
-                    if other_identity in objects:
-                        o = objects[other_identity]
                 obj._properties[str_p].append(o)
         return child_objects
 
