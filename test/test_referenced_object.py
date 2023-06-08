@@ -233,6 +233,17 @@ class TestReferencedObject(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, exc_regex):
             collection.members.append(subc)
 
+    def test_equality(self):
+        # Test comparison of a referenced object to a URI, in order
+        # to maintain reverse compatibility
+        foo = sbol3.SBOLObject('foo')
+        self.assertEqual(foo, foo.identity)
+        self.assertEqual(foo.identity, foo)
+ 
+    def test_update(self):
+        # Update and resolve references to an external object when the object is
+        # added to the Document
+        pass
 
 if __name__ == '__main__':
     unittest.main()

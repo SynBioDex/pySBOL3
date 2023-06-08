@@ -37,6 +37,14 @@ class SBOLObject:
             result = result.get()
         return result
 
+    def __eq__(self, other):
+        if type(other) is str:
+            return self.identity == other
+        return super().__eq__(other)
+
+    def __hash__(self):
+        return hash(self.identity)
+
     @staticmethod
     def _is_url(name: str) -> bool:
         parsed = urlparse(name)
