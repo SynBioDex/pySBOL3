@@ -103,7 +103,7 @@ class SIPrefix(Prefix):
         :rtype: Any
 
         """
-        visitor.visit_si_prefix(self)
+        return visitor.visit_si_prefix(self)
 
 
 def build_si_prefix(identity: str, *, type_uri: str = OM_SI_PREFIX) -> SBOLObject:
@@ -161,7 +161,7 @@ class BinaryPrefix(Prefix):
         :rtype: Any
 
         """
-        visitor.visit_binary_prefix(self)
+        return visitor.visit_binary_prefix(self)
 
 
 def build_binary_prefix(identity: str,

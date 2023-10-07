@@ -53,7 +53,7 @@ class ComponentReference(Feature):
         :rtype: Any
 
         """
-        visitor.visit_component_reference(self)
+        return visitor.visit_component_reference(self)
 
 
 def build_component_reference(identity: str, *,

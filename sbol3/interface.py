@@ -41,7 +41,7 @@ class Interface(Identified):
         :rtype: Any
 
         """
-        visitor.visit_interface(self)
+        return visitor.visit_interface(self)
 
 
 def build_interface(identity: str, *, type_uri: str = SBOL_INTERFACE) -> SBOLObject:

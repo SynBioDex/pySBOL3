@@ -62,7 +62,7 @@ class Model(TopLevel):
         :rtype: Any
 
         """
-        visitor.visit_model(self)
+        return visitor.visit_model(self)
 
 
 def build_model(identity: str, type_uri: str = SBOL_MODEL):

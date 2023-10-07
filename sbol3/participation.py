@@ -50,7 +50,7 @@ class Participation(Identified):
         :rtype: Any
 
         """
-        visitor.visit_participation(self)
+        return visitor.visit_participation(self)
 
 
 def build_participation(identity: str,

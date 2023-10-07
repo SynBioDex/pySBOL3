@@ -79,7 +79,7 @@ class VariableFeature(Identified):
         :rtype: Any
 
         """
-        visitor.visit_variable_feature(self)
+        return visitor.visit_variable_feature(self)
 
 
 def build_variable_feature(identity: str, type_uri: str = SBOL_VARIABLE_FEATURE):

@@ -58,7 +58,7 @@ class Constraint(Identified):
         :rtype: Any
 
         """
-        visitor.visit_constraint(self)
+        return visitor.visit_constraint(self)
 
 
 def build_constraint(identity: str, type_uri: str = SBOL_CONSTRAINT) -> SBOLObject:

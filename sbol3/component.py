@@ -64,7 +64,7 @@ class Component(TopLevel):
         :rtype: Any
 
         """
-        visitor.visit_component(self)
+        return visitor.visit_component(self)
 
 
 def build_component(identity: str, *, type_uri: str = SBOL_COMPONENT) -> SBOLObject:
