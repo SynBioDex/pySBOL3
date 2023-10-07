@@ -24,6 +24,7 @@ class TestActivity(unittest.TestCase):
         self.assertEqual(None, activity.end_time)
         self.assertEqual([], activity.usage)
         self.assertEqual([], activity.association)
+        self.assertEqual([], activity.informed_by)
 
     def test_list_wrapping(self):
         # Ensure that at least certain properties handle automatic list

@@ -214,6 +214,7 @@ class Activity(CustomTopLevel):
                  end_time: Union[str, datetime.datetime] = None,
                  usage: List[Identified] = None,
                  association: List[Identified] = None,
+                 informed_by: List[Identified] = None,
                  namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
@@ -239,6 +240,10 @@ class Activity(CustomTopLevel):
                                        0, math.inf,
                                        initial_value=association,
                                        type_constraint=Association)
+        self.informed_by = OwnedObject(self, PROV_INFORMED_BY,
+                                       0, math.inf,
+                                       initial_value=informed_by,
+                                       type_constraint=Activity)
 
     def accept(self, visitor: Any) -> Any:
         """Invokes `visit_activity` on `visitor` with `self` as the only
