@@ -21,6 +21,20 @@ class SingleRefObj(sbol3.TopLevel):
 
 class TestReferencedObject(unittest.TestCase):
 
+    TEST_SBOL = '''
+@base          <https://sbolstandard.org/examples/> .
+@prefix :      <https://sbolstandard.org/examples/> .
+@prefix sbol:  <http://sbols.org/v3#> .
+@prefix SBO:   <https://identifiers.org/SBO:> .
+
+:toggle_switch  a          sbol:Component ;
+        sbol:description   "Toggle Switch genetic circuit" ;
+        sbol:displayId     "toggle_switch" ;
+        sbol:hasModel      :model1 ;
+        sbol:hasNamespace  <https://sbolstandard.org/examples> ;
+        sbol:name          "Toggle Switch" ;
+        sbol:type          SBO:0000241 .'''
+
     def setUp(self) -> None:
         sbol3.set_defaults()
 
@@ -48,24 +62,10 @@ class TestReferencedObject(unittest.TestCase):
     def test_parse_external_reference(self):
         # When parsing a document, if we encounter a reference to an object 
         # not in this document, create a stub object using SBOLObject
-        test_sbol='''
-@base          <https://sbolstandard.org/examples/> .
-@prefix :      <https://sbolstandard.org/examples/> .
-@prefix sbol:  <http://sbols.org/v3#> .
-@prefix SBO:   <https://identifiers.org/SBO:> .
-
-:toggle_switch  a          sbol:Component ;
-        sbol:description   "Toggle Switch genetic circuit" ;
-        sbol:displayId     "toggle_switch" ;
-        sbol:hasModel      :model1 ;
-        sbol:hasNamespace  <https://sbolstandard.org/examples> ;
-        sbol:name          "Toggle Switch" ;
-        sbol:type          SBO:0000241 .
-'''
         test_format = sbol3.TURTLE
 
         doc = sbol3.Document()
-        doc.read_string(test_sbol, file_format=test_format)
+        doc.read_string(TestReferencedObject.TEST_SBOL, file_format=test_format)
         component = doc.find('toggle_switch')
         model = component.models[0]
         self.assertTrue(type(model) is sbol3.SBOLObject)
@@ -74,26 +74,12 @@ class TestReferencedObject(unittest.TestCase):
     def test_serialize_external_reference(self):
         # When serializing a document, if we encounter a reference to an object 
         # not in this document, serialize it as a URI
-        test_sbol='''
-@base          <https://sbolstandard.org/examples/> .
-@prefix :      <https://sbolstandard.org/examples/> .
-@prefix sbol:  <http://sbols.org/v3#> .
-@prefix SBO:   <https://identifiers.org/SBO:> .
-
-:toggle_switch  a          sbol:Component ;
-        sbol:description   "Toggle Switch genetic circuit" ;
-        sbol:displayId     "toggle_switch" ;
-        sbol:hasModel      :model1 ;
-        sbol:hasNamespace  <https://sbolstandard.org/examples> ;
-        sbol:name          "Toggle Switch" ;
-        sbol:type          SBO:0000241 .
-'''
         test_format = sbol3.TURTLE
 
         doc = sbol3.Document()
         doc2 = sbol3.Document()
 
-        doc.read_string(test_sbol, file_format=test_format)
+        doc.read_string(TestReferencedObject.TEST_SBOL, file_format=test_format)
         component = doc.find('toggle_switch')
         model = component.models[0]
         self.assertTrue(type(model) is sbol3.SBOLObject)
