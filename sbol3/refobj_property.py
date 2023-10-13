@@ -115,6 +115,10 @@ class ReferencedObjectList(ReferencedObjectMixin, ListProperty):
         super().__delitem__(key)
 
     def set(self, value: Any) -> None:
+        # If the current value of the property
+        # is identical to the value being set, do nothing.
+        if value == self._storage()[self.property_uri]:
+            return
         for o in self._storage()[self.property_uri]:
             o._references.remove(self.property_owner)
         super().set(value)

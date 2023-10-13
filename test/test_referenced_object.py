@@ -123,6 +123,27 @@ class TestReferencedObject(unittest.TestCase):
         self.assertTrue(type(model) is sbol3.SBOLObject)
 
 
+    def test_insert_into_list(self):
+        # Test assignment using list indices
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
+        doc = sbol3.Document()
+        component = sbol3.Component('c1', sbol3.SBO_DNA)
+        seq1 = sbol3.Sequence('seq1')
+        seq2 = sbol3.Sequence('seq2')
+        doc.add(component)
+        doc.add(seq1)
+        doc.add(seq2)
+        component.sequences = [seq1]
+        self.assertIn(component, seq1._references)
+
+        component.sequences[0] = seq1
+        self.assertIn(component, seq1._references)
+        self.assertEqual(len(seq1._references), 1)
+
+        component.sequences[0] = seq2
+        self.assertIn(component, seq2._references)
+        self.assertNotIn(component, seq1._references)
+
     def test_uri_assignment_and_resolution(self):
         # Test assignment to a ReferencedObject attribute with a URI string
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
@@ -135,12 +156,15 @@ class TestReferencedObject(unittest.TestCase):
         doc.add(seq2)
 
         component.sequences.append(seq1.identity)
-        self.assertEqual(seq1, component.sequences[0])
+        self.assertEqual(list(component.sequences), [seq1])
+        self.assertListEqual(seq1._references, [component])
+
         component.sequences = [seq1.identity]
-        self.assertEqual(seq1, component.sequences[0])
+        self.assertListEqual(list(component.sequences), [seq1])
+        self.assertListEqual(seq1._references, [component])
+
         component.sequences = [seq1.identity, seq2.identity]
-        self.assertEqual(seq1, component.sequences[0])
-        self.assertEqual(seq2, component.sequences[1])
+        self.assertListEqual(list(component.sequences), [seq1, seq2])
 
     def test_uri_assignment_not_resolved(self):
         # Test assignment to a ReferencedObject attribute with a URI string
@@ -223,7 +247,6 @@ class TestReferencedObject(unittest.TestCase):
         doc.add(execution)
         foo.members.append(execution)
         self.assertEqual(execution, foo.members[0])
-        
 
     def test_no_identity_exception(self):
         # See https://github.com/SynBioDex/pySBOL3/issues/357
