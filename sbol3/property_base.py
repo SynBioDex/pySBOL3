@@ -175,10 +175,7 @@ class ListProperty(Property, MutableSequence, abc.ABC):
             msg = f'{name} requires one or more values'
             msg += ' packed in an iterable'
             raise TypeError(msg)
-        try:
-            items = [self.from_user(v) for v in value]
-        except Exception as e:
-            print(e)
+        items = [self.from_user(v) for v in value]
         self._storage()[self.property_uri] = items
         for val in value:
             self.item_added(val)
