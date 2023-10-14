@@ -41,13 +41,16 @@ class ReferencedObjectMixin:
         if type(value) is str:
             if self.property_owner.document:
                 referenced_obj = self.property_owner.document.find(value)
-                # TODO: warn user referenced object is not in document
                 if referenced_obj is not None:
+                    # Keep track of this reference to the object
                     if self not in referenced_obj._references:
                         referenced_obj._references += [self.property_owner]
                     return referenced_obj
-            # If not found in Document
+            # The given URI refers to an object not currently in this
+            # Document, so create a stub
+            # TODO: warn user referenced object is not in document
             value = SBOLObject(value)
+
         if not isinstance(value, SBOLObject):
             raise TypeError('Cannot set property, the value must be str or instance of SBOLObect')
         if value.identity is None:
@@ -55,6 +58,7 @@ class ReferencedObjectMixin:
             msg = f'Cannot set reference to {value}.'
             msg += ' Object identity is uninitialized.'
             raise ValueError(msg)
+        # Keep track of this reference to the object
         value._references += [self.property_owner]
         return value
 

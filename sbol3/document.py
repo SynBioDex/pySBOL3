@@ -223,7 +223,9 @@ class Document:
                     obj._referenced_objects[str_p].append(other)
                 else:
                     # If an external reference, create a base SBOLObject to represent it
-                    obj._referenced_objects[str_p].append(SBOLObject(reference))
+                    stub = SBOLObject(reference)
+                    obj._referenced_objects[str_p].append(stub)
+                    stub._references.append(obj)  # Add to reference counter
             elif str_p == RDF_TYPE:
                 # Handle rdf:type specially because the main type(s)
                 # will already be in the list from the build_object
@@ -369,7 +371,12 @@ class Document:
         # in the TopLevel being added
         def assign_document(x: Identified):
             x.document = self
+
         obj.traverse(assign_document)
+
+        # Update any external references to this object
+        # replacing stub SBOLObjects with this one
+        self._resolve_references(obj) 
         return obj
 
     def _add_all(self, objects: pytyping.Sequence[TopLevel]) -> pytyping.Sequence[TopLevel]:
@@ -432,6 +439,11 @@ class Document:
             if obj.display_id and obj.display_id == search_string:
                 return obj
         return self._find_in_objects(search_string)
+
+    def _resolve_references(self, new_obj):
+        """Update all unresolved references to this object, replacing stub SBOLObject with this one."""
+        for updated in self.objects:
+            updated._resolve_references(new_obj)
 
     def join_lines(self, lines: List[Union[bytes, str]]) -> Union[bytes, str]:
         """Join lines for either bytes or strings. Joins a list of lines
@@ -690,6 +702,10 @@ class Document:
         # Now do the removal of each top level object and all of its children
         for obj in objects_to_remove:
             obj.remove_from_document()
+            # If the removed object is referenced anywhere,
+            # leave a stub
+            stub_obj = SBOLObject(obj.identity)
+            self._resolve_references(stub_obj)
 
     def remove_object(self, top_level: TopLevel):
         """Removes the given TopLevel from this document. No referential

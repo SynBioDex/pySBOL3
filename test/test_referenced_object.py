@@ -21,20 +21,6 @@ class SingleRefObj(sbol3.TopLevel):
 
 class TestReferencedObject(unittest.TestCase):
 
-    TEST_SBOL = '''
-@base          <https://sbolstandard.org/examples/> .
-@prefix :      <https://sbolstandard.org/examples/> .
-@prefix sbol:  <http://sbols.org/v3#> .
-@prefix SBO:   <https://identifiers.org/SBO:> .
-
-:toggle_switch  a          sbol:Component ;
-        sbol:description   "Toggle Switch genetic circuit" ;
-        sbol:displayId     "toggle_switch" ;
-        sbol:hasModel      :model1 ;
-        sbol:hasNamespace  <https://sbolstandard.org/examples> ;
-        sbol:name          "Toggle Switch" ;
-        sbol:type          SBO:0000241 .'''
-
     def setUp(self) -> None:
         sbol3.set_defaults()
 
@@ -59,37 +45,6 @@ class TestReferencedObject(unittest.TestCase):
         model_lookup = model.lookup()
         self.assertTrue(model_lookup is model)
 
-    def test_parse_external_reference(self):
-        # When parsing a document, if we encounter a reference to an object 
-        # not in this document, create a stub object using SBOLObject
-        test_format = sbol3.TURTLE
-
-        doc = sbol3.Document()
-        doc.read_string(TestReferencedObject.TEST_SBOL, file_format=test_format)
-        component = doc.find('toggle_switch')
-        model = component.models[0]
-        self.assertTrue(type(model) is sbol3.SBOLObject)
-        self.assertEqual(model.identity, 'https://sbolstandard.org/examples/model1')
-
-    def test_serialize_external_reference(self):
-        # When serializing a document, if we encounter a reference to an object 
-        # not in this document, serialize it as a URI
-        test_format = sbol3.TURTLE
-
-        doc = sbol3.Document()
-        doc2 = sbol3.Document()
-
-        doc.read_string(TestReferencedObject.TEST_SBOL, file_format=test_format)
-        component = doc.find('toggle_switch')
-        model = component.models[0]
-        self.assertTrue(type(model) is sbol3.SBOLObject)
-        self.assertEqual(model.identity, 'https://sbolstandard.org/examples/model1')
-
-        doc2.read_string(doc.write_string(file_format=test_format), file_format=test_format)
-        component = doc2.find('toggle_switch')
-        model = component.models[0]
-
-
     def test_copy(self):
         test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.ttl')
         test_format = sbol3.TURTLE
@@ -107,7 +62,6 @@ class TestReferencedObject(unittest.TestCase):
         component_copy = component.copy(target_doc=doc2)
         model = component_copy.models[0]
         self.assertTrue(type(model) is sbol3.SBOLObject)
-
 
     def test_insert_into_list(self):
         # Test assignment using list indices
@@ -290,10 +244,81 @@ class TestReferencedObject(unittest.TestCase):
         component.sequences.remove(seq1)
         self.assertListEqual(seq1._references, [])
 
+
+class TestExternalReferences(unittest.TestCase):
+
+    TEST_SBOL = '''
+@base          <https://sbolstandard.org/examples/> .
+@prefix :      <https://sbolstandard.org/examples/> .
+@prefix sbol:  <http://sbols.org/v3#> .
+@prefix SBO:   <https://identifiers.org/SBO:> .
+
+:toggle_switch  a          sbol:Component ;
+        sbol:description   "Toggle Switch genetic circuit" ;
+        sbol:displayId     "toggle_switch" ;
+        sbol:hasModel      :model1 ;
+        sbol:hasNamespace  <https://sbolstandard.org/examples> ;
+        sbol:name          "Toggle Switch" ;
+        sbol:type          SBO:0000241 .'''
+    TEST_FORMAT = sbol3.TURTLE
+
+    def setUp(self) -> None:
+        sbol3.set_namespace('https://sbolstandard.org/examples')
+        self.doc = sbol3.Document()
+        self.doc.read_string(TestExternalReferences.TEST_SBOL,
+                             file_format=TestExternalReferences.TEST_FORMAT)
+
+    def test_parse_external_reference(self):
+        # When parsing a document, if we encounter a reference to an object 
+        # not in this document, create a stub object using SBOLObject
+        component = self.doc.find('toggle_switch')
+        model = component.models[0]
+        self.assertTrue(type(model) is sbol3.SBOLObject)
+        self.assertEqual(model.identity, 'https://sbolstandard.org/examples/model1')
+        self.assertListEqual(model._references, [component])
+
+    def test_serialize_external_reference(self):
+        # When serializing a document, if we encounter a reference to an object 
+        # not in this document, serialize it as a URI
+
+        roundtrip_doc = sbol3.Document()
+        roundtrip_doc.read_string(self.doc.write_string(file_format=TestExternalReferences.TEST_FORMAT), file_format=TestExternalReferences.TEST_FORMAT)
+        component = roundtrip_doc.find('toggle_switch')
+        model = component.models[0]
+
     def test_update(self):
-        # Update and resolve references to an external object when the object is
-        # added to the Document
-        pass
+        # Update and resolve references to an external object when the
+        # object is added to the Document.  Upon resolving the reference,
+        # the SBOLObject that represents the unresolved reference will be
+        # downcasted to the specific SBOL type
+        component = self.doc.find('toggle_switch')
+        model = component.models[0]
+        self.assertTrue(type(model) is sbol3.SBOLObject)
+
+        # now add an object which resolves the reference
+        model = sbol3.Model('model1', source='foo', language='foo', framework='foo')
+        self.assertEqual(model.identity, 'https://sbolstandard.org/examples/model1')
+        self.doc.add(model)
+
+        # Check whether dereferencing now returns a Model 
+        # instead of SBOLObject
+        model = component.models[0]
+        self.assertFalse(type(model) is sbol3.SBOLObject)
+        self.assertTrue(type(model) is sbol3.Model)
+
+    def test_remove(self):
+        # The reverse of test_update, removing an object from a Document
+        # creates an unresolved, external reference. The object in the
+        # Document should be upcast to an SBOLObject
+        component = self.doc.find('toggle_switch')
+        model = sbol3.Model('model1', source='foo', language='foo', framework='foo')
+        self.doc.add(model)
+        self.doc.remove([model])
+
+        model = component.models[0]
+        self.assertFalse(type(model) is sbol3.Model)
+        self.assertTrue(type(model) is sbol3.SBOLObject)
+        
 
 if __name__ == '__main__':
     unittest.main()

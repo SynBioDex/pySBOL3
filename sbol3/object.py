@@ -106,6 +106,20 @@ class SBOLObject:
                     return result
         return None
 
+    def _resolve_references(self, new_obj):
+        NEW_OBJ = new_obj
+        def resolve_references(x):
+            for property_id, references in x._referenced_objects.items():
+                needs_updating = False
+                for ref_obj in references:
+                    if ref_obj.identity == NEW_OBJ.identity:
+                        needs_updating = True
+                        break
+                if needs_updating:
+                    references.remove(ref_obj)
+                    references.append(new_obj)
+        self.traverse(resolve_references)
+
     def copy(self, target_doc=None, target_namespace=None):
 
         # Delete this method in v1.1
