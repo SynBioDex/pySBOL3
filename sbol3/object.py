@@ -108,6 +108,7 @@ class SBOLObject:
 
     def _resolve_references(self, new_obj):
         NEW_OBJ = new_obj
+
         def resolve_references(x):
             for property_id, references in x._referenced_objects.items():
                 needs_updating = False
@@ -118,6 +119,7 @@ class SBOLObject:
                 if needs_updating:
                     references.remove(ref_obj)
                     references.append(new_obj)
+
         self.traverse(resolve_references)
 
     def copy(self, target_doc=None, target_namespace=None):
@@ -180,18 +182,19 @@ class SBOLObject:
                     if referenced_obj:
                         new_obj._referenced_objects[property_uri].append(referenced_obj)
                     else:
-                        new_obj._referenced_objects[property_uri].append(SBOLObject(o.identity)) 
+                        new_obj._referenced_objects[property_uri].append(SBOLObject(o.identity))
         else:
             # If the copy does not belong to a Document, then treat all references
             # like external references
             for property_uri, object_store in self._referenced_objects.items():
                 for o in object_store:
-                    new_obj._referenced_objects[property_uri].append(SBOLObject(o.identity))             
+                    new_obj._referenced_objects[property_uri].append(SBOLObject(o.identity))
 
         return new_obj
 
     def lookup(self):
         return self
+
 
 def replace_namespace(old_uri, target_namespace, rdf_type):
 

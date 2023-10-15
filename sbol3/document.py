@@ -376,7 +376,7 @@ class Document:
 
         # Update any external references to this object
         # replacing stub SBOLObjects with this one
-        self._resolve_references(obj) 
+        self._resolve_references(obj)
         return obj
 
     def _add_all(self, objects: pytyping.Sequence[TopLevel]) -> pytyping.Sequence[TopLevel]:

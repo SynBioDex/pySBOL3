@@ -110,7 +110,7 @@ class ReferencedObjectList(ReferencedObjectMixin, ListProperty):
 
     def __setitem__(self, key: Union[int, slice], value: Any) -> None:
         replaced_obj = self._storage()[self.property_uri].__getitem__(key)
-        replaced_obj._references.remove(self.property_owner) 
+        replaced_obj._references.remove(self.property_owner)
         super().__setitem__(key, value)
 
     def __delitem__(self, key: Union[int, slice]) -> None:

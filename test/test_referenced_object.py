@@ -119,7 +119,6 @@ class TestReferencedObject(unittest.TestCase):
         component.sequences.append(sequence.identity)
         self.assertNotEqual(sequence, component.sequences[0])
         self.assertTrue(type(component.sequences[0]) is sbol3.SBOLObject)
- 
 
     def test_instance_append(self):
         # Test assignment to a ReferencedObject attribute with an
@@ -203,7 +202,7 @@ class TestReferencedObject(unittest.TestCase):
         foo = sbol3.SBOLObject('foo')
         self.assertEqual(foo, foo.identity)
         self.assertEqual(foo.identity, foo)
- 
+
     def test_singleton_property_reference_counter(self):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
@@ -227,7 +226,7 @@ class TestReferencedObject(unittest.TestCase):
         self.assertListEqual(seq1._references, [])
         doc.add(component)
         doc.add(seq1)
-        
+
         # Test that the reference counter is working
         component.sequences = [seq1.identity]
         self.assertListEqual(seq1._references, [component])
@@ -269,7 +268,7 @@ class TestExternalReferences(unittest.TestCase):
                              file_format=TestExternalReferences.TEST_FORMAT)
 
     def test_parse_external_reference(self):
-        # When parsing a document, if we encounter a reference to an object 
+        # When parsing a document, if we encounter a reference to an object
         # not in this document, create a stub object using SBOLObject
         component = self.doc.find('toggle_switch')
         model = component.models[0]
@@ -278,11 +277,14 @@ class TestExternalReferences(unittest.TestCase):
         self.assertListEqual(model._references, [component])
 
     def test_serialize_external_reference(self):
-        # When serializing a document, if we encounter a reference to an object 
+        # When serializing a document, if we encounter a reference to an object
         # not in this document, serialize it as a URI
 
         roundtrip_doc = sbol3.Document()
-        roundtrip_doc.read_string(self.doc.write_string(file_format=TestExternalReferences.TEST_FORMAT), file_format=TestExternalReferences.TEST_FORMAT)
+        roundtrip_doc.read_string(
+            self.doc.write_string(file_format=TestExternalReferences.TEST_FORMAT),
+            file_format=TestExternalReferences.TEST_FORMAT
+        )
         component = roundtrip_doc.find('toggle_switch')
         model = component.models[0]
 
@@ -300,7 +302,7 @@ class TestExternalReferences(unittest.TestCase):
         self.assertEqual(model.identity, 'https://sbolstandard.org/examples/model1')
         self.doc.add(model)
 
-        # Check whether dereferencing now returns a Model 
+        # Check whether dereferencing now returns a Model
         # instead of SBOLObject
         model = component.models[0]
         self.assertFalse(type(model) is sbol3.SBOLObject)
@@ -318,7 +320,7 @@ class TestExternalReferences(unittest.TestCase):
         model = component.models[0]
         self.assertFalse(type(model) is sbol3.Model)
         self.assertTrue(type(model) is sbol3.SBOLObject)
-        
+ 
 
 if __name__ == '__main__':
     unittest.main()
