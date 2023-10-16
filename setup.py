@@ -29,7 +29,6 @@ setup(name='sbol3',
             'Programming Language :: Python :: 3.9',
             'Programming Language :: Python :: 3.10',
             'Programming Language :: Python :: 3.11',
-            'Programming Language :: Python :: 3.12',
       ],
       # What does your project relate to?
       keywords='synthetic biology',
