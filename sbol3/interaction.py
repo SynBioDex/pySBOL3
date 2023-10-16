@@ -50,7 +50,7 @@ class Interaction(Identified):
         :rtype: Any
 
         """
-        visitor.visit_interaction(self)
+        return visitor.visit_interaction(self)
 
 
 def build_interaction(identity: str, *, type_uri: str = SBOL_INTERACTION) -> SBOLObject:

@@ -38,7 +38,7 @@ class ExperimentalData(TopLevel):
         :rtype: Any
 
         """
-        visitor.visit_experimental_data(self)
+        return visitor.visit_experimental_data(self)
 
 
 Document.register_builder(SBOL_EXPERIMENTAL_DATA, ExperimentalData)

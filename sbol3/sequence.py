@@ -58,7 +58,7 @@ class Sequence(TopLevel):
         :rtype: Any
 
         """
-        visitor.visit_sequence(self)
+        return visitor.visit_sequence(self)
 
 
 Document.register_builder(SBOL_SEQUENCE, Sequence)

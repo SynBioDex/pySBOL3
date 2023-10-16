@@ -646,7 +646,7 @@ class Document:
         :rtype: Any
 
         """
-        visitor.visit_document(self)
+        return visitor.visit_document(self)
 
     def traverse(self, func: Callable[[Identified], None]):
         """Enable a traversal of the entire object hierarchy contained

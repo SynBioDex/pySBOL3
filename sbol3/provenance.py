@@ -47,7 +47,7 @@ class Usage(CustomIdentified):
         :rtype: Any
 
         """
-        visitor.visit_usage(self)
+        return visitor.visit_usage(self)
 
 
 def build_usage(identity: str, *, type_uri: str = PROV_USAGE) -> SBOLObject:
@@ -93,7 +93,7 @@ class Agent(CustomTopLevel):
         :rtype: Any
 
         """
-        visitor.visit_agent(self)
+        return visitor.visit_agent(self)
 
 
 Document.register_builder(PROV_AGENT, Agent)
@@ -129,7 +129,7 @@ class Plan(CustomTopLevel):
         :return: Whatever `visitor.visit_plan` returns
         :rtype: Any
         """
-        visitor.visit_plan(self)
+        return visitor.visit_plan(self)
 
 
 Document.register_builder(PROV_PLAN, Plan)
@@ -174,7 +174,7 @@ class Association(CustomIdentified):
         :rtype: Any
 
         """
-        visitor.visit_association(self)
+        return visitor.visit_association(self)
 
 
 def build_association(identity: str,
@@ -214,6 +214,7 @@ class Activity(CustomTopLevel):
                  end_time: Union[str, datetime.datetime] = None,
                  usage: List[Identified] = None,
                  association: List[Identified] = None,
+                 informed_by: List[Identified] = None,
                  namespace: str = None,
                  attachments: List[str] = None,
                  name: str = None, description: str = None,
@@ -239,6 +240,10 @@ class Activity(CustomTopLevel):
                                        0, math.inf,
                                        initial_value=association,
                                        type_constraint=Association)
+        self.informed_by = OwnedObject(self, PROV_INFORMED_BY,
+                                       0, math.inf,
+                                       initial_value=informed_by,
+                                       type_constraint=Activity)
 
     def accept(self, visitor: Any) -> Any:
         """Invokes `visit_activity` on `visitor` with `self` as the only
@@ -251,7 +256,7 @@ class Activity(CustomTopLevel):
         :rtype: Any
 
         """
-        visitor.visit_activity(self)
+        return visitor.visit_activity(self)
 
 
 Document.register_builder(PROV_ACTIVITY, Activity)
