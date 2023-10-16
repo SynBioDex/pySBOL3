@@ -110,76 +110,6 @@ class SBOLObject:
         resolve_references = make_resolve_references_traverser(new_obj)
         self.traverse(resolve_references)
 
-    def copy(self, target_doc=None, target_namespace=None):
-
-        # Delete this method in v1.1
-        warnings.warn('Use sbol3.copy() instead', DeprecationWarning)
-
-        new_uri = self.identity
-
-        # If caller specified a target_namespace argument, then copy the object into this
-        # new namespace.
-        if target_namespace:
-
-            # Map the identity of self into the target namespace
-            if hasattr(self, 'identity'):
-                old_uri = self.identity
-                new_uri = replace_namespace(old_uri, target_namespace, self.getTypeURI())
-
-        try:
-            builder = BUILDER_REGISTER[self.type_uri]
-        except KeyError:
-            logging.warning(f'No builder found for {self.type_uri}; assuming {self.__class__.__name__}')
-            builder = self.__class__
-        new_obj = builder(**dict(identity=new_uri, type_uri=self.type_uri))
-
-        # Copy properties
-        for property_uri, value_store in self._properties.items():
-            new_obj._properties[property_uri] = value_store.copy()
-
-            # TODO: Map into new namespace
-
-        # Assign the new object to the target Document
-        if target_doc is not None:
-            try:
-                target_doc.add(new_obj)
-            except TypeError:
-                pass  # object is not TopLevel
-
-        # When an object is simply being cloned, the value of wasDerivedFrom should be
-        # copied exactly as is from self. However, when copy is being used to generate
-        # a new entity, the wasDerivedFrom should point back to self.
-        if self.identity == new_obj.identity:
-            new_obj.derived_from = self.derived_from
-        else:
-            new_obj.derived_from = self.identity
-
-        # Copy child objects recursively
-        for property_uri, object_list in self._owned_objects.items():
-            for o in object_list:
-                o_copy = o.copy(target_doc, target_namespace)
-                new_obj._owned_objects[property_uri].append(o_copy)
-                o_copy.parent = self
-
-        # After we have copied all the owned objects, copy the referenced objects
-        # and attempt to resolve the references
-        if target_doc:
-            for property_uri, object_store in self._referenced_objects.items():
-                for o in object_store:
-                    referenced_obj = target_doc.find(o.identity)
-                    if referenced_obj:
-                        new_obj._referenced_objects[property_uri].append(referenced_obj)
-                    else:
-                        new_obj._referenced_objects[property_uri].append(SBOLObject(o.identity))
-        else:
-            # If the copy does not belong to a Document, then treat all references
-            # like external references
-            for property_uri, object_store in self._referenced_objects.items():
-                for o in object_store:
-                    new_obj._referenced_objects[property_uri].append(SBOLObject(o.identity))
-
-        return new_obj
-
     def lookup(self):
         return self
 
@@ -199,6 +129,7 @@ def make_resolve_references_traverser(new_obj) -> Callable:
     def resolve_references(x):
         for property_id, references in x._referenced_objects.items():
             needs_updating = False
+            ref_obj = None
             for ref_obj in references:
                 if ref_obj.identity == new_obj.identity:
                     needs_updating = True
