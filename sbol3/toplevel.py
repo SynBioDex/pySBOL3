@@ -163,7 +163,7 @@ class TopLevel(Identified):
                         stub = SBOLObject(o.identity)
                         stub._references = o._references.copy()
                         updated_objects.append(stub)
-                x._referenced_objects[property_id] = updated_objects 
+                x._referenced_objects[property_id] = updated_objects
 
         clone.traverse(reset_references)
         clone._references = [SBOLObject(r.identity) for r in self._references]

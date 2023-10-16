@@ -73,7 +73,6 @@ class TestReferencedObject(unittest.TestCase):
         # When the Component is copied to a new document,
         # its reference to the Model should be upcast as
         # since it becomes a reference to an external object
-        #component_copy = component.copy(target_doc=doc2)
         [component_copy] = sbol3.copy([component], into_document=doc2)
         self.assertEqual(len(doc2.objects), 1)
         model_copy = component_copy.models[0]
@@ -103,14 +102,14 @@ class TestReferencedObject(unittest.TestCase):
                          component.identity)
 
         model_copy = model.clone()
-        self.assertEqual(type(model_copy._references[0]), 
+        self.assertEqual(type(model_copy._references[0]),
                          sbol3.SBOLObject)
 
         [model_copy] = sbol3.copy([model], into_document=doc2)
         self.assertEqual(len(doc2.objects), 1)
-        self.assertEqual(type(model_copy._references[0]), 
+        self.assertEqual(type(model_copy._references[0]),
                          sbol3.SBOLObject)
-        self.assertEqual(model_copy._references[0].identity, 
+        self.assertEqual(model_copy._references[0].identity,
                          component.identity)
 
         [component_copy] = sbol3.copy([component], into_document=doc2)
@@ -375,7 +374,7 @@ class TestExternalReferences(unittest.TestCase):
         model = component.models[0]
         self.assertFalse(type(model) is sbol3.Model)
         self.assertTrue(type(model) is sbol3.SBOLObject)
- 
+
 
 if __name__ == '__main__':
     unittest.main()

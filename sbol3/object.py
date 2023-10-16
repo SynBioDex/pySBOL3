@@ -208,7 +208,7 @@ def make_resolve_references_traverser(new_obj) -> Callable:
                 references.append(new_obj)
 
     return resolve_references
- 
+
 
 # Global store for builder methods. Custom SBOL classes
 # register their builders in this store
