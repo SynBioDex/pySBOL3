@@ -54,7 +54,7 @@ class SubComponent(Feature):
         :rtype: Any
 
         """
-        visitor.visit_sub_component(self)
+        return visitor.visit_sub_component(self)
 
 
 def build_subcomponent(identity: str, type_uri: str = SBOL_SUBCOMPONENT) -> Identified:

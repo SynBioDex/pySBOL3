@@ -56,7 +56,7 @@ class Attachment(TopLevel):
         :rtype: Any
 
         """
-        visitor.visit_attachment(self)
+        return visitor.visit_attachment(self)
 
 
 def build_attachment(identity: str,

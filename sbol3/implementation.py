@@ -45,7 +45,7 @@ class Implementation(TopLevel):
         :rtype: Any
 
         """
-        visitor.visit_implementation(self)
+        return visitor.visit_implementation(self)
 
 
 Document.register_builder(SBOL_IMPLEMENTATION, Implementation)

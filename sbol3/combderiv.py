@@ -62,7 +62,7 @@ class CombinatorialDerivation(TopLevel):
         :rtype: Any
 
         """
-        visitor.visit_combinatorial_derivation(self)
+        return visitor.visit_combinatorial_derivation(self)
 
 
 def build_combinatorial_derivation(identity: str,

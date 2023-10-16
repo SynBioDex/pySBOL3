@@ -82,7 +82,7 @@ class UnitMultiplication(CompoundUnit):
         :rtype: Any
 
         """
-        visitor.visit_unit_multiplication(self)
+        return visitor.visit_unit_multiplication(self)
 
 
 def build_unit_multiplication(identity: str,
@@ -145,7 +145,7 @@ class UnitDivision(CompoundUnit):
         :rtype: Any
 
         """
-        visitor.visit_unit_division(self)
+        return visitor.visit_unit_division(self)
 
 
 def build_unit_division(identity: str,
@@ -209,7 +209,7 @@ class UnitExponentiation(CompoundUnit):
         :rtype: Any
 
         """
-        visitor.visit_unit_exponentiation(self)
+        return visitor.visit_unit_exponentiation(self)
 
 
 def build_unit_exponentiation(identity: str,

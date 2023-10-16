@@ -48,7 +48,7 @@ class Collection(TopLevel):
         :rtype: Any
 
         """
-        visitor.visit_collection(self)
+        return visitor.visit_collection(self)
 
 
 class Experiment(Collection):
@@ -86,7 +86,7 @@ class Experiment(Collection):
         :rtype: Any
 
         """
-        visitor.visit_experiment(self)
+        return visitor.visit_experiment(self)
 
 
 Document.register_builder(SBOL_COLLECTION, Collection)

@@ -38,7 +38,7 @@ class SequenceFeature(Feature):
         :rtype: Any
 
         """
-        visitor.visit_sequence_feature(self)
+        return visitor.visit_sequence_feature(self)
 
 
 def build_sequence_feature(identity: str,

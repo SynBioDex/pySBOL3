@@ -86,7 +86,7 @@ class Measure(CustomIdentified):
         :rtype: Any
 
         """
-        visitor.visit_measure(self)
+        return visitor.visit_measure(self)
 
 
 def build_measure(identity: str, *, type_uri: str = OM_MEASURE) -> SBOLObject:
@@ -149,7 +149,7 @@ class SingularUnit(Unit):
         :rtype: Any
 
         """
-        visitor.visit_singular_unit(self)
+        return visitor.visit_singular_unit(self)
 
 
 def build_singular_unit(identity: str,
@@ -213,7 +213,7 @@ class PrefixedUnit(Unit):
         :rtype: Any
 
         """
-        visitor.visit_prefixed_unit(self)
+        return visitor.visit_prefixed_unit(self)
 
 
 def build_prefixed_unit(identity: str,

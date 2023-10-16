@@ -55,7 +55,7 @@ class ExternallyDefined(Feature):
         :rtype: Any
 
         """
-        visitor.visit_externally_defined(self)
+        return visitor.visit_externally_defined(self)
 
 
 def build_externally_defined(identity: str,

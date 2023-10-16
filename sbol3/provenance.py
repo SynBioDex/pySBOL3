@@ -47,7 +47,7 @@ class Usage(CustomIdentified):
         :rtype: Any
 
         """
-        visitor.visit_usage(self)
+        return visitor.visit_usage(self)
 
 
 def build_usage(identity: str, *, type_uri: str = PROV_USAGE) -> SBOLObject:
@@ -93,7 +93,7 @@ class Agent(CustomTopLevel):
         :rtype: Any
 
         """
-        visitor.visit_agent(self)
+        return visitor.visit_agent(self)
 
 
 Document.register_builder(PROV_AGENT, Agent)
@@ -129,7 +129,7 @@ class Plan(CustomTopLevel):
         :return: Whatever `visitor.visit_plan` returns
         :rtype: Any
         """
-        visitor.visit_plan(self)
+        return visitor.visit_plan(self)
 
 
 Document.register_builder(PROV_PLAN, Plan)
@@ -174,7 +174,7 @@ class Association(CustomIdentified):
         :rtype: Any
 
         """
-        visitor.visit_association(self)
+        return visitor.visit_association(self)
 
 
 def build_association(identity: str,
@@ -256,7 +256,7 @@ class Activity(CustomTopLevel):
         :rtype: Any
 
         """
-        visitor.visit_activity(self)
+        return visitor.visit_activity(self)
 
 
 Document.register_builder(PROV_ACTIVITY, Activity)

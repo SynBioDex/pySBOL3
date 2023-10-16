@@ -83,7 +83,7 @@ class Range(Location):
         :rtype: Any
 
         """
-        visitor.visit_range(self)
+        return visitor.visit_range(self)
 
 
 def build_range(identity: str, type_uri: str = SBOL_RANGE):
@@ -138,7 +138,7 @@ class Cut(Location):
         :return: Whatever `visitor.visit_cut` returns
         :rtype: Any
         """
-        visitor.visit_cut(self)
+        return visitor.visit_cut(self)
 
 
 def build_cut(identity: str, type_uri: str = SBOL_CUT):
@@ -184,7 +184,7 @@ class EntireSequence(Location):
         :rtype: Any
 
         """
-        visitor.visit_entire_sequence(self)
+        return visitor.visit_entire_sequence(self)
 
 
 def build_entire_sequence(identity: str, type_uri: str = SBOL_ENTIRE_SEQUENCE):

@@ -47,7 +47,7 @@ class LocalSubComponent(Feature):
         :rtype: Any
 
         """
-        visitor.visit_local_sub_component(self)
+        return visitor.visit_local_sub_component(self)
 
 
 def build_local_subcomponent(identity: str,
