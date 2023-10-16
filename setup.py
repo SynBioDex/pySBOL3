@@ -3,7 +3,7 @@ from setuptools import setup
 setup(name='sbol3',
       version='1.2',
       description='Python implementation of SBOL 3 standard',
-      python_requires='>=3.7',
+      python_requires='>=3.8',
       url='https://github.com/SynBioDex/pySBOL3',
       author='Tom Mitchell',
       author_email='tcmitchell@users.noreply.github.com',
@@ -25,11 +25,11 @@ setup(name='sbol3',
             # Specify the Python versions you support here. In particular, ensure
             # that you indicate whether you support Python 2, Python 3 or both.
             'Programming Language :: Python :: 3 :: Only',
-            'Programming Language :: Python :: 3.7',
             'Programming Language :: Python :: 3.8',
             'Programming Language :: Python :: 3.9',
             'Programming Language :: Python :: 3.10',
             'Programming Language :: Python :: 3.11',
+            'Programming Language :: Python :: 3.12',
       ],
       # What does your project relate to?
       keywords='synthetic biology',
