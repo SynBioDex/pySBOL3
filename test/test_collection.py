@@ -42,7 +42,7 @@ class TestCollection(unittest.TestCase):
         collection.members = uris
         self.assertIn(sbol3.SBOL_MEMBER, collection._referenced_objects)
         self.assertNotIn(sbol3.SBOL_ORIENTATION, collection._referenced_objects)
-        self.assertListEqual(uris, [m.identity for m in collection.members])
+        self.assertListEqual(uris, [m.identity for m in collection.members])  # pylint: disable=E1101
 
     # Namespace testing
     def test_namespace_deduced(self):

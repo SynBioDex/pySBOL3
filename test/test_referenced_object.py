@@ -1,8 +1,9 @@
 import os
 import unittest
 
-import sbol3
 import rdflib
+
+import sbol3
 
 
 MODULE_LOCATION = os.path.dirname(os.path.abspath(__file__))
