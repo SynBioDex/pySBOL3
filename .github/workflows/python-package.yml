@@ -16,7 +16,7 @@ jobs:
       matrix:
         # Default builds are on Ubuntu
         os: [ubuntu-latest]
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11', 'pypy-3.7', 'pypy-3.8', 'pypy-3.9']
+        python-version: ['3.8', '3.9', '3.10', '3.11', 'pypy-3.8', 'pypy-3.9', 'pypy-3.10']
         include:
           # Also test on macOS and Windows using latest Python 3
           - os: macos-latest
@@ -40,12 +40,13 @@ jobs:
         python -m pip install 'pycodestyle>=2.10.0' 'pylint>=2.17'
     - name: Test with unittest
       shell: bash
-      # pyshacl has a 3.10 deprecation warning in distutils
-      # disable warnings until we tune to ignore distutils deprecation warning
+      # Python 3.12 has lots of deprecation warnings about
+      # datetime.datetime.utcfromtimestamp in the standard library.
+      # disable warnings checks for python 3.12.
       run: |
         WARNINGS="-We"
         PY_VERSION=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
-        if [ "${PY_VERSION}" == "3.10" ]; then echo "Disabling warnings"; WARNINGS=""; fi
+        if [ "${PY_VERSION}" == "3.12" ]; then echo "Disabling warnings"; WARNINGS=""; fi
         python $WARNINGS -m unittest discover -s test
         pycodestyle sbol3 test
         pylint sbol3 test
