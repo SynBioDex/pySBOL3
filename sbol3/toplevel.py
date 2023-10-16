@@ -149,6 +149,22 @@ class TopLevel(Identified):
         obj.document = None
 
         obj.update_all_dependents(identity_map)
+
+        # Replace references with stub objects, because
+        # the cloned object is not associated with a
+        # Document, resulting in external references
+        def reset_references(x):
+            for property_id, object_store in x._referenced_objects.items():
+                upcast_objects = []
+                for o in object_store:
+                    stub = SBOLObject(o.identity)
+                    assert stub.identity == o.identity
+                    stub._references = o._references.copy()
+                    upcast_objects.append(stub)
+                x._referenced_objects[property_id] = upcast_objects 
+
+        obj.traverse(reset_references)
+        obj._references = [SBOLObject(r.identity) for r in self._references]
         return obj
 
     def update_all_dependents(self, identity_map: dict[str, Identified]) -> Any:

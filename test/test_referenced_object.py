@@ -40,6 +40,7 @@ class TestReferencedObject(unittest.TestCase):
         self.assertTrue(type(model) is sbol3.Model)
         self.assertTrue(hasattr(model, 'lookup'), f'{model}')
         self.assertEqual('https://sbolstandard.org/examples/model1', model.identity)
+        self.assertListEqual(model._references, [component])
 
         # Test reverse compatibility with lookup
         model_lookup = model.lookup()
@@ -57,11 +58,65 @@ class TestReferencedObject(unittest.TestCase):
         model = component.models[0]
         self.assertTrue(type(model) is sbol3.Model)
 
+        # When the Component is cloned,
+        # its reference to the Model should be upcast as
+        # since it becomes a reference to an external object
+        component_copy = component.clone()
+        model_copy = component_copy.models[0]
+        self.assertFalse(type(model_copy) is sbol3.Model)
+        self.assertTrue(type(model_copy) is sbol3.SBOLObject)
+        self.assertEqual(model_copy.identity, model.identity)
+        self.assertListEqual(model_copy._references, [component_copy])
+        self.assertEqual(model_copy._references[0].identity,
+                         component_copy.identity)
+
         # When the Component is copied to a new document,
-        # its reference to the Sequence should be treated as an external reference
-        component_copy = component.copy(target_doc=doc2)
-        model = component_copy.models[0]
-        self.assertTrue(type(model) is sbol3.SBOLObject)
+        # its reference to the Model should be upcast as
+        # since it becomes a reference to an external object
+        #component_copy = component.copy(target_doc=doc2)
+        [component_copy] = sbol3.copy([component], into_document=doc2)
+        self.assertEqual(len(doc2.objects), 1)
+        model_copy = component_copy.models[0]
+        self.assertTrue(type(model_copy) is sbol3.SBOLObject)
+
+        [model_copy] = sbol3.copy([model], into_document=doc2)
+        self.assertEqual(len(doc2.objects), 2)
+        model_copy = component_copy.models[0]
+        self.assertTrue(type(model_copy) is sbol3.Model)
+
+    def test_copy_in_different_order(self):
+        # Test upcasting/downcasting to stub SBOLObjects by
+        # copying the referenced object first, followed by the
+        # parent object that makes the reference
+        test_path = os.path.join(SBOL3_LOCATION, 'entity', 'model', 'model.ttl')
+        test_format = sbol3.TURTLE
+
+        doc = sbol3.Document()
+        doc2 = sbol3.Document()
+
+        doc.read(test_path, test_format)
+        component = doc.find('toggle_switch')
+        model = component.models[0]
+        self.assertTrue(type(model) is sbol3.Model)
+        self.assertListEqual(model._references, [component])
+        self.assertEqual(model._references[0].identity,
+                         component.identity)
+
+        model_copy = model.clone()
+        self.assertEqual(type(model_copy._references[0]), 
+                         sbol3.SBOLObject)
+
+        [model_copy] = sbol3.copy([model], into_document=doc2)
+        self.assertEqual(len(doc2.objects), 1)
+        self.assertEqual(type(model_copy._references[0]), 
+                         sbol3.SBOLObject)
+        self.assertEqual(model_copy._references[0].identity, 
+                         component.identity)
+
+        [component_copy] = sbol3.copy([component], into_document=doc2)
+        self.assertEqual(len(doc2.objects), 2)
+        model_copy = component_copy.models[0]
+        self.assertTrue(type(model_copy) is sbol3.Model)
 
     def test_insert_into_list(self):
         # Test assignment using list indices

@@ -107,19 +107,7 @@ class SBOLObject:
         return None
 
     def _resolve_references(self, new_obj):
-        NEW_OBJ = new_obj
-
-        def resolve_references(x):
-            for property_id, references in x._referenced_objects.items():
-                needs_updating = False
-                for ref_obj in references:
-                    if ref_obj.identity == NEW_OBJ.identity:
-                        needs_updating = True
-                        break
-                if needs_updating:
-                    references.remove(ref_obj)
-                    references.append(new_obj)
-
+        resolve_references = make_resolve_references_traverser(new_obj)
         self.traverse(resolve_references)
 
     def copy(self, target_doc=None, target_namespace=None):
@@ -203,6 +191,24 @@ def replace_namespace(old_uri, target_namespace, rdf_type):
     # See https://github.com/SynBioDex/pySBOL3/issues/132
     raise NotImplementedError()
 
+
+def make_resolve_references_traverser(new_obj) -> Callable:
+    # Return a callback for traversing documents and updating
+    # any references to new_obj
+
+    def resolve_references(x):
+        for property_id, references in x._referenced_objects.items():
+            needs_updating = False
+            for ref_obj in references:
+                if ref_obj.identity == new_obj.identity:
+                    needs_updating = True
+                    break
+            if needs_updating:
+                references.remove(ref_obj)
+                references.append(new_obj)
+
+    return resolve_references
+ 
 
 # Global store for builder methods. Custom SBOL classes
 # register their builders in this store
