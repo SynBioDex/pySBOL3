@@ -22,7 +22,7 @@ class SingleRefObj(sbol3.TopLevel):
 class TestReferencedObject(unittest.TestCase):
 
     def setUp(self) -> None:
-        sbol3.set_defaults()
+        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
 
     def tearDown(self) -> None:
         sbol3.set_defaults()
@@ -119,7 +119,6 @@ class TestReferencedObject(unittest.TestCase):
 
     def test_insert_into_list(self):
         # Test assignment using list indices
-        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         component = sbol3.Component('c1', sbol3.SBO_DNA)
         seq1 = sbol3.Sequence('seq1')
@@ -140,7 +139,6 @@ class TestReferencedObject(unittest.TestCase):
 
     def test_uri_assignment_and_resolution(self):
         # Test assignment to a ReferencedObject attribute with a URI string
-        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         component = sbol3.Component('c1', sbol3.SBO_DNA)
         seq1 = sbol3.Sequence('seq1')
@@ -162,7 +160,6 @@ class TestReferencedObject(unittest.TestCase):
 
     def test_uri_assignment_not_resolved(self):
         # Test assignment to a ReferencedObject attribute with a URI string
-        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         component = sbol3.Component('c1', sbol3.SBO_DNA)
         sequence = sbol3.Sequence('seq1')
@@ -177,7 +174,6 @@ class TestReferencedObject(unittest.TestCase):
     def test_instance_append(self):
         # Test assignment to a ReferencedObject attribute with an
         # instance using append
-        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         component = sbol3.Component('c1', sbol3.SBO_DNA)
         sequence = sbol3.Sequence('seq1')
@@ -189,7 +185,6 @@ class TestReferencedObject(unittest.TestCase):
     def test_instance_assignment(self):
         # Test assignment to a ReferencedObject attribute with an
         # instance using assignment
-        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         component = sbol3.Component('c1', sbol3.SBO_DNA)
         sequence = sbol3.Sequence('seq1')
@@ -204,7 +199,6 @@ class TestReferencedObject(unittest.TestCase):
     def test_singleton_assignment(self):
         # Test assignment to a ReferencedObject attribute with an
         # instance using assignment
-        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         test_parent = SingleRefObj('sro1')
         sequence = sbol3.Sequence('seq1')
@@ -221,7 +215,6 @@ class TestReferencedObject(unittest.TestCase):
         # See https://github.com/SynBioDex/pySBOL3/issues/184
         # Test assignment to a ReferencedObject attribute with a URI string
         doc = sbol3.Document()
-        sbol3.set_namespace('https://example.org')
         foo = sbol3.Collection('https://example.org/baz')
         doc.add(foo)
 
@@ -243,7 +236,6 @@ class TestReferencedObject(unittest.TestCase):
 
     def test_no_identity_exception(self):
         # See https://github.com/SynBioDex/pySBOL3/issues/357
-        sbol3.set_namespace('https://github.com/SynBioDex/pySBOL3')
         collection = sbol3.Collection('foo_collection')
         subc = sbol3.SubComponent(instance_of='https://github.com/SynBioDex/pySBOL3/c1')
         exc_regex = r'Object identity is uninitialized\.$'
@@ -258,7 +250,6 @@ class TestReferencedObject(unittest.TestCase):
         self.assertEqual(foo.identity, foo)
 
     def test_singleton_property_reference_counter(self):
-        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         root = sbol3.Component('root', sbol3.SBO_DNA)
         sub = sbol3.Component('sub', sbol3.SBO_DNA)
@@ -271,7 +262,6 @@ class TestReferencedObject(unittest.TestCase):
         self.assertEqual(root._references, [feature])
 
     def test_list_property_reference_counter(self):
-        sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         component = sbol3.Component('c1', sbol3.SBO_DNA)
 
