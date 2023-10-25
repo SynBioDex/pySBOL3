@@ -20,9 +20,9 @@ jobs:
         include:
           # Also test on macOS and Windows using latest Python 3
           - os: macos-latest
-            python-version: '3.x'
+            python-version: '3.11'  # Return to 3.x after resolution of https://github.com/RDFLib/pySHACL/issues/212
           - os: windows-latest
-            python-version: '3.x'
+            python-version: '3.11'  # Return to 3.x after resolution of https://github.com/RDFLib/pySHACL/issues/212
     steps:
     - uses: actions/checkout@v2
       with:
