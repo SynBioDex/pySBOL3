@@ -332,6 +332,28 @@ For example, to add a promoter to a circuit design, first define the promoter an
 .. end
 
 -----------------------------------------
+Working with SubComponent Locations
+-----------------------------------------
+
+In order to specify the exact range (start and end positions) on the parent component sequence where the child
+component is located, use the ``Range`` class. The ``Range`` class takes two required arguments, ``start`` and
+``end``, which are the start and end positions of the child component on the parent component sequence.
+The ``Range`` class also takes an optional argument, ``sequence``, which is the sequence of the child component.
+The ``Range`` class is then used as the value of the ``locations`` attribute of the ``SubComponent``.
+Example for a DNA component with a DNA SubComponent:
+
+.. code:: python
+
+    # seq is the sequence of the parent component
+    >>> start = 1
+    >>> end = 44
+    >>> sub_sequence = sbol3.Sequence("PromoterSeq", elements=seq.elements[start - 1 : end - 1])
+    >>> range_location = sbol3.Range(start=start, end=end, sequence=sub_sequence)
+    >>> subcomponent = sbol3.SubComponent(component, name="Promoter1", roles=[sbol3.SO_PROMOTER], locations=range_location)
+
+.. end
+
+-----------------------------------------
 Creating and Editing Reference Properties
 -----------------------------------------
 
