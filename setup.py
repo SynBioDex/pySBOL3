@@ -29,6 +29,7 @@ setup(name='sbol3',
             'Programming Language :: Python :: 3.9',
             'Programming Language :: Python :: 3.10',
             'Programming Language :: Python :: 3.11',
+            'Programming Language :: Python :: 3.12',
       ],
       # What does your project relate to?
       keywords='synthetic biology',
@@ -39,7 +40,7 @@ setup(name='sbol3',
             # of rdflib 6.x
             'rdflib>=6.1.1,==6.*',
             'python-dateutil~=2.8.2',
-            'pyshacl~=0.23',
+            'pyshacl~=0.25',
       ],
       test_suite='test',
       tests_require=[
