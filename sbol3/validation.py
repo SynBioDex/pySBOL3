@@ -45,10 +45,8 @@ class ValidationReport:
         return len(self._errors) + len(self._warnings)
 
     def __iter__(self):
-        for error in self._errors:
-            yield error
-        for warning in self._warnings:
-            yield warning
+        yield from self._errors
+        yield from self._warnings
 
     def __str__(self):
         issues = self._errors + self._warnings
