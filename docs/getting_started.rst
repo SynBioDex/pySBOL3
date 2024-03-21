@@ -315,7 +315,7 @@ list attribute of the parent component. The constructor for the ``SubComponent``
 takes a ``Component`` as its only required argument. In this usage, the ``Component`` is "... analogous 
 to a blueprint or specification sheet for a biological part..." Whereas the ``SubComponent`` "... represents 
 the specific occurrence of a part..." within a larger design 
-(`SBOL version 3.0.0 specification document <https://sbolstandard.org/docs/SBOL3.0specification.pdf>`_). 
+(`SBOL version 3.0.0 specification document <https://sbolstandard.org/docs/SBOL3.0.0.pdf>`_).
 For example, to add a promoter to a circuit design, first define the promoter and circuit as SBOL 
 ``Component`` objects, then define a ``SubComponent`` as an instance of the promoter and add that 
 ``SubComponent`` to the circuit's ``features`` attribute:
