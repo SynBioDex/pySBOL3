@@ -65,8 +65,7 @@ class TestRoundTrip(unittest.TestCase):
         for item in os.listdir(dirname):
             item_path = os.path.join(dirname, item)
             if os.path.isdir(item_path):
-                for f in self.find_all_files(item_path):
-                    yield f
+                yield from self.find_all_files(item_path)
             elif os.path.isfile(item_path):
                 yield item_path
             else:
