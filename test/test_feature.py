@@ -1,3 +1,4 @@
+import logging
 import unittest
 
 import sbol3
@@ -25,7 +26,8 @@ class TestFeature(unittest.TestCase):
         ptet = sbol3.Component('pTetR', sbol3.SBO_DNA, roles=[sbol3.SO_PROMOTER])
         circuit = sbol3.Component('circuit', sbol3.SBO_DNA, roles=[sbol3.SO_ENGINEERED_REGION])
         # orientation should be an item from this list [SO_FORWARD, SO_REVERSE, SBOL_INLINE, SBOL_REVERSE_COMPLEMENT]
-        ptet_sc = sbol3.SubComponent(ptet, orientation='Wrong Orientation')
+        with self.assertLogs(level=logging.WARNING):
+            ptet_sc = sbol3.SubComponent(ptet, orientation='Wrong Orientation')
         circuit.features += [ptet_sc]
         report = ptet_sc.validate()
         self.assertEqual(1, len(report))

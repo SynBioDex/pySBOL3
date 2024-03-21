@@ -366,7 +366,8 @@ class TestDocument(unittest.TestCase):
         # rdf:type properties
         test_file = os.path.join(TEST_RESOURCE_DIR, 'multi-type-ext.nt')
         doc = sbol3.Document()
-        doc.read(test_file)
+        with self.assertLogs(level=logging.WARNING):
+            doc.read(test_file)
         uri = 'http://example.com/sbol3/c1'
         x = doc.find(uri)
         self.assertIsNotNone(x)

@@ -1,3 +1,4 @@
+import logging
 import math
 import os
 import tempfile
@@ -106,7 +107,8 @@ class TestCustomTopLevel(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdirname:
             test_file = os.path.join(tmpdirname, 'custom.nt')
             doc.write(test_file, sbol3.NTRIPLES)
-            doc2.read(test_file, sbol3.NTRIPLES)
+            with self.assertLogs(level=logging.WARNING):
+                doc2.read(test_file, sbol3.NTRIPLES)
         obj2 = doc2.find(obj_name)
         obj_u2 = doc2.find(obj_unregistered_name)
         # The lists are necessarily unordered because of RDF
@@ -120,7 +122,8 @@ class TestCustomTopLevel(unittest.TestCase):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             obj2.copy(doc3)
-            obj_u2.copy(doc3)
+            with self.assertLogs(level=logging.WARNING):
+                obj_u2.copy(doc3)
         obj3 = doc3.find(obj_name)
         obj_u3 = doc3.find(obj_unregistered_name)
         # The lists are necessarily unordered because of RDF
