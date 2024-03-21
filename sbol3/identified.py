@@ -211,9 +211,7 @@ class Identified(SBOLObject):
             for sibling in objects:
                 if sibling.display_id and sibling.display_id.startswith(type_name):
                     counter_string = sibling.display_id[len(type_name):]
-                    counter_int = int(counter_string)
-                    if counter_int > result:
-                        result = counter_int
+                    result = max(result, int(counter_string))
         return result + 1
 
     @property
