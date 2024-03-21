@@ -65,8 +65,7 @@ class TestRoundTrip(unittest.TestCase):
         for item in os.listdir(dirname):
             item_path = os.path.join(dirname, item)
             if os.path.isdir(item_path):
-                for f in self.find_all_files(item_path):
-                    yield f
+                yield from self.find_all_files(item_path)
             elif os.path.isfile(item_path):
                 yield item_path
             else:
@@ -97,19 +96,20 @@ class TestRoundTrip(unittest.TestCase):
         # This was an early test, before the library was complete and
         # the files could be round tripped.
         skip_list = self.skip_reading
-        for f in self.find_all_files(SBOL3_LOCATION):
-            basename = os.path.basename(f)
-            if os.path.splitext(basename)[0] in skip_list:
-                # print(f'Skipping {f}')
-                continue
-            rdf_type = self.rdf_type(f)
-            if rdf_type is None:
-                # Skip file types we don't know
-                # print(f'Skipping {f} of type {rdf_type}')
-                continue
-            # print(f'Reading {f}')
-            doc = sbol3.Document()
-            doc.read(f, rdf_type)
+        with self.assertLogs(level=logging.WARNING):
+            for f in self.find_all_files(SBOL3_LOCATION):
+                basename = os.path.basename(f)
+                if os.path.splitext(basename)[0] in skip_list:
+                    # print(f'Skipping {f}')
+                    continue
+                rdf_type = self.rdf_type(f)
+                if rdf_type is None:
+                    # Skip file types we don't know
+                    # print(f'Skipping {f} of type {rdf_type}')
+                    continue
+                # print(f'Reading {f}')
+                doc = sbol3.Document()
+                doc.read(f, rdf_type)
 
     def run_round_trip_file(self, test_path, file_format):
         """Runs a round trip test on the file at the given path.
@@ -161,18 +161,19 @@ class TestRoundTrip(unittest.TestCase):
     def test_sbol3_files(self):
         test_dir = SBOL3_LOCATION
         skip_list = self.skip_round_trip
-        for test_file in self.find_all_files(test_dir):
-            basename = os.path.basename(test_file)
-            if os.path.splitext(basename)[0] in skip_list:
-                self.logger.debug(f'Skipping {test_file}')
-                continue
-            file_format = self.rdf_type(test_file)
-            if not file_format:
-                continue
-            with self.subTest(filename=test_file):
-                self.setUp()
-                self.run_round_trip_file(test_file, file_format)
-                self.tearDown()
+        with self.assertLogs(level=logging.WARNING):
+            for test_file in self.find_all_files(test_dir):
+                basename = os.path.basename(test_file)
+                if os.path.splitext(basename)[0] in skip_list:
+                    self.logger.debug(f'Skipping {test_file}')
+                    continue
+                file_format = self.rdf_type(test_file)
+                if not file_format:
+                    continue
+                with self.subTest(filename=test_file):
+                    self.setUp()
+                    self.run_round_trip_file(test_file, file_format)
+                    self.tearDown()
 
     def test_mixed_rdf(self):
         # See https://github.com/SynBioDex/pySBOL3/issues/96
@@ -189,7 +190,8 @@ class TestRoundTrip(unittest.TestCase):
         # Load a file that includes an SBOL object that has multiple other
         # rdf:type properties
         test_file = os.path.join(TEST_RESOURCE_DIR, 'multi-type-ext.nt')
-        self.run_round_trip_file(test_file, sbol3.NTRIPLES)
+        with self.assertLogs(level=logging.WARNING):
+            self.run_round_trip_file(test_file, sbol3.NTRIPLES)
 
     def test_multi_type_ext_builder(self):
         class MultiTypeExtension(sbol3.TopLevel):
