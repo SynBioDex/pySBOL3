@@ -18,6 +18,7 @@ and constructing genetic designs according to the standardized specifications of
    validation
    visitor
    ontology
+   sbol_data_model
 ..   repositories
 ..   sbol_examples
 ..   dbtl
