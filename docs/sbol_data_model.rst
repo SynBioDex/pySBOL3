@@ -14,7 +14,7 @@ This documentation is based on a Jupyter Notebook tutorial presented at IWBDA 20
 Installation
 =============
 
-Sbol Utilities is a Python package that provides a set of utility functions for working with the SBOL3 data model. 
+SBOL Utilities is a Python package that provides a set of utility functions for working with the SBOL3 data model. 
 It is available on PyPI and can be installed using pip.
 
 .. code-block:: bash
@@ -36,7 +36,7 @@ Import the necessary modules from the `sbol3` and `sbol_utilities` packages.
     from sbol_utilities.helper_functions import url_to_identity
     import tyto
 
-We will use `igem` suffix as the default namespace for the examples in this tutorial.
+We will use an `igem` suffix as the default namespace for the examples in this tutorial.
 
 .. code-block:: python
 
