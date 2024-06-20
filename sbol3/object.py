@@ -14,10 +14,12 @@ class SBOLObject:
     def __init__(self, name: str) -> None:
         self._properties = defaultdict(list)
         self._owned_objects = defaultdict(list)
+        self._referenced_objects = defaultdict(list)
         # Does this need to be a property? It does not get serialized to the RDF file.
         # Could it be an attribute that gets composed on the fly? Keep it simple for
         # now, and change to a property in the future if needed.
         self._identity = SBOLObject._make_identity(name)
+        self._references = []
 
     def __setattr__(self, name, value):
         try:
@@ -35,6 +37,14 @@ class SBOLObject:
         if hasattr(result, '_sbol_singleton'):
             result = result.get()
         return result
+
+    def __eq__(self, other):
+        if type(other) is str:
+            return self.identity == other
+        return super().__eq__(other)
+
+    def __hash__(self):
+        return hash(self.identity)
 
     @staticmethod
     def _is_url(name: str) -> bool:
@@ -96,7 +106,11 @@ class SBOLObject:
                     return result
         return None
 
-    def copy(self, target_doc=None, target_namespace=None):
+    def _resolve_references(self, new_obj):
+        resolve_references = make_resolve_references_traverser(new_obj)
+        self.traverse(resolve_references)
+
+    def copy(self, target_doc=None, target_namespace=None):  # pylint: disable=R0912
 
         # Delete this method in v1.1
         warnings.warn('Use sbol3.copy() instead', DeprecationWarning)
@@ -147,7 +161,27 @@ class SBOLObject:
                 new_obj._owned_objects[property_uri].append(o_copy)
                 o_copy.parent = self
 
+        # After we have copied all the owned objects, copy the referenced objects
+        # and attempt to resolve the references
+        if target_doc:
+            for property_uri, object_store in self._referenced_objects.items():
+                for o in object_store:
+                    referenced_obj = target_doc.find(o.identity)
+                    if referenced_obj:
+                        new_obj._referenced_objects[property_uri].append(referenced_obj)
+                    else:
+                        new_obj._referenced_objects[property_uri].append(SBOLObject(o.identity))
+        else:
+            # If the copy does not belong to a Document, then treat all references
+            # like external references
+            for property_uri, object_store in self._referenced_objects.items():
+                for o in object_store:
+                    new_obj._referenced_objects[property_uri].append(SBOLObject(o.identity))
+
         return new_obj
+
+    def lookup(self):
+        return self
 
 
 def replace_namespace(old_uri, target_namespace, rdf_type):
@@ -156,6 +190,25 @@ def replace_namespace(old_uri, target_namespace, rdf_type):
     # it might do something.
     # See https://github.com/SynBioDex/pySBOL3/issues/132
     raise NotImplementedError()
+
+
+def make_resolve_references_traverser(new_obj) -> Callable:
+    # Return a callback for traversing documents and updating
+    # any references to new_obj
+
+    def resolve_references(x):
+        for property_id, references in x._referenced_objects.items():
+            needs_updating = False
+            ref_obj = None
+            for ref_obj in references:
+                if ref_obj.identity == new_obj.identity:
+                    needs_updating = True
+                    break
+            if needs_updating:
+                references.remove(ref_obj)
+                references.append(new_obj)
+
+    return resolve_references
 
 
 # Global store for builder methods. Custom SBOL classes
