@@ -39,7 +39,7 @@ setup(name='sbol3',
             # Require at least rdflib 6.1.1, and allow newer versions
             # of rdflib 6.x
             'rdflib>=6.1.1,==6.*',
-            'python-dateutil~=2.8.2',
+            'python-dateutil~=2.9',
             'pyshacl~=0.25',
       ],
       test_suite='test',
