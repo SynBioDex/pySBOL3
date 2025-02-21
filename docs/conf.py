@@ -22,7 +22,7 @@ copyright = '2020-2023, Raytheon BBN Technologies'
 author = 'Bryan Bartley and Tom Mitchell'
 
 # The full version, including alpha/beta/rc tags
-release = '1.2'
+release = '1.3'
 
 
 # -- General configuration ---------------------------------------------------
