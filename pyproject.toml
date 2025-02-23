@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=63.1.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sbol3"
+version = "1.2"
+description = "Python implementation of SBOL 3 standard"
+readme = "README.md"
+authors = [{name = "Tom Mitchell"}, {email = "tcmitchell@users.noreply.github.com"}]
+license = {text = "MIT License"}
+requires-python = ">=3.8"
+keywords = ["synthetic biology"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "rdflib>=6.1.1,<7",  
+    "python-dateutil~=2.9",
+    "pyshacl~=0.25"
+]
+
+[project.urls]
+homepage = "https://github.com/SynBioDex/pySBOL3"
+
+[project.optional-dependencies]
+test = [
+    "pycodestyle~=2.11"
+]
+
+[tool.setuptools]
+packages = ["sbol3", "sbol3.rdf"]
+
+[tool.pytest.ini_options]
+testpath = ["test"]
+
+# [tool.setuptools.package-data]
+# sbol3 = ["*.ttl"]
