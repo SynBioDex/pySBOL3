@@ -15,7 +15,6 @@ MODULE_LOCATION = os.path.dirname(os.path.abspath(__file__))
 SBOL_PATH = os.path.join(os.path.dirname(MODULE_LOCATION), 'sbol3')
 TEST_PATH = MODULE_LOCATION
 EXAMPLES_PATH = os.path.join(os.path.dirname(MODULE_LOCATION), 'examples')
-SETUP_PATH = os.path.join(os.path.dirname(MODULE_LOCATION), 'setup.py')
 STYLE_CONFIG = os.path.join(os.path.dirname(MODULE_LOCATION), 'setup.cfg')
 
 # Please don't increase this number!
@@ -50,7 +49,6 @@ class TestStyle(unittest.TestCase):
         style.input_dir(SBOL_PATH)
         style.input_dir(TEST_PATH)
         style.input_dir(EXAMPLES_PATH)
-        style.input_file(SETUP_PATH)
         style.options.report.stop()
         result = style.options.report
         # Please try not to increase the expected number of errors. Please.
