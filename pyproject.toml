@@ -33,7 +33,8 @@ homepage = "https://github.com/SynBioDex/pySBOL3"
 
 [project.optional-dependencies]
 test = [
-    "pycodestyle~=2.11"
+    "pycodestyle~=2.11",
+    "pylint~=3.0"
 ]
 
 [tool.setuptools]
