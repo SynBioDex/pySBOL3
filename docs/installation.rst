@@ -68,7 +68,7 @@ For developers
 .. code::
 
         $ cd pysbol3
-        $ pip3 install . 
+        $ python3 -m pip install . 
 
 3. Test the installation by importing it in a Python interpreter:
 
