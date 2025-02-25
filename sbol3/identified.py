@@ -267,6 +267,12 @@ class Identified(SBOLObject):
             rdf_prop = rdflib.URIRef(prop)
             for item in items:
                 graph.add((identity, rdf_prop, item))
+        for prop, items in self._referenced_objects.items():
+            if not items:
+                continue
+            rdf_prop = rdflib.URIRef(prop)
+            for item in items:
+                graph.add((identity, rdf_prop, rdflib.URIRef(item.identity)))
         for prop, items in self._owned_objects.items():
             if not items:
                 continue

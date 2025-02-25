@@ -94,7 +94,8 @@ class TestComponent(unittest.TestCase):
         c2 = c1.clone(new_identity)
         self.assertEqual(posixpath.join(sbol3.get_namespace(), new_identity),
                          c2.identity)
-        self.assertListEqual(list(c1.sequences), list(c2.sequences))
+        self.assertListEqual([s.identity for s in c1.sequences],
+                             [s.identity for s in c2.sequences])
 
     def test_cloning_with_children(self):
         # This test does not use `sbol3.set_namespace` as the other
@@ -129,7 +130,7 @@ class TestComponent(unittest.TestCase):
         self.assertIsInstance(es2, sbol3.EntireSequence)
         self.assertNotEqual(es1.identity, es2.identity)
         self.assertTrue(es2.identity.startswith(c2.identity))
-        self.assertEqual(es1.sequence, es2.sequence)
+        self.assertEqual(es1.sequence.identity, es2.sequence.identity)
         self.assertIsNone(es2.document)
 
     def test_cloning_references(self):
@@ -159,7 +160,7 @@ class TestComponent(unittest.TestCase):
             self.assertIsInstance(s_clone, sbol3.ComponentReference)
             self.assertTrue(s_clone.identity.startswith(toggle_clone.identity))
             self.assertNotEqual(s.identity, s_clone.identity)
-            self.assertEqual(s.refers_to, s_clone.refers_to)
+            self.assertEqual(s.refers_to.identity, s_clone.refers_to.identity)
             o = c.object.lookup()
             self.assertIsInstance(o, sbol3.ComponentReference)
             self.assertTrue(o.identity.startswith(toggle.identity))
@@ -167,7 +168,7 @@ class TestComponent(unittest.TestCase):
             self.assertIsInstance(o_clone, sbol3.ComponentReference)
             self.assertTrue(o_clone.identity.startswith(toggle_clone.identity))
             self.assertNotEqual(o.identity, o_clone.identity)
-            self.assertEqual(o.refers_to, o_clone.refers_to)
+            self.assertEqual(o.refers_to.identity, o_clone.refers_to.identity)
 
     def test_measures_initial_value(self):
         # See https://github.com/SynBioDex/pySBOL3/issues/301
