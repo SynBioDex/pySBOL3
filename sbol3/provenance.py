@@ -1,10 +1,24 @@
 from __future__ import annotations
+
 import datetime
 import math
-from typing import Union, List, Any, Optional
+from typing import Any, List, Optional, Union
 
-from . import *
+from .constants import (PROV_ACTIVITY, PROV_AGENT, PROV_AGENTS,
+                        PROV_ASSOCIATION, PROV_ENDED_AT_TIME, PROV_ENTITY,
+                        PROV_INFORMED_BY, PROV_PLAN, PROV_PLANS,
+                        PROV_QUALIFIED_ASSOCIATION, PROV_QUALIFIED_USAGE,
+                        PROV_ROLES, PROV_STARTED_AT_TIME, PROV_USAGE,
+                        PYSBOL3_MISSING, SBOL_TYPE)
+from .custom import CustomIdentified, CustomTopLevel
+from .datetime_property import DateTimeProperty
+from .document import Document
+from .identified import Identified
+from .object import SBOLObject
+from .ownedobject import OwnedObject
+from .refobj_property import ReferencedObject
 from .typing import uri_list, uri_singleton
+from .uri_property import URIProperty
 
 
 class Usage(CustomIdentified):
