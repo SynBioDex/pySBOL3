@@ -4,19 +4,27 @@ import collections
 import logging
 import os
 import posixpath
-import warnings
-from pathlib import Path
-from typing import Dict, Callable, List, Optional, Any, Union, Iterable
-
 # import typing for typing.Sequence, which we don't want to confuse
 # with sbol3.Sequence
 import typing as pytyping
+import warnings
+from pathlib import Path
+from typing import Any, Callable, Dict, Iterable, List, Optional, Union
 
 import pyshacl
 import rdflib
 
-from . import *
-from .object import BUILDER_REGISTER
+from .constants import (JSONLD, NTRIPLES, OM_NS, PROV_NS, RDF_TYPE, RDF_XML,
+                        SBOL3_NS, SBOL_IDENTIFIED, SBOL_LOGGER_NAME,
+                        SBOL_NAMESPACE, SBOL_TOP_LEVEL, SORTED_NTRIPLES,
+                        TURTLE)
+from .custom import CustomIdentified, CustomTopLevel
+from .error import SBOLError
+from .identified import Identified
+from .object import BUILDER_REGISTER, SBOLObject
+from .property_base import SingletonProperty
+from .toplevel import TopLevel
+from .validation import ValidationReport
 
 _default_bindings = {
     'sbol': SBOL3_NS,
