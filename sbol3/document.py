@@ -322,7 +322,7 @@ class Document:
             RDF_XML: '.xml',
             TURTLE: '.ttl'
         }
-        if not file_format in types_with_standard_extension:
+        if file_format not in types_with_standard_extension:
             raise ValueError('Provided file format is not a valid one.')
         return types_with_standard_extension[file_format]
 
