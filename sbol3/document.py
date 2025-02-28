@@ -213,6 +213,20 @@ class Document:
                 obj._owned_objects[str_p].append(other)
                 # Record the assigned object as a child
                 child_objects[other_identity] = other
+            elif str_p in obj._referenced_objects:
+                reference = str(o)
+                # A reference may refer to another object
+                # in the current document, or it may be
+                # an external reference to another RDF entity
+                if reference in objects:
+                    other = objects[reference]
+                    obj._referenced_objects[str_p].append(other)
+                    other._references.append(obj)
+                else:
+                    # If an external reference, create a base SBOLObject to represent it
+                    stub = SBOLObject(reference)
+                    obj._referenced_objects[str_p].append(stub)
+                    stub._references.append(obj)  # Add to reference counter
             elif str_p == RDF_TYPE:
                 # Handle rdf:type specially because the main type(s)
                 # will already be in the list from the build_object
@@ -358,7 +372,27 @@ class Document:
         # in the TopLevel being added
         def assign_document(x: Identified):
             x.document = self
+
         obj.traverse(assign_document)
+
+        # Update any external references from this object,
+        # which may be resolved upon adding it to the Document.
+        # Stub SBOLObjects will be replaced with the actual
+        # referenced object
+        for property_id, ref_objects in obj._referenced_objects.items():
+            updated = []
+            for ref_obj in ref_objects:
+                resolved_reference = self.find(ref_obj.identity)
+                if resolved_reference:
+                    updated.append(resolved_reference)
+                else:
+                    updated.append(ref_obj)
+            obj._referenced_objects[property_id] = updated
+
+        # Update any external references to this object
+        # replacing stub SBOLObjects with this one
+        self._resolve_references(obj)
+
         return obj
 
     def _add_all(self, objects: pytyping.Sequence[TopLevel]) -> pytyping.Sequence[TopLevel]:
@@ -421,6 +455,11 @@ class Document:
             if obj.display_id and obj.display_id == search_string:
                 return obj
         return self._find_in_objects(search_string)
+
+    def _resolve_references(self, new_obj):
+        """Update all unresolved references to this object, replacing stub SBOLObject with this one."""
+        for updated in self.objects:
+            updated._resolve_references(new_obj)
 
     def join_lines(self, lines: List[Union[bytes, str]]) -> Union[bytes, str]:
         """Join lines for either bytes or strings. Joins a list of lines
@@ -679,6 +718,11 @@ class Document:
         # Now do the removal of each top level object and all of its children
         for obj in objects_to_remove:
             obj.remove_from_document()
+            # If the removed object is referenced anywhere,
+            # leave a stub
+            stub_obj = SBOLObject(obj.identity)
+            assert stub_obj.identity == obj.identity
+            self._resolve_references(stub_obj)
 
     def remove_object(self, top_level: TopLevel):
         """Removes the given TopLevel from this document. No referential
