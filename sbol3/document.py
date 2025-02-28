@@ -16,7 +16,8 @@ import rdflib
 
 from .constants import (JSONLD, NTRIPLES, OM_NS, PROV_NS, RDF_TYPE, RDF_XML,
                         SBOL3_NS, SBOL_IDENTIFIED, SBOL_LOGGER_NAME,
-                        SBOL_NAMESPACE, SBOL_TOP_LEVEL, SORTED_NTRIPLES)
+                        SBOL_NAMESPACE, SBOL_TOP_LEVEL, SORTED_NTRIPLES,
+                        TURTLE)
 from .custom import CustomIdentified, CustomTopLevel
 from .error import SBOLError
 from .identified import Identified
