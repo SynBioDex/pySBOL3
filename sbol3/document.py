@@ -16,8 +16,7 @@ import rdflib
 
 from .constants import (JSONLD, NTRIPLES, OM_NS, PROV_NS, RDF_TYPE, RDF_XML,
                         SBOL3_NS, SBOL_IDENTIFIED, SBOL_LOGGER_NAME,
-                        SBOL_NAMESPACE, SBOL_TOP_LEVEL, SORTED_NTRIPLES,
-                        TURTLE)
+                        SBOL_NAMESPACE, SBOL_TOP_LEVEL, SORTED_NTRIPLES)
 from .custom import CustomIdentified, CustomTopLevel
 from .error import SBOLError
 from .identified import Identified
@@ -169,9 +168,9 @@ class Document:
         else:
             try:
                 builder = self._uri_type_map[sbol_type]
-            except KeyError:
+            except KeyError as exc:
                 logging.warning(f'No builder found for {sbol_type}')
-                raise SBOLError(f'Unknown type {sbol_type}')
+                raise SBOLError(f'Unknown type {sbol_type}') from exc
             result = builder(identity=identity, type_uri=sbol_type)
         # Fix https://github.com/SynBioDex/pySBOL3/issues/264
         if isinstance(result, TopLevel):
@@ -322,10 +321,9 @@ class Document:
             RDF_XML: '.xml',
             TURTLE: '.ttl'
         }
-        if file_format in types_with_standard_extension:
-            return types_with_standard_extension[file_format]
-        else:
+        if not file_format in types_with_standard_extension:
             raise ValueError('Provided file format is not a valid one.')
+        return types_with_standard_extension[file_format]
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, location: Union[Path, str], file_format: str = None) -> None:
