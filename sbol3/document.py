@@ -206,7 +206,7 @@ class Document:
     def _parse_attributes(objects, graph) -> dict[str, Identified]:
         # Track the child objects that get assigned to optimize the
         # search for orphans later in the loading process.
-        child_objects = dict()
+        child_objects = {}
         for s, p, o in graph.triples((None, None, None)):
             str_s = str(s)
             str_p = str(p)
