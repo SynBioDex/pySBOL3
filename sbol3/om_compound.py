@@ -1,9 +1,15 @@
 import abc
-from typing import Union, List, Any
+from typing import Any, List, Union
 
-from . import *
-
+from .constants import (OM_HAS_BASE, OM_HAS_DENOMINATOR, OM_HAS_EXPONENT,
+                        OM_HAS_NUMERATOR, OM_HAS_TERM1, OM_HAS_TERM2, OM_LABEL,
+                        OM_SYMBOL, OM_UNIT_DIVISION, OM_UNIT_EXPONENTIATION,
+                        OM_UNIT_MULTIPLICATION, PYSBOL3_MISSING)
+from .document import Document
+from .int_property import IntProperty
+from .object import SBOLObject
 from .om_unit import Unit
+from .refobj_property import ReferencedObject
 
 
 class CompoundUnit(Unit, abc.ABC):
