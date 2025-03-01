@@ -4,19 +4,27 @@ import collections
 import logging
 import os
 import posixpath
-import warnings
-from pathlib import Path
-from typing import Dict, Callable, List, Optional, Any, Union, Iterable
-
 # import typing for typing.Sequence, which we don't want to confuse
 # with sbol3.Sequence
 import typing as pytyping
+import warnings
+from pathlib import Path
+from typing import Any, Callable, Dict, Iterable, List, Optional, Union
 
 import pyshacl
 import rdflib
 
-from . import *
-from .object import BUILDER_REGISTER
+from .constants import (JSONLD, NTRIPLES, OM_NS, PROV_NS, RDF_TYPE, RDF_XML,
+                        SBOL3_NS, SBOL_IDENTIFIED, SBOL_LOGGER_NAME,
+                        SBOL_NAMESPACE, SBOL_TOP_LEVEL, SORTED_NTRIPLES,
+                        TURTLE)
+from .custom import CustomIdentified, CustomTopLevel
+from .error import SBOLError
+from .identified import Identified
+from .object import BUILDER_REGISTER, SBOLObject
+from .property_base import SingletonProperty
+from .toplevel import TopLevel
+from .validation import ValidationReport
 
 _default_bindings = {
     'sbol': SBOL3_NS,
@@ -161,9 +169,9 @@ class Document:
         else:
             try:
                 builder = self._uri_type_map[sbol_type]
-            except KeyError:
+            except KeyError as exc:
                 logging.warning(f'No builder found for {sbol_type}')
-                raise SBOLError(f'Unknown type {sbol_type}')
+                raise SBOLError(f'Unknown type {sbol_type}') from exc
             result = builder(identity=identity, type_uri=sbol_type)
         # Fix https://github.com/SynBioDex/pySBOL3/issues/264
         if isinstance(result, TopLevel):
@@ -198,7 +206,7 @@ class Document:
     def _parse_attributes(objects, graph) -> dict[str, Identified]:
         # Track the child objects that get assigned to optimize the
         # search for orphans later in the loading process.
-        child_objects = dict()
+        child_objects = {}
         for s, p, o in graph.triples((None, None, None)):
             str_s = str(s)
             str_p = str(p)
@@ -314,10 +322,9 @@ class Document:
             RDF_XML: '.xml',
             TURTLE: '.ttl'
         }
-        if file_format in types_with_standard_extension:
-            return types_with_standard_extension[file_format]
-        else:
+        if file_format not in types_with_standard_extension:
             raise ValueError('Provided file format is not a valid one.')
+        return types_with_standard_extension[file_format]
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, location: Union[Path, str], file_format: str = None) -> None:

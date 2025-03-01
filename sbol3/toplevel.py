@@ -3,14 +3,21 @@ from __future__ import annotations
 import copy
 import math
 import posixpath
+import typing
 import urllib.parse
 import uuid
 import warnings
-from typing import Dict, Callable, Optional, Any
-import typing
+from typing import Any, Callable, Dict, Optional
 
-from . import *
-from .typing import *
+from .config import get_namespace
+from .constants import (PYSBOL3_DEFAULT_NAMESPACE, SBOL_HAS_ATTACHMENT,
+                        SBOL_NAMESPACE)
+from .identified import Identified
+from .property_base import ListProperty
+from .refobj_property import ReferencedObject
+from .typing import Property, Union, ownedobj_list_arg, refobj_list_arg
+from .uri_property import URIProperty
+from .validation import ValidationReport
 
 
 class TopLevel(Identified):

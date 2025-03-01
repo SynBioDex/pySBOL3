@@ -1,8 +1,17 @@
 import abc
-from typing import Union, Any, Optional
+from typing import Any, Optional, Union
 
-from . import *
+from .constants import (PYSBOL3_MISSING, SBOL_CUT, SBOL_END,
+                        SBOL_ENTIRE_SEQUENCE, SBOL_ORDER, SBOL_ORIENTATION,
+                        SBOL_RANGE, SBOL_SEQUENCES, SBOL_START)
+from .document import Document
+from .identified import Identified
+from .int_property import IntProperty
+from .refobj_property import ReferencedObject
+from .sequence import Sequence
 from .typing import uri_singleton
+from .uri_property import URIProperty
+from .validation import ValidationReport
 
 int_property = Union[IntProperty, int]
 
