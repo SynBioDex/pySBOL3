@@ -15,7 +15,7 @@ from .constants import (PYSBOL3_DEFAULT_NAMESPACE, SBOL_HAS_ATTACHMENT,
 from .identified import Identified
 from .property_base import ListProperty
 from .refobj_property import ReferencedObject
-from .typing import *
+from .typing import Property, Union, ownedobj_list_arg, refobj_list_arg
 from .uri_property import URIProperty
 from .validation import ValidationReport
 
