@@ -3,11 +3,11 @@ from __future__ import annotations
 import copy
 import math
 import posixpath
+import typing
 import urllib.parse
 import uuid
 import warnings
-from typing import Dict, Callable, Optional, Any
-import typing
+from typing import Any, Callable, Dict, Optional
 
 from . import *
 from .typing import *
@@ -234,10 +234,10 @@ def make_update_references_traverser(identity_map: Dict[str, Identified])\
             if v.property_uri not in x._properties:
                 continue
             items = x._properties[v.property_uri]
-            for i in range(len(items)):
-                str_item = str(items[i])
-                if str_item in identity_map:
-                    new_reference = identity_map[str_item].identity
+            for i, item in enumerate(items):
+                str_item = str(item)
+                if str(item) in identity_map:
+                    new_reference = identity_map[str(item)].identity
                     # The item is probably an rdflib.URIRef. We take
                     # the type of the item and use that type to
                     # construct a new instance of the same type.
