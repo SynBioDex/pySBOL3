@@ -165,7 +165,7 @@ class TestRoundTrip(unittest.TestCase):
             for test_file in self.find_all_files(test_dir):
                 basename = os.path.basename(test_file)
                 if os.path.splitext(basename)[0] in skip_list:
-                    self.logger.debug(f'Skipping {test_file}')
+                    self.logger.debug('Skipping %s', test_file)
                     continue
                 file_format = self.rdf_type(test_file)
                 if not file_format:
