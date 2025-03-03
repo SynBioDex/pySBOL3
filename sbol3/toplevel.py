@@ -236,8 +236,8 @@ def make_update_references_traverser(identity_map: Dict[str, Identified])\
             items = x._properties[v.property_uri]
             for i, item in enumerate(items):
                 str_item = str(item)
-                if str(item) in identity_map:
-                    new_reference = identity_map[str(item)].identity
+                if str_item in identity_map:
+                    new_reference = identity_map[str_item].identity
                     # The item is probably an rdflib.URIRef. We take
                     # the type of the item and use that type to
                     # construct a new instance of the same type.
