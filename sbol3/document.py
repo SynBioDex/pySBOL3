@@ -123,7 +123,7 @@ class Document:
                 build_type = type_uri
                 break
             except KeyError:
-                logging.warning('No builder for %s' % type_uri)
+                logging.warning('No builder for %s', type_uri)
         if builder is None:
             builder = custom_types[sbol_type]
             build_type = types[0]
@@ -161,7 +161,7 @@ class Document:
             try:
                 builder = self._uri_type_map[sbol_type]
             except KeyError:
-                logging.warning('No builder found for %s' % sbol_type)
+                logging.warning('No builder found for %s', sbol_type)
                 raise SBOLError(f'Unknown type {sbol_type}')
             result = builder(identity=identity, type_uri=sbol_type)
         # Fix https://github.com/SynBioDex/pySBOL3/issues/264
