@@ -100,9 +100,9 @@ class TestModule(unittest.TestCase):
             try:
                 item(*arg_list)
             except TypeError as e:
-                self.fail('Unable to construct sbol3.%s: %s' % (name, e))
+                self.fail(f'Unable to construct sbol3.{name}: {e}')
             except sbol3.ValidationError as e:
-                self.fail('Constructed invalid sbol3.%s: %s' % (name, e))
+                self.fail(f'Constructed invalid sbol3.{name}: {e}')
             if item in abstract_list:
                 # Skip over abstract classes when checking for the
                 # accept method
