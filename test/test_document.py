@@ -125,7 +125,7 @@ class TestDocument(unittest.TestCase):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         objects = [sbol3.Component(name, types=[sbol3.SBO_DNA])
-                   for name in ['foo', 'bar', 'baz' 'quux']]
+                   for name in ['foo', 'bar', 'baz', 'quux']]
         result = doc.add(objects)
         self.assertEqual(len(objects), len(result))
         self.assertListEqual(objects, result)
@@ -133,7 +133,7 @@ class TestDocument(unittest.TestCase):
         # Test adding a non-TopLevel in a list
         doc = sbol3.Document()
         objects = [sbol3.Component(name, types=[sbol3.SBO_DNA])
-                   for name in ['foo', 'bar', 'baz' 'quux']]
+                   for name in ['foo', 'bar', 'baz', 'quux']]
         objects.insert(2, 'non-TopLevel')
         with self.assertRaises(TypeError):
             doc.add(objects)
