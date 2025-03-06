@@ -736,14 +736,14 @@ class TestDocument(unittest.TestCase):
         doc.add(c1)
         output = doc.write_string(file_format=sbol3.NTRIPLES)
         lines = output.splitlines()
-        num_blanks = sum([1 for line in lines if not line])
+        num_blanks = sum(1 for line in lines if not line)
         # Expecting no blank lines
         self.assertEqual(0, num_blanks)
 
         # Now test sorted n-triples
         sorted_output = doc.write_string(file_format=sbol3.SORTED_NTRIPLES)
         sorted_lines = sorted_output.splitlines()
-        num_blanks = sum([1 for line in sorted_lines if not line])
+        num_blanks = sum(1 for line in sorted_lines if not line)
         # Expecting no blank lines
         self.assertEqual(0, num_blanks)
 
