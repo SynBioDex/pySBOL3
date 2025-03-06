@@ -4,13 +4,12 @@ import collections
 import logging
 import os
 import posixpath
-import warnings
-from pathlib import Path
-from typing import Dict, Callable, List, Optional, Any, Union, Iterable
-
 # import typing for typing.Sequence, which we don't want to confuse
 # with sbol3.Sequence
 import typing as pytyping
+import warnings
+from pathlib import Path
+from typing import Any, Callable, Dict, Iterable, List, Optional, Union
 
 import pyshacl
 import rdflib
@@ -433,7 +432,8 @@ class Document:
         if lines_type is bytes:
             # rdflib 5
             return b'\n'.join(lines) + b'\n'
-        elif lines_type is str:
+        # if lines_type is str
+        else:
             # rdflib 6
             return '\n'.join(lines) + '\n'
 
