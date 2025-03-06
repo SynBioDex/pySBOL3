@@ -433,9 +433,11 @@ class Document:
             # rdflib 5
             return b'\n'.join(lines) + b'\n'
         # if lines_type is str
-        else:
+        elif lines_type is str:
             # rdflib 6
             return '\n'.join(lines) + '\n'
+        else:
+            return ''
 
     def write_string(self, file_format: str) -> str:
         graph = self.graph()
