@@ -96,7 +96,7 @@ class TestModule(unittest.TestCase):
                 continue
             arg_list = []
             if name in args_map:
-                arg_list = args_map[name]
+                arg_list = args_map.get(name)
             try:
                 item(*arg_list)
             except TypeError as e:
