@@ -437,7 +437,7 @@ class Document:
             # rdflib 6
             return '\n'.join(lines) + '\n'
         else:
-            return ''
+            raise ValueError('Lines must be either bytes or str')
 
     def write_string(self, file_format: str) -> str:
         graph = self.graph()
