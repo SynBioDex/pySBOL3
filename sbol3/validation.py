@@ -11,12 +11,12 @@ class ValidationIssue:
         self.object_id = object_id
 
     def __str__(self):
-        parts = [] # list of parts to include in the message
+        parts = []  # list of parts to include in the message
 
         if self.object_id:
-            parts.append(str(self.object_id)) # add the object ID if present
+            parts.append(str(self.object_id))  # add the object ID if present
         if self.rule_id:
-            parts.append(str(self.rule_id)) # add the rule ID if present if present
+            parts.append(str(self.rule_id))  # add the rule ID if present if present
 
         # return the message with the parts if parts exits otherwise just the message
         return f"{' '.join(parts)}: {self.message}" if parts else self.message
