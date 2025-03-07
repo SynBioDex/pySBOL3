@@ -456,7 +456,7 @@ class Document:
             result = graph.serialize(format=file_format, context=context)
         else:
             result = graph.serialize(format=file_format)
-        if isinstance(result) is bytes:
+        if isinstance(result, bytes):
             result = result.decode()
         return result
 
