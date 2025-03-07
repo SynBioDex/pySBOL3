@@ -4,13 +4,12 @@ import collections
 import logging
 import os
 import posixpath
-import warnings
-from pathlib import Path
-from typing import Dict, Callable, List, Optional, Any, Union, Iterable
-
 # import typing for typing.Sequence, which we don't want to confuse
 # with sbol3.Sequence
 import typing as pytyping
+import warnings
+from pathlib import Path
+from typing import Any, Callable, Dict, Iterable, List, Optional, Union
 
 import pyshacl
 import rdflib
@@ -124,7 +123,7 @@ class Document:
                 build_type = type_uri
                 break
             except KeyError:
-                logging.warning(f'No builder found for {type_uri}')
+                logging.warning('No builder for %s', type_uri)
         if builder is None:
             builder = custom_types[sbol_type]
             build_type = types[0]
@@ -162,7 +161,7 @@ class Document:
             try:
                 builder = self._uri_type_map[sbol_type]
             except KeyError:
-                logging.warning(f'No builder found for {sbol_type}')
+                logging.warning('No builder found for %s', sbol_type)
                 raise SBOLError(f'Unknown type {sbol_type}')
             result = builder(identity=identity, type_uri=sbol_type)
         # Fix https://github.com/SynBioDex/pySBOL3/issues/264

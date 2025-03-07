@@ -148,8 +148,7 @@ class TestComponent(unittest.TestCase):
         doc2 = sbol3.Document()
         doc2.add(toggle_clone)
         self.assertEqual(len(toggle.constraints), len(toggle_clone.constraints))
-        for i in range(len(toggle.constraints)):
-            c = toggle.constraints[i]
+        for i, c in enumerate(toggle.constraints):
             c_clone = toggle_clone.constraints[i]
             self.assertNotEqual(c.identity, c_clone.identity)
             s = c.subject.lookup()
