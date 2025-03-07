@@ -1,8 +1,9 @@
 from __future__ import annotations
+
 import math
 import posixpath
-from typing import Callable, Any, Optional
 import typing
+from typing import Any, Callable, Optional
 from urllib.parse import urlparse
 
 import rdflib
@@ -51,13 +52,12 @@ def extract_display_id(identity: str) -> Union[None, str]:
         # and display id is optional in this case
         return None
     display_id = parsed.path.split('/')[-1]
-    if is_valid_display_id(display_id):
-        return display_id
-    else:
+    if not is_valid_display_id(display_id):
         msg = f'"{display_id}" is not a valid displayId.'
         msg += ' A displayId MUST be composed of only alphanumeric'
         msg += ' or underscore characters and MUST NOT begin with a digit.'
         raise ValueError(msg)
+    return display_id
 
 
 class Identified(SBOLObject):
