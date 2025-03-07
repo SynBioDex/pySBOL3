@@ -84,10 +84,11 @@ class TestRoundTrip(unittest.TestCase):
             'jsonld': sbol3.JSONLD,
             'jsonld_expanded': sbol3.JSONLD,
         }
-        if ext in ext_map:
-            return ext_map[ext]
-        else:
+
+        if ext not in ext_map:
             return None
+
+        return ext_map[ext]
 
     def test_read_all(self):
         # In lieu of round tripping the files, just make sure we can
