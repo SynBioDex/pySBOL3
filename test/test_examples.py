@@ -1,10 +1,11 @@
 import logging
 import os
+import shutil
 import subprocess
 import sys
-import unittest
 import tempfile
-import shutil
+import unittest
+
 import rdflib
 import rdflib.compare
 
@@ -48,8 +49,8 @@ class TestExamples(unittest.TestCase):
         expected_iso = rdflib.compare.to_isomorphic(expected_graph)
         rdf_diff = rdflib.compare.graph_diff(expected_iso, actual_iso)
         if rdf_diff[1] or rdf_diff[2]:
-            self.logger.warning('Detected %d different RDF triples in %s' %
-                                (len(rdf_diff[1]) + len(rdf_diff[2]), out_path))
+            self.logger.warning('Detected %d different RDF triples in %s' ,
+                                len(rdf_diff[1]) + len(rdf_diff[2]), out_path)
             for stmt in rdf_diff[1]:
                 self.logger.warning('Only in expected: %r', stmt)
             for stmt in rdf_diff[2]:
