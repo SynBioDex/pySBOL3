@@ -1,7 +1,7 @@
 import abc
 import collections
-from collections.abc import MutableSequence, Iterable
-from typing import Any, Optional, List, Dict, Union
+from collections.abc import Iterable, MutableSequence
+from typing import Any, Dict, List, Optional, Union
 
 from sbol3 import ValidationReport
 
@@ -127,11 +127,10 @@ class ListProperty(Property, MutableSequence, abc.ABC):
         value = self._storage()[self.property_uri].__getitem__(key)
         if isinstance(value, str):
             return self.to_user(value)
-        elif isinstance(value, collections.abc.Iterable):
+        if isinstance(value, collections.abc.Iterable):
             return [self.to_user(v) for v in value]
-        else:
-            # Not a string or an iterable, just convert
-            return self.to_user(value)
+        # Not a string or an iterable, just convert -- Fallback
+        return self.to_user(value)
 
     def __len__(self) -> int:
         return self._storage()[self.property_uri].__len__()

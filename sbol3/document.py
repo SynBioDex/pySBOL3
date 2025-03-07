@@ -427,12 +427,18 @@ class Document:
         if not lines:
             return ''
 
-        line_type = type(lines[0])
-        if line_type not in (bytes, str):
+        first_line = lines[0]
+        lines_type = type(first_line)
+
+        if lines_type is bytes:
+            newline = b'\n'
+        elif lines_type is str:
+            newline = '\n'
+        else:
             raise ValueError("Lines must be either bytes or str")
 
-        newline = b'\n' if line_type is bytes else '\n'
-        return newline.join(lines) + newline
+        joined = newline.join(lines)
+        return joined + newline
 
     def write_string(self, file_format: str) -> str:
         graph = self.graph()
