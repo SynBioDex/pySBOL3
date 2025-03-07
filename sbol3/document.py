@@ -369,8 +369,8 @@ class Document:
             if not isinstance(obj, TopLevel):
                 if isinstance(obj, Identified):
                     raise TypeError(f'{obj.identity} is not a TopLevel object')
-                else:
-                    raise TypeError(f'{repr(obj)} is not a TopLevel object')
+
+                raise TypeError(f'{repr(obj)} is not a TopLevel object')
 
         # Dispatch to Document._add to add the individual objects
         for obj in objects:
