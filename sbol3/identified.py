@@ -1,8 +1,9 @@
 from __future__ import annotations
+
 import math
 import posixpath
-from typing import Callable, Any, Optional
 import typing
+from typing import Any, Callable, Optional
 from urllib.parse import urlparse
 
 import rdflib
@@ -124,7 +125,7 @@ class Identified(SBOLObject):
                                       initial_value=[type_uri])
 
     def __str__(self):
-        return '<%s %s>' % (self.__class__.__name__, self.identity)
+        return f'<{self.__class__.__name__} {self.identity}>'
 
     @staticmethod
     def _is_valid_display_id(display_id: str) -> bool:
