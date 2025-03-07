@@ -4,13 +4,12 @@ import collections
 import logging
 import os
 import posixpath
-import warnings
-from pathlib import Path
-from typing import Dict, Callable, List, Optional, Any, Union, Iterable
-
 # import typing for typing.Sequence, which we don't want to confuse
 # with sbol3.Sequence
 import typing as pytyping
+import warnings
+from pathlib import Path
+from typing import Any, Callable, Dict, Iterable, List, Optional, Union
 
 import pyshacl
 import rdflib
@@ -316,8 +315,7 @@ class Document:
         }
         if file_format in types_with_standard_extension:
             return types_with_standard_extension[file_format]
-        else:
-            raise ValueError('Provided file format is not a valid one.')
+        raise ValueError('Provided file format is not a valid one.')
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, location: Union[Path, str], file_format: str = None) -> None:
@@ -395,8 +393,7 @@ class Document:
         # Now dispatch to the appropriate method
         if isinstance(objects, TopLevel):
             return self._add(objects)
-        else:
-            return self._add_all(objects)
+        return self._add_all(objects)
 
     def _find_in_objects(self, search_string: str) -> Optional[Identified]:
         # TODO: implement recursive search
