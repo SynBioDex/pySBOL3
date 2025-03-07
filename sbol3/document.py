@@ -315,8 +315,7 @@ class Document:
         }
         if file_format in types_with_standard_extension:
             return types_with_standard_extension[file_format]
-        else:
-            raise ValueError('Provided file format is not a valid one.')
+        raise ValueError('Provided file format is not a valid one.')
 
     # Formats: 'n3', 'nt', 'turtle', 'xml'
     def read(self, location: Union[Path, str], file_format: str = None) -> None:
@@ -394,8 +393,7 @@ class Document:
         # Now dispatch to the appropriate method
         if isinstance(objects, TopLevel):
             return self._add(objects)
-        else:
-            return self._add_all(objects)
+        return self._add_all(objects)
 
     def _find_in_objects(self, search_string: str) -> Optional[Identified]:
         # TODO: implement recursive search
@@ -428,13 +426,19 @@ class Document:
         """
         if not lines:
             return ''
-        lines_type = type(lines[0])
+
+        first_line = lines[0]
+        lines_type = type(first_line)
+
         if lines_type is bytes:
-            # rdflib 5
-            return b'\n'.join(lines) + b'\n'
+            newline = b'\n'
         elif lines_type is str:
-            # rdflib 6
-            return '\n'.join(lines) + '\n'
+            newline = '\n'
+        else:
+            raise ValueError("Lines must be either bytes or str")
+
+        joined = newline.join(lines)
+        return joined + newline
 
     def write_string(self, file_format: str) -> str:
         graph = self.graph()
