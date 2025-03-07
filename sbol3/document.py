@@ -426,16 +426,13 @@ class Document:
         """
         if not lines:
             return ''
-        lines_type = type(lines[0])
-        if lines_type is bytes:
-            # rdflib 5
-            return b'\n'.join(lines) + b'\n'
-        # if lines_type is str
-        elif lines_type is str:
-            # rdflib 6
-            return '\n'.join(lines) + '\n'
-        else:
-            raise ValueError('Lines must be either bytes or str')
+
+        line_type = type(lines[0])
+        if line_type not in (bytes, str):
+            raise ValueError("Lines must be either bytes or str")
+
+        newline = b'\n' if line_type is bytes else '\n'
+        return newline.join(lines) + newline
 
     def write_string(self, file_format: str) -> str:
         graph = self.graph()
