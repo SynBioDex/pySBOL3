@@ -56,7 +56,7 @@ class TestSubComponent(unittest.TestCase):
         instance_uri = 'https://example.org/instance'
         seq1 = sbol3.Sequence('seq1')
         test_loc = sbol3.EntireSequence(seq1)
-        seq2 = sbol3.Sequence('seq2')
+        _ = sbol3.Sequence('seq2')
         test_source_loc = sbol3.EntireSequence(seq1)
         subcomp1 = sbol3.SubComponent(instance_of=instance_uri,
                                       locations=test_loc,
