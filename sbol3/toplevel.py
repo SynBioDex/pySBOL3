@@ -228,7 +228,7 @@ def make_update_references_traverser(identity_map: Dict[str, Identified])\
         # Use the identity map to update references.
         # References to objects outside of the object
         # being cloned will be left as is.
-        for k, v in x.__dict__.items():
+        for _, v in x.__dict__.items():
             if not isinstance(v, Property):
                 continue
             if v.property_uri not in x._properties:
