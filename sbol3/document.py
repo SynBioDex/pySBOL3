@@ -763,7 +763,7 @@ class Document:
         if update_references is not None:
             for top_level in update_references:
                 top_level.update_all_dependents(identity_map)
-        return None
+        # return None # This is a void method
 
     def clone(self) -> List[TopLevel]:
         """Clone the top level objects in this document.
