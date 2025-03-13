@@ -181,6 +181,7 @@ class Document:
         #
         identity_types: Dict[str, List[str]] = collections.defaultdict(list)
         for s, p, o in graph.triples((None, rdflib.RDF.type, None)):
+        for s, _, o in graph.triples((None, rdflib.RDF.type, None)):
             str_o = str(o)
             str_s = str(s)
             identity_types[str_s].append(str_o)
@@ -239,6 +240,7 @@ class Document:
         # is used, so the value read from file is ignored.
         for _, obj in objects.items():
             for name, attr in obj.__dict__.items():
+            for _, attr in obj.__dict__.items():
                 if isinstance(attr, SingletonProperty):
                     prop_uri = attr.property_uri
                     store = attr._storage()
