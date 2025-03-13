@@ -180,7 +180,6 @@ class Document:
         # 6.11 of the spec) and we instantiate it specially.
         #
         identity_types: Dict[str, List[str]] = collections.defaultdict(list)
-        for s, p, o in graph.triples((None, rdflib.RDF.type, None)):
         for s, _, o in graph.triples((None, rdflib.RDF.type, None)):
             str_o = str(o)
             str_s = str(s)
@@ -239,7 +238,6 @@ class Document:
         # in multiple values in a singleton property. Only the first value
         # is used, so the value read from file is ignored.
         for _, obj in objects.items():
-            for name, attr in obj.__dict__.items():
             for _, attr in obj.__dict__.items():
                 if isinstance(attr, SingletonProperty):
                     prop_uri = attr.property_uri
