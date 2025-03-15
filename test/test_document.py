@@ -125,7 +125,7 @@ class TestDocument(unittest.TestCase):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         doc = sbol3.Document()
         objects = [sbol3.Component(name, types=[sbol3.SBO_DNA])
-                   for name in ['foo', 'bar', 'baz' 'quux']]
+                   for name in ['foo', 'bar', 'baz', 'quux']]
         result = doc.add(objects)
         self.assertEqual(len(objects), len(result))
         self.assertListEqual(objects, result)
@@ -133,7 +133,7 @@ class TestDocument(unittest.TestCase):
         # Test adding a non-TopLevel in a list
         doc = sbol3.Document()
         objects = [sbol3.Component(name, types=[sbol3.SBO_DNA])
-                   for name in ['foo', 'bar', 'baz' 'quux']]
+                   for name in ['foo', 'bar', 'baz', 'quux']]
         objects.insert(2, 'non-TopLevel')
         with self.assertRaises(TypeError):
             doc.add(objects)
@@ -736,14 +736,14 @@ class TestDocument(unittest.TestCase):
         doc.add(c1)
         output = doc.write_string(file_format=sbol3.NTRIPLES)
         lines = output.splitlines()
-        num_blanks = sum([1 for line in lines if not line])
+        num_blanks = sum(1 for line in lines if not line)
         # Expecting no blank lines
         self.assertEqual(0, num_blanks)
 
         # Now test sorted n-triples
         sorted_output = doc.write_string(file_format=sbol3.SORTED_NTRIPLES)
         sorted_lines = sorted_output.splitlines()
-        num_blanks = sum([1 for line in sorted_lines if not line])
+        num_blanks = sum(1 for line in sorted_lines if not line)
         # Expecting no blank lines
         self.assertEqual(0, num_blanks)
 

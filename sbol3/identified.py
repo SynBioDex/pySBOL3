@@ -124,7 +124,7 @@ class Identified(SBOLObject):
                                       initial_value=[type_uri])
 
     def __str__(self):
-        return '<%s %s>' % (self.__class__.__name__, self.identity)
+        return f'<{self.__class__.__name__} {self.identity}>'
 
     @staticmethod
     def _is_valid_display_id(display_id: str) -> bool:

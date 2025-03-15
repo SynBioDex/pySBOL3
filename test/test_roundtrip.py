@@ -148,8 +148,11 @@ class TestRoundTrip(unittest.TestCase):
         iso2 = rdflib.compare.to_isomorphic(g2)
         rdf_diff = rdflib.compare.graph_diff(iso1, iso2)
         if rdf_diff[1] or rdf_diff[2]:
-            self.logger.warning('Detected %d different RDF triples in %s' %
-                                (len(rdf_diff[1]) + len(rdf_diff[2]), test_path))
+            self.logger.warning(
+                'Detected %d different RDF triples in %s',
+                len(rdf_diff[1]) + len(rdf_diff[2]), test_path
+            )
+
             if not self.logger.isEnabledFor(logging.DEBUG):
                 self.logger.warning('Set environment variable %s to see details',
                                     DEBUG_ENV_VAR)
@@ -166,7 +169,7 @@ class TestRoundTrip(unittest.TestCase):
             for test_file in self.find_all_files(test_dir):
                 basename = os.path.basename(test_file)
                 if os.path.splitext(basename)[0] in skip_list:
-                    self.logger.debug(f'Skipping {test_file}')
+                    self.logger.debug('Skipping %s', test_file)
                     continue
                 file_format = self.rdf_type(test_file)
                 if not file_format:

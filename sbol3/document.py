@@ -123,7 +123,7 @@ class Document:
                 build_type = type_uri
                 break
             except KeyError:
-                logging.warning(f'No builder found for {type_uri}')
+                logging.warning('No builder for %s', type_uri)
         if builder is None:
             builder = custom_types[sbol_type]
             build_type = types[0]
@@ -161,7 +161,7 @@ class Document:
             try:
                 builder = self._uri_type_map[sbol_type]
             except KeyError:
-                logging.warning(f'No builder found for {sbol_type}')
+                logging.warning('No builder found for %s', sbol_type)
                 raise SBOLError(f'Unknown type {sbol_type}')
             result = builder(identity=identity, type_uri=sbol_type)
         # Fix https://github.com/SynBioDex/pySBOL3/issues/264
@@ -197,7 +197,7 @@ class Document:
     def _parse_attributes(objects, graph) -> dict[str, Identified]:
         # Track the child objects that get assigned to optimize the
         # search for orphans later in the loading process.
-        child_objects = dict()
+        child_objects = {}
         for s, p, o in graph.triples((None, None, None)):
             str_s = str(s)
             str_p = str(p)
@@ -368,8 +368,8 @@ class Document:
             if not isinstance(obj, TopLevel):
                 if isinstance(obj, Identified):
                     raise TypeError(f'{obj.identity} is not a TopLevel object')
-                else:
-                    raise TypeError(f'{repr(obj)} is not a TopLevel object')
+
+                raise TypeError(f'{repr(obj)} is not a TopLevel object')
 
         # Dispatch to Document._add to add the individual objects
         for obj in objects:
@@ -460,7 +460,7 @@ class Document:
             result = graph.serialize(format=file_format, context=context)
         else:
             result = graph.serialize(format=file_format)
-        if type(result) is bytes:
+        if isinstance(result, bytes):
             result = result.decode()
         return result
 

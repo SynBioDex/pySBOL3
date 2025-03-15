@@ -115,9 +115,9 @@ class SBOLObject:
         try:
             builder = BUILDER_REGISTER[self.type_uri]
         except KeyError:
-            logging.warning(f'No builder found for {self.type_uri}; assuming {self.__class__.__name__}')
+            logging.warning('No builder found for %s; assuming %s', self.type_uri, self.__class__.__name__)
             builder = self.__class__
-        new_obj = builder(**dict(identity=new_uri, type_uri=self.type_uri))
+        new_obj = builder(**{'identity': new_uri, 'type_uri': self.type_uri})
 
         # Copy properties
         for property_uri, value_store in self._properties.items():
