@@ -472,7 +472,7 @@ class Document:
             file_format = self._guess_format(_fpath)
         if file_format is None:
             raise ValueError('Unable to determine file format')
-        with open(_fpath, 'w') as outfile:
+        with open(_fpath, 'w', encoding='utf-8') as outfile:
             outfile.write(self.write_string(file_format))
 
     def graph(self) -> rdflib.Graph:
