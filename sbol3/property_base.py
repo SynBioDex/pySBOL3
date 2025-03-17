@@ -1,7 +1,7 @@
 import abc
 import collections
-from collections.abc import MutableSequence, Iterable
-from typing import Any, Optional, List, Dict, Union
+from collections.abc import Iterable, MutableSequence
+from typing import Any, Dict, List, Optional, Union
 
 from sbol3 import ValidationReport
 
@@ -55,7 +55,7 @@ class Property(abc.ABC):
         any additional processing on items after they are added. This method
         will be called on each individual item that was added to the list.
         """
-        pass
+        pass  # pylint: disable=unnecessary-pass
 
     @property
     def attribute_name(self) -> Union[str, None]:
