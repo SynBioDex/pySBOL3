@@ -78,7 +78,7 @@ class TestVariableFeature(unittest.TestCase):
         # See https://github.com/SynBioDex/pySBOL3/issues/301
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         seq = sbol3.Sequence('seq1')
-        test_loc = sbol3.EntireSequence(seq)
+        _ = sbol3.EntireSequence(seq)
         variable_uri = 'https://example.org/variable'
         var_coll_uri = 'https://example.org/collection'
         var_feat1 = sbol3.VariableFeature(cardinality=sbol3.SBOL_ZERO_OR_MORE,

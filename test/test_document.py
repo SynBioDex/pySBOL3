@@ -52,7 +52,7 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(extension_2, '.xml')
         # 3. for invalid file formats, valueError must be raised
         with self.assertRaises(ValueError):
-            extension_3 = sbol3.Document.file_extension(file_format_3)
+            _ = sbol3.Document.file_extension(file_format_3)
 
     def test_read_ntriples(self):
         # Initial test of Document.read
