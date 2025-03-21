@@ -76,8 +76,8 @@ class SBOLObject:
             base_uri = PYSBOL3_DEFAULT_NAMESPACE
         if base_uri.endswith('#'):
             return base_uri + name
-        else:
-            return posixpath.join(base_uri, name.lstrip(posixpath.sep))
+
+        return posixpath.join(base_uri, name.lstrip(posixpath.sep))
 
     @property
     def identity(self) -> str:
