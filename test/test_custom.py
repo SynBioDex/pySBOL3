@@ -8,7 +8,6 @@ from typing import Union
 
 import sbol3
 
-
 PYSBOL3_CUSTOM_TOP = 'https://github.com/synbiodex/pysbol3#customTop'
 PYSBOL3_CUSTOM_UNREGISTERED_TOP = 'https://github.com/synbiodex/pysbol3#customUnregisteredTop'
 PYSBOL3_CUSTOM_BOOL = 'https://github.com/synbiodex/pysbol3#customBool'
@@ -136,11 +135,11 @@ class TestCustomTopLevel(unittest.TestCase):
         # as a CustomTopLevel identity. And also if identity
         # is an empty string or not a string.
         with self.assertRaises(ValueError):
-            obj = CustomTopClass(None)
+            _ = CustomTopClass(None)
         with self.assertRaises(ValueError):
-            obj = CustomTopClass('')
+            _ = CustomTopClass('')
         with self.assertRaises(ValueError):
-            obj = CustomTopClass(3)
+            _ = CustomTopClass(3)
 
 
 class TestCustomIdentified(unittest.TestCase):

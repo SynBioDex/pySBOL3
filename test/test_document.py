@@ -52,7 +52,7 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(extension_2, '.xml')
         # 3. for invalid file formats, valueError must be raised
         with self.assertRaises(ValueError):
-            extension_3 = sbol3.Document.file_extension(file_format_3)
+            _ = sbol3.Document.file_extension(file_format_3)
 
     def test_read_ntriples(self):
         # Initial test of Document.read
@@ -218,7 +218,7 @@ class TestDocument(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdirname:
             test_file = os.path.join(tmpdirname, filename)
             doc.write(test_file, sbol3.SORTED_NTRIPLES)
-            with open(test_file, 'r') as infile:
+            with open(test_file, 'r', encoding='utf-8') as infile:
                 expected = infile.read()
         actual = doc.write_string(sbol3.SORTED_NTRIPLES)
         self.assertEqual(expected, actual)

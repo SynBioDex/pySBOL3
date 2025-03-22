@@ -55,16 +55,19 @@ class SBOLObject:
         """
         if name is None:
             return None
-        name_is_url = SBOLObject._is_url(name)
-        if name_is_url:
+
+        # Case 1: The name is already a valid URL
+        if SBOLObject._is_url(name):
             return name.strip(posixpath.sep)
+
+        # Case 2: The name is a valid UUID
         try:
-            # If it is a UUID, accept it as the identity
-            identity_uuid = uuid.UUID(name)
+            uuid.UUID(name)
             return name
         except ValueError:
             pass
-        # Not a URL or a UUID, so append to the namespace
+
+        # Case 3: The name is neither a URL or a UUID, so append to the namespace
         base_uri = get_namespace()
         if base_uri is None:
             # See https://github.com/SynBioDex/pySBOL3/issues/254
