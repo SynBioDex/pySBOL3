@@ -55,7 +55,6 @@ class Property(abc.ABC):
         any additional processing on items after they are added. This method
         will be called on each individual item that was added to the list.
         """
-        # pass  # pylint: disable=unnecessary-pass
 
     @property
     def attribute_name(self) -> Union[str, None]:
