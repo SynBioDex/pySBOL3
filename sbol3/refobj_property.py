@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Union, Any, List, Optional
+from typing import Any, List, Optional, Union
 
 import rdflib
 
@@ -15,9 +15,9 @@ class ReferencedURI(str):
     def lookup(self):
         if hasattr(self, 'parent'):
             return self.parent.document.find(str(self))
-        else:
-            # TODO: Should the lack of a parent raise an error?
-            return None
+
+        # TODO: Should the lack of a parent raise an error?
+        return None
 
 
 class ReferencedObjectMixin:

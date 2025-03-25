@@ -9,7 +9,7 @@ def parse_class_name(uri: str):
     """
     if '#' in uri:
         return uri[uri.rindex('#')+1:]
-    elif '/' in uri:
+    if '/' in uri:
         return uri[uri.rindex('/')+1:]
     raise ValueError(f'Cannot parse class name from {uri}. URI must use either / '
                      'or # as a delimiter.')
