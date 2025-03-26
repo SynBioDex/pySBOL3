@@ -26,14 +26,12 @@ class ValidationError(ValidationIssue):
     """A ValidationError is a violation of the SBOL specification.
     """
     # All functionality is in the base class
-    pass
 
 
 class ValidationWarning(ValidationIssue):
     """A ValidationWarning is a violation of an SBOL best practice.
     """
     # All functionality is in the base class
-    pass
 
 
 class ValidationReport:
