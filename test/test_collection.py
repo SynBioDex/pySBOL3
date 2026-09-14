@@ -35,14 +35,14 @@ class TestCollection(unittest.TestCase):
         sbol3.set_namespace('https://github.com/synbiodex/pysbol3')
         self.assertTrue(hasattr(sbol3, 'SBOL_MEMBER'))
         collection = sbol3.Collection('collection1')
-        self.assertIn(sbol3.SBOL_MEMBER, collection._properties)
+        self.assertIn(sbol3.SBOL_MEMBER, collection._referenced_objects)
         self.assertNotIn(sbol3.SBOL_ORIENTATION, collection._properties)
         uris = ['https://github.com/synbiodex/pysbol3/thing1',
                 'https://github.com/synbiodex/pysbol3/thing2']
         collection.members = uris
-        self.assertIn(sbol3.SBOL_MEMBER, collection._properties)
-        self.assertNotIn(sbol3.SBOL_ORIENTATION, collection._properties)
-        self.assertEqual(uris, collection.members)
+        self.assertIn(sbol3.SBOL_MEMBER, collection._referenced_objects)
+        self.assertNotIn(sbol3.SBOL_ORIENTATION, collection._referenced_objects)
+        self.assertListEqual(uris, [m.identity for m in collection.members])  # pylint: disable=E1101
 
     # Namespace testing
     def test_namespace_deduced(self):

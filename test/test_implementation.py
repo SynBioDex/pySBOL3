@@ -41,7 +41,7 @@ class TestImplementation(unittest.TestCase):
         self.assertIsInstance(implementation, sbol3.Implementation)
         tetr_uri = 'https://sbolstandard.org/examples/TetR_protein'
         built = tetr_uri
-        self.assertCountEqual(built, implementation.built)
+        self.assertCountEqual(built, implementation.built.identity)
 
 
 if __name__ == '__main__':

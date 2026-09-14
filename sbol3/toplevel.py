@@ -140,16 +140,34 @@ class TopLevel(Identified):
         self._display_id = self._extract_display_id(self._identity)
 
     def clone(self, new_identity: str = None) -> 'TopLevel':
-        obj = copy.deepcopy(self)
-        identity_map = {self.identity: obj}
+        clone = copy.deepcopy(self)
+        identity_map = {self.identity: clone}
         # Set identity of new object
         if new_identity is not None:
-            obj.set_identity(new_identity)
+            clone.set_identity(new_identity)
         # Drop the document pointer
-        obj.document = None
+        clone.document = None
 
-        obj.update_all_dependents(identity_map)
-        return obj
+        clone.update_all_dependents(identity_map)
+
+        # Replace references with stub objects, because
+        # the cloned object is not associated with a
+        # Document, resulting in external references
+        def reset_references(x):
+            for property_id, ref_objects in x._referenced_objects.items():
+                updated_objects = []
+                for o in ref_objects:
+                    if clone.find(o.identity):
+                        updated_objects.append(o)
+                    else:
+                        stub = SBOLObject(o.identity)
+                        stub._references = o._references.copy()
+                        updated_objects.append(stub)
+                x._referenced_objects[property_id] = updated_objects
+
+        clone.traverse(reset_references)
+        clone._references = [SBOLObject(r.identity) for r in self._references]
+        return clone
 
     def update_all_dependents(self, identity_map: dict[str, Identified]) -> Any:
         """Update all dependent objects based on the provided identity map.

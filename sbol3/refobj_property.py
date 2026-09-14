@@ -22,26 +22,45 @@ class ReferencedURI(str):
 
 class ReferencedObjectMixin:
 
+    def _storage(self) -> Dict[str, list]:
+        return self.property_owner._referenced_objects
+
+    def _clear(self):
+        for obj in self._storage()[self.property_uri]:
+            obj._references = []
+
     def to_user(self, value: Any) -> str:
-        result = ReferencedURI(str(value))
         if hasattr(self, 'property_owner'):
             parent = self.property_owner
-            result.parent = parent
-        return result
+            value.parent = parent
+        # Should we check to see if value has a document as well?
+        return value
 
-    @staticmethod
-    def from_user(value: Any) -> rdflib.URIRef:
-        if isinstance(value, SBOLObject):
-            # see https://github.com/SynBioDex/pySBOL3/issues/357
-            if value.identity is None:
-                # The SBOLObject has an uninitialized identity
-                msg = f'Cannot set reference to {value}.'
-                msg += ' Object identity is uninitialized.'
-                raise ValueError(msg)
-            value = value.identity
-        if not isinstance(value, str):
-            raise TypeError(f'Expecting string, got {type(value)}')
-        return rdflib.URIRef(value)
+    def from_user(self, value: Any) -> rdflib.URIRef:
+        # TODO: what is value is empty string?
+        if type(value) is str:
+            if self.property_owner.document:
+                referenced_obj = self.property_owner.document.find(value)
+                if referenced_obj is not None:
+                    # Keep track of this reference to the object
+                    if self not in referenced_obj._references:
+                        referenced_obj._references += [self.property_owner]
+                    return referenced_obj
+            # The given URI refers to an object not currently in this
+            # Document, so create a stub
+            # TODO: warn user referenced object is not in document
+            value = SBOLObject(value)
+
+        if not isinstance(value, SBOLObject):
+            raise TypeError('Cannot set property, the value must be str or instance of SBOLObect')
+        if value.identity is None:
+            # The SBOLObject has an uninitialized identity
+            msg = f'Cannot set reference to {value}.'
+            msg += ' Object identity is uninitialized.'
+            raise ValueError(msg)
+        # Keep track of this reference to the object
+        value._references += [self.property_owner]
+        return value
 
     def maybe_add_to_document(self, value: Any) -> None:
         # if not isinstance(value, TopLevel):
@@ -67,6 +86,8 @@ class ReferencedObjectSingleton(ReferencedObjectMixin, SingletonProperty):
             self.set(initial_value)
 
     def set(self, value: Any) -> None:
+        for o in self._storage()[self.property_uri]:
+            o._references.remove(self.property_owner)
         super().set(value)
         # See bug 184 - don't add to document
         # self.maybe_add_to_document(value)
@@ -86,6 +107,25 @@ class ReferencedObjectList(ReferencedObjectMixin, ListProperty):
                 # Wrap the singleton in a list
                 initial_value = [initial_value]
             self.set(initial_value)
+
+    def __setitem__(self, key: Union[int, slice], value: Any) -> None:
+        replaced_obj = self._storage()[self.property_uri].__getitem__(key)
+        replaced_obj._references.remove(self.property_owner)
+        super().__setitem__(key, value)
+
+    def __delitem__(self, key: Union[int, slice]) -> None:
+        replaced_item = self._storage()[self.property_uri][key]
+        replaced_item._references.remove(self.property_owner)
+        super().__delitem__(key)
+
+    def set(self, value: Any) -> None:
+        # If the current value of the property
+        # is identical to the value being set, do nothing.
+        if value == self._storage()[self.property_uri]:
+            return
+        for o in self._storage()[self.property_uri]:
+            o._references.remove(self.property_owner)
+        super().set(value)
 
     # See bug 184 - don't add to document
     # def item_added(self, item: Any) -> None:
