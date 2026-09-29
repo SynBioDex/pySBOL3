@@ -345,6 +345,8 @@ class Document:
         if not isinstance(obj, TopLevel):
             message = f'Expected TopLevel instance, {type(obj).__name__} found'
             raise TypeError(message)
+        if obj.document is not None and obj.document is not self:
+            raise ValueError(f'Object "{obj.identity}" already belongs to another document')
         found_obj = self.find(obj.identity)
         if found_obj is not None:
             message = f'An entity with identity "{obj.identity}"'
