@@ -110,6 +110,39 @@ class TestDocument(unittest.TestCase):
         seq2 = doc.find(seq.identity)
         self.assertEqual(seq.identity, seq2.identity)
 
+    def test_add_to_second_document(self):
+        # Reject both single-object and list additions to a second document,
+        # preserving the original ownership of the object and its children.
+        # See https://github.com/SynBioDex/pySBOL3/issues/416
+        for as_list in (False, True):
+            with self.subTest(as_list=as_list):
+                first = sbol3.Document()
+                second = sbol3.Document()
+                component = sbol3.Component('https://example.org/component',
+                                            sbol3.SBO_DNA,
+                                            features=[sbol3.LocalSubComponent(sbol3.SBO_DNA)])
+                first.add(component)
+                objects = [component] if as_list else component
+                with self.assertRaisesRegex(ValueError, 'another document'):
+                    second.add(objects)
+                self.assertEqual(first.objects, [component])
+                self.assertEqual(second.objects, [])
+                component.traverse(self.make_document_checker(first))
+
+    def test_add_after_removal(self):
+        # Removing an object releases its ownership so another document can
+        # accept it without leaving it in the original document.
+        # See https://github.com/SynBioDex/pySBOL3/issues/416
+        first = sbol3.Document()
+        second = sbol3.Document()
+        agent = sbol3.Agent('https://example.org/agent')
+        first.add(agent)
+        first.remove([agent])
+        self.assertIs(second.add(agent), agent)
+        self.assertEqual(first.objects, [])
+        self.assertEqual(second.objects, [agent])
+        self.assertIs(agent.document, second)
+
     def test_add_multiple(self):
         # Ensure that duplicate identities cannot be added to the document.
         # See https://github.com/SynBioDex/pySBOL3/issues/39
