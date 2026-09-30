@@ -111,6 +111,9 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(seq.identity, seq2.identity)
 
     def test_add_to_second_document(self):
+        # Reject both single-object and list additions to a second document,
+        # preserving the original ownership of the object and its children.
+        # See https://github.com/SynBioDex/pySBOL3/issues/416
         for as_list in (False, True):
             with self.subTest(as_list=as_list):
                 first = sbol3.Document()
@@ -127,6 +130,9 @@ class TestDocument(unittest.TestCase):
                 component.traverse(self.make_document_checker(first))
 
     def test_add_after_removal(self):
+        # Removing an object releases its ownership so another document can
+        # accept it without leaving it in the original document.
+        # See https://github.com/SynBioDex/pySBOL3/issues/416
         first = sbol3.Document()
         second = sbol3.Document()
         agent = sbol3.Agent('https://example.org/agent')
